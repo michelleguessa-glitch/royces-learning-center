@@ -514,6 +514,27 @@ var TOPICS=[
 ];
 var LEVELS=['Warm-Up','Sparkle','Star','Superstar','Champion','Royal Finals'];
 function levelFor(done){ return Math.min(5, Math.floor(done/40)); }
+/* ===== GRADE-TRUE TITLES & TAGLINES: the displayed name (and tagline, where it names a skill) must name
+   what is actually played at the grade picked, so neither the learner nor a grown-up is promised a skill
+   that grade does not teach. Only the DISPLAY changes — topic ids, games, prompts and progress keys
+   (all keyed by topic id, never by title) are untouched, so a title change can never split or erase
+   progress or trophies. Locked Multiplication/Division have NO entry here: they keep their true
+   titles under the gold lock, as the lock and Belle's message explain them. ===== */
+var GRADE_DISPLAY={
+fractions:{0:{title:'Sharing Cupcakes',desc:'Share cupcakes and castle treats fairly — split them into equal parts so everyone gets a fair share!'},1:{title:'Fraction Cupcakes',desc:'Halves and fourths — fair shares of cupcakes and castle treats!'}},
+plurals:{1:{desc:'Make one into many: just add -s! cat → cats, rose → roses, bow → bows.'},2:{desc:'Make one into many: add -s or -es, and change y to -ies — baby → babies!'}},
+placevalue:{1:{desc:'Ones and tens — and the hundreds in numbers past 100 — what each digit is really worth.'},2:{desc:'Hundreds, tens and ones — what each digit is really worth.'},3:{desc:'Thousands, hundreds, tens and ones — find a digit’s place and what it is worth!'},4:{desc:'Big numbers up to the hundred-thousands — find a digit’s place and what it is worth!'},5:{desc:'Numbers into the millions, plus decimal tenths and hundredths — find a digit’s place and what it is worth!'}},
+sightwords:{0:{title:'First Words Sprint',desc:'Your very first words — read them, spell them, shine! Words you see every day, like the, and, see and play.'}},
+vowels:{0:{title:'Letter Sound Squad',desc:'Letter sounds! Hear the short vowel sound in words like cat, bed, pig and cup — then spell the whole word!'},1:{desc:'Short vowels, magic e and vowel teams like ai, ee and oa — hear the vowel sound and spell the word!'},3:{desc:'Vowel teams, magic e and new sounds: r-controlled vowels like ar, er, ir and ur, and diphthongs like oi, oy and ou — hear the sound and spell the word!'},4:{desc:'Vowel teams, r-controlled vowels, diphthongs and silent letters — like the silent k in knee and the silent b in lamb!'},5:{desc:'Vowel teams, diphthongs and the trickiest patterns — like ph saying F in phone! Hear the sound and spell the whole word!'}},
+addition:{0:{desc:'Count the dots and put the two groups together — how many in all?'}},
+subtraction:{0:{desc:'Start with the dots, take some away, and count how many are left!'}},
+skipcounting:{0:{desc:'Count by 10s and 2s — tie each bow as you hop along the number line!'},2:{desc:'Count by 2s, 5s, 10s and 100s — tie each bow as you hop along the number line!'},3:{desc:'Count by 3s, 4s, 6s and 7s — tie each bow as you hop along the number line!'},4:{desc:'Count by 6s, 7s, 8s, 9s and more — tie each bow as you hop along!'},5:{desc:'Count by 11s, 12s, 15s and 25s — tie each bow as you hop along!'}},
+money:{0:{desc:'Learn the castle coins — how many cents is a penny, nickel, dime and quarter worth?'},4:{desc:'Dollars and cents — add and subtract money amounts, lining up the decimal points!'},5:{desc:'Dollars and cents — add and subtract money amounts, lining up the decimal points!'}},
+time:{0:{desc:'Read the clock to the hour — practice starts right on time!'},1:{desc:'Read clocks to the hour and half-hour — practice starts right on time!'},4:{desc:'How many minutes from start to finish? Count up the minutes to find how long practice lasts!'},5:{desc:'How many minutes from start to finish? Count up the minutes to find how long practice lasts!'}}
+};
+function gradeDisplay(t){ if(!t) return {}; var m=GRADE_DISPLAY[t.id]; return (m&&m[gradeIdx])||{}; }
+function displayTitle(t){ if(!t) return ''; return gradeDisplay(t).title||t.title; }
+function displayDesc(t){ if(!t) return ''; return gradeDisplay(t).desc||t.desc; }
 
 var WIZARDS={
 howto:{title:'How Belle Helps You Learn',steps:[{h:'1. Watch the example 👀',b:'Before a new kind of question, Belle shows a worked example — step by step. Watch what Belle does, not just the answer.'},{h:'2. Try it yourself 🎀',b:'Type your answer and tap <b>Check It!</b> Take your time. There is no timer rushing you. While you think, your cheerleader performs her cheer routine on the beam!'},{h:'3. Wrong? We fix it together 🌹',b:'Your cheerleader may slip off the beam — that is okay! Belle will tell you <b>exactly what to check</b> — a place, a sound, or a rule — and you try the <b>same question again</b> until you get it right. You never lose points for trying!'},{h:'4. Right? She walks the beam! 🎉',b:'Your cheerleader walks the whole beam and lands in a split, your squad earns points, and a brand-new question appears. First squad to the target wins the competition!'}]},
@@ -544,7 +565,7 @@ function openWizard(t){
   else{
     wizTopic=id;
     var topic=TOPICS.find(function(x){return x.id===id});
-    wizTitleStr="Belle's Example — "+(topic?topic.title:id);
+    wizTitleStr="Belle's Example — "+(topic?displayTitle(topic):id);
     if(note) note.style.display='block';
     try{ wizSteps=buildWorkedExample(id); }catch(e){ wizSteps=null; }
     if(!wizSteps||!wizSteps.length){ var w=WIZARDS[id]; wizSteps=w?w.steps:[{h:'Watch me!',b:'Belle is getting an example ready — tap Next and watch the steps!'}]; }
@@ -763,7 +784,7 @@ function genMath(id,tier){
     if(G>=4&&tier>=2){ var d4=pick([2,3,4,6,8]); var n1=R(1,d4-1), n2=R(1,d4-1); var sn=n1+n2; ans=sn+'/'+d4; q=n1+'/'+d4+' + '+n2+'/'+d4+' = ? Type it like 5/8.'; hint='The denominators match, so keep the bottom number the same and <b>add the tops</b>.'; check=function(g){ return 'Bottom stays '+d4+'. Just add the tops: '+n1+' + '+n2+'.'; }; return {q:q,ans:ans,display:'text',placeholder:'e.g. 3/4',hint:hint,check:check}; }
     if(G===5){ var pairs=[{a:[1,2],b:[1,4],s:'3/4'},{a:[1,3],b:[1,6],s:'1/2'},{a:[1,2],b:[1,3],s:'5/6'},{a:[2,3],b:[1,6],s:'5/6'},{a:[3,4],b:[1,4],s:'1'},{a:[1,4],b:[1,2],s:'3/4'},{a:[5,6],b:[1,3],s:'7/6'}]; var pr=pick(pairs); q=pr.a[0]+'/'+pr.a[1]+' + '+pr.b[0]+'/'+pr.b[1]+' = ? Type it like 3/4.'; ans=pr.s; hint='Make the bottoms match first! Find a number both denominators can become, change both fractions, then add the tops.'; check=function(g){ return 'Change both fractions so the bottoms match, then add the tops only. Bottoms never get added!'; }; return {q:q,ans:ans,display:'text',placeholder:'e.g. 3/4',hint:hint,check:check}; }
     if(G===3&&tier>=3){ var pair=pick([['1/2','1/4'],['1/3','1/2'],['2/3','1/3'],['3/4','1/4'],['1/4','1/8'],['2/4','1/4']]); var bigger= (function(){ function v(s){ var p=s.split('/'); return p[0]/p[1]; } return v(pair[0])>v(pair[1])? pair[0]:pair[1]; })(); q='Which fraction is bigger?'; return {q:q,ans:bigger,display:'choice',choices:shuffle(pair),hint:'Think of a cupcake: a <b>bigger slice</b> means fewer pieces were cut. Or draw both bars in Work It Out!',check:function(){ return 'Picture the same-size cupcake cut two ways. Which piece would you rather eat? That is the bigger fraction!'; }}; }
-    var den= G===0? pick([2,4]) : G===1? pick([2,3,4]) : pick([2,3,4,6,8]); var num= G===0? 1 : R(1,den-1); ans=num+'/'+den; q='What fraction is shaded?'; var cells=''; for(var k=0;k<den;k++){ cells+='<div style="flex:1;height:54px;border:3px solid #3A1430;background:'+(k<num?'#E84393':'#fff')+'"></div>'; } var visual='<div style="display:flex;gap:3px;width:min(340px,80vw)">'+cells+'</div>'; return {q:q,ans:ans,display:'text',hint:'Bottom number = total <b>equal</b> parts. Top number = shaded parts.',check:function(g){return 'Count ALL the equal parts first — that\'s your bottom number. Then count only the <b>pink shaded</b> parts — that\'s your top number. Type it like 2/4.';},visual:visual,placeholder:'e.g. 1/2'};
+    var den= G===0? pick([2,4]) : G===1? pick([2,4]) : G===2? pick([2,3,4]) : pick([2,3,4,6,8]); var num= G===0? 1 : R(1,den-1); ans=num+'/'+den; q='What fraction is shaded?'; var cells=''; for(var k=0;k<den;k++){ cells+='<div style="flex:1;height:54px;border:3px solid #3A1430;background:'+(k<num?'#E84393':'#fff')+'"></div>'; } var visual='<div style="display:flex;gap:3px;width:min(340px,80vw)">'+cells+'</div>'; return {q:q,ans:ans,display:'text',hint:'Bottom number = total <b>equal</b> parts. Top number = shaded parts.',check:function(g){return 'Count ALL the equal parts first — that\'s your bottom number. Then count only the <b>pink shaded</b> parts — that\'s your top number. Type it like 2/4.';},visual:visual,placeholder:'e.g. 1/2'};
   }
   else { /* word problems, one prompt scaled by grade */
     var names=['Royce','Belle','Mia','Sofia','Ava','Lily']; var objs=[{n:'bows',e:'🎀'},{n:'roses',e:'🌹'},{n:'cupcakes',e:'🧁'},{n:'ribbons',e:'✨'},{n:'books',e:'📚'},{n:'pom poms',e:'📣'}]; var o=pick(objs); var nm=pick(names);
@@ -1136,7 +1157,7 @@ function lockedGradeTap(id){
   var isDiv=id==='division';
   lockedFitId= isDiv? 'subtraction':'addition';
   var fitTitle= isDiv? 'Subtraction Superstars':'Addition All-Stars';
-  document.getElementById('lockedTitle').textContent='🔒 '+t.title;
+  document.getElementById('lockedTitle').textContent='🔒 '+displayTitle(t);
   var msg= (isDiv? 'Division is a <b>3rd grade skill</b>' : 'Multiplication is a <b>3rd grade skill</b>')+' — this game opens when your grade is 3rd Grade or higher! 🌹 For your grade, <b>'+fitTitle+'</b> is just right. Let\'s go shine!';
   document.getElementById('lockedText').innerHTML='<b>Cheer Coach Belle says:</b> '+msg;
   document.getElementById('lockedGoBtn').textContent='▶ Play '+fitTitle+'!';
@@ -1147,11 +1168,11 @@ function lockedGradeTap(id){
 function closeLocked(){ document.getElementById('lockedModal').classList.remove('open'); }
 function lockedGoFit(){ closeLocked(); startTopic(lockedFitId); }
 function renderGrid(){ var g=document.getElementById('topicGrid'); g.innerHTML=TOPICS.filter(function(t){return t.cat===cat&&(topicAvailable(t)||gradeLockedTopic(t))}).map(function(t){
-  if(gradeLockedTopic(t)){ return '<article class="tcard locked" onclick="lockedGradeTap(\''+t.id+'\')" aria-label="'+t.title+' — locked, opens in 3rd Grade"><div style="display:flex;justify-content:space-between;align-items:start;gap:8px"><div class="ticon">'+t.icon+'</div><span class="lock-badge">🔒 Opens in 3rd Grade!</span></div><h3>'+t.title+'</h3><p>'+t.desc+'</p><button class="play-btn lock-btn" type="button">🔒 Locked</button></article>'; }
-  var p=topicProg(t.id); var started=p.done>0; var finished=p.done>=240; return '<article class="tcard"><div style="display:flex;justify-content:space-between;align-items:start"><div class="ticon">'+t.icon+'</div><span class="meta">'+(finished?'🏆 Finished!':started?'⭐ Keep Going!':'New Game')+'</span></div><h3>'+t.title+'</h3><p>'+t.desc+'</p><button class="play-btn" onclick="startTopic(\''+t.id+'\')">'+(started&&!finished?'▶ Keep Playing!':finished?'▶ Play Again!':'▶ Start Playing!')+'</button></article>'; }).join(''); }
+  if(gradeLockedTopic(t)){ return '<article class="tcard locked" onclick="lockedGradeTap(\''+t.id+'\')" aria-label="'+displayTitle(t)+' — locked, opens in 3rd Grade"><div style="display:flex;justify-content:space-between;align-items:start;gap:8px"><div class="ticon">'+t.icon+'</div><span class="lock-badge">🔒 Opens in 3rd Grade!</span></div><h3>'+displayTitle(t)+'</h3><p>'+displayDesc(t)+'</p><button class="play-btn lock-btn" type="button">🔒 Locked</button></article>'; }
+  var p=topicProg(t.id); var started=p.done>0; var finished=p.done>=240; return '<article class="tcard"><div style="display:flex;justify-content:space-between;align-items:start"><div class="ticon">'+t.icon+'</div><span class="meta">'+(finished?'🏆 Finished!':started?'⭐ Keep Going!':'New Game')+'</span></div><h3>'+displayTitle(t)+'</h3><p>'+displayDesc(t)+'</p><button class="play-btn" onclick="startTopic(\''+t.id+'\')">'+(started&&!finished?'▶ Keep Playing!':finished?'▶ Play Again!':'▶ Start Playing!')+'</button></article>'; }).join(''); }
 function updateTotals(){ var ts=collection.bonusStars; for(var gk in progStore.per){ var bucket=progStore.per[gk]; for(var tid in bucket){ ts+=bucket[tid].stars||0; } } var el=document.getElementById('totalStars'); if(el) el.textContent=ts; var hs=document.getElementById('heroStars'); if(hs) hs.textContent=ts; var hw=document.getElementById('heroWins'); if(hw) hw.textContent=collection.wins; }
 function belleSay(html){ document.getElementById('belleBubble').innerHTML=html; speakBelle(html); }
-function startTopic(id){ if(gradeLockedTopic(topicById(id))){ lockedGradeTap(id); return; } /* GRADE GATE: refuses below 3rd grade no matter which UI path calls it */ currentTopic=TOPICS.find(function(t){return t.id===id}); document.getElementById('homeView').style.display='none'; document.getElementById('practiceView').style.display='block'; document.getElementById('pTitle').textContent=currentTopic.icon+' '+currentTopic.title; window.scrollTo({top:0}); clearInterval(timerInt); timerInt=setInterval(function(){ topicProg(id).sec+=5; if(topicProg(id).sec%30===0) saveP(progress); },5000); initGameSession(id); renderAllCheerleaders(); resetCheerToStart(true); nextPrompt(true); openWizard(id); }
+function startTopic(id){ if(gradeLockedTopic(topicById(id))){ lockedGradeTap(id); return; } /* GRADE GATE: refuses below 3rd grade no matter which UI path calls it */ currentTopic=TOPICS.find(function(t){return t.id===id}); document.getElementById('homeView').style.display='none'; document.getElementById('practiceView').style.display='block'; document.getElementById('pTitle').textContent=currentTopic.icon+' '+displayTitle(currentTopic); window.scrollTo({top:0}); clearInterval(timerInt); timerInt=setInterval(function(){ topicProg(id).sec+=5; if(topicProg(id).sec%30===0) saveP(progress); },5000); initGameSession(id); renderAllCheerleaders(); resetCheerToStart(true); nextPrompt(true); openWizard(id); }
 function goHome(){ stopBelleSpeech(); stopRoutine(); if(typeof toggleWorkPanel==='function') toggleWorkPanel(false); clearInterval(timerInt); saveP(progress); document.getElementById('practiceView').style.display='none'; document.getElementById('homeView').style.display='block'; renderGrid(); updateTotals(); renderAllCheerleaders(); window.scrollTo({top:0}); }
 function goHomeFromOverlay(){
   stopWizAuto(); stopBelleSpeech(); stopFt();
@@ -1177,7 +1198,7 @@ function nextPrompt(first){
   else { document.getElementById('inputRow').style.display='flex'; ch.innerHTML=''; }
   document.getElementById('feedback').className='feedback'; document.getElementById('feedback').textContent='';
   setupWork();
-  belleSay(first? 'Welcome to <b>'+currentTopic.title+'</b>! Watch my example with the ✨ button if you need it, then try this one. You\'ve got this, superstar! 🎀' : pick(['New one! Read it carefully, then answer to start the beam walk! 🎀','Here we go — I know you can get this one!','Pom poms up… here\'s your next one!']));
+  belleSay(first? 'Welcome to <b>'+displayTitle(currentTopic)+'</b>! Watch my example with the ✨ button if you need it, then try this one. You\'ve got this, superstar! 🎀' : pick(['New one! Read it carefully, then answer to start the beam walk! 🎀','Here we go — I know you can get this one!','Pom poms up… here\'s your next one!']));
   startRoutine();
   setTimeout(function(){ if(current.display!=='choice') inp.focus(); },80);
 }
@@ -1207,7 +1228,7 @@ function checkAnswer(){
     chosen=null;
     playBeamSuccess(function(){
       if(res.won){ showWinCelebration(); }
-      else if(p.done>=240){ belleSay('🏆 <b>YOU DID IT!</b> You finished '+currentTopic.title+'! Belle is so proud! 🌹'); fb.className='feedback good'; fb.innerHTML='🏆 You finished this whole topic! Go back to All Games and pick your next adventure!'; resetCheerToStart(false); startRoutine(); }
+      else if(p.done>=240){ belleSay('🏆 <b>YOU DID IT!</b> You finished '+displayTitle(currentTopic)+'! Belle is so proud! 🌹'); fb.className='feedback good'; fb.innerHTML='🏆 You finished this whole topic! Go back to All Games and pick your next adventure!'; resetCheerToStart(false); startRoutine(); }
       else nextPrompt(false);
     });
   } else {
@@ -1267,7 +1288,7 @@ function onGameWrong(){
 function awardWin(){
   collection.wins++;
   var p=topicProg(currentTopic.id); p.games=(p.games||0)+1; saveP(progress);
-  var topic=currentTopic?currentTopic.title:'Game';
+  var topic=currentTopic?displayTitle(currentTopic):'Game';
   var tName= gameSession.championship?('🏆 Championship Trophy — '+topic):('🥇 Competition Trophy — '+topic);
   collection.trophies.push({icon:gameSession.championship?'🏆':'🥇',name:tName,when:new Date().toLocaleDateString()});
   var rewards=[tName];
@@ -1641,7 +1662,7 @@ document.addEventListener('click',function(e){
 document.addEventListener('input',function(e){ if(e.target&&e.target.id==='volRange') sfx('tap'); },true);
 
 /* ---------- BUILD STAMP + SELF-UPDATE (quietly checks for a newer build on load and when the page comes back into view; reloads once if one is found, so updates reach devices on their own) ---------- */
-var BUILD_STAMP='2026-11-06-royce-4';
+var BUILD_STAMP='2026-11-06-royce-7';
 (function selfUpdate(){
   function check(){
     if(!window.fetch) return;
@@ -1666,7 +1687,7 @@ var BUILD_STAMP='2026-11-06-royce-4';
   updateGradeUI();
   renderGrid(); updateTotals(); renderAllCheerleaders(); updateGenreButtons(); updateSongDisplay();
   initPad();
-  if(!gradeChosen) openGradePicker();
+  if(!gradeChosen) openGradePicker(); /* first visit only: no saved grade yet → picker first. A saved grade opens straight to home at that grade. */
 })();
 </script>
 </body>
