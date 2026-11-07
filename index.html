@@ -87,13 +87,15 @@ button{font-family:inherit;cursor:pointer}
 .champ-banner{display:none;background:linear-gradient(90deg,var(--gold),#FFD968);color:#431407;border-radius:16px;padding:10px 14px;font-family:'Fredoka';font-weight:700;text-align:center;margin-bottom:12px;font-size:17px}
 .champ-banner.on{display:block}
 /* ===== stage ===== */
-.stage{position:relative;border-radius:24px;overflow:hidden;border:4px solid var(--pink);height:330px;margin-bottom:12px;background:linear-gradient(180deg,#EBD9F2 0%,#F7E3F3 55%,#F3D9C8 55.2%,#EAC39F 100%)}
+.stage{position:relative;border-radius:24px;overflow:hidden;border:4px solid var(--pink);height:330px;margin-bottom:12px;background:linear-gradient(180deg,#EBD9F2 0%,#F7E3F3 55%,#F3D9C8 55.2%,#EAC39F 100%);box-shadow:inset 0 0 90px rgba(90,10,50,.16),inset 0 -34px 54px rgba(90,10,50,.10),0 14px 34px rgba(157,20,80,.14)}
+.stage:after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 90% at 50% 30%,transparent 55%,rgba(90,10,50,.13) 100%);z-index:5}
 .stage svg.bg{position:absolute;inset:0;width:100%;height:100%}
 .stage-floor{position:absolute;left:0;right:0;bottom:0;height:44px;background:linear-gradient(180deg,#EFCDa5,#DFAF7E);border-top:3px solid #C98F5F}
-.beam{position:absolute;left:5%;right:5%;bottom:96px;height:15px;background:linear-gradient(180deg,#F78FB8,var(--pink));border-radius:8px;box-shadow:0 3px 0 var(--pink-dd);z-index:3}
+.beam{position:absolute;left:5%;right:5%;bottom:96px;height:15px;background:linear-gradient(180deg,#FFB1D1,#F76FAE 55%,var(--pink));border-radius:8px;box-shadow:0 7px 16px rgba(157,20,80,.35),inset 0 2px 0 rgba(255,255,255,.6),inset 0 -3px 0 rgba(157,20,80,.35);z-index:3}
+.cheer-shadow{position:absolute;bottom:101px;left:calc(5% + 13px);width:92px;height:16px;border-radius:50%;background:radial-gradient(ellipse at center,rgba(58,20,48,.38),rgba(58,20,48,0) 70%);z-index:3;pointer-events:none;transition:bottom .35s ease,transform .35s ease,opacity .35s ease}
 .beam:before,.beam:after{content:"";position:absolute;top:15px;width:16px;height:37px;background:#8A5A78;border-radius:0 0 4px 4px}
 .beam:before{left:6%}.beam:after{right:6%}
-.mat{position:absolute;left:16%;right:16%;bottom:44px;height:15px;background:linear-gradient(180deg,#9D6BEE,var(--purple));border-radius:8px;z-index:2;box-shadow:0 3px 0 var(--purple-d)}
+.mat{position:absolute;left:16%;right:16%;bottom:44px;height:15px;background:linear-gradient(180deg,#B794F6,#9D6BEE 60%,var(--purple));border-radius:8px;z-index:2;box-shadow:0 6px 14px rgba(91,33,182,.30),inset 0 2px 0 rgba(255,255,255,.45)}
 .stage-cheer{position:absolute;bottom:111px;left:5%;width:118px;height:196px;z-index:4;will-change:left,transform}
 .stage-cheer svg{width:100%;height:100%;overflow:visible;display:block}
 .stage-cheer.split-mode{width:196px;height:150px;bottom:86px}
@@ -117,19 +119,31 @@ button{font-family:inherit;cursor:pointer}
 @keyframes stepL{from{transform:rotate(17deg)}to{transform:rotate(-15deg)}}
 @keyframes stepR{from{transform:rotate(-15deg)}to{transform:rotate(17deg)}}
 .walking .cheer-body{animation:walkBob .3s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:50% 100%}
-@keyframes walkBob{from{transform:translateY(0)}to{transform:translateY(-4px)}}
+@keyframes walkBob{from{transform:translateY(0) rotate(-1.2deg)}to{transform:translateY(-4px) rotate(1.2deg)}}
 .wobbling .cheer-body{animation:wobble .16s ease-in-out 3;transform-box:fill-box;transform-origin:50% 100%}
 @keyframes wobble{0%,100%{transform:rotate(0)}25%{transform:rotate(9deg)}75%{transform:rotate(-9deg)}}
-.split-land .cheer-body{animation:splitBounce .5s ease-out 2;transform-box:fill-box;transform-origin:50% 100%}
-@keyframes splitBounce{0%{transform:translateY(-16px)}55%{transform:translateY(2px) scaleY(.96)}100%{transform:translateY(0)}}
+.split-land .cheer-body{animation:splitSettle .72s cubic-bezier(.25,.8,.35,1) 1;transform-box:fill-box;transform-origin:50% 100%}
+@keyframes splitSettle{0%{transform:translateY(-30px) scaleY(1.03)}42%{transform:translateY(3px) scaleY(.93)}68%{transform:translateY(-6px) scaleY(1.015)}100%{transform:translateY(0) scaleY(1)}}
+/* layered celebration pieces: scoreboard pop, Belle's party bounce, confetti inside the stage */
+.sb-team.pop{animation:sbPop .55s cubic-bezier(.2,1.6,.4,1)}
+@keyframes sbPop{0%{transform:scale(1)}35%{transform:scale(1.06)}100%{transform:scale(1)}}
+.sb-score.bump{animation:scoreBump .55s ease}
+@keyframes scoreBump{0%{transform:scale(1)}40%{transform:scale(1.32)}100%{transform:scale(1)}}
+.belle-compact .bubble{transition:background .3s,box-shadow .3s}
+.belle-compact.party .belle-face{animation:belleParty .95s ease}
+@keyframes belleParty{0%{transform:rotate(0) scale(1)}25%{transform:rotate(-7deg) scale(1.12)}55%{transform:rotate(6deg) scale(1.16)}80%{transform:rotate(-3deg) scale(1.06)}100%{transform:rotate(0) scale(1)}}
+.belle-compact.party .bubble{background:#FFE0EF;box-shadow:0 0 0 3px var(--gold-l)}
+.stage .confetti-bit{animation-name:stageConfettiFall}
+@keyframes stageConfettiFall{to{transform:translateY(380px) rotate(520deg);opacity:.35}}
 /* ===== game card ===== */
-.gamecard{background:#fff;border:3px solid var(--line);border-radius:24px;padding:18px}
+.gamecard{background:#fff;border:3px solid var(--line);border-radius:24px;padding:18px;box-shadow:0 12px 32px rgba(157,20,80,.09)}
+.sb-team{box-shadow:0 6px 16px rgba(157,20,80,.07)}
 .gamecard.bounce{animation:cardBounce .5s ease}
 @keyframes cardBounce{0%{transform:scale(1)}35%{transform:scale(1.015)}100%{transform:scale(1)}}
 .play-layout{display:grid;grid-template-columns:1fr;gap:16px}
 .play-layout.with-work{grid-template-columns:1fr 340px}
 .qlabel{font-family:'Fredoka';font-weight:600;color:var(--purple);font-size:15px;letter-spacing:.02em}
-.visual{display:flex;justify-content:center;padding:8px 0}
+.visual{display:flex;justify-content:center;padding:14px 0 10px}
 .question{font-family:'Fredoka';font-weight:600;font-size:clamp(26px,4.5vw,36px);line-height:1.25;margin:6px 0 4px}
 .clue{background:var(--purple-l);border-radius:14px;padding:12px 14px;font-weight:800;line-height:1.5;margin:8px 0}
 .answer-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
@@ -137,7 +151,11 @@ button{font-family:inherit;cursor:pointer}
 .answer-input:focus{outline:none;border-color:var(--pink)}
 .check-btn{background:var(--green);color:#fff;border:none;border-radius:16px;padding:12px 26px;font-family:'Fredoka';font-weight:700;font-size:20px;box-shadow:0 4px 0 #15803D}
 .check-btn:active{transform:translateY(2px);box-shadow:0 2px 0 #15803D}
-.btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+/* helper tools live in their own roomy zone at the BOTTOM of the card — never a packed row up top */
+.tools-head{font-family:'Fredoka';font-weight:600;color:var(--purple-d);font-size:15px;margin-top:24px;padding-top:18px;border-top:3px dashed var(--line)}
+.btn-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.btn-row .goldbtn,.btn-row .ghost{width:100%;padding:14px 16px;font-size:15px}
+@media(max-width:560px){.btn-row{grid-template-columns:1fr}.btn-row .goldbtn,.btn-row .ghost{padding:15px 16px}}
 .feedback{border-radius:16px;padding:0;font-weight:800;line-height:1.55;margin-top:14px;font-size:16px}
 .feedback.good{background:var(--green-bg);padding:14px}
 .feedback.bad{background:#FDE8F3;padding:14px}
@@ -198,6 +216,11 @@ button{font-family:inherit;cursor:pointer}
 .stepdots .dot.on{background:var(--pink)}
 .stepbox{background:#FFF9FD;border:2px solid var(--line);border-radius:16px;padding:16px;font-weight:800;line-height:1.6;min-height:150px}
 .modal-btns{display:flex;gap:10px;margin-top:14px;align-items:center;flex-wrap:wrap}
+/* Example Stage controls get the same breathing room: three across, the big Next step on its own row below */
+#wizardModal .modal-btns{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:18px}
+#wizardModal .modal-btns .check-btn{grid-column:1/-1;padding:15px}
+#wizardModal .modal-btns .ghost{width:100%;padding:12px 10px}
+@media(max-width:560px){#wizardModal .modal-btns{grid-template-columns:1fr 1fr}#wizardModal .modal-btns .check-btn{grid-column:1/-1}}
 .studio-grid{display:grid;grid-template-columns:210px 1fr;gap:16px}
 .studio-preview{background:linear-gradient(180deg,var(--pink-l),#fff);border:2px solid var(--line);border-radius:18px;display:flex;flex-direction:column;align-items:center;padding:10px}
 .studio-preview .pv{height:248px}
@@ -241,6 +264,9 @@ footer{max-width:1080px;margin:0 auto;padding:0 16px 150px;color:var(--muted);fo
  .play-layout.with-work{grid-template-columns:1fr}
  .studio-grid{grid-template-columns:1fr}
  .stage{height:300px}
+ .sb-score{font-size:30px}
+ .belle-face{width:52px;height:52px;flex-basis:52px}
+ .gamecard{padding:16px 14px}
  .stage-cheer{width:104px;height:176px}
  .stage-cheer.split-mode{width:172px;height:134px}
  .scoreboard{grid-template-columns:1fr 1fr}
@@ -248,7 +274,8 @@ footer{max-width:1080px;margin:0 auto;padding:0 16px 150px;color:var(--muted);fo
  .bubble{font-size:15px}
 }
 @media (prefers-reduced-motion: reduce){
- .routine .cheer-body,.routine .arm-l,.routine .arm-r,.routine .skirt-g,.walking .leg-l,.walking .leg-r,.walking .cheer-body,.wobbling .cheer-body,.split-land .cheer-body,.streak-pill.hot,.gamecard.bounce{animation:none!important}
+ .routine .cheer-body,.routine .arm-l,.routine .arm-r,.routine .skirt-g,.walking .leg-l,.walking .leg-r,.walking .cheer-body,.wobbling .cheer-body,.split-land .cheer-body,.streak-pill.hot,.gamecard.bounce,.sb-team.pop,.sb-score.bump,.belle-compact.party .belle-face{animation:none!important}
+ .cheer-shadow{transition:none}
  html{scroll-behavior:auto}
 }
 </style>
@@ -335,6 +362,7 @@ footer{max-width:1080px;margin:0 auto;padding:0 16px 150px;color:var(--muted);fo
       <div class="stage-floor"></div>
       <div class="mat"></div>
       <div class="beam"></div>
+      <div class="cheer-shadow" id="cheerShadow"></div>
       <div class="stage-cheer cheer-slot" id="stageCheer"></div>
       <div class="stage-msg" id="stageMsg">Your cheerleader is ready — answer to start her beam walk! 🎀</div>
     </div>
@@ -351,6 +379,7 @@ footer{max-width:1080px;margin:0 auto;padding:0 16px 150px;color:var(--muted);fo
             <button class="check-btn" onclick="checkAnswer()">✓ Check It!</button>
           </div>
           <div class="feedback" id="feedback"></div>
+          <div class="tools-head">🛠️ My Helper Tools — use them anytime!</div>
           <div class="btn-row">
             <button class="goldbtn" id="workToggleBtn" style="display:none" onclick="toggleWorkPanel()">✏️ Work It Out</button>
             <button class="goldbtn" onclick="openWizard(currentTopic)">✨ Show Me an Example</button>
@@ -525,12 +554,12 @@ fractions:{0:{title:'Sharing Cupcakes',desc:'Share cupcakes and castle treats fa
 plurals:{1:{desc:'Make one into many: just add -s! cat → cats, rose → roses, bow → bows.'},2:{desc:'Make one into many: add -s or -es, and change y to -ies — baby → babies!'}},
 placevalue:{1:{desc:'Ones and tens — and the hundreds in numbers past 100 — what each digit is really worth.'},2:{desc:'Hundreds, tens and ones — what each digit is really worth.'},3:{desc:'Thousands, hundreds, tens and ones — find a digit’s place and what it is worth!'},4:{desc:'Big numbers up to the hundred-thousands — find a digit’s place and what it is worth!'},5:{desc:'Numbers into the millions, plus decimal tenths and hundredths — find a digit’s place and what it is worth!'}},
 sightwords:{0:{title:'First Words Sprint',desc:'Your very first words — read them, spell them, shine! Words you see every day, like the, and, see and play.'}},
-vowels:{0:{title:'Letter Sound Squad',desc:'Letter sounds! Hear the short vowel sound in words like cat, bed, pig and cup — then spell the whole word!'},1:{desc:'Short vowels, magic e and vowel teams like ai, ee and oa — hear the vowel sound and spell the word!'},3:{desc:'Vowel teams, magic e and new sounds: r-controlled vowels like ar, er, ir and ur, and diphthongs like oi, oy and ou — hear the sound and spell the word!'},4:{desc:'Vowel teams, r-controlled vowels, diphthongs and silent letters — like the silent k in knee and the silent b in lamb!'},5:{desc:'Vowel teams, diphthongs and the trickiest patterns — like ph saying F in phone! Hear the sound and spell the whole word!'}},
+vowels:{0:{title:'Letter Sound Squad',desc:'Letter sounds! Hear the short vowel sound in words like cat, bed, pig and cup — then spell the whole word!'},1:{desc:'Short vowels, magic e and vowel teams like ai, ee and oa — hear the vowel sound and spell the word!'},2:{desc:'Short vowels, magic e and vowel teams — plus r-controlled vowels like ar, or and er! Hear the sound and spell the word!'},3:{desc:'Vowel teams, magic e and new sounds: r-controlled vowels like ar, er, ir and ur, and diphthongs like oi, oy and ou — hear the sound and spell the word!'},4:{desc:'Vowel teams, r-controlled vowels, diphthongs and silent letters — like the silent k in knee and the silent b in lamb!'},5:{desc:'Vowel teams, diphthongs and the trickiest patterns — like ph saying F in phone! Hear the sound and spell the whole word!'}},
 addition:{0:{desc:'Count the dots and put the two groups together — how many in all?'}},
 subtraction:{0:{desc:'Start with the dots, take some away, and count how many are left!'}},
-skipcounting:{0:{desc:'Count by 10s and 2s — tie each bow as you hop along the number line!'},2:{desc:'Count by 2s, 5s, 10s and 100s — tie each bow as you hop along the number line!'},3:{desc:'Count by 3s, 4s, 6s and 7s — tie each bow as you hop along the number line!'},4:{desc:'Count by 6s, 7s, 8s, 9s and more — tie each bow as you hop along!'},5:{desc:'Count by 11s, 12s, 15s and 25s — tie each bow as you hop along!'}},
+skipcounting:{0:{desc:'Count by 10s — tie each bow as you hop along the number line!'},2:{desc:'Count by 2s, 5s, 10s and 100s — tie each bow as you hop along the number line!'},3:{desc:'Count by 3s, 4s, 6s and 7s — tie each bow as you hop along the number line!'},4:{desc:'Count by 6s, 7s, 8s, 9s and more — tie each bow as you hop along!'},5:{desc:'Count by 11s, 12s, 15s and 25s — tie each bow as you hop along!'}},
 money:{0:{desc:'Learn the castle coins — how many cents is a penny, nickel, dime and quarter worth?'},4:{desc:'Dollars and cents — add and subtract money amounts, lining up the decimal points!'},5:{desc:'Dollars and cents — add and subtract money amounts, lining up the decimal points!'}},
-time:{0:{desc:'Read the clock to the hour — practice starts right on time!'},1:{desc:'Read clocks to the hour and half-hour — practice starts right on time!'},4:{desc:'How many minutes from start to finish? Count up the minutes to find how long practice lasts!'},5:{desc:'How many minutes from start to finish? Count up the minutes to find how long practice lasts!'}}
+time:{0:{desc:'Read the clock to the hour — practice starts right on time!'},1:{desc:'Read clocks to the hour and half-hour — practice starts right on time!'},3:{desc:'Read clocks to 5 minutes — and at the top levels, count up the minutes to tell how long practice lasts!'},4:{desc:'How many minutes from start to finish? Count up the minutes to find how long practice lasts!'},5:{desc:'How many minutes from start to finish? Count up the minutes to find how long practice lasts!'}}
 };
 function gradeDisplay(t){ if(!t) return {}; var m=GRADE_DISPLAY[t.id]; return (m&&m[gradeIdx])||{}; }
 function displayTitle(t){ if(!t) return ''; return gradeDisplay(t).title||t.title; }
@@ -712,44 +741,58 @@ function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(M
 var PRAISE=['🌹 YES! You did it, superstar!','Amazing! Belle is twirling with pride! 💃','You stuck it! That brain is STRONG! 💪','Sparkle power! Nothing but correct! ✨','Royce, you are SHINING today! 🎀'];
 var TRYAGAIN=['Good try — champions always try again!','So close! Let\'s fix one little thing together.','I believe in you! Read Belle\'s tip, then try the same one again.','Mistakes make your brain grow. Climb back up — one more try!'];
 
-/* ---------- GENERATORS — Common Core progressions by grade (gradeIdx: 0=K … 5) + in-grade level tier ---------- */
-function dotsVisual(a,b){ function dots(n,c){ var s=''; for(var i=0;i<n;i++) s+='<span style="color:'+c+';font-size:24px;line-height:1">●</span>'; return s; } return '<div style="text-align:center"><div>'+dots(a,'#E84393')+'</div><div style="font-family:Fredoka;font-size:22px;color:#7C3AED">+</div><div>'+dots(b,'#7C3AED')+'</div></div>'; }
+/* ---------- GENERATORS — Common Core progressions by grade (gradeIdx: 0=K … 5) + in-grade level tier ----------
+   GRADE-STANDARD AUDIT: the tier (level inside a grade) may raise difficulty but may NEVER cross into the
+   next grade's numbers. Caps enforced below: K add/subtract within 10 with objects (K.OA.2) • 1st within 20,
+   then within 100 (1.OA.6/1.NBT.4), subtracting multiples of 10 at the top (1.NBT.6) • 2nd within 100, then
+   within 1000 (2.NBT.5/7), word problems within 100 (2.OA.1) • 3rd ×/÷ within 100 (3.OA.7), add/subtract
+   within 1000 (3.NBT.2) • 4th division by 1-digit divisors only (4.NBT.6) • 5th 2-digit divisors (5.NBT.6). */
+/* Counting visuals are BIG in Kindergarten & 1st grade (ages 5–7 need large, easy-to-count objects) and
+   keep their regular size in grades 2–5. Groups flex-wrap into rows, so big objects never scroll sideways. */
+function dotsVisual(a,b){ var BIG=gradeIdx<=1; var sz= BIG?46:24; function dots(n,c){ var s=''; for(var i=0;i<n;i++) s+='<span style="color:'+c+';font-size:'+sz+'px;line-height:1.1">●</span>'; return '<span style="display:inline-flex;flex-wrap:wrap;justify-content:center;gap:'+(BIG?4:1)+'px;max-width:min(400px,86vw)">'+s+'</span>'; } return '<div style="text-align:center"><div>'+dots(a,'#E84393')+'</div><div style="font-family:Fredoka;font-size:'+(BIG?36:22)+'px;color:#7C3AED;line-height:1.1">+</div><div>'+dots(b,'#7C3AED')+'</div></div>'; }
+function takeAwayVisual(a,b){ var BIG=gradeIdx<=1; var sz= BIG?46:24; var xs= BIG?36:19; var s=''; for(var i=0;i<a;i++){ if(i>=a-b){ s+='<span style="position:relative;color:#CBB3C6;font-size:'+sz+'px;line-height:1.1">●<span style="position:absolute;left:50%;top:50%;transform:translate(-50%,-58%);color:#C2185B;font-size:'+xs+'px;font-weight:900">✕</span></span>'; } else { s+='<span style="color:#E84393;font-size:'+sz+'px;line-height:1.1">●</span>'; } } return '<div style="text-align:center"><div style="display:inline-flex;flex-wrap:wrap;justify-content:center;gap:'+(BIG?4:1)+'px;max-width:min(400px,86vw)">'+s+'</div><div style="font-weight:900;color:#8A5A78;font-size:'+(BIG?16:14)+'px;margin-top:6px">The ✕ dots are taken away — count the pink dots left!</div></div>'; }
+function storyVisual(e,a,b,mode){ var BIG=gradeIdx<=1; var sz= BIG?42:26; function grp(n,dimFrom){ var s=''; for(var i=0;i<n;i++){ var dim=(dimFrom!==null&&dimFrom!==undefined&&i>=dimFrom); s+='<span style="position:relative;font-size:'+sz+'px;line-height:1.15;'+(dim?'opacity:.4':'')+'">'+e+(dim?'<span style="position:absolute;left:50%;top:50%;transform:translate(-50%,-55%);color:#C2185B;font-size:'+Math.round(sz*0.85)+'px;font-weight:900">✕</span>':'')+'</span>'; } return '<span style="display:inline-flex;flex-wrap:wrap;justify-content:center;gap:2px;max-width:min(380px,84vw)">'+s+'</span>'; } if(mode==='sub'){ return '<div style="text-align:center">'+grp(a,a-b)+'<div style="font-weight:900;color:#8A5A78;font-size:'+(BIG?16:14)+'px;margin-top:6px">The ✕ ones were given away — count what is left!</div></div>'; } return '<div style="display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;text-align:center">'+grp(a,null)+'<span style="font-family:Fredoka;font-size:'+(BIG?36:22)+'px;color:#7C3AED">+</span>'+grp(b,null)+'</div>'; }
 function clockVisual(hrs,mins){ var angM=mins*6, angH=(hrs%12)*30+mins*0.5; return '<svg width="150" height="150" viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="#fff" stroke="#C2185B" stroke-width="4"/><g font-size="10" font-weight="900" text-anchor="middle" fill="#3A1430"><text x="50" y="14">12</text><text x="88" y="53">3</text><text x="50" y="93">6</text><text x="12" y="53">9</text></g><line x1="50" y1="50" x2="'+(50+24*Math.sin(angH*Math.PI/180))+'" y2="'+(50-24*Math.cos(angH*Math.PI/180))+'" stroke="#3A1430" stroke-width="5" stroke-linecap="round"/><line x1="50" y1="50" x2="'+(50+36*Math.sin(angM*Math.PI/180))+'" y2="'+(50-36*Math.cos(angM*Math.PI/180))+'" stroke="#C2185B" stroke-width="3" stroke-linecap="round"/><circle cx="50" cy="50" r="4" fill="#E4B33C"/></svg>'; }
 function moneyStr(cents){ var d=Math.floor(cents/100), c=cents%100; return d+'.'+(c<10?'0'+c:c); }
 function genMath(id,tier){
   if((id==='multiplication'||id==='division')&&gradeIdx<3){ id='addition'; } /* GRADE GATE (generation layer): no × or ÷ prompt can be produced below 3rd grade, from any caller — regular games, Examples, bonus or championships */
   var G=gradeIdx, a,b,ans,q,hint,check;
   if(id==='addition'){
-    if(G===0){ if(tier<3){ do{ a=R(1,5); b=R(1,5); }while(a+b>10); } else { do{ a=R(3,12); b=R(2,8); }while(a+b>20); } ans=a+b; q=a+' + '+b+' = ?'; hint='Count the pink dots, then the purple dots — <b>count them all together</b>!'; check=function(g){ return 'Count slowly, one dot at a time. Touch each dot as you count — pink first, then purple!'; }; return {q:q,ans:String(ans),display:'number',hint:hint,check:check,visual:dotsVisual(a,b)}; }
-    else if(G===1){ if(tier===0){ do{ a=R(6,14); b=R(3,9); }while(a+b>20); } else if(tier<3){ a=R(21,89); b=R(2,9); } else { a=R(24,79); b=R(15,59); } }
-    else if(G===2){ if(tier<3){ a=R(27,89); b=R(18,79); } else { a=R(145,689); b=R(95,489); } }
-    else if(G===3){ if(tier<4){ a=R(234,989); b=R(157,879); } else { a=R(1234,7899); b=R(987,6899); } }
+    if(G===0){ if(tier<3){ do{ a=R(1,5); b=R(1,5); }while(a+b>10); } else { a=R(2,9); b=R(1,10-a); } /* K.OA.2: add within 10 at EVERY tier — sums past 10 are 1st grade (1.OA.6) */ ans=a+b; q=a+' + '+b+' = ?'; hint='Count the pink dots, then the purple dots — <b>count them all together</b>!'; check=function(g){ return 'Count slowly, one dot at a time. Touch each dot as you count — pink first, then purple!'; }; return {q:q,ans:String(ans),display:'number',hint:hint,check:check,visual:dotsVisual(a,b)}; }
+    else if(G===1){ if(tier===0){ do{ a=R(6,14); b=R(3,9); }while(a+b>20); } else if(tier<3){ a=R(21,89); b=R(2,9); } else { do{ a=R(24,79); b=R(15,59); }while(a+b>100); } } /* 1.NBT.4: add within 100 */
+    else if(G===2){ if(tier<3){ a=R(27,89); b=R(18,79); } else { do{ a=R(145,689); b=R(95,489); }while(a+b>1000); } } /* 2.NBT.7: add within 1000 */
+    else if(G===3){ if(tier<4){ do{ a=R(234,989); b=R(157,879); }while(a+b>1000); } else { do{ a=R(456,989); b=R(234,989); }while(a+b>1000); } } /* 3.NBT.2: fluently add within 1000 — 4-digit addition is 4.NBT.4 */
     else if(G===4){ if(tier<4){ a=R(2345,28999); b=R(1234,18999); } else { a=R(12345,78999); b=R(9876,58999); } }
     else { if(tier<2){ a=R(12345,98999); b=R(9876,78999); } else if(tier<4){ var c1=R(200,4999), c2=R(150,3999); var tot=c1+c2; q='What is $'+moneyStr(c1)+' + $'+moneyStr(c2)+'?'; return {q:q,ans:moneyStr(tot),display:'text',placeholder:'e.g. 12.45',hint:'Add money like normal numbers — line up the <b>decimal point</b>, add pennies first, then dimes, then dollars!',check:function(g){ return 'Line up the decimal points! Add the cents first (the two numbers after the point), then the dollars.'; }}; } else { a=R(23456,189999); b=R(12345,98999); } }
+    if(G===1&&tier===0){ ans=a+b; q=a+' + '+b+' = ?'; return {q:q,ans:String(ans),display:'number',hint:'Count the big pink dots, then the purple dots — or <b>count on</b> from '+a+'!',check:function(g){ return 'Touch each big dot and count out loud — pink first, then purple. Or start at '+a+' and count '+b+' more!'; },visual:dotsVisual(a,b)}; } /* 1st-grade Warm-Up (within 20, 1.OA.6) gets the same BIG counting dots as Kindergarten */
     ans=a+b; q=a+' + '+b+' = ?'; hint='Add the <b>ones first</b>, then the tens. If the ones make 10 or more, regroup: carry 1 ten over.'; check=function(g){ if(g===ans-10||g===ans+10) return 'Watch the <b>tens place</b> — you may have missed the carried ten from the ones!'; if(g<ans) return 'Your answer is a little <b>too small</b>. Did you add BOTH numbers in every place?'; return 'Your answer is a little <b>too big</b>. Check the ones place first: '+ (a%10)+' + '+(b%10)+' — did you regroup?'; };
   }
   else if(id==='subtraction'){
-    if(G===0){ if(tier<3){ a=R(3,10); b=R(1,a-1); } else { a=R(8,20); b=R(2,a-2); } ans=a-b; q=a+' − '+b+' = ?'; hint='Start with all the pink dots, then <b>take away</b> — count what is left!'; check=function(g){ return 'Count the dots, then cross out '+b+' of them in your mind. How many are left standing?'; }; return {q:q,ans:String(ans),display:'number',hint:hint,check:check,visual:dotsVisual(a,0)}; }
-    else if(G===1){ if(tier===0){ a=R(9,20); b=R(2,a-3); } else if(tier<3){ a=R(25,95); b=R(5,9); if(b>=a%10&&tier<2){ b=R(1,Math.max(1,(a%10))); } } else { a=R(35,99); b=R(14,69); } }
-    else if(G===2){ if(tier<3){ a=R(35,99); b=R(16,79); if(b>a) b=R(12,a-6); } else { a=R(245,899); b=R(95,689); } }
-    else if(G===3){ if(tier<4){ a=R(345,989); b=R(156,879); if(b>a)b=R(120,a-40); } else { a=R(2345,9899); b=R(987,6899); } }
+    if(G===0){ if(tier<3){ a=R(3,10); b=R(1,a-1); } else { a=R(5,10); b=R(1,a-1); } /* K.OA.2: subtract within 10 at EVERY tier, shown with objects — 10 − 4 IS Kindergarten; 15 − 4 and 20 − 6 are 1st grade */ ans=a-b; q=a+' − '+b+' = ?'; hint='Start with all the pink dots, then <b>take away</b> the ✕ dots — count what is left!'; check=function(g){ return 'Count all the dots first, then count the ✕ dots taken away. How many pink dots are left standing?'; }; return {q:q,ans:String(ans),display:'number',hint:hint,check:check,visual:takeAwayVisual(a,b)}; }
+    else if(G===1){ if(tier===0){ a=R(9,20); b=R(2,a-3); } else if(tier<3){ a=R(25,95); b=R(5,9); if(b>=a%10&&tier<2){ b=R(1,Math.max(1,(a%10))); } } else { a=R(35,99); b=10*R(1,Math.max(1,Math.floor((a-1)/10))); } } /* top tier = 1.NBT.6: subtract multiples of 10 — two-digit minus two-digit is 2.NBT.5 */
+    else if(G===2){ if(tier<3){ a=R(35,99); b=R(16,79); if(b>a) b=R(12,a-6); } else { a=R(245,899); b=R(95,689); if(b>=a) b=R(95,a-50); } } /* guard added: the top tier could serve a bigger bottom number and a negative answer */
+    else if(G===3){ if(tier<4){ a=R(345,989); b=R(156,879); if(b>a)b=R(120,a-40); } else { a=R(456,999); b=R(234,899); if(b>=a)b=R(150,a-60); } } /* 3.NBT.2: subtract within 1000 — 4-digit subtraction is 4.NBT.4 */
     else if(G===4){ a=R(3456,38999); b=R(1234,28999); if(b>a)b=R(1111,a-200); }
     else { if(tier>=2&&tier<4){ var c1=R(500,4999), c2=R(150,3999); if(c2>c1){ var tmp=c1; c1=c2; c2=tmp; } var diff=c1-c2; q='What is $'+moneyStr(c1)+' − $'+moneyStr(c2)+'?'; return {q:q,ans:moneyStr(diff),display:'text',placeholder:'e.g. 8.25',hint:'Line up the <b>decimal point</b>. Subtract the cents first — borrow from the dollars if you need to!',check:function(g){ return 'Cents first, then dollars. If the top cents are too small, borrow 1 dollar — that is 100 cents!'; }}; } a=R(23456,189999); b=R(12345,98999); if(b>a)b=R(9999,a-500); }
+    if(G===1&&tier===0){ ans=a-b; q=a+' − '+b+' = ?'; return {q:q,ans:String(ans),display:'number',hint:'Start with all the big pink dots, then <b>take away</b> the ✕ dots — count what is left!',check:function(g){ return 'Count all the big dots first, then count the ✕ dots taken away. How many pink dots are left standing?'; },visual:takeAwayVisual(a,b)}; } /* 1st-grade Warm-Up (within 20) gets the same BIG take-away dots as Kindergarten */
     ans=a-b; q=a+' − '+b+' = ?'; hint='Start with the ones. If the top ones digit is too small, <b>regroup</b>: borrow 1 ten.'; check=function(g){ return 'Check the <b>ones place</b> first. Top ones = '+(a%10)+', bottom ones = '+(b%10)+'. If the top is smaller, borrow a ten, then subtract.'; };
   }
   else if(id==='multiplication'){
-    if(G===3){ var maxF=tier===0?5:(tier<3?9:12); a=R(2,maxF); b=R(2,maxF); }
+    if(G===3){ var maxF=tier===0?5:(tier<3?9:10); a=R(2,maxF); b=R(2,maxF); } /* 3.OA.7: multiply within 100 — factors cap at 10 so no product can pass 100 (12s are later) */
     else if(G===4){ if(tier<3){ a=R(12,129); b=R(2,9); } else { a=R(12,29); b=R(11,19); } ans=a*b; q=a+' × '+b+' = ?'; hint='Break it apart! Multiply the ones first, then the tens, and add the parts together.'; check=function(g){ return 'Try breaking '+a+' into tens and ones: multiply each part by '+b+', then add the two parts.'; }; return {q:q,ans:String(ans),display:'number',hint:hint,check:check}; }
     else { if(tier<3){ a=R(21,99); b=R(12,60); ans=a*b; q=a+' × '+b+' = ?'; hint='Multiply in parts: ones × ones, then tens — or use the box method in Work It Out!'; check=function(g){ return 'Break '+b+' into tens and ones and multiply '+a+' by each part, then add.'; }; return {q:q,ans:String(ans),display:'number',hint:hint,check:check}; } var price=R(125,495); var cnt=R(3,6); var tot=price*cnt; q=cnt+' cupcakes cost $'+moneyStr(price)+' each. What is the total cost? Type the number of dollars and cents.'; return {q:q,ans:moneyStr(tot),display:'text',placeholder:'e.g. 7.35',hint:'Multiply the cents: '+price+'¢ × '+cnt+', then turn cents back into dollars and cents.',check:function(g){ return 'Work in cents first: '+price+' × '+cnt+' = '+(price*cnt)+' cents. Now write that as dollars and cents.'; }}; }
     ans=a*b; q=a+' × '+b+' = ?'; hint='Think <b>'+a+' groups of '+b+'</b>. Skip-count by '+b+'s, '+a+' times.'; check=function(g){ return 'Skip-count with me: count by '+b+' — and stop after '+a+' counts. Or flip it: '+b+' × '+a+' is the same answer!'; };
   }
   else if(id==='division'){
     if(G===5&&tier>=3){ var tot2=pick([480,640,750,960,1080,1250]); var ppl=pick([4,5,8]); var each=tot2/ppl; q='$'+moneyStr(tot2)+' is shared equally by '+ppl+' friends. How many dollars and cents does each friend get?'; return {q:q,ans:moneyStr(each),display:'text',placeholder:'e.g. 2.40',hint:'Divide the cents: '+tot2+'¢ ÷ '+ppl+', then write it as dollars and cents.',check:function(g){ return 'Check with multiplication: your answer × '+ppl+' should equal $'+moneyStr(tot2)+'.'; }}; }
-    b= G===3? R(2,tier<2?6:10) : R(2,12); ans= G===4? R(4,24) : R(2,12); a=b*ans; q=a+' ÷ '+b+' = ?'; hint='Use multiplication! Think: '+b+' × ? = '+a+'.'; check=function(g){ return 'Test your guess: does '+b+' × '+g+' equal '+a+'? If not, try a number '+(g*b<a?'bigger':'smaller')+'.'; };
+    if(G===3){ b=R(2,tier<2?6:10); ans=R(2,Math.max(2,Math.floor(100/b))); } /* 3.OA.7: divide within 100 — the quotient shrinks as the divisor grows so the dividend never passes 100 */
+    else if(G===4){ b=R(2,9); ans=R(4,24); } /* 4.NBT.6: divide by a 1-digit divisor only — 2-digit divisors are 5.NBT.6 */
+    else { b=R(2,12); ans=R(2,12); }
+    a=b*ans; q=a+' ÷ '+b+' = ?'; hint='Use multiplication! Think: '+b+' × ? = '+a+'.'; check=function(g){ return 'Test your guess: does '+b+' × '+g+' equal '+a+'? If not, try a number '+(g*b<a?'bigger':'smaller')+'.'; };
   }
   else if(id==='skipcounting'){
     var by, start;
-    if(G===0){ by= tier<3? 10 : 2; start=by*R(1,4); }
+    if(G===0){ by=10; start=by*R(1,6); } /* K.CC.A.1: count to 100 by ones and by 10s — counting by 2s and 5s is 2.NBT.2 */
     else if(G===1){ by=pick([2,5,10]); start=by*R(1,5); }
     else if(G===2){ by=pick([2,5,10,100]); start= by===100? 100*R(1,4) : by*R(1,6); }
     else if(G===3){ by=pick([3,4,6,7]); start=by*R(1,5); }
@@ -759,7 +802,7 @@ function genMath(id,tier){
   }
   else if(id==='placevalue'){
     if(G===5&&tier>=2){ var whole=R(2,9), tenths=R(0,9), hund=R(1,9); var dec=whole+'.'+tenths+hund; var which=pick(['tenths','hundredths']); ans= which==='tenths'? tenths : hund; q='In '+dec+', what digit is in the '+which+' place?'; hint='After the decimal point: first place = <b>tenths</b>, second place = <b>hundredths</b>.'; check=function(g){ return 'Point to the digits AFTER the point: the first one is tenths, the second is hundredths. Which digit is in the <b>'+which+'</b> place of '+dec+'?'; }; return {q:q,ans:String(ans),display:'number',hint:hint,check:check}; }
-    var n= G===0? R(11,19) : G===1? R(14,120) : G===2? R(112,989) : G===3? R(1012,9989) : G===4? R(10112,989989) : R(101112,9899989);
+    var n= G===0? R(11,19) : G===1? R(14,99) : G===2? R(112,989) : G===3? R(112,999) : G===4? R(10112,989989) : R(101112,9899989); /* K.NBT.1 teens (ten + ones) • 1.NBT.2 two-digit tens & ones • 2.NBT.1 / 3rd within 1000 • thousands place and up is 4.NBT.1–2 */
     if(G>=3&&tier>=2){ var ds=String(n).split(''); var pos=R(0,ds.length-1); var placeVal=Math.pow(10,ds.length-1-pos); var dv=parseInt(ds[pos],10)*placeVal; var pname=placeVal===1?'ones':placeVal===10?'tens':placeVal===100?'hundreds':placeVal===1000?'thousands':placeVal===10000?'ten-thousands':placeVal===100000?'hundred-thousands':'millions'; ans=dv; q='What is the value of the '+ds[pos]+' in '+n+'?'; hint='The digit '+ds[pos]+' sits in the <b>'+pname+'</b> place, so it is worth the digit × '+placeVal+'.'; check=function(g){ return 'Find the '+ds[pos]+' in '+n+' and count its place from the right: ones, tens, hundreds, thousands… It is in the <b>'+pname+'</b> place.'; }; return {q:q,ans:String(ans),display:'number',hint:hint,check:check}; }
     var places=[{n:'hundreds',v:Math.floor(n/100)},{n:'tens',v:Math.floor(n/10)%10},{n:'ones',v:n%10}];
     var pl= G===0? pick(places.slice(1)) : (n>=1000&&tier>=1? pick([{n:'thousands',v:Math.floor(n/1000)%10}].concat(places)) : (n>=100? pick(places): pick(places.slice(1))));
@@ -776,21 +819,24 @@ function genMath(id,tier){
     ans=total; q='How many cents? '+used.join(' + '); hint='Coin values: quarter 25¢, dime 10¢, nickel 5¢, penny 1¢'+(G>=2?', and 1 dollar = 100¢':'')+'. Start with the <b>biggest</b> coin.'; check=function(g){ return 'Add again, biggest first: '+used.map(function(u){return u==='quarter'?'25':u==='dime'?'10':u==='nickel'?'5':u==='1 dollar'?'100':'1'}).join(' + ')+'. Go slowly!'; };
   }
   else if(id==='time'){
-    if(G>=4){ var sh=R(1,11), sm=pick([0,15,30,45]), dur=pick([20,25,30,35,40,45,50,55,60,75,90]); var endM=sh*60+sm+dur; var eh=Math.floor(endM/60), em=endM%60; if(eh>12)eh-=12; q='Cheer practice starts at '+sh+':'+(sm<10?'0'+sm:sm)+' and ends at '+eh+':'+(em<10?'0'+em:em)+'. How many minutes long is practice?'; ans=dur; hint='Count up from the start time to the end time — first to the next hour, then the extra minutes.'; check=function(g){ return 'Count up in jumps: from the start, jump to the next whole hour, then count the minutes after it. Add your jumps!'; }; return {q:q,ans:String(ans),display:'number',hint:hint,check:check}; }
+    if(G>=4||(G===3&&tier>=4)){ var sh=R(1,11), sm=pick([0,15,30,45]), dur=pick([20,25,30,35,40,45,50,55,60,75,90]); /* elapsed time: 3.MD.1 at 3rd grade's top tiers, 4.MD.2 in 4th–5th */ var endM=sh*60+sm+dur; var eh=Math.floor(endM/60), em=endM%60; if(eh>12)eh-=12; q='Cheer practice starts at '+sh+':'+(sm<10?'0'+sm:sm)+' and ends at '+eh+':'+(em<10?'0'+em:em)+'. How many minutes long is practice?'; ans=dur; hint='Count up from the start time to the end time — first to the next hour, then the extra minutes.'; check=function(g){ return 'Count up in jumps: from the start, jump to the next whole hour, then count the minutes after it. Add your jumps!'; }; return {q:q,ans:String(ans),display:'number',hint:hint,check:check}; }
     var hrs=R(1,12); var mins= G===0? 0 : G===1? pick([0,30]) : (tier===0? pick([0,30]) : tier<3? pick([0,15,30,45]) : pick([0,5,10,15,20,25,30,35,40,45,50,55]));
     ans=hrs+':'+(mins<10?'0'+mins:mins); q='What time is on the clock?'; return {q:q,ans:ans,display:'text',hint:'<b>Short hand = hour.</b> Long hand = minutes — count by 5s around the clock.',check:function(g){return 'First the short hand tells the hour. Then the long hand: each big number = 5 minutes. What hour is the short hand just past?';},visual:clockVisual(hrs,mins),placeholder:'e.g. 4:30'};
   }
   else if(id==='fractions'){
-    if(G>=4&&tier>=2){ var d4=pick([2,3,4,6,8]); var n1=R(1,d4-1), n2=R(1,d4-1); var sn=n1+n2; ans=sn+'/'+d4; q=n1+'/'+d4+' + '+n2+'/'+d4+' = ? Type it like 5/8.'; hint='The denominators match, so keep the bottom number the same and <b>add the tops</b>.'; check=function(g){ return 'Bottom stays '+d4+'. Just add the tops: '+n1+' + '+n2+'.'; }; return {q:q,ans:ans,display:'text',placeholder:'e.g. 3/4',hint:hint,check:check}; }
+    if(G>=4&&tier>=2){ var d4=pick([3,4,6,8]); var n1=R(1,d4-1), n2=R(1,d4-1); while(n1+n2>=d4){ n1=R(1,d4-1); n2=R(1,d4-1); } var sn=n1+n2; /* keep the sum under one whole so the answer is a plain fraction, never d/d (denominator 2 is left out: 1/2 + 1/2 is already a whole) */ ans=sn+'/'+d4; q=n1+'/'+d4+' + '+n2+'/'+d4+' = ? Type it like 5/8.'; hint='The denominators match, so keep the bottom number the same and <b>add the tops</b>.'; check=function(g){ return 'Bottom stays '+d4+'. Just add the tops: '+n1+' + '+n2+'.'; }; return {q:q,ans:ans,display:'text',placeholder:'e.g. 3/4',hint:hint,check:check}; }
     if(G===5){ var pairs=[{a:[1,2],b:[1,4],s:'3/4'},{a:[1,3],b:[1,6],s:'1/2'},{a:[1,2],b:[1,3],s:'5/6'},{a:[2,3],b:[1,6],s:'5/6'},{a:[3,4],b:[1,4],s:'1'},{a:[1,4],b:[1,2],s:'3/4'},{a:[5,6],b:[1,3],s:'7/6'}]; var pr=pick(pairs); q=pr.a[0]+'/'+pr.a[1]+' + '+pr.b[0]+'/'+pr.b[1]+' = ? Type it like 3/4.'; ans=pr.s; hint='Make the bottoms match first! Find a number both denominators can become, change both fractions, then add the tops.'; check=function(g){ return 'Change both fractions so the bottoms match, then add the tops only. Bottoms never get added!'; }; return {q:q,ans:ans,display:'text',placeholder:'e.g. 3/4',hint:hint,check:check}; }
     if(G===3&&tier>=3){ var pair=pick([['1/2','1/4'],['1/3','1/2'],['2/3','1/3'],['3/4','1/4'],['1/4','1/8'],['2/4','1/4']]); var bigger= (function(){ function v(s){ var p=s.split('/'); return p[0]/p[1]; } return v(pair[0])>v(pair[1])? pair[0]:pair[1]; })(); q='Which fraction is bigger?'; return {q:q,ans:bigger,display:'choice',choices:shuffle(pair),hint:'Think of a cupcake: a <b>bigger slice</b> means fewer pieces were cut. Or draw both bars in Work It Out!',check:function(){ return 'Picture the same-size cupcake cut two ways. Which piece would you rather eat? That is the bigger fraction!'; }}; }
-    var den= G===0? pick([2,4]) : G===1? pick([2,4]) : G===2? pick([2,3,4]) : pick([2,3,4,6,8]); var num= G===0? 1 : R(1,den-1); ans=num+'/'+den; q='What fraction is shaded?'; var cells=''; for(var k=0;k<den;k++){ cells+='<div style="flex:1;height:54px;border:3px solid #3A1430;background:'+(k<num?'#E84393':'#fff')+'"></div>'; } var visual='<div style="display:flex;gap:3px;width:min(340px,80vw)">'+cells+'</div>'; return {q:q,ans:ans,display:'text',hint:'Bottom number = total <b>equal</b> parts. Top number = shaded parts.',check:function(g){return 'Count ALL the equal parts first — that\'s your bottom number. Then count only the <b>pink shaded</b> parts — that\'s your top number. Type it like 2/4.';},visual:visual,placeholder:'e.g. 1/2'};
+    if(G===0){ var denK=pick([2,4]); var cellsK=''; for(var kk=0;kk<denK;kk++){ cellsK+='<div style="flex:1;height:96px;border:4px solid #3A1430;background:'+(kk<1?'#E84393':'#fff')+'"></div>'; } var visualK='<div style="display:flex;gap:5px;width:min(440px,88vw)">'+cellsK+'</div>'; /* BIG share picture for Kindergarten eyes */ /* Kindergarten = fair sharing in WORDS: count the equal parts. Halves/fourths get NAMED in 1st–2nd (1.G.3/2.G.3) and written as a/b numbers in 3rd (3.NF.1), so no fraction symbol is asked here */
+      if(Math.random()<0.5){ return {q:'This cupcake is shared fairly — every part is the same size. How many equal parts are there in all?',ans:String(denK),display:'number',visual:visualK,hint:'Fair sharing means <b>every part is the same size</b>. Count ALL the parts!',check:function(g){ return 'Count every part of the cupcake — the pink part AND the white parts. They are all the same size!'; }}; }
+      return {q:'This cupcake is shared fairly — every part is the same size. How many parts are shaded pink?',ans:'1',display:'number',visual:visualK,hint:'Count only the parts colored <b>pink</b>!',check:function(g){ return 'Look at the parts one by one. How many of them are pink?'; }}; }
+    var den= G===1? pick([2,4]) : G===2? pick([2,3,4]) : pick([2,3,4,6,8]); var num= R(1,den-1); ans=num+'/'+den; q='What fraction is shaded?'; var cells=''; var cellH= G<=1? 96:54; for(var k=0;k<den;k++){ cells+='<div style="flex:1;height:'+cellH+'px;border:'+(G<=1?4:3)+'px solid #3A1430;background:'+(k<num?'#E84393':'#fff')+'"></div>'; } var visual='<div style="display:flex;gap:'+(G<=1?5:3)+'px;width:'+(G<=1?'min(440px,88vw)':'min(340px,80vw)')+'">'+cells+'</div>'; /* share bars are BIG in 1st grade, regular size from 2nd grade up */ return {q:q,ans:ans,display:'text',hint:'Bottom number = total <b>equal</b> parts. Top number = shaded parts.',check:function(g){return 'Count ALL the equal parts first — that\'s your bottom number. Then count only the <b>pink shaded</b> parts — that\'s your top number. Type it like 2/4.';},visual:visual,placeholder:'e.g. 1/2'};
   }
   else { /* word problems, one prompt scaled by grade */
     var names=['Royce','Belle','Mia','Sofia','Ava','Lily']; var objs=[{n:'bows',e:'🎀'},{n:'roses',e:'🌹'},{n:'cupcakes',e:'🧁'},{n:'ribbons',e:'✨'},{n:'books',e:'📚'},{n:'pom poms',e:'📣'}]; var o=pick(objs); var nm=pick(names);
-    if(G===0){ a=R(3,10); if(Math.random()<0.5){ b=R(1,Math.min(5,10-a)); ans=a+b; q=nm+' had '+a+' '+o.n+'. '+nm+' got '+b+' more. How many '+o.n+' does '+nm+' have now?'; hint='“Got more” means <b>add</b> — count them all!'; check=function(){return 'Count all the '+o.n+' together: start at '+a+' and count '+b+' more.';}; } else { b=R(1,a-1); ans=a-b; q=nm+' had '+a+' '+o.n+'. '+nm+' gave '+b+' to a friend. How many '+o.n+' are left?'; hint='“Gave away / left” means <b>subtract</b>.'; check=function(){return 'Start at '+a+' and take away '+b+'. Count what is left!';}; } return {q:q,ans:String(ans),display:'number',hint:hint,check:check}; }
-    if(G===1){ a=R(9,20); if(Math.random()<0.5){ b=R(3,Math.min(9,20-a)+3); if(a+b>20)b=20-a; ans=a+b; q=nm+' had '+a+' '+o.n+'. '+nm+' got '+b+' more. How many '+o.n+' does '+nm+' have now?'; hint='“Got more” means <b>add</b>.'; check=function(){return 'Set it up: '+a+' + '+b+'. Count on from '+a+'!';}; } else { b=R(3,a-3); ans=a-b; q=nm+' had '+a+' '+o.n+'. '+nm+' gave '+b+' to a friend. How many '+o.n+' are left?'; hint='“Gave away / left” means <b>subtract</b>.'; check=function(){return 'Set it up: '+a+' − '+b+'.';}; } return {q:q,ans:String(ans),display:'number',hint:hint,check:check}; }
-    if(G===2){ var kind=R(0,2); if(kind===0){a=R(25,80);b=R(15,60);ans=a+b;q=nm+' had '+a+' '+o.n+'. '+nm+' got '+b+' more. How many '+o.n+' does '+nm+' have now?';hint='“Got more” means <b>add</b>.';check=function(){return 'Set it up: '+a+' + '+b+'. Ones first, then tens!';};}
+    if(G===0){ a=R(3,10); if(Math.random()<0.5){ if(a>9)a=9; b=R(1,Math.min(5,10-a)); ans=a+b; /* the add branch starts at 9 or less so "got more" can never push the total past 10 (K.OA.2) */ q=nm+' had '+a+' '+o.n+'. '+nm+' got '+b+' more. How many '+o.n+' does '+nm+' have now?'; hint='“Got more” means <b>add</b> — count them all!'; check=function(){return 'Count all the '+o.n+' together: start at '+a+' and count '+b+' more.';}; } else { b=R(1,a-1); ans=a-b; q=nm+' had '+a+' '+o.n+'. '+nm+' gave '+b+' to a friend. How many '+o.n+' are left?'; hint='“Gave away / left” means <b>subtract</b>.'; check=function(){return 'Start at '+a+' and take away '+b+'. Count what is left!';}; } return {q:q,ans:String(ans),display:'number',hint:hint,check:check,visual:storyVisual(o.e,a,b,ans===a+b?'add':'sub')}; } /* Kindergarten stories show the objects BIG — count them! */
+    if(G===1){ a=R(9,19); if(Math.random()<0.5){ b=R(3,Math.min(9,20-a)+3); if(a+b>20)b=20-a; ans=a+b; q=nm+' had '+a+' '+o.n+'. '+nm+' got '+b+' more. How many '+o.n+' does '+nm+' have now?'; hint='“Got more” means <b>add</b>.'; check=function(){return 'Set it up: '+a+' + '+b+'. Count on from '+a+'!';}; } else { b=R(3,a-3); ans=a-b; q=nm+' had '+a+' '+o.n+'. '+nm+' gave '+b+' to a friend. How many '+o.n+' are left?'; hint='“Gave away / left” means <b>subtract</b>.'; check=function(){return 'Set it up: '+a+' − '+b+'.';}; } return {q:q,ans:String(ans),display:'number',hint:hint,check:check,visual:storyVisual(o.e,a,b,ans===a+b?'add':'sub')}; } /* 1st-grade stories show the objects BIG too — count them! */
+    if(G===2){ var kind=R(0,2); if(kind===0){a=R(25,80);b=R(15,60);if(a+b>100)b=100-a;ans=a+b; /* 2.OA.1: one-step word problems within 100 */q=nm+' had '+a+' '+o.n+'. '+nm+' got '+b+' more. How many '+o.n+' does '+nm+' have now?';hint='“Got more” means <b>add</b>.';check=function(){return 'Set it up: '+a+' + '+b+'. Ones first, then tens!';};}
       else if(kind===1){a=R(35,90);b=R(12,a-8);ans=a-b;q=nm+' had '+a+' '+o.n+'. '+nm+' gave '+b+' to a friend. How many '+o.n+' are left?';hint='“Gave away / left” means <b>subtract</b>.';check=function(){return 'Set it up: '+a+' − '+b+'.';};}
       else {var g2=R(2,5);var per2=R(2,5);ans=g2*per2;q='There are '+g2+' squads. Each squad has '+per2+' cheerleaders. How many cheerleaders in all?';hint='Equal groups! Skip-count by '+per2+'s, '+g2+' times.';check=function(){return 'Skip-count by '+per2+': say it '+g2+' times — the last number wins!';};} return {q:q,ans:String(ans),display:'number',hint:hint,check:check}; }
     var kind2=R(0,3);
@@ -1222,6 +1268,8 @@ function checkAnswer(){
     var p=topicProg(currentTopic.id); p.done+=1; if(attempts===1)p.stars+=1; saveP(progress); updateTotals();
     var res=onGameCorrect();
     var card=document.getElementById('gameCard'); card.classList.remove('bounce'); void card.offsetWidth; card.classList.add('bounce');
+    popScoreboard(); belleParty(); /* the scoreboard pops and Belle celebrates with her */
+    if(res.fire&&gameSession&&gameSession.streak===3){ setTimeout(stageConfetti,900); } /* the moment ON FIRE ignites, confetti rains over the ballroom as she lands the split */
     var praiseTxt=pick(PRAISE);
     fb.className='feedback good'; fb.innerHTML='🎉 '+praiseTxt+(attempts>1?' You kept trying and fixed it — that\'s what champions do!':'')+'<br>🎀 <b>Your cheerleader stuck the split — '+res.pts+' points for the Royal Roses!</b>'+(res.fire?' <b>🔥 ON FIRE! Bonus point for your hot streak!</b>':'')+(res.rivalPts?' 🌹 The Castle Belles answered with '+res.rivalPts+' points — you\'re still in this, superstar!':'');
     belleSay('🎉 <b>'+praiseTxt+'</b><br>'+(res.won?'That\'s the winning routine — get ready to celebrate! 🏆':'Performing the next routine…'));
@@ -1298,10 +1346,10 @@ function awardWin(){
   saveColl(); updateTotals();
   gameSession.pendingReward= rewards.map(function(r){ return '<div class="trophy-item" style="text-align:left"><span class="ti">'+(r.indexOf('🏆')===0||r.indexOf('🥇')===0?'🏆':'🎁')+'</span> <b>'+r.replace(/^🏆 |^🥇 /,'')+'</b><br><small>Just added to your Trophy Case!</small></div>'; }).join('')+(gameSession.pendingReward||'');
 }
-function launchConfetti(card){
+function launchConfetti(card,count){
   if(!card) return;
   var colors=['#E84393','#E4B33C','#7C3AED','#F78FB8','#fff','#C2185B'];
-  for(var i=0;i<70;i++){ var d=document.createElement('div'); d.className='confetti-bit'; d.style.left=(Math.random()*100)+'%'; d.style.background=colors[i%colors.length]; d.style.animationDuration=(1.4+Math.random()*1.6)+'s'; d.style.animationDelay=(Math.random()*.5)+'s'; card.appendChild(d); (function(el){ setTimeout(function(){ el.remove(); },3600); })(d); }
+  for(var i=0;i<(count||70);i++){ var d=document.createElement('div'); d.className='confetti-bit'; d.style.left=(Math.random()*100)+'%'; d.style.background=colors[i%colors.length]; d.style.animationDuration=(1.4+Math.random()*1.6)+'s'; d.style.animationDelay=(Math.random()*.5)+'s'; card.appendChild(d); (function(el){ setTimeout(function(){ el.remove(); },3600); })(d); }
 }
 function showWinCelebration(){
   sfx('fanfare'); setTimeout(function(){ sfx('cheer'); },350);
@@ -1313,6 +1361,7 @@ function showWinCelebration(){
   document.getElementById('winReward').innerHTML='<div class="trophy-grid">'+(gameSession.pendingReward||'')+'</div>';
   var modal=document.getElementById('winModal'); modal.classList.add('open');
   launchConfetti(document.getElementById('winCard'));
+  if(!REDUCED){ setTimeout(function(){ launchConfetti(document.getElementById('winCard'),38); },550); } /* a second, lighter wave layers over the first */
 }
 function closeWin(newGame){ document.getElementById('winModal').classList.remove('open'); if(newGame&&currentTopic){ if(gradeLockedTopic(currentTopic)){ var lid2=currentTopic.id; goHome(); lockedGradeTap(lid2); return; } initGameSession(currentTopic.id); nextPrompt(false); } renderAllCheerleaders(); }
 
@@ -1336,13 +1385,39 @@ function resetCheerToStart(instant){
   el.style.transition='none';
   el.style.transform='translateY(0) rotate(0deg)';
   el.style.left='5%';
+  syncShadow(5,{bottom:'101px',scale:1,opacity:1});
   void el.offsetWidth;
   el.style.transition='';
 }
-function sparkleBurst(xPct){
+function sparkleBurst(xPct,bottomBase){
   var stage=document.getElementById('beamStage'); if(!stage) return;
   var chars=['✨','🌟','💖','✨','⭐'];
-  for(var i=0;i<9;i++){ var s=document.createElement('span'); s.className='sparkle-bit'; s.textContent=chars[i%chars.length]; s.style.left='calc('+xPct+'% + '+(Math.random()*70-35)+'px)'; s.style.bottom=(120+Math.random()*90)+'px'; s.style.animationDelay=(Math.random()*0.25)+'s'; stage.appendChild(s); (function(el){ setTimeout(function(){ el.remove(); },1700); })(s); }
+  var base= bottomBase||120;
+  for(var i=0;i<13;i++){ var s=document.createElement('span'); s.className='sparkle-bit'; s.textContent=chars[i%chars.length]; s.style.fontSize=(13+Math.random()*14)+'px'; s.style.left='calc('+xPct+'% + '+(Math.random()*90-45)+'px)'; s.style.bottom=(base+Math.random()*90)+'px'; s.style.animationDelay=(Math.random()*0.25)+'s'; stage.appendChild(s); (function(el){ setTimeout(function(){ el.remove(); },1700); })(s); }
+}
+/* her soft shadow travels with her: on the beam while she walks, widening for the split, dropping to the mat when she falls */
+function syncShadow(pct,opts){
+  var sh=document.getElementById('cheerShadow'); if(!sh) return;
+  if(pct!==null&&pct!==undefined) sh.style.left='calc('+pct+'% + 13px)';
+  if(opts){ if(opts.bottom) sh.style.bottom=opts.bottom; if(opts.scale) sh.style.transform='scaleX('+opts.scale+')'; if(opts.opacity!==undefined) sh.style.opacity=opts.opacity; }
+}
+function popScoreboard(){
+  if(REDUCED) return;
+  var team=document.querySelector('.sb-team.mine'), sc=document.getElementById('sbMine');
+  if(team){ team.classList.remove('pop'); void team.offsetWidth; team.classList.add('pop'); setTimeout(function(){ team.classList.remove('pop'); },620); }
+  if(sc){ sc.classList.remove('bump'); void sc.offsetWidth; sc.classList.add('bump'); setTimeout(function(){ sc.classList.remove('bump'); },620); }
+}
+function belleParty(){
+  if(REDUCED) return;
+  var bc=document.querySelector('.belle-compact'); if(!bc) return;
+  bc.classList.remove('party'); void bc.offsetWidth; bc.classList.add('party');
+  setTimeout(function(){ bc.classList.remove('party'); },1150);
+}
+function stageConfetti(){
+  if(REDUCED) return;
+  var stage=document.getElementById('beamStage'); if(!stage) return;
+  var colors=['#E84393','#E4B33C','#7C3AED','#F78FB8','#fff','#C2185B'];
+  for(var i=0;i<24;i++){ var d=document.createElement('div'); d.className='confetti-bit'; d.style.left=(Math.random()*100)+'%'; d.style.background=colors[i%colors.length]; d.style.animationDuration=(1.5+Math.random()*1.1)+'s'; d.style.animationDelay=(Math.random()*.35)+'s'; stage.appendChild(d); (function(el){ setTimeout(function(){ el.remove(); },3200); })(d); }
 }
 function playBeamSuccess(done){
   var el=stageCheerEl(); if(!el){ if(done)done(); return; }
@@ -1354,11 +1429,14 @@ function playBeamSuccess(done){
     el.style.left=end+'%'; finishWalk();
     return;
   }
-  var t0=null, dur=2100;
+  var t0=null, dur=2250;
   function stepFn(ts){
     if(!t0) t0=ts;
     var k=Math.min(1,(ts-t0)/dur);
-    el.style.left=(start+(end-start)*k)+'%';
+    var e= k<.5? 2*k*k : 1-Math.pow(-2*k+2,2)/2; /* ease-in-out: she pushes off gently, glides, and eases into the landing spot — no constant-speed sliding */
+    var pct=start+(end-start)*e;
+    el.style.left=pct+'%';
+    syncShadow(pct);
     if(k<1) requestAnimationFrame(stepFn); else finishWalk();
   }
   requestAnimationFrame(stepFn);
@@ -1366,15 +1444,19 @@ function playBeamSuccess(done){
   setTimeout(function(){ clearInterval(stepSnd); },dur);
   function finishWalk(){
     el.classList.remove('walking');
-    /* land in the split at the end of the beam */
+    /* glide the last step into split position (no teleport), then settle into the split with gravity:
+       the splitSettle keyframes drop her in, compress softly, and rebound once — like a real landing */
     el.dataset.pose='split';
     el.classList.add('split-mode');
+    if(!REDUCED){ el.style.transition='left .45s cubic-bezier(.25,.7,.3,1)'; }
     el.style.left='58%';
+    syncShadow(58,{scale:1.55});
     el.innerHTML=cheerSVG(cheerDesign,'split');
     el.classList.add('split-land');
     setStageMsg(gameSession&&gameSession.onFire?'🔥 SHE STUCK THE SPLIT — ON FIRE! 🔥':'🌟 SHE STUCK THE SPLIT! 🌟');
     sfx('sparkle'); setTimeout(function(){ sfx('cheer'); },140);
     sparkleBurst(68);
+    if(!REDUCED){ setTimeout(function(){ sparkleBurst(50); },260); setTimeout(function(){ el.style.transition=''; },520); } /* a second, softer burst layers behind the first */
     setTimeout(function(){
       el.classList.remove('split-land');
       beamBusy=false;
@@ -1396,19 +1478,29 @@ function playBeamFall(done){
       setTimeout(function(){ resetCheerToStart(true); beamBusy=false; if(done)done(); },500);
       return;
     }
-    el.style.transition='transform .65s cubic-bezier(.5,-0.1,.7,1.2)';
-    el.style.transform='translateY(42px) rotate(-55deg)';
+    /* gravity drop: she tips, then falls FASTER as she drops (ease-in), her shadow shrinks on the beam… */
+    var fallPct=parseFloat(el.style.left)||5;
+    syncShadow(fallPct,{scale:.65,opacity:.55});
+    el.style.transition='transform .46s cubic-bezier(.55,0,1,1)';
+    el.style.transform='translateY(40px) rotate(-36deg)';
     setStageMsg('She slipped off onto the mat — she\'s okay! Read Belle\'s tip and try again! 🎀');
     setTimeout(function(){
-      el.style.transition='opacity .3s';
-      el.style.opacity='0';
+      /* …then the mat catches her: one soft settle into the slumped pose, shadow landing wide on the mat, tiny poof */
+      syncShadow(fallPct,{bottom:'50px',scale:1.45,opacity:.9});
+      sparkleBurst(Math.min(88,fallPct+10),52);
+      el.style.transition='transform .38s cubic-bezier(.2,.9,.3,1.15)';
+      el.style.transform='translateY(44px) rotate(-55deg)';
       setTimeout(function(){
-        resetCheerToStart(true);
-        el.style.opacity='1';
-        beamBusy=false;
-        if(done)done();
-      },320);
-    },1150);
+        el.style.transition='opacity .3s';
+        el.style.opacity='0';
+        setTimeout(function(){
+          resetCheerToStart(true);
+          el.style.opacity='1';
+          beamBusy=false;
+          if(done)done();
+        },320);
+      },700);
+    },470);
   }, REDUCED?40:520);
 }
 
@@ -1437,7 +1529,14 @@ function shootSplit(){
 }
 function startPomRound(){
   stopFt(); var play=document.getElementById('bonusPlay'); if(!play) return;
-  var a=R(6,40), c=R(4,30), ans=a+c;
+  var a,c; /* Pom Round bonus uses the SAME caps as Addition All-Stars — a bonus problem never outruns the picked grade */
+  if(gradeIdx===0){ do{ a=R(1,5); c=R(1,5); }while(a+c>10); }
+  else if(gradeIdx===1){ do{ a=R(6,14); c=R(3,9); }while(a+c>20); }
+  else if(gradeIdx===2){ a=R(27,89); c=R(18,79); }
+  else if(gradeIdx===3){ do{ a=R(234,989); c=R(157,879); }while(a+c>1000); }
+  else if(gradeIdx===4){ a=R(2345,9899); c=R(1234,8999); }
+  else { a=R(12345,78999); c=R(9876,68999); }
+  var ans=a+c;
   var wrongs=shuffle([ans+R(1,9),ans-R(1,8),ans+10]).filter(function(x){return x>0&&x!==ans}).slice(0,2);
   var opts=shuffle([ans].concat(wrongs));
   bonusQ={ans:ans};
