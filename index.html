@@ -217,9 +217,8 @@ button{font-family:inherit;cursor:pointer}
 .ft-track{position:relative;height:44px;background:linear-gradient(90deg,#FDE8F3,#FDE8F3);border:3px solid var(--line);border-radius:999px;margin:12px 0;overflow:hidden}
 .ft-zone{position:absolute;left:42%;width:16%;top:0;bottom:0;background:var(--green-bg);border-left:3px solid var(--green);border-right:3px solid var(--green)}
 .ft-pointer{position:absolute;top:4px;width:14px;height:30px;background:var(--pink);border-radius:8px}
-.grade-bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:#fff;border:3px solid var(--purple);border-radius:18px;padding:10px 14px;margin-bottom:14px}
+.grade-bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:space-between;background:#fff;border:3px solid var(--purple);border-radius:18px;padding:10px 14px;margin-bottom:14px}
 .grade-bar #gradeLabel{font-family:'Fredoka';font-weight:700;font-size:18px;color:var(--purple-d)}
-.grade-note{font-weight:800;color:var(--muted);font-size:13px;flex:1;min-width:180px;line-height:1.4}
 .grade-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-top:12px}
 .grade-card{background:#FFF9FD;border:3px solid var(--line);border-radius:20px;padding:16px 14px;text-align:left;width:100%}
 .grade-card:hover{border-color:var(--pink)}
@@ -274,7 +273,7 @@ footer{max-width:1080px;margin:0 auto;padding:0 16px 150px;color:var(--muted);fo
 
 <main class="wrap">
   <div id="homeView">
-    <div class="grade-bar"><span id="gradeLabel">📚 Grade: 2nd Grade</span><span class="grade-note">Every game, example and helper matches this grade — set by the standard learning path for that grade.</span><button class="ghost" onclick="openGradePicker()">🎓 Change Grade</button></div>
+    <div class="grade-bar"><span id="gradeLabel">📚 Grade: 2nd Grade</span><button class="ghost" onclick="openGradePicker()">🎓 Change Grade</button></div>
     <div class="tabs">
       <button class="tab active" id="tabMath" onclick="showCat('math')">🌹 MATH CASTLE</button>
       <button class="tab" id="tabSpell" onclick="showCat('spelling')">📣 SPELLING CASTLE</button>
@@ -447,7 +446,7 @@ footer{max-width:1080px;margin:0 auto;padding:0 16px 150px;color:var(--muted);fo
   <div class="modal-card" style="max-width:700px">
     <div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><span class="fred" style="color:var(--pink-d);font-size:15px;letter-spacing:.08em">🎓 PICK YOUR GRADE</span><button class="ghost" id="gradeCloseBtn" onclick="closeGradePicker()" style="display:none">✕ Close</button></div>
     <h3>What grade are you in?</h3>
-    <p style="font-weight:800;color:var(--muted);line-height:1.5;margin:4px 0 6px">Pick your grade and every game, Belle's examples, and the Work It Out helpers will match your grade's learning level. A grown-up can change it anytime from the home screen — your stars, trophies and cheer gear are saved for every grade.</p>
+    <p style="font-weight:800;color:var(--muted);line-height:1.5;margin:4px 0 6px">Tap your grade to start playing!</p>
     <div class="grade-grid" id="gradeCards"></div>
   </div>
 </div>
@@ -1587,6 +1586,25 @@ document.addEventListener('click',function(e){
   sfx('tap');
 },true);
 document.addEventListener('input',function(e){ if(e.target&&e.target.id==='volRange') sfx('tap'); },true);
+
+/* ---------- BUILD STAMP + SELF-UPDATE (quietly checks for a newer build on load and when the page comes back into view; reloads once if one is found, so updates reach devices on their own) ---------- */
+var BUILD_STAMP='2026-11-06-royce-3';
+(function selfUpdate(){
+  function check(){
+    if(!window.fetch) return;
+    fetch('index.html',{cache:'no-store'}).then(function(r){ return r.ok? r.text() : ''; }).then(function(html){
+      if(!html) return;
+      var m=html.match(/BUILD_STAMP='([^']+)'/);
+      if(m && m[1]!==BUILD_STAMP){
+        var key='royce-build-reload-'+m[1];
+        try{ if(sessionStorage.getItem(key)) return; sessionStorage.setItem(key,'1'); }catch(e){}
+        location.reload();
+      }
+    }).catch(function(){});
+  }
+  setTimeout(check,1500);
+  document.addEventListener('visibilitychange',function(){ if(document.visibilityState==='visible') check(); });
+})();
 
 /* ---------- INIT ---------- */
 (function init(){
