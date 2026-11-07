@@ -626,6 +626,11 @@ footer{max-width:1080px;margin:0 auto;padding:0 16px 300px;color:var(--muted);fo
 @keyframes racketSwing{0%{transform:rotate(0deg)}35%{transform:rotate(-22deg)}62%{transform:rotate(24deg)}100%{transform:rotate(0deg)}}
 .idle-tennis-ball{animation:tennisBallBounce .55s ease-in-out infinite alternate}
 @keyframes tennisBallBounce{from{transform:translateY(0)}to{transform:translateY(-13px)}}
+/* tennis ball: a plain drawn ball — yellow-green with white seams and NO
+   racket in the picture. The ONLY racket on the court is the one in her
+   hand, drawn inside her figure. */
+.sport-prop svg{display:block;width:34px;height:34px}
+.stage-decor svg{width:22px;height:22px;vertical-align:-5px}
 /* soccer: the ball is NEVER bounced while she waits. Her foot rests ON
    TOP of the ball and rocks back and forth, rolling the ball a few
    pixels each way under her shoe — the ball stays on the ground, in
@@ -1773,7 +1778,7 @@ function stageCheerOpts(){ try{ var sw=(typeof isSportWorld==='function'&&isSpor
    the soccer ball sits ON THE GROUND under her right foot, the hockey
    puck sits on the ice right in front of her stick blade, and every
    other sport keeps the classic spot by her hand. */
-function sportPropHome(){ var id=''; try{ id=sportWorldId(); }catch(e){} if(id==='soccer') return {left:'calc(5% + 52px)',bottom:'100px'}; if(id==='hockey') return {left:'calc(5% + 96px)',bottom:'100px'}; return {left:'calc(5% + 96px)',bottom:'104px'}; }
+function sportPropHome(){ var id=''; try{ id=sportWorldId(); }catch(e){} if(id==='soccer') return {left:'calc(5% + 52px)',bottom:'100px'}; if(id==='hockey') return {left:'calc(5% + 96px)',bottom:'100px'}; if(id==='tennis') return {left:'calc(5% + 89px)',bottom:'159px'}; return {left:'calc(5% + 96px)',bottom:'104px'}; }
 function cheerSVG(d,pose,opts){
   var skin=SKINS[d.skin]||SKINS[2];
   var top= d.topSpecial==='gold' ? '#E4B33C' : d.top;
@@ -2225,18 +2230,23 @@ function playSportScore(done){
   beamBusy=true; stopRoutine();
   setStageMsg(w.scoreMsg);
   if(sportWorldId()==='tennis'){
-    /* Tennis score: ONLY the ball leaves her racket — it arcs over the
-       net and lands on the other side for the point. The racket itself
-       stays gripped in her hand the whole time: she swings it in place
-       around her hand and it settles right back, still in her hand. */
+    /* Tennis score: ONLY the ball leaves her racket — she serves it UP
+       in one clear arch: it peaks high over the middle of the court,
+       well above the top of the net, crosses to the other side, drops
+       and lands on the far court with a little bounce. Point for her!
+       The racket itself stays gripped in her hand the whole time: she
+       swings it in place around her hand and it settles right back,
+       still in her hand. */
     if(el&&!REDUCED){ el.classList.add('racket-swing'); setTimeout(function(){ el.classList.remove('racket-swing'); },520); }
     if(prop){
       prop.className='sport-prop';
-      if(REDUCED){ prop.style.left='82%'; prop.style.bottom='150px'; }
+      if(REDUCED){ prop.style.left='82%'; prop.style.bottom='112px'; }
       else {
-        prop.style.transition='left .6s cubic-bezier(.3,.7,.3,1), bottom .6s cubic-bezier(.3,1.35,.4,1)';
-        prop.style.left='58%'; prop.style.bottom='196px'; prop.style.transform='rotate(200deg)';
-        setTimeout(function(){ prop.style.transition='left .3s ease-in, bottom .38s cubic-bezier(.55,0,1,1), transform .38s ease'; prop.style.left='82%'; prop.style.bottom='118px'; prop.style.transform='rotate(340deg) scaleY(.92)'; },620);
+        prop.style.transition='left .55s cubic-bezier(.3,.6,.4,1), bottom .55s cubic-bezier(.17,.67,.35,1), transform .55s ease';
+        prop.style.left='49%'; prop.style.bottom='250px'; prop.style.transform='rotate(160deg)';
+        setTimeout(function(){ prop.style.transition='left .5s cubic-bezier(.4,.6,.6,1), bottom .5s cubic-bezier(.55,0,1,1), transform .5s ease'; prop.style.left='82%'; prop.style.bottom='112px'; prop.style.transform='rotate(320deg)'; },570);
+        setTimeout(function(){ prop.style.transition='bottom .17s ease-out'; prop.style.bottom='126px'; },1090);
+        setTimeout(function(){ prop.style.transition='bottom .18s ease-in, transform .18s ease'; prop.style.bottom='112px'; prop.style.transform='rotate(340deg) scaleY(.92)'; },1280);
       }
     }
     sfx('sparkle'); setTimeout(function(){ sfx('cheer'); },300);
@@ -2245,7 +2255,7 @@ function playSportScore(done){
       if(prop){ prop.style.transition=''; }
       beamBusy=false;
       if(done) done();
-    }, REDUCED?80:1250);
+    }, REDUCED?80:1500);
     return;
   }
   if(sportWorldId()==='basketball'){
@@ -2426,25 +2436,29 @@ function playSportMiss(done){
   setStageMsg(w.missStageMsg);
   sfx('fall');
   if(sportWorldId()==='tennis'){
-    /* Tennis miss: she swings and the BALL clips the net and drops on
-       HER side — no point. The racket never leaves her hand; it swings
-       in place and stays gripped while only the ball falls short. */
+    /* Tennis miss: she serves and the BALL HITS THE NET — it flies
+       straight into the net on her side of the court, drops right down
+       the net face and lands on the ground on HER side — no point.
+       The racket never leaves her hand; it swings in place and stays
+       gripped while only the ball falls short. */
     var tel=stageCheerEl();
     if(tel&&!REDUCED){ tel.classList.add('racket-swing'); setTimeout(function(){ tel.classList.remove('racket-swing'); },520); }
     if(prop){
       prop.className='sport-prop';
-      if(REDUCED){ prop.style.bottom='52px'; }
+      if(REDUCED){ prop.style.left='45%'; prop.style.bottom='102px'; }
       else {
-        prop.style.transition='left .34s ease-out, bottom .34s ease-out, transform .34s ease';
-        prop.style.left='44%'; prop.style.bottom='150px'; prop.style.transform='rotate(120deg)';
-        setTimeout(function(){ prop.style.transition='left .3s ease-in, bottom .42s cubic-bezier(.55,0,1,1), transform .42s ease'; prop.style.left='47%'; prop.style.bottom='52px'; prop.style.transform='rotate(200deg)'; },360);
+        prop.style.transition='left .3s ease-out, bottom .3s ease-out, transform .3s ease';
+        prop.style.left='45%'; prop.style.bottom='158px'; prop.style.transform='rotate(110deg)';
+        setTimeout(function(){ prop.style.transition='left .34s ease-in, bottom .4s cubic-bezier(.55,0,1,1), transform .4s ease'; prop.style.left='45.5%'; prop.style.bottom='102px'; prop.style.transform='rotate(170deg) scaleY(.9)'; },330);
+        setTimeout(function(){ prop.style.transition='bottom .15s ease-out'; prop.style.bottom='112px'; },760);
+        setTimeout(function(){ prop.style.transition='bottom .16s ease-in, transform .16s ease'; prop.style.bottom='102px'; prop.style.transform='rotate(185deg)'; },930);
       }
     }
     setTimeout(function(){
-      if(prop){ prop.style.transition=''; prop.style.left='calc(5% + 96px)'; prop.style.bottom='104px'; prop.style.transform=''; }
+      if(prop){ var phT=sportPropHome(); prop.style.transition=''; prop.style.left=phT.left; prop.style.bottom=phT.bottom; prop.style.transform=''; }
       beamBusy=false;
       if(done) done();
-    }, REDUCED?120:1050);
+    }, REDUCED?120:1250);
     return;
   }
   if(sportWorldId()==='jumprope'){
@@ -3054,7 +3068,7 @@ var THEME_PRESETS=[
    sport — the coach title below only ever names a girl coach. */
 var SPORT_WORLDS={
  cheer:{name:'Cheer',emoji:'📣',venue:'Castle Ballroom',venueShort:'Castle',headline:'CHEER. LEARN & SHINE!',coachRole:'cheer coach',prop:'📣',target:'🎀',idleClass:'',idleMsg:'The squad is readied at the base, pom poms in hand — answer to build the pyramid! 📣',readyMsg:'Your squad is ready at the base, pom poms in hand — answer to build the pyramid! 📣',scoreMsg:'The squad built the pyramid, tossed her high — and she landed it clean',missStageMsg:'As she climbed into the pyramid, the squad tumbled down gently — no pyramid this time! Read the tip and try this same one again! 📣',rival:'Castle Belles',stage:'linear-gradient(180deg,#EBD9F2 0%,#F7E3F3 55%,#F3D9C8 55.2%,#EAC39F 100%)',hero:'An enchanted castle where math and spelling turn into a cheer competition with a whole squad of four! While you think, the squad readies at the base, pom poms in hand. Answer a problem right and they build a pyramid, toss the flyer high, and she lands it clean. Miss it, and as she climbs the pyramid tumbles down gently — no pyramid, and the squad resets and tries the same problem again until she flies.'},
- tennis:{name:'Tennis',emoji:'🎾',venue:'Tennis Court',venueShort:'Court',headline:'SERVE. LEARN & WIN!',coachRole:'tennis coach',prop:'🎾',target:'🎾',idleClass:'idle-tennis-ball',idleMsg:'She\u2019s bouncing the ball on her racket, waiting for your answer! 🎾',readyMsg:'Your tennis player is ready — answer to serve! 🎾',scoreMsg:'She hit it over the net — the ball landed on the other side. Point for you!',missStageMsg:'The ball landed on her side of the net — no point. Try this same one again! 🎾',rival:'The Other Side',stage:'linear-gradient(180deg,#7DD3FC 0%,#BAE6FD 46%,#3D9970 46.2%,#2F855A 78%,#276749 100%)',hero:'A sunny tennis court where math and spelling turn into a real tennis match! Answer a problem right and she hits the ball over the net onto the other side for the point. Miss it, and the ball lands on her side — no point, and she serves the same problem again.'},
+ tennis:{name:'Tennis',emoji:'🎾',venue:'Tennis Court',venueShort:'Court',headline:'SERVE. LEARN & WIN!',coachRole:'tennis coach',prop:'🎾',target:'',idleClass:'idle-tennis-ball',idleMsg:'She\u2019s bouncing the ball on her racket, waiting for your answer! 🎾',readyMsg:'Your tennis player is ready — answer to serve! 🎾',scoreMsg:'She hit it over the net — the ball landed on the other side. Point for you!',missStageMsg:'Her serve hit the net and the ball dropped on her side — no point. Try this same one again! 🎾',rival:'The Other Side',stage:'linear-gradient(180deg,#7DD3FC 0%,#BAE6FD 46%,#3D9970 46.2%,#2F855A 78%,#276749 100%)',hero:'A sunny tennis court where math and spelling turn into a real tennis match! Answer a problem right and she hits the ball over the net onto the other side for the point. Miss it, and the ball lands on her side — no point, and she serves the same problem again.'},
  basketball:{name:'Basketball',emoji:'🏀',venue:'Basketball Court',venueShort:'Court',headline:'SHOOT. LEARN & WIN!',coachRole:'basketball coach',prop:'🏀',target:'🏀',idleClass:'idle-basketball',idleMsg:'She\u2019s dribbling the ball in place, waiting for your answer! 🏀',readyMsg:'Your player is ready, dribbling in place — answer to shoot! 🏀',scoreMsg:'Swish! She shot it and the ball went right through the hoop — basket!',missStageMsg:'The ball bounced UP off the rim, came back down and rolled back to her — no basket! She shoots this same one again until she makes it! 🏀',rival:'Visiting Team',stage:'linear-gradient(180deg,#FDE68A 0%,#FCD34D 40%,#D97706 40.2%,#B45309 78%,#92400E 100%)',hero:'A bright basketball court where math and spelling turn into a real game! While you think, she dribbles the ball in place. Answer a problem right and she shoots — swish, right through the hoop. Miss it, and the ball bounces up off the rim, comes back down and rolls back to her — no basket, and she shoots the same problem again until she makes it.'},
  soccer:{name:'Soccer',emoji:'⚽',venue:'Soccer Field',venueShort:'Field',headline:'KICK. LEARN & SCORE!',coachRole:'soccer coach',prop:'⚽',target:'🥅',idleClass:'idle-soccer',idleMsg:'Her foot is resting right on top of the ball, rolling it back and forth under her foot while you think! ⚽',readyMsg:'Your soccer star is ready, her foot resting right on top of the ball, rolling it back and forth under her foot — answer to kick! ⚽',scoreMsg:'GOAL! She kicked the ball right past the goalie into the net!',missStageMsg:'The kick went wide of the goal — and the goalie kept it out! No goal. Try this same one again! ⚽',rival:'Rival Team',stage:'linear-gradient(180deg,#7DD3FC 0%,#BAE6FD 38%,#4ADE80 38.2%,#22C55E 78%,#16A34A 100%)',hero:'A green grass soccer field — real goal, net and goalie included — where math and spelling turn into a real match! While you think, her foot rests right on top of the ball, rolling it back and forth under her foot — the ball is never bounced. Answer a problem right and she kicks the ball past the goalie into the goal. Miss it, and the kick goes wide or the goalie saves it — no goal, and she kicks the same problem again.'},
  swimming:{name:'Swimming',emoji:'🏊',venue:'Castle Pool',venueShort:'Pool',headline:'SWIM. LEARN & SPLASH!',coachRole:'swimming coach',prop:'💦',target:'🏁',idleClass:'idle-swimming',idleMsg:'She\u2019s in the water kicking her feet, waiting for her turn to race! 🏊',readyMsg:'Your swimmer is in the water, kicking her feet — answer to start her race across the pool! 🏊',scoreMsg:'She swam all the way from one side of the pool to the other and touched the wall!',missStageMsg:'Oh no — she started to sink! She got herself back up, but there\u2019s no crossing this time. She starts over — try this same one again! 🏊',rival:'The Next Lane',stage:'linear-gradient(180deg,#BAE6FD 0%,#7DD3FC 34%,#38BDF8 34.2%,#0284C7 80%,#0369A1 100%)',hero:'A sparkling castle pool — lane ropes, flags and a starting block — where math and spelling turn into a real swim race, and she is right IN the water! While you think, she kicks her feet in the water, waiting for her turn to race. Answer a problem right and she swims from one side of the pool all the way to the other and touches the wall. Miss it, and she starts to sink — she gets herself back up and starts over, with no crossing, and she tries the same problem again until she makes it across.'},
@@ -3098,6 +3112,12 @@ function sportRivalName(){
   if(!isSportWorld()){ return window.isCustomEdition()? ('🌹 '+(typeof coachPossessive==='function'? coachPossessive():'Belle\u2019s')+' Castle Belles') : '🌹 Belle\u2019s Castle Belles'; }
   return w.emoji+' '+w.rival;
 }
+/* The tennis ball, drawn as a plain ball — yellow-green with white
+   seams and NO racket in the picture. The 🎾 emoji draws a racket next
+   to its ball, which put extra rackets all over the tennis court (the
+   waiting ball AND the far-side target); the only racket in the tennis
+   world is the one in her hand, drawn inside her figure. */
+var TENNIS_BALL_HTML='<svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="17" fill="#CDE053" stroke="#A4C639" stroke-width="2"/><path d="M8 9 Q20 20 8 31" fill="none" stroke="#FFFFFF" stroke-width="2.4"/><path d="M32 9 Q20 20 32 31" fill="none" stroke="#FFFFFF" stroke-width="2.4"/></svg>';
 /* Paints every sport-owned surface from the one sport pick: hero headline
    and words, the coach intro line, the tabs and section heads, the stage
    venue / prop / target, and the scoreboard rival. On a standard link (or
@@ -3114,7 +3134,7 @@ function applySportWorld(){
   var dBarre=document.getElementById('danceBarre'); if(dBarre){ dBarre.style.display= (sport&&sportWorldId()==='dance')?'block':'none'; }
   var sqEl=document.getElementById('cheerSquad'); if(sqEl){ sqEl.style.display= sport?'none':'block'; } if(stage){ stage.classList.toggle('squad-active',!sport); } if(!sport&&typeof renderSquad==='function'){ renderSquad(); }
   if(vlabel){ vlabel.style.display= sport?'block':'none'; vlabel.textContent= sport? (w.emoji+' '+w.venue) : ''; }
-  if(prop){ prop.style.display= sport?'block':'none'; prop.textContent= sport? w.prop : ''; prop.className='sport-prop'+(sport&&w.idleClass?' '+w.idleClass:''); var phA=sportPropHome(); prop.style.left=phA.left; prop.style.bottom=phA.bottom; prop.style.transform=''; }
+  if(prop){ prop.style.display= sport?'block':'none'; if(sport&&sportWorldId()==='tennis'){ prop.innerHTML=TENNIS_BALL_HTML; } else { prop.textContent= sport? w.prop : ''; } prop.className='sport-prop'+(sport&&w.idleClass?' '+w.idleClass:''); var phA=sportPropHome(); prop.style.left=phA.left; prop.style.bottom=phA.bottom; prop.style.transform=''; }
   if(target){ target.style.display= sport?'block':'none'; target.textContent= sport? w.target : ''; }
   /* Repaint the on-stage figure for the sport: in tennis she holds her
      racket in her hand, in hockey she holds her stick in her hands; in
@@ -3196,7 +3216,7 @@ function applyTheme(){
   var meta=document.querySelector('meta[name="theme-color"]'); if(meta) meta.setAttribute('content',c.primary);
   var stage=document.getElementById('beamStage'); if(stage) stage.style.background=b.stage;
   var decor=document.getElementById('stageDecor');
-  if(decor){ var pat=[]; for(var i=0;i<6;i++){ pat.push(i%2? s.emoji : a.emoji); } decor.innerHTML=pat.map(function(e){return '<span>'+e+'</span>';}).join(''); }
+  if(decor){ var pat=[]; for(var i=0;i<6;i++){ pat.push(i%2? (s.id==='tennis'? TENNIS_BALL_HTML : s.emoji) : a.emoji); } decor.innerHTML=pat.map(function(e){return '<span>'+e+'</span>';}).join(''); }
   var mascot=document.getElementById('stageMascot'); if(mascot) mascot.innerHTML=a.emoji+'<small>'+s.emoji+'</small>';
   /* Theme chips render ONLY on a custom link. On a standard link the summary
      stays empty — no trace of the saved theme anywhere on the page. */
