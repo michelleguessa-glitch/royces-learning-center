@@ -274,6 +274,16 @@ button{font-family:inherit;cursor:pointer}
 .sport-card:active{transform:scale(.97)}
 .sport-card.on{background:var(--pink-l);border-color:var(--pink);color:var(--pink-dd);box-shadow:0 6px 16px rgba(232,67,147,.25)}
 .sport-card .sport-check{font-family:'Nunito';font-size:12px;font-weight:900;color:var(--pink-d)}
+.sport-card.locked{border-color:var(--gold);border-style:dashed;background:linear-gradient(180deg,#FFFEF9,#FFF8E1);color:#6B4A08;position:relative}
+.sport-card.locked .sbe{filter:grayscale(.15);opacity:.92}
+.sport-lock-badge{display:inline-flex;align-items:center;gap:4px;background:var(--gold);color:#431407;font-family:'Nunito';font-weight:900;font-size:12px;border-radius:999px;padding:4px 9px;box-shadow:0 2px 0 #B98A1F;line-height:1.2}
+.sport-unlock-area{margin-top:14px;background:linear-gradient(180deg,#FFFEF9,var(--gold-l));border:3px solid var(--gold);border-radius:16px;padding:14px;text-align:center}
+.sport-unlock-area p{margin:0 0 10px;font-weight:800;line-height:1.5;color:#6B4A08;font-size:14.5px}
+.sport-unlock-area p b{color:#431407}
+.unlock-btn{display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:#431407;text-decoration:none;border-radius:999px;padding:13px 22px;font-family:'Fredoka';font-weight:700;font-size:17px;box-shadow:0 4px 0 #B98A1F;line-height:1.2}
+.unlock-btn:active{transform:translateY(2px);box-shadow:0 2px 0 #B98A1F}
+.locked-msg{display:none;margin-top:12px;background:#FFF3C4;border:2px solid var(--gold);border-radius:14px;padding:12px 14px;font-weight:800;line-height:1.5;color:#6B4A08;font-size:15px;text-align:center}
+.locked-msg.on{display:block}
 .sport-switch-note{font-weight:900;font-size:13px;color:var(--muted);margin-top:12px;line-height:1.5}
 .sport-switcher--compact{margin:0 0 12px}
 .sport-switcher--compact .sport-pick-btn{padding:12px 14px 11px;border-radius:18px}
@@ -497,8 +507,14 @@ footer{max-width:1080px;margin:0 auto;padding:0 16px 150px;color:var(--muted);fo
     <section class="sport-switcher" id="sportSwitcherHome" style="display:none" aria-label="Pick your sport for today">
       <button type="button" class="sport-pick-btn" id="sportPickBtnHome" aria-expanded="false" aria-controls="sportPanelHome" onclick="toggleSportPanel('home')"><span class="sport-pick-main">🎀 Pick Your Sport for Today!</span><span class="sport-pick-today" id="sportNowHome">Today: 📣 Cheer — tap to change</span><span class="sport-pick-arrow" aria-hidden="true">▼</span></button>
       <div class="sport-panel" id="sportPanelHome" style="display:none">
-        <p class="sport-panel-hint">Bored of today's sport? Pick a new one! The place you play, your coach's title, and how every game scores all switch right away — your grade, stars and designs stay just as they are.</p>
+        <p class="sport-panel-hint" id="sportPanelHintHome">Bored of today's sport? Pick a new one! The place you play, your coach's title, and how every game scores all switch right away — your grade, stars and designs stay just as they are.</p>
         <div class="sport-switch-grid" id="sportSwitchGridHome" role="group" aria-label="Pick a sport"></div>
+        <div class="locked-msg" id="sportLockedMsgHome" role="status" aria-live="polite"></div>
+        <!-- THE single unlock presentation for the classic build. ALWAYS VISIBLE at the bottom of the sport panel in the classic build — no tap on a locked sport needed to reveal it. placeSharedUnlock() moves this one element into whichever sport panel (home or practice) is open, so there is never a second copy. On the custom build it never shows. -->
+        <div class="sport-unlock-area" id="sportUnlockShared">
+          <p>This classic world includes 3 sports — 📣 Cheer, ⚽ Soccer and 💃 Dance. Unlock all 10 sports, plus naming your world, favorite color &amp; animal, and designing your cheerleader and coach, with the Customized edition.</p>
+          <a class="unlock-btn" href="https://www.scalewithmichelle.com/l/creative-learning-center-customized" target="_blank" rel="noopener">Upgrade to Unlock</a>
+        </div>
         <div class="sport-switch-note" id="sportSwitchNoteHome">Soccer today instead of basketball? Just tap ⚽ Soccer — your games update to the soccer field!</div>
       </div>
     </section>
@@ -519,7 +535,7 @@ footer{max-width:1080px;margin:0 auto;padding:0 16px 150px;color:var(--muted);fo
       <!-- PLAIN LINK STATE: the classic world, ready to play -->
       <div id="makeYoursStandard">
         <h2>🎀 Royce's Royal Roses — Ready to Play</h2>
-        <p>The classic pink-and-purple Beauty &amp; the Beast cheer castle, with <span class="coach-name-text">Cheer Coach Belle</span>, the balance-beam games, trophies and music — all ready as soon as you open your page. Your grade, stars and trophies save on this device and it works offline once saved to your home screen.</p>
+        <p>The classic pink-and-purple Beauty &amp; the Beast cheer castle, with <span class="coach-name-text">Cheer Coach Belle</span>, trophies and music — all ready as soon as you open your page. Try <b>3 sports</b> here — 📣 Cheer, ⚽ Soccer and 💃 Dance — with the big <b>Pick Your Sport for Today</b> button above. The other sports show with a 🔒 lock in this classic world — the <b>Upgrade to Unlock</b> button is right there at the bottom of the sport picker whenever you open it. Your grade, stars and trophies save on this device.</p>
       </div>
     </section>
 
@@ -549,8 +565,10 @@ footer{max-width:1080px;margin:0 auto;padding:0 16px 150px;color:var(--muted);fo
     <div class="sport-switcher sport-switcher--compact" id="sportSwitcherPractice" style="display:none" aria-label="Pick your sport for today">
       <button type="button" class="sport-pick-btn" id="sportPickBtnPractice" aria-expanded="false" aria-controls="sportPanelPractice" onclick="toggleSportPanel('practice')"><span class="sport-pick-main">🎀 Pick Your Sport for Today!</span><span class="sport-pick-today" id="sportNowPractice">Today: 📣 Cheer — tap to change</span><span class="sport-pick-arrow" aria-hidden="true">▼</span></button>
       <div class="sport-panel" id="sportPanelPractice" style="display:none">
-        <p class="sport-panel-hint">Tap a sport and this game switches with you — same problem, same score, brand-new field!</p>
+        <p class="sport-panel-hint" id="sportPanelHintPractice">Tap a sport and this game switches with you — same problem, same score, brand-new field!</p>
         <div class="sport-switch-grid" id="sportSwitchGridPractice" role="group" aria-label="Pick a sport"></div>
+        <div class="locked-msg" id="sportLockedMsgPractice" role="status" aria-live="polite"></div>
+        <!-- No separate unlock button here: placeSharedUnlock() moves the single shared #sportUnlockShared element into this panel when it opens, so the Upgrade to Unlock button is already visible at the bottom of this section in the classic build. -->
       </div>
     </div>
     <div class="belle-compact">
@@ -1538,8 +1556,8 @@ function renderGrid(){ var g=document.getElementById('topicGrid'); g.innerHTML=T
   var p=topicProg(t.id); var started=p.done>0; var finished=p.done>=240; return '<article class="tcard"><div style="display:flex;justify-content:space-between;align-items:start"><div class="ticon">'+t.icon+'</div><span class="meta">'+(finished?'🏆 Finished!':started?'⭐ Keep Going!':'New Game')+'</span></div><h3>'+displayTitle(t)+'</h3><p>'+displayDesc(t)+'</p><button class="play-btn" onclick="startTopic(\''+t.id+'\')">'+(started&&!finished?'▶ Keep Playing!':finished?'▶ Play Again!':'▶ Start Playing!')+'</button></article>'; }).join(''); }
 function updateTotals(){ var ts=collection.bonusStars; for(var gk in progStore.per){ var bucket=progStore.per[gk]; for(var tid in bucket){ ts+=bucket[tid].stars||0; } } var el=document.getElementById('totalStars'); if(el) el.textContent=ts; var hs=document.getElementById('heroStars'); if(hs) hs.textContent=ts; var hw=document.getElementById('heroWins'); if(hw) hw.textContent=collection.wins; }
 function belleSay(html){ document.getElementById('belleBubble').innerHTML=html; speakBelle(html); }
-function startTopic(id){ if(gradeLockedTopic(topicById(id))){ lockedGradeTap(id); return; } /* GRADE GATE: refuses below 3rd grade no matter which UI path calls it */ currentTopic=TOPICS.find(function(t){return t.id===id}); document.getElementById('homeView').style.display='none'; document.getElementById('practiceView').style.display='block'; document.getElementById('pTitle').textContent=currentTopic.icon+' '+displayTitle(currentTopic); window.scrollTo({top:0}); clearInterval(timerInt); timerInt=setInterval(function(){ topicProg(id).sec+=5; if(topicProg(id).sec%30===0) saveP(progress); },5000); initGameSession(id); renderAllCheerleaders(); resetCheerToStart(true); nextPrompt(true); openWizard(id); }
-function goHome(){ stopBelleSpeech(); stopRoutine(); if(typeof toggleWorkPanel==='function') toggleWorkPanel(false); clearInterval(timerInt); saveP(progress); document.getElementById('practiceView').style.display='none'; document.getElementById('homeView').style.display='block'; renderGrid(); updateTotals(); renderAllCheerleaders(); window.scrollTo({top:0}); }
+function startTopic(id){ if(gradeLockedTopic(topicById(id))){ lockedGradeTap(id); return; } /* GRADE GATE: refuses below 3rd grade no matter which UI path calls it */ currentTopic=TOPICS.find(function(t){return t.id===id}); document.getElementById('homeView').style.display='none'; document.getElementById('practiceView').style.display='block'; if(typeof renderSportSwitcher==='function'){ try{ renderSportSwitcher(); }catch(e){} } /* the compact in-game switcher bar shows inside every game */ document.getElementById('pTitle').textContent=currentTopic.icon+' '+displayTitle(currentTopic); window.scrollTo({top:0}); clearInterval(timerInt); timerInt=setInterval(function(){ topicProg(id).sec+=5; if(topicProg(id).sec%30===0) saveP(progress); },5000); initGameSession(id); renderAllCheerleaders(); resetCheerToStart(true); nextPrompt(true); openWizard(id); }
+function goHome(){ stopBelleSpeech(); stopRoutine(); if(typeof toggleWorkPanel==='function') toggleWorkPanel(false); clearInterval(timerInt); saveP(progress); document.getElementById('practiceView').style.display='none'; document.getElementById('homeView').style.display='block'; if(typeof renderSportSwitcher==='function'){ try{ renderSportSwitcher(); }catch(e){} } /* the home switcher shows again on return */ renderGrid(); updateTotals(); renderAllCheerleaders(); window.scrollTo({top:0}); }
 function goHomeFromOverlay(){
   stopWizAuto(); stopBelleSpeech(); stopFt();
   ['wizardModal','studioModal','themeModal','coachModal','trophyModal','bonusModal','winModal','lockedModal'].forEach(function(mid){ var m=document.getElementById(mid); if(m) m.classList.remove('open'); });
@@ -2269,10 +2287,10 @@ function coachIdentity(){ return coachById(COACH_IDENTITIES,myCoach.identity); }
 function coachJacketStyle(){ return coachById(COACH_JACKETS,myCoach.jacketStyle); }
 function coachCustom(){ return window.isCustomEdition() && (myCoach.identity!=='girl'||!!(myCoach.name||'').trim()||myCoach.jacket!=='#E4B33C'||myCoach.jacketStyle!=='classic'||myCoach.hair!=='waves'||myCoach.hairColor!=='#3B2310'||myCoach.skin!==2); }
 function coachShortName(){ var n=(myCoach.name||'').trim(); return n? n.split(/\s+/)[0] : 'Belle'; }
-function coachDisplayName(){ var id=coachIdentity(); var n=coachShortName(); if(id.id==='mentor') return 'Mentor '+n; if(id.id==='captain') return 'Captain '+n; /* Sport-aware title (custom link): the coach IS the chosen sport's coach — “Tennis Coach Belle”, “Swim Coach Belle” — while cheer keeps the classic “Cheer Coach Belle”. She is always a girl coach. */ if(window.isCustomEdition()){ try{ var sp=themeSport(); if(sp&&sp.id!=='cheer') return sp.name+' Coach '+n; }catch(e){} } return 'Cheer Coach '+n; }
+function coachDisplayName(){ var id=coachIdentity(); var n=coachShortName(); if(window.isCustomEdition()){ if(id.id==='mentor') return 'Mentor '+n; if(id.id==='captain') return 'Captain '+n; } /* Sport-aware title: the coach IS the chosen sport's coach — “Tennis Coach Belle”, “Swim Coach Belle”, “Soccer Coach Belle” — while cheer keeps the classic “Cheer Coach Belle”. Applies on custom (all sports) and on classic for its 3 playable sports. She is always a girl coach. */ try{ var sp=(typeof currentSportObj==='function')? currentSportObj() : themeSport(); if(sp&&sp.id!=='cheer') return sp.name+' Coach '+n; }catch(e){} return 'Cheer Coach '+n; }
 function coachPossessive(){ if(!window.isCustomEdition()) return 'Belle\u2019s'; var n=coachShortName(); return /s$/i.test(n)? n+'\u2019' : n+'\u2019s'; }
 function coachLineName(){ return window.isCustomEdition()? coachShortName() : 'Belle'; }
-function coachFullName(){ return window.isCustomEdition()? coachDisplayName() : 'Cheer Coach Belle'; }
+function coachFullName(){ return coachDisplayName(); }
 function coachFigureSVG(d,size){
   var cd= (d&&typeof d==='object')? d : myCoach;
   var id=coachIdentity();
@@ -2333,7 +2351,7 @@ function applyCoach(){
   var custom=window.isCustomEdition();
   var isCustom=coachCustom();
   /* name strings — every coach-owned label follows the chosen name */
-  document.querySelectorAll('.coach-name-text').forEach(function(el){ el.textContent= custom? coachDisplayName() : 'Cheer Coach Belle'; });
+  document.querySelectorAll('.coach-name-text').forEach(function(el){ el.textContent= coachDisplayName(); });
   document.querySelectorAll('.coach-short-text').forEach(function(el){ el.textContent= custom? coachShortName() : 'Belle'; });
   document.querySelectorAll('.coach-poss-text').forEach(function(el){ el.textContent= custom? coachPossessive().toUpperCase() : 'BELLE\u2019S'; });
   var rival=document.getElementById('sbRivalName'); if(rival) rival.textContent= (typeof sportRivalName==='function')? sportRivalName() : (custom? ('🌹 '+coachPossessive()+' Castle Belles') : '🌹 Belle\u2019s Castle Belles');
@@ -2485,15 +2503,33 @@ var SPORT_WORLDS={
  dance:{name:'Dance',emoji:'💃',venue:'Dance Studio',venueShort:'Studio',headline:'DANCE. LEARN & SHINE!',coachRole:'dance coach',prop:'🎵',target:'✨',idleClass:'idle-dance',idleMsg:'She\u2019s at the barre in the dance studio, holding onto the barre and doing her waiting steps in place — there\u2019s no rope in dance, just the beat — waiting for your answer! 💃',readyMsg:'Your dancer is at the barre, holding on and stepping in place. Answer to send her gliding across the studio floor! 💃',scoreMsg:'She left the barre, glided across the studio floor, struck her pose — and danced right back! She nailed it!',missStageMsg:'She missed the beat and wobbled — no traveling this time! She stays right here at the barre dancing until she nails it. Try this same one again! 💃',rival:'Rival Dance Crew',stage:'linear-gradient(180deg,#4C1D95 0%,#7C3AED 44%,#C2185B 44.2%,#9D1450 80%,#70133C 100%)',hero:'A real dance studio — mirrors on the wall, a wooden floor, and a dance barre — and no rope anywhere — where math and spelling turn into a real performance! While you think, she waits AT the barre, holding onto it and doing her steps in place to the beat. Answer a problem right and she leaves the barre, glides across the studio floor into her pose, and dances back. Miss it, and she misses the beat and wobbles — she stays put and keeps dancing until she nails the same problem.'},
  gymnastics:{name:'Gymnastics',emoji:'🤸',venue:'Gymnastics Gym',venueShort:'Gym',headline:'FLIP. LEARN & STICK IT!',coachRole:'gymnastics coach',prop:'🤸',target:'🏅',idleClass:'idle-gymnastics',idleMsg:'She\u2019s on the mat by the apparatus, doing little bounces and arm swings, waiting for your answer! 🤸',readyMsg:'Your gymnast is on the mat by the beam, bars and vault — answer to start her routine! 🤸',scoreMsg:'She performed her routine clean, stuck the landing — and came right back!',missStageMsg:'She wobbled and stepped off — no score! She gets right back up and tries this same one again until she nails it! 🤸',rival:'Rival Gym Team',stage:'linear-gradient(180deg,#FDE68A 0%,#FEF3C7 42%,#93C5FD 42.2%,#60A5FA 80%,#3B82F6 100%)',hero:'A bright gymnastics gym — mats, balance beam, vault and rings all around her — where math and spelling turn into a real meet! While you think, she waits on the mat by the apparatus, doing little bounces and arm swings. Answer a problem right and she performs her routine clean, sticks the landing, and comes right back. Miss it, and she wobbles or steps off — no score — she gets right back up and tries the same problem again until she nails it.'}
 };
-function sportWorld(){ if(!window.isCustomEdition()) return SPORT_WORLDS.cheer; try{ var s=themeSport(); return SPORT_WORLDS[s.id]||SPORT_WORLDS.cheer; }catch(e){ return SPORT_WORLDS.cheer; } }
-function sportWorldId(){ if(!window.isCustomEdition()) return 'cheer'; try{ return themeSport().id; }catch(e){ return 'cheer'; } }
+/* ===== CLASSIC TEASER: 3 sports open, the rest locked =====
+   Classic (standard) link: Cheer (home) + Soccer + Dance are playable.
+   Every other sport stays VISIBLE in the switcher with a 🔒 lock — tapping
+   one gives a gentle kid message. The Upgrade to Unlock button is ALWAYS
+   VISIBLE at the bottom of the sport-switcher section in the classic
+   build (no tap needed to reveal it) and links to the Gumroad product,
+   where the Customized edition is chosen. No prices
+   appear on this play page. The Customized (?custom=1) link is untouched:
+   all 10 sports stay fully unlocked there. */
+var CLASSIC_PLAYABLE=['cheer','soccer','dance'];
+var CLASSIC_SPORT_KEY='royce-classic-sport-v1';
+var GUMROAD_UNLOCK_URL='https://www.scalewithmichelle.com/l/creative-learning-center-customized';
+function isClassicPlayable(id){ return CLASSIC_PLAYABLE.indexOf(id)>-1; }
+function loadClassicSport(){ try{ var v=localStorage.getItem(CLASSIC_SPORT_KEY); if(v&&isClassicPlayable(v)) return v; }catch(e){} return 'cheer'; }
+var classicSport=loadClassicSport();
+function saveClassicSport(){ try{ localStorage.setItem(CLASSIC_SPORT_KEY,classicSport); }catch(e){} }
+function currentSportId(){ if(window.isCustomEdition()){ try{ return themeSport().id; }catch(e){ return 'cheer'; } } return classicSport; }
+function currentSportObj(){ var id=currentSportId(); for(var i=0;i<THEME_SPORTS.length;i++){ if(THEME_SPORTS[i].id===id) return THEME_SPORTS[i]; } return THEME_SPORTS[0]; }
+function sportWorld(){ if(!window.isCustomEdition()) return SPORT_WORLDS[classicSport]||SPORT_WORLDS.cheer; try{ var s=themeSport(); return SPORT_WORLDS[s.id]||SPORT_WORLDS.cheer; }catch(e){ return SPORT_WORLDS.cheer; } }
+function sportWorldId(){ if(!window.isCustomEdition()) return classicSport; try{ return themeSport().id; }catch(e){ return 'cheer'; } }
 function isSportWorld(){ return sportWorldId()!=='cheer'; }
 /* The coach's full sport intro: her chosen name + the mascot animal + the
    sport — e.g. “Tennis Coach Belle the Butterfly, your tennis coach”. */
 function coachSportIntro(){
   var w=sportWorld();
   var disp=(typeof coachDisplayName==='function')? coachDisplayName() : 'Cheer Coach Belle';
-  var an='Butterfly'; try{ an=themeAnimal().name; }catch(e){}
+  var an='Butterfly'; if(window.isCustomEdition()){ try{ an=themeAnimal().name; }catch(e){} }
   return disp+' the '+an+', your '+w.coachRole;
 }
 function sportRivalName(){
@@ -2519,13 +2555,17 @@ function applySportWorld(){
   if(vlabel){ vlabel.style.display= sport?'block':'none'; vlabel.textContent= sport? (w.emoji+' '+w.venue) : ''; }
   if(prop){ prop.style.display= sport?'block':'none'; prop.textContent= sport? w.prop : ''; prop.className='sport-prop'+(sport&&w.idleClass?' '+w.idleClass:''); prop.style.left='calc(5% + 96px)'; prop.style.bottom='104px'; prop.style.transform=''; }
   if(target){ target.style.display= sport?'block':'none'; target.textContent= sport? w.target : ''; }
-  if(headline){ headline.textContent= (custom&&sport)? (w.emoji+' '+w.headline) : ''; headline.classList.toggle('on',!!(custom&&sport)); }
+  if(headline){ headline.textContent= sport? (w.emoji+' '+w.headline) : ''; headline.classList.toggle('on',!!sport); }
   if(desc){ var cn=document.querySelector('.coach-name-text'); desc.childNodes[0].textContent= sport? (w.hero+' ') : 'An enchanted castle where math and spelling turn into a cheer competition with a whole squad of four! Answer a problem right, and the squad builds a pyramid, tosses the flyer high, and she lands it clean. '; }
   var heroLine=document.getElementById('heroBelleLine');
-  if(heroLine&&custom){ var wn=(typeof effectiveWorldName==='function')? effectiveWorldName() : "Royce's Royal Roses"; heroLine.textContent= sport? ('\u201CWelcome to '+wn+'! I\u2019m '+coachSportIntro()+'. Every champion started with one brave try. Pick your game, and let\u2019s play '+w.name+' — together!\u201D '+w.emoji) : ('\u201CWelcome to '+wn+'! Every champion started with one brave try. Design your cheerleader, pick your pom poms, and let\u2019s shine — together!\u201D 🌹'); }
+  if(heroLine){ var wn=(typeof effectiveWorldName==='function')? effectiveWorldName() : "Royce's Royal Roses"; if(custom){ heroLine.textContent= sport? ('\u201CWelcome to '+wn+'! I\u2019m '+coachSportIntro()+'. Every champion started with one brave try. Pick your game, and let\u2019s play '+w.name+' — together!\u201D '+w.emoji) : ('\u201CWelcome to '+wn+'! Every champion started with one brave try. Design your cheerleader, pick your pom poms, and let\u2019s shine — together!\u201D 🌹'); } else if(sport){ heroLine.textContent='\u201CWelcome to '+wn+'! I\u2019m '+coachSportIntro()+'. Every champion started with one brave try. Pick your game, and let\u2019s play '+w.name+' — together!\u201D '+w.emoji; } else { heroLine.textContent='\u201CWelcome to Royce\u2019s Royal Roses! Every champion started with one brave try. Pick your game, build the pyramid, and let\u2019s shine — together!\u201D 🌹'; } }
   var tm=document.getElementById('tabMath'), ts=document.getElementById('tabSpell');
   if(tm) tm.textContent= sport? (w.emoji+' MATH '+w.venueShort.toUpperCase()) : '🌹 MATH CASTLE';
   if(ts) ts.textContent= sport? ('📣 SPELLING '+w.venueShort.toUpperCase()) : '📣 SPELLING CASTLE';
+  /* The coach's name-and-title labels (the hero bubble's “Cheer Coach Belle
+     says” line included) follow the same sport pick, on every repaint —
+     not only when applyCoach() happens to run. */
+  if(typeof coachDisplayName==='function'){ try{ document.querySelectorAll('.coach-name-text').forEach(function(el){ el.textContent=coachDisplayName(); }); }catch(e){} }
   var rival=document.getElementById('sbRivalName'); if(rival) rival.textContent=sportRivalName();
   if(typeof cat!=='undefined') refreshCatHead();
   var badge=document.getElementById('heroThemeBadge');
@@ -2569,15 +2609,20 @@ function themeAnimal(){ return themeById(THEME_ANIMALS,myTheme.animal); }
 function themeBg(){ return themeById(THEME_BGS,myTheme.bg); }
 function themeSummaryHTML(){
   var c=themeColor(),s=themeSport(),a=themeAnimal(),b=themeBg();
+  /* The venue chip names where she actually plays: when a sport world is
+     active that is the SPORT's venue (Tennis Court, Soccer Field…) — the
+     background's name (Castle Ballroom) only stands when cheer is playing. */
+  var w=null; try{ if(typeof isSportWorld==='function'&&isSportWorld()) w=sportWorld(); }catch(e){}
   return '<span class="theme-chip"><span class="dot" style="background:'+c.primary+'"></span>'+c.name+'</span>'
     +'<span class="theme-chip">'+s.emoji+' '+s.name+'</span>'
     +'<span class="theme-chip">'+a.emoji+' '+a.name+' Mascot</span>'
-    +'<span class="theme-chip">'+b.emoji+' '+b.name+'</span>';
+    +'<span class="theme-chip">'+(w? (w.emoji+' '+w.venue) : (b.emoji+' '+b.name))+'</span>';
 }
 function effectiveTheme(){ return window.isCustomEdition()? myTheme : defaultTheme(); }
 function applyTheme(){
   var et=effectiveTheme();
   var c=themeById(THEME_COLORS,et.color),s=themeById(THEME_SPORTS,et.sport),a=themeById(THEME_ANIMALS,et.animal),b=themeById(THEME_BGS,et.bg);
+  if(!window.isCustomEdition() && typeof currentSportObj==='function'){ s=currentSportObj(); }
   var r=document.documentElement.style;
   r.setProperty('--pink',c.primary); r.setProperty('--pink-d',c.dark); r.setProperty('--pink-dd',c.deep);
   r.setProperty('--pink-l',c.light); r.setProperty('--line',c.line); r.setProperty('--bg',b.page);
@@ -2591,10 +2636,11 @@ function applyTheme(){
      stays empty — no trace of the saved theme anywhere on the page. */
   var sum=document.getElementById('themeSummary'); if(sum) sum.innerHTML= window.isCustomEdition()? themeSummaryHTML() : '';
   var badge=document.getElementById('heroThemeBadge');
-  if(badge){ if(window.isCustomEdition()){ badge.textContent='🎨 My theme: '+c.name+' • '+s.emoji+' '+s.name+' fan • '+a.emoji+' '+a.name+' mascot • '+b.emoji+' '+b.name; badge.classList.add('on'); } else { badge.classList.remove('on'); badge.textContent=''; } }
+  if(badge){ if(window.isCustomEdition()){ var bw=null; try{ if(typeof isSportWorld==='function'&&isSportWorld()) bw=sportWorld(); }catch(e){} badge.textContent= bw? ('🎨 My world: '+bw.emoji+' '+bw.name+' at the '+bw.venue+' • '+(typeof coachSportIntro==='function'? coachSportIntro() : '')+' • '+a.emoji+' '+a.name+' mascot • '+c.name) : ('🎨 My theme: '+c.name+' • '+s.emoji+' '+s.name+' fan • '+a.emoji+' '+a.name+' mascot • '+b.emoji+' '+b.name); badge.classList.add('on'); } else { badge.classList.remove('on'); badge.textContent=''; } }
   /* The sport pick drives the whole world — venue, headline, coach title
-     and game language all re-paint from the same pick. */
-  if(typeof applySportWorld==='function') applySportWorld();
+     and game language all re-paint from the same pick. Guarded: a failure
+     in the sport paint must never block the switcher render below. */
+  if(typeof applySportWorld==='function'){ try{ applySportWorld(); }catch(e){} }
   /* The always-visible switcher stays in sync with EVERY sport change —
      wizard pick, Theme Studio pick, preset, or a tap on the switcher
      itself — because they all flow through applyTheme(). */
@@ -2615,28 +2661,68 @@ function setSportPanel(which,open){
   sportPanelOpen[which]=!!open;
   var panel=document.getElementById(which==='home'? 'sportPanelHome' : 'sportPanelPractice');
   var btn=document.getElementById(which==='home'? 'sportPickBtnHome' : 'sportPickBtnPractice');
+  if(open&&typeof placeSharedUnlock==='function'){ try{ placeSharedUnlock(which); }catch(e){} }
   if(panel) panel.style.display= open? 'block':'none';
   if(btn) btn.setAttribute('aria-expanded', open? 'true':'false');
 }
 function toggleSportPanel(which){
-  if(!window.isCustomEdition()) return;
   setSportPanel(which, !sportPanelOpen[which]);
   if(typeof sfx==='function') sfx('pop');
 }
 function closeSportPanels(){ setSportPanel('home',false); setSportPanel('practice',false); }
+function sharedUnlockEl(){ return document.getElementById('sportUnlockShared'); }
+function hideSharedUnlock(){ var el=sharedUnlockEl(); if(el) el.style.display='none'; }
+function placeSharedUnlock(which){
+  /* Exactly ONE unlock button exists in the classic build, and in the
+     classic build it is ALWAYS VISIBLE at the bottom of the sport panel —
+     as soon as the panel opens, with no tap on a locked sport needed.
+     This moves that single element into the panel that is open (home or
+     practice), directly after that panel's locked message, instead of
+     duplicating it. On the custom build every sport is already open, so
+     it never shows there. */
+  var el=sharedUnlockEl(); if(!el) return;
+  var custom=window.isCustomEdition();
+  var target=which;
+  if(target!=='home'&&target!=='practice'){
+    var pv=document.getElementById('practiceView');
+    target= (pv&&pv.style.display!=='none')? 'practice' : 'home';
+  }
+  var msgEl=document.getElementById(target==='practice'? 'sportLockedMsgPractice' : 'sportLockedMsgHome');
+  if(msgEl&&msgEl.parentNode){ msgEl.parentNode.insertBefore(el, msgEl.nextSibling); }
+  el.style.display= custom? 'none' : 'block';
+}
+function presentSharedUnlock(which){ placeSharedUnlock(which); }
+function showLockedSport(sportId){
+  var picked=null; for(var i=0;i<THEME_SPORTS.length;i++){ if(THEME_SPORTS[i].id===sportId) picked=THEME_SPORTS[i]; }
+  if(!picked) return;
+  var msg='🔒 This sport is locked! Ask a grown-up to unlock every sport.';
+  ['sportLockedMsgHome','sportLockedMsgPractice'].forEach(function(id){ var el=document.getElementById(id); if(el){ el.textContent=msg; el.classList.add('on'); } });
+  presentSharedUnlock();
+  if(typeof toast==='function') toast('This sport is locked! Ask a grown-up to unlock every sport.');
+  if(typeof sfx==='function') sfx('pop');
+}
 function renderSportSwitcher(){
   var custom=window.isCustomEdition();
   var home=document.getElementById('sportSwitcherHome'), prac=document.getElementById('sportSwitcherPractice');
-  if(!custom){ if(home) home.style.display='none'; if(prac) prac.style.display='none'; return; }
-  var cur=(typeof themeSport==='function')? themeSport() : THEME_SPORTS[0];
+  var cur=(typeof currentSportObj==='function')? currentSportObj() : ((typeof themeSport==='function')? themeSport() : THEME_SPORTS[0]);
   var w=(typeof sportWorld==='function')? sportWorld() : null;
-  var nowText='Today: '+cur.name+' '+cur.emoji+' — tap to change';
+  var nowText='Today: '+cur.emoji+' '+cur.name+' — tap to change';
   var nh=document.getElementById('sportNowHome'); if(nh) nh.textContent=nowText;
   var np=document.getElementById('sportNowPractice'); if(np) np.textContent=nowText;
+  var hintH=document.getElementById('sportPanelHintHome'); if(hintH) hintH.textContent= custom? "Bored of today's sport? Pick a new one! The place you play, your coach's title, and how every game scores all switch right away — your grade, stars and designs stay just as they are." : "You can play 3 sports here — 📣 Cheer, ⚽ Soccer and 💃 Dance. Tap one to play it! Sports with a 🔒 are locked — tap the Upgrade to Unlock button below to open them all.";
+  var hintP=document.getElementById('sportPanelHintPractice'); if(hintP) hintP.textContent= custom? 'Tap a sport and this game switches with you — same problem, same score, brand-new field!' : 'Tap Cheer, Soccer or Dance to switch this game. Locked sports show a 🔒 — the Upgrade to Unlock button below opens them all.';
+  /* Classic build: the single shared Upgrade to Unlock button is ALWAYS
+     visible at the bottom of this section — placeSharedUnlock() puts it
+     in the open / current panel and shows it without waiting for a tap
+     on a locked sport. On the custom build it never shows at all. */
+  placeSharedUnlock();
   var note=document.getElementById('sportSwitchNoteHome');
-  if(note&&w){ note.textContent= cur.id==='cheer'? 'Tap any sport to leave the castle ballroom and play there instead — tap 📣 Cheer anytime to come back to the pyramid!' : (w.emoji+' '+w.headline+' — '+w.idleMsg+' Tap the big button anytime you want a change!'); }
+  if(note&&w){ note.textContent= cur.id==='cheer'? (custom? 'Tap any sport to leave the castle ballroom and play there instead — tap 📣 Cheer anytime to come back to the pyramid!' : 'Tap ⚽ Soccer or 💃 Dance to try a new sport — tap 📣 Cheer anytime to come back to the pyramid! Locked sports need the Customized edition.') : (w.emoji+' '+w.headline+' — '+w.idleMsg+' Tap the big button anytime you want a change!'); }
   var html=THEME_SPORTS.map(function(x){
-    var on= myTheme.sport===x.id;
+    var on= cur.id===x.id;
+    if(!custom && !isClassicPlayable(x.id)){
+      return '<button type="button" class="sport-card locked" aria-label="'+x.name+' — locked" onclick="showLockedSport(\''+x.id+'\')"><span class="sbe" aria-hidden="true">'+x.emoji+'</span>'+x.name+'<span class="sport-lock-badge" aria-hidden="true">🔒 Locked</span></button>';
+    }
     return '<button type="button" class="sport-card'+(on?' on':'')+'" aria-pressed="'+(on?'true':'false')+'" aria-label="'+(on? 'Today you are playing ':'Switch to ')+x.name+'" onclick="switchSport(\''+x.id+'\')"><span class="sbe" aria-hidden="true">'+x.emoji+'</span>'+x.name+(on? '<span class="sport-check" aria-hidden="true">✓ Today!</span>' : '')+'</button>';
   }).join('');
   var gh=document.getElementById('sportSwitchGridHome'); if(gh) gh.innerHTML=html;
@@ -2645,11 +2731,17 @@ function renderSportSwitcher(){
   if(prac) prac.style.display='block';
 }
 function switchSport(sportId){
-  if(!window.isCustomEdition()) return;
   var picked=null; for(var i=0;i<THEME_SPORTS.length;i++){ if(THEME_SPORTS[i].id===sportId) picked=THEME_SPORTS[i]; }
   if(!picked) return; /* unknown or boys-only sport ids are never offered and never accepted */
-  if(myTheme.sport===sportId){ closeSportPanels(); if(typeof toast==='function') toast(picked.emoji+' You are already playing '+picked.name+' today!'); if(typeof sfx==='function') sfx('pop'); return; }
-  myTheme.sport=sportId; myTheme.preset=''; saveTheme(); applyTheme(); closeSportPanels();
+  if(!window.isCustomEdition() && !isClassicPlayable(sportId)){ showLockedSport(sportId); return; }
+  var curId=(typeof currentSportId==='function')? currentSportId() : myTheme.sport;
+  if(curId===sportId){ closeSportPanels(); if(typeof toast==='function') toast(picked.emoji+' You are already playing '+picked.name+' today!'); if(typeof sfx==='function') sfx('pop'); return; }
+  if(window.isCustomEdition()){ myTheme.sport=sportId; myTheme.preset=''; saveTheme(); } else { classicSport=sportId; saveClassicSport(); }
+  ['sportLockedMsgHome','sportLockedMsgPractice'].forEach(function(id){ var el=document.getElementById(id); if(el){ el.textContent=''; el.classList.remove('on'); } });
+  /* Do NOT hide the unlock button in the classic build: it stays visible
+     at the bottom of the sport panel. applyTheme() → renderSportSwitcher()
+     → placeSharedUnlock() restores it for the next time the panel opens. */
+  applyTheme(); closeSportPanels();
   if(typeof applyCoach==='function'){ try{ applyCoach(); }catch(e){} }
   /* Mid-game: keep the SAME problem, score and streak — just move it to
      the new sport's venue with that sport's waiting move. If a score or
@@ -2682,10 +2774,7 @@ function applyEdition(){
     var tp=document.getElementById('themePreviewStage'); if(tp) tp.innerHTML='';
     var tn=document.getElementById('themePreviewName'); if(tn) tn.textContent='';
     var tc=document.getElementById('themePreviewChips'); if(tc) tc.innerHTML='';
-    var sh=document.getElementById('sportSwitcherHome'); if(sh) sh.style.display='none';
-    var sp=document.getElementById('sportSwitcherPractice'); if(sp) sp.style.display='none';
-    var gh=document.getElementById('sportSwitchGridHome'); if(gh) gh.innerHTML='';
-    var gp=document.getElementById('sportSwitchGridPractice'); if(gp) gp.innerHTML='';
+    /* Classic teaser: the sport switcher IS shown on a plain link (3 open, rest locked) — do not hide or clear it here. renderSportSwitcher() via applyTheme() builds it. */
     var ph=document.getElementById('sportPanelHome'); if(ph) ph.style.display='none';
     var pp=document.getElementById('sportPanelPractice'); if(pp) pp.style.display='none';
   }
@@ -2693,7 +2782,10 @@ function applyEdition(){
   var sEl=document.getElementById('makeYoursStandard'); if(sEl) sEl.style.display= custom?'none':'block';
   var ht=document.getElementById('hubCheerTitle'); if(ht) ht.textContent= custom?'🎀 My Cheerleader — Design & Dress Her!':'🎀 My Cheerleader';
   var hd=document.getElementById('hubCheerDesc'); if(hd) hd.textContent= custom?'Pick her skin, hair, uniform, bow, shoes and pom poms. She performs in every game!':'Your Royal Roses cheerleader performs in every game!';
-  var bl=document.getElementById('heroBelleLine'); if(bl&&custom) bl.textContent='“Welcome to '+(typeof effectiveWorldName==='function'? effectiveWorldName() : "Royce's Royal Roses")+'! Every champion started with one brave try. Design your cheerleader, pick your pom poms, and let\u2019s shine — together!” 🌹';
+  /* The hero coach bubble is NOT written here: applySportWorld() (reached
+     through applyTheme() below) owns it, so its coach title and activity
+     wording always follow the current sport. Writing a cheer-only line
+     here would fight that sport-aware paint. */
   applyTheme();
   if(typeof applyWorldName==='function') applyWorldName();
   if(typeof applyCoach==='function') applyCoach();
@@ -2740,7 +2832,6 @@ function renderThemeStudio(){
   var nm=document.getElementById('themePreviewName'); if(nm) nm.textContent='My World: '+c.name+' • '+s.name+' • '+a.name;
   var chips=document.getElementById('themePreviewChips'); if(chips) chips.innerHTML=themeSummaryHTML();
 }
-applyTheme();
 
 /* ================= SETUP WIZARD (personalized link only) =================
    The first time a personalized page opens, this wizard walks the child
@@ -2760,10 +2851,10 @@ var setupState=loadSetup();
 function saveSetup(){ try{ localStorage.setItem(SETUP_KEY,JSON.stringify(setupState)); }catch(e){} }
 function possessiveOf(name){ var n=(name||'').trim(); if(!n) return "Royce's"; return /s$/i.test(n)? n+'\u2019' : n+'\u2019s'; }
 function worldNameFor(name){ return possessiveOf(name)+' Royal Roses'; }
-function effectiveWorldName(){ return window.isCustomEdition()? worldNameFor(setupState.name) : "Royce's Royal Roses"; }
+function effectiveWorldName(){ return window.isCustomEdition()? worldNameFor((typeof setupState!=='undefined'&&setupState)? setupState.name : '') : "Royce's Royal Roses"; }
 function applyWorldName(){
   var custom=window.isCustomEdition();
-  var poss= custom? possessiveOf(setupState.name) : "Royce's";
+  var poss= custom? possessiveOf((typeof setupState!=='undefined'&&setupState)? setupState.name : '') : "Royce's";
   var wn= effectiveWorldName();
   var b=document.getElementById('brandWorld'); if(b) b.textContent=wn;
   var h=document.getElementById('heroName'); if(h) h.textContent=wn;
@@ -2870,6 +2961,14 @@ function finishSetup(){
   if(typeof speakBelle==='function') speakBelle('Welcome to '+wn+'! Your world is ready! Pick a game and shine!',true);
   setTimeout(function(){ toast('🎀 Welcome to '+wn+' — your world is ready! Pick a game and shine!'); },450);
 }
+/* First paint of the theme / sport world. This MUST stay at the END of this
+   script block — after setupState above exists. Calling applyTheme() any
+   earlier (before the Setup Wizard state is defined) throws on a custom
+   link inside applySportWorld(), aborts the rest of this block, and leaves
+   setupState undefined for the whole page lifetime — which silently killed
+   the sport switcher, the sport-aware coach bubble, the venue labels and
+   the Math/Spelling headings on every custom visit. */
+applyTheme();
 </script>
 
 <script>
@@ -3087,7 +3186,7 @@ document.addEventListener('click',function(e){
 document.addEventListener('input',function(e){ if(e.target&&e.target.id==='volRange') sfx('tap'); },true);
 
 /* ---------- BUILD STAMP + SELF-UPDATE (quietly checks for a newer build on load and when the page comes back into view; reloads once if one is found, so updates reach devices on their own) ---------- */
-var BUILD_STAMP='2026-11-07-royce-crowd-cheers-1';
+var BUILD_STAMP='2026-11-07-royce-custom-sport-fixes-1';
 (function selfUpdate(){
   function check(){
     if(!window.fetch) return;
