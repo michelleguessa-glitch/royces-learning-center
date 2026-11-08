@@ -375,8 +375,6 @@ html.is-custom .music-note-btn{background:linear-gradient(180deg,#fff,color-mix(
 .make-yours-btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
 .theme-btn{background:var(--pink);color:#fff;border:none;border-radius:999px;padding:12px 20px;font-family:'Fredoka';font-weight:700;font-size:16px;box-shadow:0 4px 0 var(--pink-dd)}
 .theme-btn:active{transform:translateY(2px);box-shadow:0 2px 0 var(--pink-dd)}
-.hero-theme-badge{display:none;margin-top:12px;background:rgba(255,255,255,.16);border:2px solid rgba(255,255,255,.35);border-radius:999px;padding:8px 14px;font-weight:900;font-size:14px;width:fit-content;max-width:100%}
-.hero-theme-badge.on{display:block}
 /* ===== Sport Switcher: always-visible way to change the played sport =====
    The wizard pick is her world's DEFAULT (home) sport. This bar stays on
    the home screen AND inside every game, so she can say "soccer today,
@@ -895,7 +893,6 @@ html.is-standard .hub-row{grid-template-columns:repeat(2,1fr)}
         <div class="hero-stat">🏆 <span id="heroWins">0</span> Competitions Won</div>
         <div class="hero-stat">🎀 First to 20 Wins!</div>
       </div>
-      <div class="hero-theme-badge" id="heroThemeBadge"></div>
     </div>
     <div><img class="hero-img" src="assets/royce.webp" alt="Royce, a young Black cheerleader with two curly puffs and pink bows, holding pink pom poms high on the balance beam in her castle gym, with gold trophies and pink roses"/></div>
   </div>
@@ -3163,12 +3160,9 @@ function coachFaceHTML(){
   return coachClassicFaceHTML(coachDisplayName(),'width:100%;height:100%;object-fit:cover;object-position:50% 10%');
 }
 function coachSummaryHTML(){
-  var id=coachIdentity(), js=coachJacketStyle();
   var sE='📣', aE='🦋', sN='Cheer', aN='Butterfly';
   try{ var sp=themeSport(), an=themeAnimal(); sE=sp.emoji; sN=sp.name; aE=an.emoji; aN=an.name; }catch(e){}
   return '<span class="coach-chip">🏆 '+(typeof coachSportIntro==='function'? coachSportIntro() : coachDisplayName())+'</span>'
-    +'<span class="coach-chip">'+id.label+'</span>'
-    +'<span class="coach-chip">'+js.emoji+' '+js.name+' jacket</span>'
     +'<span class="coach-chip">'+sE+' '+sN+' prop</span>'
     +'<span class="coach-chip">'+aE+' '+aN+' friend</span>';
 }
@@ -3216,10 +3210,9 @@ function closeCoachStudio(){ document.getElementById('coachModal').classList.rem
 function setCoach(key,val){ if(!window.isCustomEdition()) return; if(typeof designLocked==='function'&&designLocked()) return; /* coach stays as shipped while the page is locked */ if(key==='identity'&&!coachIdentityAllowed(val)) val='girl'; if(key==='jacket'&&!coachJacketAllowed(val)) val='#E4B33C'; if(key==='hair'&&!coachHairAllowed(val)) val='ponytail'; if(key==='hairColor'&&!coachHairColorAllowed(val)) val='#3B2310'; if(key==='skin'&&(typeof val!=='number'||val<0||val>=SKINS.length)) val=2; myCoach[key]=val; saveCoach(); applyCoach(); renderCoachStudio(); if(typeof sfx==='function') sfx('pop'); }
 function setCoachName(v){ if(!window.isCustomEdition()) return; if(typeof designLocked==='function'&&designLocked()) return; /* coach stays as shipped while the page is locked */ myCoach.name=v; saveCoach(); applyCoach(); var pv=document.getElementById('coachPreview'); if(pv) pv.innerHTML=coachStudioPreviewHTML(); var pn=document.getElementById('coachPreviewName'); if(pn) pn.textContent=coachDisplayName(); var nt=document.getElementById('coachPreviewNote'); if(nt) nt.textContent=coachLookNote(); }
 function coachLookNote(){
-  var id=coachIdentity(), js=coachJacketStyle();
   var sE='📣', aE='🦋';
   try{ sE=themeSport().emoji; aE=themeAnimal().emoji; }catch(e){}
-  return js.name+' jacket • '+sE+' sport prop • '+aE+' animal friend • '+id.label.replace(/^\S+\s+/,'');
+  return sE+' sport prop • '+aE+' animal friend';
 }
 function coachStudioPreviewHTML(){
   if(coachCustom()) return '<div class="coach-fig">'+coachFigureSVG(myCoach)+'</div>';
@@ -4255,8 +4248,7 @@ function applyTheme(){
   /* Theme chips render ONLY on a custom link. On a standard link the summary
      stays empty — no trace of the saved theme anywhere on the page. */
   var sum=document.getElementById('themeSummary'); if(sum) sum.innerHTML= window.isCustomEdition()? themeSummaryHTML() : '';
-  var badge=document.getElementById('heroThemeBadge');
-  if(badge){ if(window.isCustomEdition()){ /* The hero carries NO summary of her custom build: customizing her world (colors, animal, background, names, designs) never adds its details to the hero, and the hero paragraph changes only with the sport being played — its name and the language around that sport. So on a personalized link the badge stays empty and hidden; nothing is written in its place. */ badge.textContent=''; badge.classList.remove('on'); } else { badge.textContent='🎀 Classic castle: 📣 Cheer • 💃 Dance • 🤸 Gymnastics to play'; badge.classList.add('on'); } }
+
   /* Her world's BACKGROUND scene — built from her home sport's place and
      tools (ballerinas, rink, pom poms in her colors…) — paints the page
      backdrop and the stage backdrop here, from the DEFAULT theme only.
