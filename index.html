@@ -43,11 +43,11 @@ try{ document.documentElement.classList.add(window.ROYCE_EDITION==='custom' ? 'i
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:'Nunito',system-ui,sans-serif;background:linear-gradient(180deg,var(--bg) 0%,color-mix(in srgb,var(--purple-l) 34%,#fff) 52%,var(--bg) 100%);color:var(--ink);overflow-x:hidden;overflow-x:clip;position:relative}
 h1,h2,h3,.fred{font-family:'Fredoka',sans-serif;letter-spacing:-.02em}
 button{font-family:inherit;cursor:pointer}
-.topbar{position:sticky;top:0;z-index:20;background:#fff;border-bottom:4px solid var(--pink);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.topbar{position:sticky;top:0;z-index:20;background:#fff;border-bottom:4px solid var(--pink);padding:10px max(16px,calc((100% - 1080px)/2 + 16px));display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .topbar .brand{flex:0 1 auto;min-width:0}
 .topbar .nav-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;flex:1 1 auto;min-width:0}
 .topbar .nav-spread{display:flex;gap:8px;align-items:center;flex:1 1 auto;min-width:0;flex-wrap:wrap;justify-content:space-evenly}
-.hero .hero-sfx{position:absolute;top:14px;right:16px;z-index:4;box-shadow:0 4px 14px rgba(90,10,50,.35)}
+.hero .hero-sfx{position:absolute;top:14px;right:max(16px,calc((100% - 1080px)/2));z-index:4;box-shadow:0 4px 14px rgba(90,10,50,.35)}
 .brand{display:flex;align-items:center;gap:10px;font-family:'Fredoka';font-weight:700;font-size:20px;line-height:1;color:var(--pink-d)}
 .brand small{display:block;font-family:'Nunito';font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:3px}
 .brand-face{width:44px;height:44px;border-radius:50%;object-fit:cover;object-position:50% 12%;border:3px solid var(--gold);background:var(--pink-l)}
@@ -82,7 +82,7 @@ button{font-family:inherit;cursor:pointer}
 .menu-report-btn:active{transform:translateY(2px);box-shadow:0 2px 0 var(--purple-d)}
 @media(max-width:640px){.menu-btn{font-size:14px;padding:8px 13px}.topbar .stars-pill{font-size:14px;padding:8px 13px}.menu-panel{padding:14px}.menu-wrap{position:static}.menu-panel{right:10px}}
 @media (prefers-reduced-motion: reduce){.menu-btn .menu-arrow{transition:none}}
-.hero{background-color:var(--pink-d);background-image:linear-gradient(120deg,var(--pink-dd) 0%,var(--pink-d) 30%,var(--pink) 58%,var(--purple) 100%);color:#fff;padding:28px 18px 34px;position:relative;overflow:hidden;border-bottom:5px solid var(--gold);isolation:isolate;z-index:2}
+.hero{background-color:var(--pink-d);background-image:linear-gradient(120deg,var(--pink-dd) 0%,var(--pink-d) 30%,var(--pink) 58%,var(--purple) 100%);color:#fff;padding:66px 18px 34px;position:relative;overflow:hidden;border-bottom:5px solid var(--gold);isolation:isolate;z-index:2}
 .hero-art{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
 .hero-lattice{position:absolute;inset:0;background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.14) 0 2px,transparent 2px 34px),repeating-linear-gradient(-45deg,rgba(255,255,255,.14) 0 2px,transparent 2px 34px);opacity:.55}
 .hero-fig{position:absolute;display:block}
@@ -897,7 +897,7 @@ html.is-standard .hub-row{grid-template-columns:repeat(2,1fr)}
   <div class="hero-art" aria-hidden="true"><div class="hero-lattice"></div><span class="hero-fig hero-fig-a cheer-slot"></span><span class="hero-fig hero-fig-b cheer-slot"></span></div>
   <div class="hero-inner">
     <div>
-      <h1>Welcome to <span id="heroName">Royce's Royal Roses</span>! 🎀</h1>
+      <h1>🎀 Welcome to <span id="heroName">Royce's Royal Roses</span>!</h1>
       <div class="hero-sport-line" id="heroSportLine"></div>
       <p id="heroDesc">Welcome Royce! I'm Coach Belle. I'm here to help you practice until you get it right. Select a game below to get started. Let's WIN the Championship!</p>
       <div class="hero-pills" aria-label="How we practice">
