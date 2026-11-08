@@ -3534,7 +3534,7 @@ function effectiveTheme(){ return window.isCustomEdition()? myTheme : defaultThe
 var WORLD_SCENE_META={
  cheer:{name:'Castle Ballroom of Pom Poms',desc:'Beautiful pom poms in YOUR theme colors fill your castle ballroom!'},
  dance:{name:'Repeating Ballerina Pattern',desc:'Ballerinas in tutus repeat all across your background — arms out on pointe, legs up and arms raised — with little hearts and stars scattered in!'},
- gymnastics:{name:'Emoji Gymnasts in Motion',desc:'Smooth emoji-style gymnasts fill your background — girls of every skin tone, from light to deep, with different hair — buns, ponytails, puffs, curls, long hair and braids — and different outfits, scattered everywhere doing handstand splits, cartwheels, leaps, leg holds and backbends!'},
+ gymnastics:{name:'Gymnasts in Motion',desc:'Clean, glossy 3D-style gymnasts fill your background — girls of every skin tone, from light to deep, with different hair — buns, ponytails, puffs, curls, long hair and braids — and different leotards, each in a different motion: handstands, a cartwheel, a split leap, a leg hold, a backbend and floor splits!'},
  hockey:{name:'Ice Rink',desc:'A full arena rink fills your background — a goal net, a stick and puck at center ice, face-off circles, boards, arena seats and two big floodlights shining down!'},
  basketball:{name:'Basketball Court',desc:'A real basketball court fills your background — hoops up high and basketballs ready!'},
  soccer:{name:'Soccer Field',desc:'A green soccer field fills your background — goals, white lines and soccer balls!'},
@@ -3546,89 +3546,6 @@ var WORLD_SCENE_META={
 function worldSceneTools(id){ var m={cheer:['🎀','🌹'],dance:['🩰','🎵'],gymnastics:['🤸','🏅'],hockey:['🏒','⚫'],basketball:['🏀','🏆'],soccer:['⚽','🥅'],tennis:['🎾','🏆'],swimming:['💦','🏁'],running:['👟','🏁'],jumprope:['🪢','☀️']}; return m[id]||['⭐','🎀']; }
 function wsSparkles(n){ var pts=[[60,60],[180,34],[330,70],[505,40],[655,66],[752,36],[120,150],[705,150],[262,120],[548,128]]; var s=''; for(var i=0;i<n&&i<pts.length;i++){ s+='<circle class="ws-twinkle" style="animation-delay:'+(i*0.55)+'s" cx="'+pts[i][0]+'" cy="'+pts[i][1]+'" r="'+(2.2+(i%3))+'" fill="#FFFFFF"/>'; } return s; }
 function wsPom(x,y,r,c1,c2){ var s='<g>'; for(var i=0;i<14;i++){ var a=(Math.PI*2*i)/14, x2=(x+Math.cos(a)*r).toFixed(1), y2=(y+Math.sin(a)*r*0.92).toFixed(1); s+='<line x1="'+x+'" y1="'+y+'" x2="'+x2+'" y2="'+y2+'" stroke="'+(i%2? c1:c2)+'" stroke-width="'+(r*0.36).toFixed(1)+'" stroke-linecap="round"/>'; } return s+'<circle cx="'+x+'" cy="'+y+'" r="'+(r*0.4).toFixed(1)+'" fill="'+c2+'"/></g>'; }
-/* Emoji-style gymnast for the Gymnastics scatter — copied from
-   Michelle's photo of the gymnast she likes: a smooth, glossy figure
-   with a plain round head (no drawn face), thick rounded arms and
-   legs, and a leotard in ONE solid outfit color. Every figure in the
-   scatter is this same gymnast design — what changes is HER: her
-   skin tone (a real mix — light, tan, brown and deep skin), her hair (different types — a bun,
-   a ponytail, two puffs, curls, long hair, a braid — in black, brown
-   and blonde), her outfit color and her motion: 'star' (the
-   handstand split from Michelle's photo), 'cartwheel', 'handstand',
-   'leap', 'arabesque', 'leghold', 'backbend', 'split' and 'jump'.
-   Hair hangs with gravity: on upside-down poses it falls toward
-   the floor. Origin = the floor under her. */
-function wsEmojiGymnast(x,y,s,flip,body,cloth,hairCol,hairType,pose){
-  var sx=flip? -s:s, inner='', rot=0;
-  var B='stroke="'+body+'" stroke-width="12" stroke-linecap="round" fill="none"';
-  var C='stroke="'+cloth+'" stroke-width="13.5" stroke-linecap="round" fill="none"';
-  function head(cx,cy,inv){ var d=inv? 1:-1, sw=inv? 0:1, h='<circle cx="'+cx+'" cy="'+cy+'" r="11.5" fill="'+body+'" stroke="#3A1430" stroke-opacity=".10" stroke-width="1.2"/>';
-    if(hairType==='long'){
-      /* long hair: panels fall past the head on both sides (toward
-         the floor when she is upside down), face left open */
-      h+='<path d="M'+(cx-11.5)+' '+(cy-d*13)+' L'+(cx-11.5)+' '+(cy+d*3)+' A11.5 11.5 0 0 '+sw+' '+(cx+11.5)+' '+(cy+d*3)+' L'+(cx+11.5)+' '+(cy-d*13)+' L'+(cx+7.5)+' '+(cy-d*13)+' L'+(cx+7.5)+' '+(cy-d*3)+' A7.5 7.5 0 0 '+(inv? 1:0)+' '+(cx-7.5)+' '+(cy-d*3)+' L'+(cx-7.5)+' '+(cy-d*13)+' Z" fill="'+hairCol+'"/>';
-    } else {
-      /* hair cap over the top of the head (the floor side when upside down) */
-      h+='<path d="M'+(cx-11.5)+' '+cy+' A11.5 11.5 0 0 '+sw+' '+(cx+11.5)+' '+cy+' L'+(cx+11.5)+' '+(cy+d*4.5)+' A11.5 9 0 0 '+sw+' '+(cx-11.5)+' '+(cy+d*4.5)+' Z" fill="'+hairCol+'"/>';
-      if(hairType==='bun'){ h+='<circle cx="'+cx+'" cy="'+(cy+d*15)+'" r="5.2" fill="'+hairCol+'"/>'; }
-      else if(hairType==='ponytail'){ h+='<path d="M'+(cx+6)+' '+(cy+d*9)+' Q'+(cx+17)+' '+(cy+d*16)+' '+(cx+13)+' '+(cy+d*30)+'" stroke="'+hairCol+'" stroke-width="6.5" stroke-linecap="round" fill="none"/><circle cx="'+(cx+5)+'" cy="'+(cy+d*11)+'" r="4.4" fill="'+hairCol+'"/>'; }
-      else if(hairType==='puffs'){ h+='<circle cx="'+(cx-8.5)+'" cy="'+(cy+d*10.5)+'" r="5.4" fill="'+hairCol+'"/><circle cx="'+(cx+8.5)+'" cy="'+(cy+d*10.5)+'" r="5.4" fill="'+hairCol+'"/>'; }
-      else if(hairType==='curly'){ h+='<circle cx="'+(cx-8)+'" cy="'+(cy+d*9)+'" r="5" fill="'+hairCol+'"/><circle cx="'+cx+'" cy="'+(cy+d*12.5)+'" r="5.6" fill="'+hairCol+'"/><circle cx="'+(cx+8)+'" cy="'+(cy+d*9)+'" r="5" fill="'+hairCol+'"/>'; }
-      else if(hairType==='braid'){ for(var bi=0;bi<4;bi++){ h+='<circle cx="'+(cx+11+((bi%2)?1.6:-1))+'" cy="'+(cy+d*(6+bi*6.4))+'" r="'+(4.3-bi*0.35)+'" fill="'+hairCol+'"/>'; } }
-    }
-    return h+'<ellipse cx="'+(cx-4)+'" cy="'+(cy-d*4.5)+'" rx="3.2" ry="2.3" fill="#FFFFFF" opacity=".30"/>'; }
-  function foot(cx,cy,r){ return '<ellipse cx="'+cx+'" cy="'+cy+'" rx="6.4" ry="3.4" fill="'+body+'" transform="rotate('+(r||0)+' '+cx+' '+cy+')"/>'; }
-  function hand(cx,cy){ return '<ellipse cx="'+cx+'" cy="'+cy+'" rx="6.2" ry="3.2" fill="'+body+'"/>'; }
-  function torso(y1,y2){ return '<path d="M-10.5 '+y1+' L10.5 '+y1+' L12.5 '+y2+' L-12.5 '+y2+' Z" fill="'+cloth+'" stroke="'+cloth+'" stroke-width="3" stroke-linejoin="round"/>'; }
-  if(pose==='cartwheel'){
-    rot=16;
-    inner='<path d="M-2 -76 L-15 -116 M2 -76 L31 -103" '+B+'/>'
-      +'<path d="M-3 -75 L-9 -94 M3 -75 L16 -89" '+C+'/>'
-      +'<path d="M-8 -54 L-21 -2 M8 -54 L29 -73" '+B+'/>'
-      + torso(-52,-80) + head(17,-33,true) + hand(-22,0) + foot(-17,-119,-38) + foot(34,-105,-52);
-  } else if(pose==='handstand'){
-    inner='<path d="M-2 -78 L-7 -121 M2 -78 L8 -119" '+B+'/>'
-      +'<path d="M-3 -77 L-5 -97 M3 -77 L5 -96" '+C+'/>'
-      +'<path d="M-8 -54 L-11 -2 M8 -54 L11 -2" '+B+'/>'
-      + torso(-52,-80) + head(0,-36,true) + hand(-12,0) + hand(12,0) + foot(-8,-124,-14) + foot(9,-122,16);
-  } else if(pose==='leap'){
-    inner='<ellipse cx="0" cy="4" rx="30" ry="5" fill="#3A1430" opacity=".12"/>'
-      +'<path d="M-3 -46 L-47 -52 M3 -46 L45 -58" '+B+'/>'
-      +'<path d="M-3 -46 L-23 -49 M3 -46 L22 -51" '+C+'/>'
-      +'<path d="M-9 -80 L-37 -92 M9 -80 L35 -98" '+B+'/>'
-      + torso(-86,-48) + head(0,-99) + foot(-50,-52,-8) + foot(48,-59,-18);
-  } else if(pose==='arabesque'){
-    inner='<path d="M-2 -46 L-1 -3 M8 -48 L46 -68" '+B+'/>'
-      +'<path d="M-2 -46 L-2 -24 M8 -48 L25 -57" '+C+'/>'
-      +'<path d="M-9 -82 L-35 -70 M9 -84 L33 -94" '+B+'/>'
-      + torso(-88,-48) + head(1,-101) + foot(-1,0,0) + foot(49,-69,-24);
-  } else if(pose==='leghold'){
-    inner='<path d="M-2 -46 L-1 -3 M2 -46 L17 -104" '+B+'/>'
-      +'<path d="M-2 -46 L-2 -24 M2 -46 L8 -72" '+C+'/>'
-      +'<path d="M-9 -80 L-33 -88 M8 -80 L19 -100" '+B+'/>'
-      + torso(-86,-48) + head(0,-99) + foot(-1,0,0) + foot(18,-107,20);
-  } else if(pose==='backbend'){
-    inner='<path d="M-31 -16 L-41 -1 M32 -15 L45 -17 L48 -1" '+B+'/>'
-      +'<path d="M-34 -5 Q0 -60 34 -5" fill="none" stroke="'+cloth+'" stroke-width="13" stroke-linecap="round"/>'
-      + head(-45,-15,true) + hand(-42,1) + foot(49,0,0);
-  } else if(pose==='split'){
-    inner='<path d="M0 -20 L-47 -13 M0 -20 L47 -15" '+C+'/>'
-      +'<path d="M-9 -56 L-27 -80 M9 -56 L27 -80" '+B+'/>'
-      + torso(-62,-20) + head(0,-75) + foot(-50,-13,0) + foot(50,-15,0);
-  } else if(pose==='jump'){
-    inner='<ellipse cx="0" cy="4" rx="27" ry="4.6" fill="#3A1430" opacity=".12"/>'
-      +'<path d="M-3 -44 L-31 -22 M3 -44 L31 -24" '+B+'/>'
-      +'<path d="M-3 -44 L-16 -34 M3 -44 L16 -35" '+C+'/>'
-      +'<path d="M-9 -78 L-39 -86 M9 -78 L39 -86" '+B+'/>'
-      + torso(-84,-46) + head(0,-97) + foot(-34,-20,-32) + foot(34,-22,32);
-  } else { /* star — the handstand split from Michelle's photo */
-    inner='<path d="M-2 -76 L-50 -84 M2 -76 L36 -113" '+B+'/>'
-      +'<path d="M-3 -75 L-24 -79 M3 -75 L17 -93" '+C+'/>'
-      +'<path d="M-8 -54 L-13 -2 M8 -54 L13 -2" '+B+'/>'
-      + torso(-52,-80) + head(0,-36,true) + hand(-14,0) + hand(14,0) + foot(-53,-85,-8) + foot(39,-116,-52);
-  }
-  return '<g transform="translate('+x+','+y+') scale('+sx+','+s+')"><g transform="rotate('+rot+')">'+inner+'</g></g>';
-}
 function wsHeart(x,y,s,col){ return '<g transform="translate('+x+','+y+') scale('+s+')"><path d="M0 11 C-15 -3 -7 -17 0 -9 C7 -17 15 -3 0 11 Z" fill="'+col+'"/></g>'; }
 function wsStar(x,y,s,col){ return '<g transform="translate('+x+','+y+') scale('+s+')"><polygon points="0,-11 3,-3.5 11,-3.5 4.5,1.5 7,9.5 0,4.8 -7,9.5 -4.5,1.5 -11,-3.5 -3,-3.5" fill="'+col+'"/></g>'; }
 /* One red rose, drawn as layered stained-glass petals with a dark
@@ -3776,41 +3693,22 @@ function worldSceneSVG(sportId,c,uid,fit){
      + wsHeart(348,196,1.0,PL) + wsHeart(724,188,0.85,AL)
      + wsHeart(500,262,0.9,T) + wsHeart(52,96,0.8,AL);
   } else if(sportId==='gymnastics'){
-    /* Gymnasts as the design itself (Michelle's photo): the SAME
-       smooth emoji-style gymnast scattered all across a light
-       background, over and over in different motions — the handstand
-       split from her photo, a cartwheel, a straight handstand, a
-       split leap, an arabesque, a leg hold, a backbend, a floor
-       split and a star jump. What changes from girl to girl is HER
-       (Michelle's clarification): her SKIN TONE — a real mix of
-       light, tan, brown and deep skin, never all one color — her HAIR — a bun, a ponytail,
-       two puffs, curls, long hair or a braid, in black, dark brown,
-       brown and blonde — and her OUTFIT color (her theme colors in
-       turn, plus the light gray leotard from the photo). No drawn
-       faces and no props — the game's own beam / bars / rings still
-       live in the practice stage, never in this pattern. */
-    var SK0='#FFDFC4', SK1='#F2C29B', SK2='#C68642', SK3='#8D5524', SK4='#6B4226', GRY='#DDE3EA', HBLK='#1E130C', HDBR='#3B2314', HBRN='#7A4A21', HBLO='#E8B95A';
-    defs='<linearGradient id="'+uid+'w" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+PL+'"/><stop offset="1" stop-color="#FFFFFF"/></linearGradient><linearGradient id="'+uid+'m" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+AL+'"/><stop offset="1" stop-color="'+PL+'"/></linearGradient>';
-    s='<rect width="800" height="330" fill="url(#'+uid+'w)"/>'
-     +'<rect y="300" width="800" height="30" fill="url(#'+uid+'m)" opacity=".55"/><rect y="298" width="800" height="3.4" fill="'+A+'" opacity=".5"/>'
-     + wsStar(198,52,0.9,T) + wsStar(600,46,0.8,A) + wsStar(400,158,0.85,P)
-     +'<g fill="'+P+'"><circle cx="52" cy="160" r="3.2"/><circle cx="752" cy="156" r="3.2"/></g><g fill="'+A+'"><circle cx="202" cy="262" r="3.2"/><circle cx="604" cy="264" r="3.2"/></g>'
-     /* row 1 */
-     + wsEmojiGymnast(96,110,0.76,false,SK1,GRY,HDBR,'ponytail','star')
-     + wsEmojiGymnast(294,110,0.76,false,SK0,A,HBLO,'bun','arabesque')
-     + wsEmojiGymnast(500,110,0.76,false,SK3,T,HBLK,'puffs','leghold')
-     + wsEmojiGymnast(702,110,0.76,true,SK2,P,HBLK,'braid','cartwheel')
-     /* row 2 */
-     + wsEmojiGymnast(98,214,0.76,false,SK4,A,HBLK,'curly','leap')
-     + wsEmojiGymnast(296,214,0.76,false,SK1,P,HBRN,'long','jump')
-     + wsEmojiGymnast(500,214,0.76,false,SK4,T,HDBR,'bun','split')
-     + wsEmojiGymnast(702,214,0.76,false,SK0,GRY,HBRN,'ponytail','star')
-     /* row 3 */
-     + wsEmojiGymnast(96,318,0.76,false,SK2,P,HDBR,'long','backbend')
-     + wsEmojiGymnast(294,318,0.76,false,SK3,GRY,HBLK,'curly','handstand')
-     + wsEmojiGymnast(500,318,0.76,false,SK0,A,HBLO,'puffs','cartwheel')
-     + wsEmojiGymnast(702,318,0.76,true,SK4,T,HBLK,'braid','arabesque')
-     + wsHeart(398,266,0.8,A) + wsHeart(52,266,0.75,P);
+    /* Gymnasts as the design itself — the CLEAN glossy 3D style from
+       Michelle's screenshot (assets/gymnastics-bg.png), NOT a hand
+       redraw: smooth 3D emoji-style girl gymnasts on a soft blush
+       ground, every girl different — skin tones from light to deep,
+       hair in a bun, a ponytail, two puffs, long curls, a braid and
+       loose curls in blonde, brown and black, leotards in pink,
+       purple, gold, teal, coral, gray and lavender — each in her own
+       motion: a straight handstand, a cartwheel, a split leap, a leg
+       hold, a backbend, floor splits and a handstand split. The old
+       stroke-drawn redrawn gymnasts are gone for good. A few theme
+       sparkles float over the scene so her colors still dress it. */
+    defs='';
+    s='<rect width="800" height="330" fill="'+PL+'"/>'
+     +'<image href="assets/gymnastics-bg.png" x="0" y="0" width="800" height="330" preserveAspectRatio="xMidYMid slice"/>'
+     + wsStar(36,30,0.85,T) + wsStar(764,26,0.8,A) + wsStar(400,20,0.7,P)
+     + wsHeart(24,120,0.7,A) + wsHeart(776,128,0.65,P);
 } else if(sportId==='hockey'){
     /* Full arena rink scene (Michelle's ref): a night arena with two
        big floodlight banks at the top corners shining beams down,
@@ -4132,7 +4030,15 @@ function paintWorldScene(){
   var bd=document.getElementById('worldBackdrop'), ws=document.getElementById('worldScene');
   var stage=document.getElementById('beamStage');
   var et=effectiveTheme(), c=paletteForTheme(et), sid=et.sport;
-  var enchanted=(et.bg==='enchanted');
+  /* The enchanted castle photo is the scene of the DEFAULT cheer
+     world only. On a personalized link, once her home sport is any
+     other sport — gymnastics included — that sport's own template
+     scene IS her applied background, even if an 'enchanted' page
+     color pick is still saved: the castle must never cover the
+     world she picked. (Before this, a gymnastics world saved with
+     bg 'enchanted' showed the empty castle gym everywhere and the
+     gymnastics template showed nowhere outside the games.) */
+  var enchanted=(et.bg==='enchanted' && !(window.isCustomEdition() && sid!=='cheer'));
   /* The sport being PLAYED right now (the games layer), kept separate
      from the home sport above. Guarded: before the sport layer loads,
      the stage simply keeps the home scene. */
@@ -4502,9 +4408,9 @@ function renderThemeStudio(){
   h+='<div class="opt-group"><h4>🎨 My Primary Color — my main color</h4><div class="opt-row">'+THEME_COLORS.map(function(x){ return '<button class="swatch'+(myTheme.color===x.id?' on':'')+'" style="background:'+x.primary+'" onclick="setThemeColor(\''+x.id+'\')" aria-label="Primary: '+x.name+'" title="Primary: '+x.name+'"></button>'; }).join('')+'</div><div style="font-weight:900;font-size:13px;color:var(--muted);margin-top:6px">'+c.name+' — your main color: it tints your whole page background, paints your hero, your headings and your main buttons, and makes the borders around your game cards.</div></div>';
   h+='<div class="opt-group"><h4>💜 My Secondary Color — my accent</h4><div class="opt-row">'+THEME_COLORS.map(function(x){ return '<button class="swatch'+(myTheme.color2===x.id?' on':'')+'" style="background:'+x.primary+'" onclick="setThemePick(\'color2\',\''+x.id+'\')" aria-label="Secondary: '+x.name+'" title="Secondary: '+x.name+'"></button>'; }).join('')+'</div><div style="font-weight:900;font-size:13px;color:var(--muted);margin-top:6px">'+c2.name+' — your accent: it finishes your hero, makes the borders around your shortcut cards and big panels, and colors your card labels and helper details.</div></div>';
   h+='<div class="opt-group"><h4>⭐ My Tertiary Color — my sparkle</h4><div class="opt-row">'+THEME_COLORS.map(function(x){ return '<button class="swatch'+(myTheme.color3===x.id?' on':'')+'" style="background:'+x.primary+'" onclick="setThemePick(\'color3\',\''+x.id+'\')" aria-label="Tertiary: '+x.name+'" title="Tertiary: '+x.name+'"></button>'; }).join('')+'</div><div style="font-weight:900;font-size:13px;color:var(--muted);margin-top:6px">'+c3.name+' — your sparkle, used just a little: the border around your hero picture and the shiny edge under your hero, your stars, locks and badges.</div></div>';
-  h+='<div class="opt-group"><h4>🏆 My Favorite Sport — my world\u2019s home sport!</h4><p style="font-weight:800;color:var(--muted);line-height:1.45;margin:0 0 8px;font-size:14px">This is the home sport of the world you are building — the sport your games start on every time you open your world, together with your color, animal and background. It also BUILDS your world\u2019s background: its own place and tools become the scene behind everything — ballerinas for dance, a beam, bars and rings for gymnastics, an ice rink with pucks and sticks for hockey, pom poms in your theme colors for cheer. Later, the big sport bar can switch your GAMES to another sport for a while — the games and their words change, but your world\u2019s theme and background stay exactly as you made them here. Right answers score the playing sport\u2019s way; wrong answers are that sport\u2019s miss, and you try the same problem again. Cheer keeps the classic castle squad and its pyramid.</p><div class="opt-row">'+THEME_SPORTS.map(function(x){ return '<button class="big-chip'+(myTheme.sport===x.id?' on':'')+'" onclick="setThemePick(\'sport\',\''+x.id+'\')"><span class="bce">'+x.emoji+'</span>'+x.name+'</button>'; }).join('')+'</div><div style="font-weight:900;font-size:13px;color:var(--muted);margin-top:6px">Your home sport: '+s.emoji+' '+s.name+' • Playing right now: '+sportWorld().emoji+' '+sportWorld().headline+' — '+coachSportIntro()+'</div></div>';
+  h+='<div class="opt-group"><h4>🏆 My Favorite Sport — my world\u2019s home sport!</h4><p style="font-weight:800;color:var(--muted);line-height:1.45;margin:0 0 8px;font-size:14px">This is the home sport of the world you are building — the sport your games start on every time you open your world, together with your color, animal and background. It also BUILDS your world\u2019s background: its own place and tools become the scene behind everything — ballerinas for dance, gymnasts in motion for gymnastics, an ice rink with pucks and sticks for hockey, pom poms in your theme colors for cheer. Later, the big sport bar can switch your GAMES to another sport for a while — the games and their words change, but your world\u2019s theme and background stay exactly as you made them here. Right answers score the playing sport\u2019s way; wrong answers are that sport\u2019s miss, and you try the same problem again. Cheer keeps the classic castle squad and its pyramid.</p><div class="opt-row">'+THEME_SPORTS.map(function(x){ return '<button class="big-chip'+(myTheme.sport===x.id?' on':'')+'" onclick="setThemePick(\'sport\',\''+x.id+'\')"><span class="bce">'+x.emoji+'</span>'+x.name+'</button>'; }).join('')+'</div><div style="font-weight:900;font-size:13px;color:var(--muted);margin-top:6px">Your home sport: '+s.emoji+' '+s.name+' • Playing right now: '+sportWorld().emoji+' '+sportWorld().headline+' — '+coachSportIntro()+'</div></div>';
   h+='<div class="opt-group"><h4>🐾 My Favorite Animal — my mascot!</h4><div class="opt-row">'+THEME_ANIMALS.map(function(x){ return '<button class="big-chip'+(myTheme.animal===x.id?' on':'')+'" onclick="setThemePick(\'animal\',\''+x.id+'\')"><span class="bce">'+x.emoji+'</span>'+x.name+'</button>'; }).join('')+'</div></div>';
-  h+='<div class="opt-group"><h4>🖼️ My Background — built by my favorite sport!</h4><p style="font-weight:800;color:var(--muted);line-height:1.45;margin:0 0 8px;font-size:14px">Your background scene comes from your FAVORITE SPORT above — its own place and tools become the backdrop of your whole world: ballerinas for dance, a beam, bars and rings for gymnastics, an ice rink with pucks and sticks for hockey, pom poms in your theme colors for cheer. It stays put — switching sports changes the game inside, never this background. The picks below choose the soft page color, and your primary color tints it, so the whole page wears your colors.</p><div class="opt-row">'+THEME_BGS.map(function(x){ return '<button class="big-chip'+(myTheme.bg===x.id?' on':'')+'" onclick="setThemePick(\'bg\',\''+x.id+'\')"><span class="bce">'+x.emoji+'</span>'+x.name+'</button>'; }).join('')+'</div></div>';
+  h+='<div class="opt-group"><h4>🖼️ My Background — built by my favorite sport!</h4><p style="font-weight:800;color:var(--muted);line-height:1.45;margin:0 0 8px;font-size:14px">Your background scene comes from your FAVORITE SPORT above — its own place and tools become the backdrop of your whole world: ballerinas for dance, gymnasts in motion for gymnastics, an ice rink with pucks and sticks for hockey, pom poms in your theme colors for cheer. It stays put — switching sports changes the game inside, never this background. The picks below choose the soft page color, and your primary color tints it, so the whole page wears your colors.</p><div class="opt-row">'+THEME_BGS.map(function(x){ return '<button class="big-chip'+(myTheme.bg===x.id?' on':'')+'" onclick="setThemePick(\'bg\',\''+x.id+'\')"><span class="bce">'+x.emoji+'</span>'+x.name+'</button>'; }).join('')+'</div></div>';
   h+='<div class="opt-group"><h4>🎀 Match My Cheerleader</h4><p style="font-weight:800;color:var(--muted);line-height:1.45;margin:0 0 8px;font-size:14px">Want your player to wear your theme too? Tap below, or open the Cheerleader Studio and dress her any way you like — skin, hair, uniform, bow, shoes and pom poms.</p><div class="opt-row"><button class="goldbtn" onclick="matchCheerleaderToTheme()">🎀 Match My Cheerleader to My Color</button><button class="ghost" onclick="closeThemeStudio();openStudio()">🎀 Design My Cheerleader</button></div></div>';
   o.innerHTML=h;
   /* Page locked on Royce's original design: every Theme Studio pick is
@@ -4654,7 +4560,7 @@ function renderSetupWizard(){
     h+='<div class="setup-kicker">'+kick+' — NAME YOUR WORLD</div><div class="setup-q">What is your first name? 🌹</div><p class="setup-hint">Type your first name and this world takes your name — it becomes your very own Royal Roses, named just for you!</p>';
     h+='<input class="setup-name-input" id="setupNameInput" type="text" maxlength="20" autocomplete="off" autocapitalize="words" spellcheck="false" placeholder="enter your child\'s name" aria-label="enter your child\'s name" value="'+escAttr(setupDraft.name)+'" oninput="setupNameInput(this.value)"/>';
   } else if(key==='background'){
-    var bmeta=WORLD_SCENE_META[myTheme.sport]||WORLD_SCENE_META.cheer; var enchantedBg=(myTheme.bg==='enchanted'); var ebg=themeById(THEME_BGS,'enchanted');
+    var bmeta=WORLD_SCENE_META[myTheme.sport]||WORLD_SCENE_META.cheer; var enchantedBg=(myTheme.bg==='enchanted' && myTheme.sport===defaultTheme().sport); var ebg=themeById(THEME_BGS,'enchanted');
     h+='<div class="setup-kicker">'+kick+' — YOUR BACKGROUND</div><div class="setup-q">Your background is built! 🖼️</div><p class="setup-hint">Each background below is built from a sport — its own place and tools become the scene behind everything: pick Dance and ballerinas dance across your background, pick Hockey and you get a shining ice rink with pucks and hockey sticks, pick Cheer and beautiful pom poms in YOUR theme colors fill your ballroom. The sport of the background you pick becomes the home sport of YOUR world, and your games start on it every time you open your world. That scene is the background of your whole page, and it stays your world\u2019s background no matter which sport your games switch to. Your three colors dress everything on top of it — your cards and their borders, your hero and its picture border.</p>';
     h+='<div class="scene-preview" style="margin:0 0 12px">'+(enchantedBg? enchantedSceneSVG(themePalette(),'w3','meet') : worldSceneSVG(myTheme.sport,themePalette(),'w3','meet'))+'<div class="scene-preview-cap">🖼️ Your background: '+(enchantedBg? ebg.name : bmeta.name)+'</div></div>';
     h+='<div class="opt-row"><button class="big-chip'+(enchantedBg?' on':'')+'" onclick="setupPickBackgroundTemplate(\'enchanted\')"><span class="bce">'+ebg.emoji+'</span>'+ebg.name+'</button>'+THEME_SPORTS.map(function(x){ var m=WORLD_SCENE_META[x.id]||WORLD_SCENE_META.cheer; return '<button class="big-chip'+(!enchantedBg&&myTheme.sport===x.id?' on':'')+'" onclick="setupPickBackgroundTemplate(\''+x.id+'\')"><span class="bce">'+x.emoji+'</span>'+m.name+'</button>'; }).join('')+'</div>';
