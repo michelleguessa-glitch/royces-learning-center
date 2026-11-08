@@ -889,17 +889,13 @@ html.is-standard .hub-row{grid-template-columns:repeat(2,1fr)}
     <div>
       <h1>Welcome to <span id="heroName">Royce's Royal Roses</span>! 🎀</h1>
       <div class="hero-sport-line" id="heroSportLine"></div>
-      <p id="heroDesc">Welcome to your cheer castle — an enchanted castle where math and spelling turn into a cheer competition with a whole squad of four! Cheer Coach Belle will show you an example first, help you fix mistakes until you get it right, and help you all the way to the championship.</p>
+      <p id="heroDesc">Welcome Royce! I'm Coach Belle. I'm here to help you practice until you get it right. Select a game below to get started. Let's WIN the Championship!</p>
       <div class="hero-stats">
         <div class="hero-stat">⭐ <span id="heroStars">0</span> Stars Earned</div>
         <div class="hero-stat">🏆 <span id="heroWins">0</span> Competitions Won</div>
         <div class="hero-stat">🎀 First to 20 Wins!</div>
       </div>
       <div class="hero-theme-badge" id="heroThemeBadge"></div>
-      <div class="hero-belle">
-        <span class="coach-face-slot" style="display:inline-flex;flex:0 0 58px"><img src="assets/coach-belle.webp" alt="Cheer Coach Belle in her gold and pink coach jacket, holding her clipboard in the castle gym" style="width:58px;height:58px;border-radius:50%;object-fit:cover;object-position:50% 10%;border:3px solid var(--gold-l)"/></span>
-        <p><b><span class="coach-name-text">Cheer Coach Belle</span> says:</b> <span id="heroBelleLine">“Welcome to Royce's Royal Roses! Every champion starts with one brave try. Pick your game, build the pyramid, and let's shine — together!” 🌹</span></p>
-      </div>
     </div>
     <div><img class="hero-img" src="assets/royce.webp" alt="Royce, a young Black cheerleader with two curly puffs and pink bows, holding pink pom poms high on the balance beam in her castle gym, with gold trophies and pink roses"/></div>
   </div>
@@ -1353,6 +1349,18 @@ html.is-standard .hub-row{grid-template-columns:repeat(2,1fr)}
     <h3>What grade are you in?</h3>
     <p style="font-weight:800;color:var(--muted);line-height:1.5;margin:4px 0 6px">Tap your grade to start playing!</p>
     <div class="grade-grid" id="gradeCards"></div>
+  </div>
+</div>
+
+<div class="modal" id="nameModal" role="dialog" aria-modal="true" aria-label="What is your name?">
+  <div class="modal-card" style="max-width:520px">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><span class="fred" style="color:var(--pink-d);font-size:15px;letter-spacing:.08em">🌹 YOUR NAME</span></div>
+    <h3>What is your name?</h3>
+    <p style="font-weight:800;color:var(--muted);line-height:1.5;margin:4px 0 10px">Type your first name and Coach Belle will say hello to YOU in the big hello at the top of the page! Leave it blank and her hello will say Royce.</p>
+    <input class="setup-name-input" id="learnerNameInput" type="text" maxlength="20" autocomplete="off" autocapitalize="words" spellcheck="false" placeholder="enter your name" aria-label="enter your name" onkeydown="if(event.key==='Enter'){event.preventDefault();submitLearnerName();}"/>
+    <div class="modal-btns" style="justify-content:center;margin-top:16px">
+      <button class="check-btn" onclick="submitLearnerName()">Start Playing! 🎀</button>
+    </div>
   </div>
 </div>
 
@@ -3167,6 +3175,10 @@ function coachSummaryHTML(){
 function applyCoach(){
   var custom=window.isCustomEdition();
   var isCustom=coachCustom();
+  /* The hero greeting's coach slot follows a renamed coach: repaint the
+     fixed hero script with the current coach name (the script itself
+     never changes — see paintHeroGreeting). */
+  if(typeof paintHeroGreeting==='function'){ try{ paintHeroGreeting(); }catch(e){} }
   /* name strings — every coach-owned label follows the chosen name */
   document.querySelectorAll('.coach-name-text').forEach(function(el){ el.textContent= coachDisplayName(); });
   document.querySelectorAll('.coach-short-text').forEach(function(el){ el.textContent= custom? coachShortName() : 'Belle'; });
@@ -3404,13 +3416,72 @@ var TENNIS_BALL_HTML='<svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20
    and the mascot keeps just its sport badge, exactly how tennis
    already worked (see applyTheme / applySportWorld below). */
 function sportBadgeHTML(emoji,id){ return emoji; }
-/* Paints every GAME surface from the sport being played: hero headline
-   and words, the coach intro line, the tabs and section heads, the venue
-   drawn INSIDE the stage, the prop / target, and the scoreboard rival.
-   It deliberately does NOT paint any theme surface: the stage's base
-   background, the page background and the theme badge belong to the
-   child's personalized world (applyTheme) and stay locked to the picks
-   she made when she built that world, whichever sport is playing. On a
+/* ===== THE HERO GREETING — FIXED SCRIPT (Michelle's words, locked) =====
+   The hero greeting is this one script, word for word, and it NEVER
+   changes: not with the sport, not with the game, no sport name in it,
+   no per-sport versions, ever. Only its two name slots are filled from
+   the page's own data — the learner's name (on the classic link, the
+   name she entered in the name pop-up that follows her first grade
+   pick, saved on this device; "Royce" when she left it blank or has
+   not entered one; on a custom link, her entered first name from the
+   Setup Wizard) and the coach's name (Belle, or the renamed coach on
+   a custom link).
+   Every repaint of the hero goes through paintHeroGreeting(), so no
+   other code may write its own greeting into the hero. */
+/* ===== CLASSIC LINK: the learner's own name, saved on this device =====
+   The classic link has no Setup Wizard, so on a first visit — right
+   after she picks her grade in the first-open grade pop-up —
+   selectGrade() opens the name pop-up (#nameModal). The name she
+   enters is saved on this device alongside the saved grade, so it is
+   already in the hero script on the next open; left blank, nothing is
+   saved and the hero keeps "Royce". Custom links never use this:
+   their learner names come from the Setup Wizard (setupState). */
+var LEARNER_NAME_KEY='royce-learner-name-v1';
+function loadClassicLearnerName(){ try{ var n=localStorage.getItem(LEARNER_NAME_KEY); if(n) return String(n).trim(); }catch(e){} return ''; }
+function saveClassicLearnerName(n){ try{ if(n) localStorage.setItem(LEARNER_NAME_KEY,String(n)); else localStorage.removeItem(LEARNER_NAME_KEY); }catch(e){} }
+function openLearnerNamePopup(){
+  if(window.isCustomEdition()) return;
+  var m=document.getElementById('nameModal'); if(!m) return;
+  var inp=document.getElementById('learnerNameInput'); if(inp) inp.value=loadClassicLearnerName();
+  m.classList.add('open');
+  setTimeout(function(){ var i=document.getElementById('learnerNameInput'); if(i){ try{ i.focus(); }catch(e){} } },60);
+}
+function submitLearnerName(){
+  var inp=document.getElementById('learnerNameInput');
+  var n=inp? inp.value.trim() : '';
+  saveClassicLearnerName(n);
+  var m=document.getElementById('nameModal'); if(m) m.classList.remove('open');
+  paintHeroGreeting();
+  if(typeof sfx==='function') sfx('sparkle');
+}
+function heroLearnerName(){
+  if(window.isCustomEdition()){
+    var n=(typeof setupState!=='undefined'&&setupState&&setupState.name)? String(setupState.name).trim() : '';
+    if(n) return n.split(/\s+/)[0];
+    return 'Royce';
+  }
+  var cn=loadClassicLearnerName();
+  if(cn) return cn.split(/\s+/)[0];
+  return 'Royce';
+}
+function heroGreetingText(){
+  var coach='Belle';
+  try{ coach=(typeof coachLineName==='function')? coachLineName() : 'Belle'; }catch(e){}
+  if(!coach) coach='Belle';
+  return "Welcome "+heroLearnerName()+"! I'm Coach "+coach+". I'm here to help you practice until you get it right. Select a game below to get started. Let's WIN the Championship!";
+}
+function paintHeroGreeting(){
+  var d=document.getElementById('heroDesc'); if(d) d.textContent=heroGreetingText();
+  var hl=document.getElementById('heroSportLine'); if(hl){ hl.textContent=''; hl.classList.remove('on'); }
+}
+/* Paints every GAME surface from the sport being played: the tabs and
+   section heads, the venue drawn INSIDE the stage, the prop / target,
+   and the scoreboard rival. It deliberately does NOT paint the hero
+   greeting (that script is fixed — see paintHeroGreeting above) and
+   does NOT paint any theme surface: the stage's base background, the
+   page background and the theme badge belong to the child's
+   personalized world (applyTheme) and stay locked to the picks she
+   made when she built that world, whichever sport is playing. On a
    standard link (or with cheer playing) it restores the classic castle
    wording exactly. */
 function applySportWorld(){
@@ -3448,16 +3519,13 @@ function applySportWorld(){
      every other world she holds her pom poms. The equipment is part of
      her figure — only the ball / puck prop ever travels. */
   var scEl=document.getElementById('stageCheer'); if(scEl&&scEl.dataset.pose!=='split'){ try{ scEl.innerHTML=cheerSVG(effectiveDesign(),'stand',stageCheerOpts()); }catch(e){} }
-  if(headline){ headline.textContent= sport? (w.emoji+' '+w.headline) : ''; headline.classList.toggle('on',!!sport); }
-  /* The hero paragraph is SPORT-ONLY: it is painted solely from the sport
-     being played (w.hero — that sport's name, its place, and how a right
-     or missed answer plays in that sport). Customizing her world — her
-     three colors, favorite animal, background, world name, cheerleader
-     or coach designs — NEVER rewrites this paragraph and never adds any
-     detail about her custom build to it. */
-  if(desc){ desc.textContent= w.hero; }
-  var heroLine=document.getElementById('heroBelleLine');
-  if(heroLine){ var wn=(typeof effectiveWorldName==='function')? effectiveWorldName() : "Royce's Royal Roses"; /* Hero wording follows the SPORT being played only — never the custom build: no animal pick and no design-your-cheerleader language is added here when her world is customized. The sport intro is the coach's sport title plus her role in that sport, nothing from her theme picks. */ var heroIntro=(typeof coachDisplayName==='function'? coachDisplayName() : 'Cheer Coach Belle'); if(sport){ heroLine.textContent='\u201CWelcome to '+wn+'! I\u2019m '+heroIntro+'. Every champion starts with one brave try. Pick your game, and let\u2019s play '+w.name+' — together!\u201D '+w.emoji; } else if(custom){ heroLine.textContent='\u201CWelcome to '+wn+'! Every champion starts with one brave try. Pick your game, build the pyramid, and let\u2019s shine — together!\u201D 🌹'; } else { heroLine.textContent='\u201CWelcome to Royce\u2019s Royal Roses! Every champion starts with one brave try. Pick your game, build the pyramid, and let\u2019s shine — together!\u201D 🌹'; } }
+  if(headline){ headline.textContent=''; headline.classList.remove('on'); }
+  /* The hero greeting is the FIXED script (see paintHeroGreeting above):
+     the same words on every sport and every game — it is never painted
+     from the sport being played (no w.hero, no sport name, no per-sport
+     versions), and customizing her world never rewrites it beyond
+     filling its two name slots (learner, coach). */
+  paintHeroGreeting();
   var tm=document.getElementById('tabMath'), ts=document.getElementById('tabSpell');
   if(tm) tm.textContent= sport? (w.emoji+' MATH '+w.venueShort.toUpperCase()) : '🌹 MATH CASTLE';
   if(ts) ts.textContent= sport? (w.emoji+' SPELLING '+w.venueShort.toUpperCase()) : '📣 SPELLING CASTLE';
@@ -4953,13 +5021,22 @@ function selectGrade(g){
      FIRST thing shown (see init below); picking a grade now hands
      straight to the first-time Setup Wizard — which has NO grade step,
      so grade is asked exactly once — and finishing the wizard opens
-     the home page. On a classic link — and for every later grade
-     change from the ☰ Menu — picking a grade opens / stays on the home
-     page directly, with no wizard. finishSetup() sets
+     the home page. On a classic link, a FIRST pick hands to the name
+     pop-up (her name for the hero script, saved on this device; no
+     wizard) and then home; every later grade change from the ☰ Menu
+     opens / stays on the home page directly. finishSetup() sets
      setupState.done=true before any selectGrade() call, so the wizard
      never re-opens from its own finish. */
   if(wasFirstPick && window.isCustomEdition() && typeof setupState!=='undefined' && setupState && !setupState.done && typeof openSetupWizard==='function'){
     openSetupWizard(false);
+  }
+  /* First visit on a CLASSIC link: the grade pop-up hands straight to
+     the name pop-up — she enters her name, it saves on this device
+     with her grade, and it replaces "Royce" in the hero script's
+     learner slot (blank keeps "Royce"). Later grade changes from the
+     ☰ Menu never re-ask: wasFirstPick is false for those. */
+  else if(wasFirstPick && !window.isCustomEdition() && typeof openLearnerNamePopup==='function'){
+    openLearnerNamePopup();
   }
 }
 function updateGradeUI(){ var el=document.getElementById('gradeLabel'); if(el) el.textContent='📚 Grade: '+GRADE_NAMES[gradeIdx]; var mn=document.getElementById('menuGradeNow'); if(mn) mn.textContent=GRADE_NAMES[gradeIdx]; if(typeof renderMainMenu==='function'){ try{ renderMainMenu(); }catch(e){} } }
@@ -5019,7 +5096,9 @@ var BUILD_STAMP='2026-11-07-royce-original-girl-no-gallery-2';
   /* First opening, in order — SAME on both links: the grade pop-up
      (the grade grid) is the FIRST thing a first-time visitor sees.
      Picking a grade closes it and opens the rest of the page:
-     • classic link — straight to the home page, ready to navigate;
+     • classic link — a first pick opens the name pop-up (her name
+       fills the hero script and saves on this device with her grade;
+       blank keeps "Royce"), then straight to the home page;
      • personalized link — selectGrade() hands a first pick straight
        to the first-time Setup Wizard (theme → color → animal →
        background → name → coach — NO grade step: the grade was just
