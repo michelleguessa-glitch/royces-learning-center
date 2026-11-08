@@ -40,10 +40,14 @@ try{ document.documentElement.classList.add(window.ROYCE_EDITION==='custom' ? 'i
 </script>
 <style>
 :root{--pink:#E84393;--pink-d:#C2185B;--pink-dd:#9D1450;--pink-l:#FCE4F1;--purple:#7C3AED;--purple-d:#5B21B6;--purple-l:#EFE7FD;--sec-line:#DDD0FA;--gold:#E4B33C;--gold-d:#B98A1F;--gold-l:#FFF3C4;--tert:#E4B33C;--tert-d:#B98A1F;--tert-l:#FFF3C4;--tert-line:#FDE68A;--bg:#FFF8FC;--ink:#3A1430;--muted:#8A5A78;--card:#fff;--line:#F6C6E0;--green:#16A34A;--green-bg:#DCFCE7;--radius:24px}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:'Nunito',system-ui,sans-serif;background:linear-gradient(180deg,var(--bg) 0%,color-mix(in srgb,var(--purple-l) 34%,#fff) 52%,var(--bg) 100%);color:var(--ink);overflow-x:hidden;position:relative}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:'Nunito',system-ui,sans-serif;background:linear-gradient(180deg,var(--bg) 0%,color-mix(in srgb,var(--purple-l) 34%,#fff) 52%,var(--bg) 100%);color:var(--ink);overflow-x:hidden;overflow-x:clip;position:relative}
 h1,h2,h3,.fred{font-family:'Fredoka',sans-serif;letter-spacing:-.02em}
 button{font-family:inherit;cursor:pointer}
 .topbar{position:sticky;top:0;z-index:20;background:#fff;border-bottom:4px solid var(--pink);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.topbar .brand{flex:0 1 auto;min-width:0}
+.topbar .nav-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;flex:1 1 auto;min-width:0}
+.topbar .nav-spread{display:flex;gap:8px;align-items:center;flex:1 1 auto;min-width:0;flex-wrap:wrap;justify-content:space-evenly}
+.hero .hero-sfx{position:absolute;top:14px;right:16px;z-index:4;box-shadow:0 4px 14px rgba(90,10,50,.35)}
 .brand{display:flex;align-items:center;gap:10px;font-family:'Fredoka';font-weight:700;font-size:20px;line-height:1;color:var(--pink-d)}
 .brand small{display:block;font-family:'Nunito';font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:3px}
 .brand-face{width:44px;height:44px;border-radius:50%;object-fit:cover;object-position:50% 12%;border:3px solid var(--gold);background:var(--pink-l)}
@@ -90,12 +94,12 @@ button{font-family:inherit;cursor:pointer}
 .hero h1{font-size:clamp(36px,6vw,60px);line-height:.98;margin:0}
 .hero h1 span{color:var(--gold-l)}
 .hero p{font-size:18px;line-height:1.5;font-weight:700;max-width:52ch}
-.hero-pills{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
-.hero-pill{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;text-align:left;background:#fff;border:6px solid var(--pink-l);color:var(--ink);border-radius:26px;padding:18px 20px;box-shadow:0 12px 26px rgba(90,10,50,.28)}
-.hero-pill-lead{font-family:'Baloo 2',sans-serif;font-weight:800;font-size:clamp(23px,2.6vw,32px);line-height:1.05;letter-spacing:-.01em;color:var(--ink);white-space:normal;text-wrap:balance}
+.hero-pills{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:14px}
+.hero-pill{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;text-align:left;background:#fff;border:5px solid var(--pink-l);color:var(--ink);border-radius:21px;padding:12px 15px;box-shadow:0 9px 20px rgba(90,10,50,.26)}
+.hero-pill-lead{font-family:'Baloo 2',sans-serif;font-weight:800;font-size:clamp(19px,2.1vw,25px);line-height:1.05;letter-spacing:-.01em;color:var(--ink);white-space:normal;text-wrap:balance}
 .hero-pill-sep{display:none}
-.hero-pill-cap{font-family:'Nunito',sans-serif;font-weight:800;font-size:clamp(12.5px,1.4vw,15px);line-height:1.3;letter-spacing:.05em;color:var(--muted);margin-top:7px;white-space:normal;text-wrap:balance}
-@media(max-width:560px){.hero-pills{gap:10px}.hero-pill{border-width:5px;border-radius:20px;padding:13px 14px}.hero-pill-lead{font-size:clamp(19px,5.6vw,23px)}.hero-pill-cap{font-size:12px;margin-top:5px}}
+.hero-pill-cap{font-family:'Nunito',sans-serif;font-weight:800;font-size:clamp(11px,1.15vw,13px);line-height:1.3;letter-spacing:.05em;color:var(--muted);margin-top:5px;white-space:normal;text-wrap:balance}
+@media(max-width:560px){.hero-pills{gap:8px;margin-top:12px}.hero-pill{border-width:4px;border-radius:17px;padding:9px 11px}.hero-pill-lead{font-size:clamp(16px,4.6vw,19px)}.hero-pill-cap{font-size:10.5px;margin-top:4px}}
 
 .hero-img{width:100%;border-radius:22px;border:4px solid var(--gold);box-shadow:0 18px 40px rgba(90,10,50,.35);display:block}
 .hero-belle{display:flex;gap:12px;align-items:center;margin-top:16px;background:rgba(255,255,255,.14);border:2px solid rgba(255,255,255,.3);border-radius:18px;padding:10px 12px}
@@ -885,10 +889,11 @@ html.is-standard .hub-row{grid-template-columns:repeat(2,1fr)}
 <div id="worldBackdrop" aria-hidden="true"></div>
 <header class="topbar">
   <div class="brand"><span class="brand-face-slot" style="display:inline-flex;width:44px;height:44px;flex:0 0 44px"><img class="brand-face" src="assets/coach-belle.webp" alt="Cheer Coach Belle" style="width:44px;height:44px"/></span><span><span id="brandWorld">Royce's Royal Roses</span><small>Beauty &amp; the Beast Cheer Castle • K to 5th Grade</small></span></div>
-  <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end"><button type="button" class="nav-home-btn" onclick="navGoHome()" aria-label="Home — go back to the home screen"><span class="nav-home-icon" aria-hidden="true">🏠</span> Home</button><div class="stars-pill">⭐ <span id="totalStars">0</span> Stars</div><div class="menu-wrap"><button type="button" class="menu-btn" id="mainMenuBtn" aria-haspopup="true" aria-expanded="false" aria-controls="mainMenuPanel" onclick="toggleMainMenu()"><span aria-hidden="true">☰</span> Menu <span class="menu-arrow" aria-hidden="true">▾</span></button><div class="menu-panel" id="mainMenuPanel" style="display:none" aria-label="Menu — change grade and progress report"><p class="menu-sec-note">Every game is set to this grade's learning level. Tap your grade to change it — all your games update right away!</p><div class="menu-grade-grid" id="menuGradeGrid" role="group" aria-label="Change grade"></div><hr class="menu-divider"/><button type="button" class="menu-report-btn" onclick="openProgressFromMenu()">📊 Progress Report</button><div id="menuWizardItem" style="display:none"><hr class="menu-divider"/><button type="button" class="menu-report-btn" onclick="openWizardFromMenu()">✨ Make It Yours — Setup Wizard</button><p class="menu-sec-note" style="text-align:center;margin-top:8px">Re-run the step-by-step setup — theme, three colors, animal, background, name and coach. (Your grade is changed from the grade list right above.)</p></div></div></div><button class="sfx-btn" id="sfxBtn" onclick="toggleSfx()" aria-pressed="true">🔊 Sounds ON</button></div>
+  <div class="nav-actions"><div class="nav-spread"><button type="button" class="nav-home-btn" onclick="navGoHome()" aria-label="Home — go back to the home screen"><span class="nav-home-icon" aria-hidden="true">🏠</span> Home</button><div class="stars-pill">⭐ <span id="totalStars">0</span> Stars</div><div class="menu-wrap"><button type="button" class="menu-btn" id="mainMenuBtn" aria-haspopup="true" aria-expanded="false" aria-controls="mainMenuPanel" onclick="toggleMainMenu()"><span aria-hidden="true">☰</span> Menu <span class="menu-arrow" aria-hidden="true">▾</span></button><div class="menu-panel" id="mainMenuPanel" style="display:none" aria-label="Menu — change grade and progress report"><p class="menu-sec-note">Every game is set to this grade's learning level. Tap your grade to change it — all your games update right away!</p><div class="menu-grade-grid" id="menuGradeGrid" role="group" aria-label="Change grade"></div><hr class="menu-divider"/><button type="button" class="menu-report-btn" onclick="openProgressFromMenu()">📊 Progress Report</button><div id="menuWizardItem" style="display:none"><hr class="menu-divider"/><button type="button" class="menu-report-btn" onclick="openWizardFromMenu()">✨ Make It Yours — Setup Wizard</button><p class="menu-sec-note" style="text-align:center;margin-top:8px">Re-run the step-by-step setup — theme, three colors, animal, background, name and coach. (Your grade is changed from the grade list right above.)</p></div></div></div></div></div>
 </header>
 
 <section class="hero">
+  <button class="sfx-btn hero-sfx" id="sfxBtn" onclick="toggleSfx()" aria-pressed="true">🔊 Sounds ON</button>
   <div class="hero-art" aria-hidden="true"><div class="hero-lattice"></div><span class="hero-fig hero-fig-a cheer-slot"></span><span class="hero-fig hero-fig-b cheer-slot"></span></div>
   <div class="hero-inner">
     <div>
