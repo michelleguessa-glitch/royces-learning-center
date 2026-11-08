@@ -53,15 +53,14 @@ button{font-family:inherit;cursor:pointer}
 .brand-face{width:44px;height:44px;border-radius:50%;object-fit:cover;object-position:50% 12%;border:3px solid var(--gold);background:var(--pink-l)}
 .brand-face-slot svg{width:44px;height:44px;display:block}
 /* Royce's own face, cropped from her hero picture (assets/royce.webp):
-   shown in the top nav bar and in the practice profile beside the Hint /
-   Example bubble, instead of the coach's photo. The wrapper clips a
+   shown in the top nav bar ONLY. The help areas — the profile beside the
+   Hint / Example bubble — show Coach Belle's face, not Royce's. The wrapper clips a
    circle and the hero image is scaled so her face fills it — the visible
    window is the 470x470 area of the 1920x1280 hero starting at (672,50),
    framing her face and puffs so she reads clearly at 44-64px. */
 .royce-crop{position:relative;overflow:hidden;border-radius:50%}
 .royce-crop--framed{border:3px solid var(--gold);background:var(--pink-l)}
 span.royce-crop>img{position:absolute;left:-143%;top:-10.6%;width:408.5%;height:auto;max-width:none}
-.belle-face .learner-face-slot{display:block;width:100%;height:100%}
 .stars-pill{background:var(--gold);color:#431407;padding:8px 14px;border-radius:999px;font-weight:900;font-size:15px;white-space:nowrap}
 .topbar .stars-pill{background:var(--gold);color:#431407;border:none;border-radius:999px;padding:8px 16px;font-family:'Fredoka';font-weight:700;font-size:15px;white-space:nowrap;box-shadow:0 3px 0 var(--gold-d);display:inline-flex;align-items:center;gap:7px;line-height:1.2}
 .sfx-btn{background:#fff;border:2px solid var(--line);border-radius:999px;padding:7px 12px;font-weight:900;font-size:13px;color:var(--pink-d)}
@@ -115,6 +114,15 @@ span.royce-crop>img{position:absolute;left:-143%;top:-10.6%;width:408.5%;height:
 .hero-belle{display:flex;gap:12px;align-items:center;margin-top:16px;background:rgba(255,255,255,.14);border:2px solid rgba(255,255,255,.3);border-radius:18px;padding:10px 12px}
 .hero-belle img{width:58px;height:58px;border-radius:50%;object-fit:cover;object-position:50% 10%;border:3px solid var(--gold-l);flex:0 0 58px}
 .hero-belle p{margin:0;font-size:15px}
+/* Coach headshot beside the Welcome introduction: Belle is the one saying
+   the welcome, so HER headshot sits to the LEFT of the introduction
+   paragraph, top-aligned with its first line (not centered on it). The
+   slot is a coach-face-slot, so a customized coach shows here too. */
+.hero-welcome{display:flex;gap:12px;align-items:flex-start;margin-top:16px}
+.hero-welcome p{margin:0}
+.hero-coach-face{display:block;width:58px;height:58px;flex:0 0 58px;border-radius:50%;overflow:hidden;border:3px solid var(--gold-l);background:var(--pink-l)}
+.hero-coach-face img{width:100%;height:100%;object-fit:cover;object-position:50% 10%;display:block}
+.hero-coach-face svg{width:100%;height:100%;display:block}
 .wrap{max-width:1080px;margin:0 auto;padding:28px 16px 210px}
 .tabs{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0 auto 30px;max-width:720px;width:100%}
 .tab{border:3px solid var(--line);background:#fff;color:var(--pink-d);border-radius:999px;padding:12px 20px;font-family:'Fredoka';font-weight:700;font-size:17px;text-align:center;min-width:0;line-height:1.2}
@@ -166,8 +174,21 @@ span.royce-crop>img{position:absolute;left:-143%;top:-10.6%;width:408.5%;height:
 .belle-face img{width:100%;height:100%;object-fit:cover;object-position:50% 10%}
 .bubble{flex:1 1 220px;min-width:0;background:var(--pink-l);border-radius:16px;padding:12px 14px;font-weight:800;line-height:1.5;font-size:16px;position:relative}
 .bubble:before{content:"";position:absolute;left:-10px;top:22px;border:6px solid transparent;border-right:8px solid var(--pink-l)}
-.hear-it-btn{background:var(--purple);color:#fff;border:none;border-radius:999px;padding:11px 16px;font-weight:900;font-size:14px;white-space:nowrap;box-shadow:0 4px 0 var(--purple-d)}
-.scoreboard{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:stretch;margin-bottom:12px}
+.hear-it-btn,.speak-plain{background:transparent;border:none;border-radius:0;box-shadow:none;color:inherit;padding:10px;font-size:26px;line-height:1;display:inline-grid;place-items:center;width:auto;height:auto;flex:0 0 auto;cursor:pointer}
+/* The replay control is Michelle's speaking-head icon — the silhouette
+   from HER uploaded picture (head in profile, mouth open speaking,
+   three sound arcs), with its white background removed and the shape
+   itself recolored to Royce's brand pink (assets/speak-icon.png). The
+   shape is her picture's, untouched. It sits plain like this everywhere
+   it appears, never inside a pill or bubble, and tapping it replays the
+   coach's reading (in the game view, the voice and the captions
+   together). */
+.speak-icon{display:block;width:1em;height:auto}
+.btn-row .speak-plain{justify-self:center;align-self:center}
+.modal-btns .speak-plain{align-self:center}
+.scoreboard{margin-bottom:12px}
+.sb-top{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.sb-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:stretch}
 .sb-team{background:#fff;border:3px solid var(--line);border-radius:18px;padding:10px;text-align:center}
 .sb-team.mine{border-color:var(--pink);background:linear-gradient(180deg,#fff,var(--pink-l))}
 .sb-team.rival{border-color:var(--purple);background:linear-gradient(180deg,#fff,var(--purple-l))}
@@ -237,7 +258,24 @@ span.royce-crop>img{position:absolute;left:-143%;top:-10.6%;width:408.5%;height:
 @keyframes cardBounce{0%{transform:scale(1)}35%{transform:scale(1.015)}100%{transform:scale(1)}}
 .play-layout{display:grid;grid-template-columns:minmax(0,1fr);gap:16px}
 .play-layout>div{min-width:0}
-.play-layout.with-work{grid-template-columns:minmax(0,1fr) 340px}
+/* Game view (Karter format): the game sits FIRST and alone at the top —
+   stage, then the question card, nothing stacked above or around it.
+   Work It Out opens FULL SCREEN in front of the game, so the
+   learner can actually work the problem on it — never tucked behind
+   the game, never a side column squeezing it. */
+.play-layout.with-work{grid-template-columns:minmax(0,1fr)}
+.play-layout .work-panel{margin-top:0}
+.game-close-btn{margin-left:auto}
+.below-game{margin-top:16px}
+.below-game .sport-switcher--compact{margin-top:12px}
+.hint-panel{background:var(--pink-l);border:none;border-radius:0;padding:20px 16px calc(20px + env(safe-area-inset-bottom));margin:0;position:fixed;inset:0;z-index:72;overflow-y:auto}
+.hint-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.hint-head b{font-family:'Fredoka';font-size:17px;color:var(--pink-dd)}
+.hint-face{width:48px;height:48px;flex-basis:48px}
+.hint-speak{background:transparent;border:none;box-shadow:none;padding:10px;font-size:26px;line-height:1;display:inline-grid;place-items:center}
+.hint-text{font-weight:800;line-height:1.55;font-size:16px;margin-top:10px}
+.belle-compact .speak-plain{align-self:center}
+@media(max-width:640px){.belle-compact .speak-plain{order:0}}
 .qlabel{font-family:'Fredoka';font-weight:600;color:var(--purple);font-size:15px;letter-spacing:.02em}
 .visual{display:flex;justify-content:center;padding:14px 0 10px}
 .question{font-family:'Fredoka';font-weight:600;font-size:clamp(26px,4.5vw,36px);line-height:1.25;margin:6px 0 4px}
@@ -248,7 +286,123 @@ span.royce-crop>img{position:absolute;left:-143%;top:-10.6%;width:408.5%;height:
 .check-btn{background:var(--green);color:#fff;border:none;border-radius:16px;padding:12px 26px;font-family:'Fredoka';font-weight:700;font-size:20px;box-shadow:0 4px 0 #15803D}
 .check-btn:active{transform:translateY(2px);box-shadow:0 2px 0 #15803D}
 /* helper tools live in their own roomy zone at the BOTTOM of the card — never a packed row up top */
-.tools-head{font-family:'Fredoka';font-weight:600;color:var(--purple-d);font-size:15px;margin-top:24px;padding-top:18px;border-top:3px dashed var(--line)}
+.tools-divider{border-top:3px dashed var(--line);margin-top:24px}
+.tools-head{font-family:'Fredoka';font-weight:700;color:#fff;font-size:16px}
+.tools-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;margin-top:16px;background:var(--purple);border:none;border-radius:999px;padding:14px 20px;cursor:pointer;text-align:center;box-shadow:0 4px 0 var(--purple-d)}
+.tools-btn:active{transform:translateY(2px);box-shadow:0 2px 0 var(--purple-d)}
+.tools-btn:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
+.tools-arrow{font-size:13px;color:#fff}
+.tools-menu{display:grid;grid-template-columns:1fr;gap:10px;margin-top:12px}
+.tools-menu .goldbtn,.tools-menu .ghost{width:100%;padding:14px 16px;font-size:15px}
+/* ===== GAME VIEW FIT — sizing and spacing ONLY, layout untouched =====
+   Michelle: "Don't change the layout, just the fit." The approved order
+   stays exactly as built — level + ✕ Close, Belle's instructions, the
+   scoreboard block, the stage, the question card with the answer box +
+   Check It, the dotted line, the centered Helper Tools button. Nothing
+   moves, nothing is added or removed. What changes is only how tall
+   each piece is: while the game view is open it becomes a full-screen
+   column whose height is the screen itself, every fixed piece is a
+   little tighter (smaller gaps, card padding, score digits, question
+   type), and the STAGE is the one flexible piece — it grows or shrinks
+   to whatever room is left, with her cheerleader, the beam, the mat,
+   the squad and the sport props sized as a share of the stage height
+   instead of fixed pixels, so they scale with it. A short problem
+   leaves a tall stage; a long word problem (or the feedback line after
+   an answer) takes its room and the stage gives it up — the problem,
+   the scoreboard, the game and the answer box are ALWAYS all on the
+   one screen together, no scrolling, so she watches her player make
+   or miss the moment she taps Check It. The rules bite only while the
+   view is open (its inline style reads display:block); every other
+   view keeps its exact original sizing. */
+.wrap:has(>#practiceView[style*="block"]){padding-top:8px;padding-bottom:10px}
+#practiceView[style*="block"]{display:flex!important;flex-direction:column;height:calc(100vh - 96px);height:calc(100dvh - 96px)}
+#practiceView .practice-head{flex:0 0 auto;margin-bottom:6px}
+#practiceView .practice-head .stars-pill{padding:6px 12px;font-size:14px}
+#practiceView .game-close-btn{padding:7px 13px;font-size:13.5px}
+#practiceView .belle-compact{flex:0 1 auto;margin-bottom:6px;padding:8px 10px;gap:10px;border-radius:16px}
+#practiceView .belle-face{width:48px;height:48px;flex-basis:48px}
+#practiceView .bubble{padding:8px 11px;font-size:14.5px;line-height:1.35;border-radius:13px}
+#practiceView .bubble:before{top:16px}
+#practiceView .scoreboard{flex:0 0 auto;margin-bottom:6px}
+#practiceView .sb-top{margin-bottom:6px;gap:8px}
+#practiceView .sb-target{padding:5px 12px;font-size:12.5px}
+#practiceView .streak-pill{padding:5px 11px;font-size:12.5px}
+#practiceView .sb-cards{gap:8px}
+#practiceView .sb-team{padding:6px 8px;border-radius:14px}
+#practiceView .sb-name{font-size:13.5px}
+#practiceView .sb-score{font-size:28px}
+#practiceView .champ-banner{flex:0 0 auto;margin-bottom:6px;padding:7px 12px;font-size:15px;border-radius:13px}
+#practiceView .stage{flex:1 1 auto;height:auto;min-height:104px;max-height:330px;margin-bottom:8px;border-radius:20px}
+#practiceView .stage-floor{height:13.5%}
+#practiceView .stage.sport-active .stage-floor{height:15.8%}
+#practiceView .beam{bottom:29%;height:5%;min-height:9px}
+#practiceView .beam:before,#practiceView .beam:after{top:100%;height:30px}
+#practiceView .mat{bottom:13.5%;height:5%;min-height:8px}
+#practiceView .stage-cheer{bottom:33.5%;height:59%;width:auto;aspect-ratio:118/196}
+#practiceView .stage-cheer.split-mode{bottom:26%;height:45.5%;width:auto;aspect-ratio:196/150}
+#practiceView .stage.squad-active .stage-cheer{bottom:14%}
+#practiceView .stage.sport-active.gym-beam-on .stage-cheer{bottom:24.2%}
+#practiceView .stage.swimming-active .stage-cheer{bottom:4.8%}
+#practiceView .cheer-shadow{bottom:30.5%;height:5%;min-height:8px}
+#practiceView .squad-member{bottom:14%;height:46.7%;width:auto;aspect-ratio:94/154}
+#practiceView #squadM3{bottom:15.2%}
+#practiceView .swim-water{height:35.8%}
+#practiceView .dance-barre{height:69.7%}
+#practiceView .barre-bar.barre-top{bottom:89.6%}
+#practiceView .barre-bar.barre-low{bottom:81.3%}
+#practiceView .barre-post{bottom:21.7%;height:70.4%}
+#practiceView .sport-target{bottom:29%;font-size:44px}
+#practiceView .sport-prop{bottom:31.5%}
+#practiceView .stage-mascot{top:34px;font-size:40px}
+#practiceView .stage-msg{bottom:6px;font-size:13.5px;padding:6px 13px}
+#practiceView .gamecard{flex:0 1 auto;padding:10px 12px;border-radius:20px}
+#practiceView .qlabel{font-size:14px}
+#practiceView .visual{padding:4px 0 2px;max-height:14vh;max-height:14dvh;overflow:hidden}
+#practiceView .visual svg{max-height:13vh;max-height:13dvh}
+#practiceView .question{font-size:clamp(20px,3.4vw,27px);line-height:1.28;margin:3px 0 2px}
+#practiceView .clue{padding:8px 11px;margin:5px 0;font-size:14.5px;line-height:1.4}
+#practiceView .answer-row{margin-top:8px;gap:8px}
+#practiceView .answer-input{font-size:22px;padding:8px 13px;border-radius:14px}
+#practiceView .check-btn{font-size:18px;padding:9px 20px;border-radius:14px}
+#practiceView .choices{margin-top:8px;gap:8px}
+#practiceView .choice{padding:10px 18px;font-size:20px;border-radius:14px}
+#practiceView .letter-boxes{margin:6px 0}
+#practiceView .letter-box{width:38px;height:44px;font-size:21px}
+#practiceView .feedback{margin-top:8px;font-size:14.5px;line-height:1.4}
+#practiceView .feedback.good,#practiceView .feedback.bad{padding:9px 11px}
+#practiceView .tools-divider{margin-top:10px}
+#practiceView .tools-btn{margin-top:10px;padding:10px 16px}
+#practiceView .tools-head{font-size:15px}
+#practiceView .tools-menu{margin-top:8px}
+@media (max-height:740px){
+ #practiceView .belle-face{width:40px;height:40px;flex-basis:40px}
+ #practiceView .bubble{font-size:13.5px;padding:7px 10px}
+ #practiceView .sb-score{font-size:24px}
+ #practiceView .sb-team{padding:5px 7px}
+ #practiceView .question{font-size:clamp(19px,3.2vw,24px)}
+ #practiceView .gamecard{padding:8px 10px}
+ #practiceView .stage{min-height:88px}
+ #practiceView .answer-input{font-size:20px;padding:7px 12px}
+ #practiceView .check-btn{font-size:17px;padding:8px 16px}
+ #practiceView .tools-divider{margin-top:8px}
+ #practiceView .tools-btn{margin-top:8px;padding:8px 14px}
+}
+@media (max-height:600px){
+ #practiceView .bubble{font-size:13px;line-height:1.3}
+ #practiceView .sb-score{font-size:21px}
+ #practiceView .sb-name{font-size:12.5px}
+ #practiceView .question{font-size:clamp(18px,3vw,22px);line-height:1.24}
+ #practiceView .stage{min-height:72px}
+ #practiceView .visual{max-height:9vh;max-height:9dvh}
+}
+/* Phones: the top bar wraps to two rows there (brand row, then the
+   Home / Stars / Menu row), so it stands taller than the one-row
+   desktop bar the base offset assumes — the game column gives that
+   height back, so the whole stack still ends inside the screen. */
+@media (max-width:640px){
+ #practiceView[style*="block"]{height:calc(100vh - 132px);height:calc(100dvh - 132px)}
+ #practiceView .stage{min-height:80px}
+}
 .btn-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
 .btn-row .goldbtn,.btn-row .ghost{width:100%;padding:14px 16px;font-size:15px}
 @media(max-width:560px){.btn-row{grid-template-columns:1fr}.btn-row .goldbtn,.btn-row .ghost{padding:15px 16px}.answer-input{min-width:0}.check-btn{padding:12px 18px}}
@@ -265,7 +419,7 @@ span.royce-crop>img{position:absolute;left:-143%;top:-10.6%;width:408.5%;height:
 .group-dots{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0}
 .group-dots .gd{border:2px dashed var(--purple);border-radius:12px;padding:6px 10px;font-size:18px;letter-spacing:2px;background:var(--purple-l)}
 /* work panel */
-.work-panel{background:#FFF9FD;border:3px solid var(--purple);border-radius:20px;padding:14px}
+.work-panel{background:#FFF9FD;border:none;border-radius:0;padding:18px 16px calc(18px + env(safe-area-inset-bottom));position:fixed;inset:0;z-index:71;overflow-y:auto}
 .work-head{display:flex;justify-content:space-between;align-items:center;gap:8px}
 .work-head h3{margin:0;color:var(--purple-d);font-size:19px}
 .work-close{background:#fff;border:2px solid var(--line);border-radius:999px;padding:7px 13px;font-weight:900;color:var(--pink-d)}
@@ -535,8 +689,7 @@ footer{max-width:1080px;margin:0 auto;padding:0 16px 210px;color:var(--muted);fo
  .stage-cheer{width:104px;height:176px}
  .stage.sport-active.gym-beam-on .stage-cheer{bottom:82px}
  .stage-cheer.split-mode{width:172px;height:134px}
- .scoreboard{grid-template-columns:1fr 1fr}
- .sb-mid{grid-column:1/-1;flex-direction:row;order:3}
+ .sb-cards{grid-template-columns:1fr 1fr}
  .bubble{font-size:15px}
 }
 /* Coach card framing on phones (every game view uses .belle-compact):
@@ -545,7 +698,7 @@ footer{max-width:1080px;margin:0 auto;padding:0 16px 210px;color:var(--muted);fo
    the bubble is never crushed into a one-word-wide column and the
    button never hangs off the card's right edge. */
 @media(max-width:640px){
- .belle-compact .hear-it-btn{order:3;flex:1 1 100%;text-align:center}
+ .belle-compact .speak-plain{order:0;text-align:center}
 }
 /* ===== WRITING CASTLE (Kindergarten–2nd grade): touch tracing + keypad ===== */
 .trace-kind-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
@@ -902,14 +1055,17 @@ html.is-standard .hub-row{grid-template-columns:repeat(2,1fr)}
   <div class="nav-actions"><div class="nav-spread"><button type="button" class="nav-home-btn" onclick="navGoHome()" aria-label="Home — go back to the home screen"><span class="nav-home-icon" aria-hidden="true">🏠</span> Home</button><div class="stars-pill">⭐ <span id="totalStars">0</span> Stars</div><div class="menu-wrap"><button type="button" class="menu-btn" id="mainMenuBtn" aria-haspopup="true" aria-expanded="false" aria-controls="mainMenuPanel" onclick="toggleMainMenu()"><span aria-hidden="true">☰</span> Menu <span class="menu-arrow" aria-hidden="true">▾</span></button><div class="menu-panel" id="mainMenuPanel" style="display:none" aria-label="Menu — change grade and progress report"><p class="menu-sec-note">Every game is set to this grade's learning level. Tap your grade to change it — all your games update right away!</p><div class="menu-grade-grid" id="menuGradeGrid" role="group" aria-label="Change grade"></div><hr class="menu-divider"/><button type="button" class="menu-report-btn" onclick="openProgressFromMenu()">📊 Progress Report</button><div id="menuWizardItem" style="display:none"><hr class="menu-divider"/><button type="button" class="menu-report-btn" onclick="openWizardFromMenu()">✨ Make It Yours — Setup Wizard</button><p class="menu-sec-note" style="text-align:center;margin-top:8px">Re-run the step-by-step setup — theme, three colors, animal, background, name and coach. (Your grade is changed from the grade list right above.)</p></div></div></div></div></div>
 </header>
 
-<section class="hero">
+<section class="hero" id="heroSection">
   <button class="sfx-btn hero-sfx" id="sfxBtn" onclick="toggleSfx()" aria-pressed="true">🔊 Sounds ON</button>
   <div class="hero-art" aria-hidden="true"><div class="hero-lattice"></div><span class="hero-fig hero-fig-a cheer-slot"></span><span class="hero-fig hero-fig-b cheer-slot"></span></div>
   <div class="hero-inner">
     <div>
       <h1>🎀 Welcome to <span id="heroName">Royce's Royal Roses</span>!</h1>
       <div class="hero-sport-line" id="heroSportLine"></div>
-      <p id="heroDesc">Welcome Royce! I'm Coach Belle. I'm here to help you practice until you get it right. Select a game below to get started. Let's WIN the Championship!</p>
+      <div class="hero-welcome">
+        <span class="coach-face-slot hero-coach-face"><img src="assets/coach-belle.webp" alt="Cheer Coach Belle" style="width:100%;height:100%;object-fit:cover;object-position:50% 10%"/></span>
+        <p id="heroDesc">Welcome Royce! I'm Coach Belle. I'm here to help you practice until you get it right. Select a game below to get started. Let's WIN the Championship!</p>
+      </div>
       <div class="hero-pills" aria-label="How we practice">
         <span class="hero-pill"><span class="hero-pill-lead">One at a time</span><span class="hero-pill-sep" aria-hidden="true"> — </span><span class="hero-pill-cap" id="heroPillCoach">JUST YOU &amp; BELLE</span></span>
         <span class="hero-pill"><span class="hero-pill-lead">No rushing</span><span class="hero-pill-sep" aria-hidden="true"> — </span><span class="hero-pill-cap">LEARN AT YOUR PACE</span></span>
@@ -985,29 +1141,38 @@ html.is-standard .hub-row{grid-template-columns:repeat(2,1fr)}
   </div>
 
   <div id="practiceView" style="display:none">
+    <!-- GAME VIEW — top to bottom: a plain header row (level and this
+         view's own ✕ Close — no game title in here; she already picked
+         the game), then Coach Belle's INSTRUCTIONS space at the very
+         top — no static card: Belle reads the instructions aloud on
+         game open and her words appear there as captions, sentence by
+         sentence, then stay in full for glance-back (💬 replays both),
+         then
+         the SCOREBOARD block (First to 20 Wins, the scorecards under
+         it, and the 🔥 streak), then the visual game feature (stage),
+         then the question card with the answer box + Check It, the
+         dotted line, and the "My Helper Tools" line as a BUTTON that
+         opens a drop-down (Work It Out / Show Me an Example / Get a
+         Hint). A picked tool opens FULL SCREEN over this view and
+         closes right back to it. No sport-picker card lives in this
+         view. Home stays only in the top nav bar — this view's exit is
+         the ✕ Close here, which runs the same goHome() cleanup as
+         every other view's close. -->
     <div class="practice-head">
-      <button class="home-btn" onclick="goHome()">🏠 Home</button>
-      <span class="fred" id="pTitle" style="font-size:22px"></span>
       <span class="stars-pill" id="pLevel"></span>
-    </div>
-    <div class="sport-switcher sport-switcher--compact" id="sportSwitcherPractice" style="display:none" aria-label="Pick your sport for today">
-      <button type="button" class="sport-pick-btn" id="sportPickBtnPractice" aria-expanded="false" aria-controls="sportPanelPractice" onclick="toggleSportPanel('practice')"><span class="sport-pick-main">🎀 Pick Your Sport for Today!</span><span class="sport-pick-today" id="sportNowPractice">Today: 📣 Cheer — tap to change</span><span class="sport-pick-arrow" aria-hidden="true">▼</span></button>
-      <div class="sport-panel" id="sportPanelPractice" style="display:none">
-        <p class="sport-panel-hint" id="sportPanelHintPractice">Tap a sport and this game switches with you — same problem, same score, brand-new field!</p>
-        <div class="sport-switch-grid" id="sportSwitchGridPractice" role="group" aria-label="Pick a sport"></div>
-        <div class="locked-msg" id="sportLockedMsgPractice" role="status" aria-live="polite"></div>
-        <!-- No separate unlock button here: placeSharedUnlock() moves the single shared #sportUnlockShared element into this panel when it opens, at the top, above this panel's grid. -->
-      </div>
+      <button type="button" class="ghost game-close-btn" onclick="goHome()" aria-label="Close this game and go back to the home screen">✕ Close</button>
     </div>
     <div class="belle-compact">
-      <div class="belle-face"><span class="learner-face-slot royce-crop"><img src="assets/royce.webp" alt="Royce"/></span></div>
+      <div class="belle-face"><span class="coach-face-slot"><img src="assets/coach-belle.webp" alt="Cheer Coach Belle" style="width:100%;height:100%;object-fit:cover;object-position:50% 10%"/></span></div>
       <div class="bubble" id="belleBubble">Let's shine!</div>
-      <button class="hear-it-btn" id="hearItBtn" onclick="hearCurrentTask()">🔊 Hear It — <span class="coach-short-text">Belle</span> Reads It!</button>
+      <button class="speak-plain" id="hearItBtn" onclick="hearCurrentTask()" aria-label="Hear Belle read this out loud"><img class="speak-icon" src="assets/speak-icon.png" alt=""/></button>
     </div>
     <div class="scoreboard" aria-label="Competition scoreboard">
-      <div class="sb-team mine"><div class="sb-name" id="sbTeamName">⭐ Royce's Royal Roses</div><div class="sb-score" id="sbMine">0</div></div>
-      <div class="sb-mid"><span class="sb-target" id="sbTarget">First to 20 wins!</span><span class="streak-pill" id="streakPill">🔥 Streak: 0</span></div>
-      <div class="sb-team rival"><div class="sb-name" id="sbRivalName">🌹 Belle's Castle Belles</div><div class="sb-score" id="sbRival">0</div></div>
+      <div class="sb-top"><span class="sb-target" id="sbTarget">First to 20 wins!</span><span class="streak-pill" id="streakPill">🔥 Streak: 0</span></div>
+      <div class="sb-cards">
+        <div class="sb-team mine"><div class="sb-name" id="sbTeamName">⭐ Royce's Royal Roses</div><div class="sb-score" id="sbMine">0</div></div>
+        <div class="sb-team rival"><div class="sb-name" id="sbRivalName">🌹 Belle's Castle Belles</div><div class="sb-score" id="sbRival">0</div></div>
+      </div>
     </div>
     <div class="champ-banner" id="champBanner">🏆 CHAMPIONSHIP COMPETITION! Win this one for a Championship Trophy! 🏆</div>
     <div class="stage" id="beamStage" aria-label="Your cheer squad in the castle ballroom — pyramid games">
@@ -1056,14 +1221,30 @@ html.is-standard .hub-row{grid-template-columns:repeat(2,1fr)}
           <div class="answer-row" id="inputRow">
             <input class="answer-input" id="answerInput" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Type here"/>
             <button class="check-btn" onclick="checkAnswer()">✓ Check It!</button>
+            <button class="speak-plain" id="hearBtn" style="display:none" onclick="hearWord()" aria-label="Hear Belle say the word out loud"><img class="speak-icon" src="assets/speak-icon.png" alt=""/></button>
           </div>
           <div class="feedback" id="feedback"></div>
-          <div class="tools-head">🛠️ My Helper Tools — use them anytime!</div>
-          <div class="btn-row">
-            <button class="goldbtn" id="workToggleBtn" style="display:none" onclick="toggleWorkPanel()">✏️ Work It Out</button>
-            <button class="goldbtn" onclick="openWizard(currentTopic)">✨ Show Me an Example</button>
-            <button class="ghost" id="hearBtn" style="display:none" onclick="hearWord()">🔊 Hear the Word</button>
-            <button class="ghost" onclick="belleHint()">💡 <span class="coach-short-text">Belle</span>, Give Me a Hint</button>
+          <div class="tools-divider" aria-hidden="true"></div>
+          <button type="button" class="tools-head tools-btn" id="toolsToggleBtn" onclick="toggleToolsMenu()" aria-expanded="false" aria-controls="toolsMenu">🛠️ My Helper Tools — use them anytime!<span class="tools-arrow" aria-hidden="true">▾</span></button>
+          <div class="tools-menu" id="toolsMenu" style="display:none">
+            <button class="goldbtn" id="workToggleBtn" style="display:none" onclick="closeToolsMenu(); toggleWorkPanel()">✏️ Work It Out</button>
+            <button class="goldbtn" onclick="closeToolsMenu(); openWizard(currentTopic)">✨ Show Me an Example</button>
+            <button class="ghost" onclick="closeToolsMenu(); belleHint()">💡 Get a Hint</button>
+          </div>
+          <!-- Hint opens FULL SCREEN over the game view: Coach Belle's
+               face (never Royce's), the hint words, a 💬 speech symbol
+               that replays her reading it aloud, and its own ✕ Close
+               that returns right back to the game screen — the same
+               close workflow as every other opener on the page. -->
+          <div class="hint-panel" id="hintPanel" style="display:none">
+            <div class="hint-head">
+              <div class="belle-face hint-face"><span class="coach-face-slot"><img src="assets/coach-belle.webp" alt="Cheer Coach Belle" style="width:100%;height:100%;object-fit:cover;object-position:50% 10%"/></span></div>
+              <b>💡 Hint from <span class="coach-short-text">Belle</span></b>
+              <span style="flex:1"></span>
+              <button type="button" class="speak-plain" onclick="replayHint()" aria-label="Hear the hint again"><img class="speak-icon" src="assets/speak-icon.png" alt=""/></button>
+              <button type="button" class="work-close" onclick="closeHintPanel()">✕ Close</button>
+            </div>
+            <div class="hint-text" id="hintText"></div>
           </div>
         </div>
         <aside class="work-panel" id="workPanel" style="display:none" aria-label="Work It Out">
@@ -1083,14 +1264,15 @@ html.is-standard .hub-row{grid-template-columns:repeat(2,1fr)}
 
   <div id="writingView" style="display:none">
     <div class="practice-head">
-      <button class="home-btn" onclick="closeWriting()">🏠 Home</button>
+      
+      <button class="ghost" onclick="closeWriting()">✕ Close</button>
       <span class="fred" style="font-size:22px">✏️ Writing Castle</span>
       <span class="stars-pill" id="writingLevel">🌱 Kindergarten</span>
     </div>
     <div class="belle-compact" id="writingBelleCard">
       <div class="belle-face"><span class="coach-face-slot"><img src="assets/coach-belle.webp" alt="Cheer Coach Belle" style="width:100%;height:100%;object-fit:cover;object-position:50% 10%"/></span></div>
       <div class="bubble" id="writingBubble">Let's write, superstar!</div>
-      <button class="hear-it-btn" onclick="writingHear()">🔊 Hear It — <span class="coach-short-text">Belle</span> Reads It!</button>
+      <button class="speak-plain" onclick="writingHear()" aria-label="Hear Belle read this out loud"><img class="speak-icon" src="assets/speak-icon.png" alt=""/></button>
     </div>
     <div class="wmode-row" role="group" aria-label="Pick how to practice writing">
       <button type="button" class="wmode-btn active" id="wmodeTrace" onclick="setWritingMode('trace')">✏️ Trace the Letter</button>
@@ -1120,7 +1302,7 @@ html.is-standard .hub-row{grid-template-columns:repeat(2,1fr)}
           <span style="font-weight:900;color:var(--muted);font-size:14px">Letters:</span>
           <button type="button" class="case-btn on" id="caseUpperBtn" onclick="traceJumpCase(true)">ABC — Capitals</button>
           <button type="button" class="case-btn" id="caseLowerBtn" onclick="traceJumpCase(false)">abc — Small letters</button>
-          <button type="button" class="case-btn" onclick="writingHear()">🔊 Hear the Letter</button>
+          <button type="button" class="speak-plain" onclick="writingHear()" aria-label="Hear Belle say the letter out loud"><img class="speak-icon" src="assets/speak-icon.png" alt=""/></button>
         </div>
         <div class="feedback" id="traceFeedback"></div>
       </div>
@@ -1137,7 +1319,7 @@ html.is-standard .hub-row{grid-template-columns:repeat(2,1fr)}
         <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px">
           <span class="key-score" id="keyScore">⭐ Letters found: 0</span>
           <span style="flex:1"></span>
-          <button class="ghost" onclick="writingHear()">🔊 Hear the Letter</button>
+          <button class="speak-plain" onclick="writingHear()" aria-label="Hear Belle say the letter out loud"><img class="speak-icon" src="assets/speak-icon.png" alt=""/></button>
           <button class="goldbtn" id="keyNextBtn" style="display:none" onclick="newKeyLetter()">Next Letter →</button>
         </div>
         <div class="feedback" id="keyFeedback"></div>
@@ -1156,7 +1338,7 @@ html.is-standard .hub-row{grid-template-columns:repeat(2,1fr)}
         <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px">
           <span class="key-score" id="wpScore">⭐ Words built: 0</span>
           <span style="flex:1"></span>
-          <button class="ghost" onclick="writingHear()">🔊 Hear the Word</button>
+          <button class="speak-plain" onclick="writingHear()" aria-label="Hear Belle say the word out loud"><img class="speak-icon" src="assets/speak-icon.png" alt=""/></button>
           <button class="goldbtn" id="wpNextBtn" style="display:none" onclick="newWordPad()">Next Word →</button>
         </div>
         <div class="feedback" id="wpFeedback"></div>
@@ -1166,14 +1348,15 @@ html.is-standard .hub-row{grid-template-columns:repeat(2,1fr)}
 
   <div id="readingView" style="display:none">
     <div class="practice-head">
-      <button class="home-btn" onclick="closeReading()">🏠 Home</button>
+      
+      <button class="ghost" onclick="closeReading()">✕ Close</button>
       <span class="fred" style="font-size:22px">📖 Reading Castle</span>
       <span class="stars-pill" id="readingLevel">🌱 Kindergarten</span>
     </div>
     <div class="belle-compact">
       <div class="belle-face"><span class="coach-face-slot"><img src="assets/coach-belle.webp" alt="Cheer Coach Belle" style="width:100%;height:100%;object-fit:cover;object-position:50% 10%"/></span></div>
       <div class="bubble" id="readingBubble">Let's read, superstar!</div>
-      <button class="hear-it-btn" onclick="readingHear()">🔊 Hear It — <span class="coach-short-text">Belle</span> Reads It!</button>
+      <button class="speak-plain" onclick="readingHear()" aria-label="Hear Belle read this out loud"><img class="speak-icon" src="assets/speak-icon.png" alt=""/></button>
     </div>
     <div class="skill-row" id="readingSkills" role="group" aria-label="Pick a reading skill"></div>
     <div class="gamecard" id="readingCard">
@@ -1183,7 +1366,7 @@ html.is-standard .hub-row{grid-template-columns:repeat(2,1fr)}
       <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px">
         <span class="key-score" id="readingScore">⭐ Read it right: 0</span>
         <span style="flex:1"></span>
-        <button class="ghost" onclick="readingHear()">🔊 Hear It Again</button>
+        <button class="speak-plain" onclick="readingHear()" aria-label="Hear Belle read this out loud again"><img class="speak-icon" src="assets/speak-icon.png" alt=""/></button>
         <button class="goldbtn" id="readingNextBtn" style="display:none" onclick="newReadingItem()">Next One →</button>
       </div>
       <div class="feedback" id="readingFeedback"></div>
@@ -1192,14 +1375,15 @@ html.is-standard .hub-row{grid-template-columns:repeat(2,1fr)}
 
   <div id="meaningsView" style="display:none">
     <div class="practice-head">
-      <button class="home-btn" onclick="closeMeanings()">🏠 Home</button>
+      
+      <button class="ghost" onclick="closeMeanings()">✕ Close</button>
       <span class="fred" style="font-size:22px">📚 Word Meanings</span>
       <span class="stars-pill" id="meaningsLevel">⭐ 3rd Grade</span>
     </div>
     <div class="belle-compact">
       <div class="belle-face"><span class="coach-face-slot"><img src="assets/coach-belle.webp" alt="Cheer Coach Belle" style="width:100%;height:100%;object-fit:cover;object-position:50% 10%"/></span></div>
       <div class="bubble" id="meaningsBubble">What does this word mean, champion?</div>
-      <button class="hear-it-btn" onclick="meaningsHear()">🔊 Hear It — <span class="coach-short-text">Belle</span> Reads It!</button>
+      <button class="speak-plain" onclick="meaningsHear()" aria-label="Hear Belle read this out loud"><img class="speak-icon" src="assets/speak-icon.png" alt=""/></button>
     </div>
     <div class="gamecard" id="meaningsCard">
       <div class="qlabel">What does this word mean? Tap the true meaning!</div>
@@ -1208,7 +1392,7 @@ html.is-standard .hub-row{grid-template-columns:repeat(2,1fr)}
       <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px">
         <span class="key-score" id="meaningsScore">⭐ Meanings mastered: 0</span>
         <span style="flex:1"></span>
-        <button class="ghost" onclick="meaningsHear()">🔊 Hear the Word</button>
+        <button class="speak-plain" onclick="meaningsHear()" aria-label="Hear Belle say the word out loud"><img class="speak-icon" src="assets/speak-icon.png" alt=""/></button>
         <button class="goldbtn" id="meaningsNextBtn" style="display:none" onclick="newMeaningItem()">Next Word →</button>
       </div>
       <div class="feedback" id="meaningsFeedback"></div>
@@ -1216,7 +1400,8 @@ html.is-standard .hub-row{grid-template-columns:repeat(2,1fr)}
   </div>
   <div id="grownupsView" style="display:none">
     <div class="practice-head">
-      <button class="home-btn" onclick="closeGrownups()">🏠 Home</button>
+      
+      <button class="ghost" onclick="closeGrownups()">✕ Close</button>
       <span class="fred" style="font-size:22px">📊 Progress Report</span>
       <span class="stars-pill" id="grownupsLevel">🌱 Kindergarten</span>
     </div>
@@ -1269,14 +1454,14 @@ html.is-standard .hub-row{grid-template-columns:repeat(2,1fr)}
 
 <div class="modal" id="wizardModal" role="dialog" aria-modal="true">
   <div class="modal-card">
-    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><span class="fred" style="color:var(--pink-d);font-size:15px;letter-spacing:.08em">✨ <span class="coach-poss-text">BELLE'S</span> EXAMPLE STAGE</span><span style="display:flex;gap:8px"><button class="home-btn" onclick="goHomeFromOverlay()">🏠 Home</button><button class="ghost" onclick="closeWizard()">✕ Back to My Problem</button></span></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><span class="fred" style="color:var(--pink-d);font-size:15px;letter-spacing:.08em">✨ <span class="coach-poss-text">BELLE'S</span> EXAMPLE STAGE</span><span style="display:flex;gap:8px"><button class="ghost" onclick="closeWizard()">✕ Back to My Problem</button></span></div>
     <h3 id="wizTitle">Watch me first!</h3>
     <div class="ex-note" id="wizNote">🌹 This is a <b>different problem just like yours</b> — <span class="coach-short-text">Belle</span> works it step by step so you can see HOW. Your problem stays right where you left it!</div>
     <div class="stepdots" id="wizDots"></div>
     <div class="stepbox" id="wizBody"></div>
     <div class="modal-btns">
       <button class="ghost" id="wizBack" onclick="wizMove(-1)">← Back</button>
-      <button class="ghost" onclick="hearWizardStep()">🔊 Hear It</button>
+      <button class="speak-plain" onclick="hearWizardStep()" aria-label="Hear Belle read this example step out loud"><img class="speak-icon" src="assets/speak-icon.png" alt=""/></button>
       <button class="ghost" id="wizAuto" onclick="toggleWizAuto()">▶️ Watch It Play</button>
       <button class="check-btn" id="wizNext" onclick="wizMove(1)" style="flex:1">Next Step →</button>
     </div>
@@ -1285,7 +1470,7 @@ html.is-standard .hub-row{grid-template-columns:repeat(2,1fr)}
 
 <div class="modal" id="studioModal" role="dialog" aria-modal="true">
   <div class="modal-card" style="max-width:760px">
-    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><span class="fred" style="color:var(--pink-d);font-size:15px;letter-spacing:.08em">🎀 MY CHEERLEADER STUDIO</span><span style="display:flex;gap:8px"><button class="home-btn" onclick="goHomeFromOverlay()">🏠 Home</button><button class="ghost" onclick="closeStudio()">✕ Done!</button></span></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><span class="fred" style="color:var(--pink-d);font-size:15px;letter-spacing:.08em">🎀 MY CHEERLEADER STUDIO</span><span style="display:flex;gap:8px"><button class="ghost" onclick="closeStudio()">✕ Done!</button></span></div>
     <h3>Design Your Cheerleader!</h3>
     <div class="studio-grid">
       <div class="studio-preview"><div class="pv" id="studioPreview"></div><div class="pname" id="studioName">Your Cheerleader ⭐</div></div>
@@ -1296,7 +1481,7 @@ html.is-standard .hub-row{grid-template-columns:repeat(2,1fr)}
 
 <div class="modal" id="coachModal" role="dialog" aria-modal="true">
   <div class="modal-card" style="max-width:760px">
-    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><span class="fred" style="color:var(--pink-d);font-size:15px;letter-spacing:.08em">🏆 MY COACH STUDIO</span><span style="display:flex;gap:8px"><button class="home-btn" onclick="goHomeFromOverlay()">🏠 Home</button><button class="ghost" onclick="closeCoachStudio()">✕ Done!</button></span></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><span class="fred" style="color:var(--pink-d);font-size:15px;letter-spacing:.08em">🏆 MY COACH STUDIO</span><span style="display:flex;gap:8px"><button class="ghost" onclick="closeCoachStudio()">✕ Done!</button></span></div>
     <h3>Customize Your Coach!</h3>
     <p style="font-weight:800;color:var(--muted);line-height:1.5;margin:4px 0 12px">Give your coach a name, dress her your way, and choose who she is. Royce's coaches are always girls — pick her style in pinks, purples, rose and gold! Your sport and animal favorites dress her too — a sport prop and an animal friend ride along in her portrait. It saves on this device all by itself.</p>
     <div class="studio-grid">
@@ -1308,7 +1493,7 @@ html.is-standard .hub-row{grid-template-columns:repeat(2,1fr)}
 
 <div class="modal" id="themeModal" role="dialog" aria-modal="true">
   <div class="modal-card" style="max-width:820px">
-    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><span class="fred" style="color:var(--pink-d);font-size:15px;letter-spacing:.08em">🎨 MY THEME STUDIO</span><span style="display:flex;gap:8px"><button class="home-btn" onclick="goHomeFromOverlay()">🏠 Home</button><button class="ghost" onclick="closeThemeStudio()">✕ Done!</button></span></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><span class="fred" style="color:var(--pink-d);font-size:15px;letter-spacing:.08em">🎨 MY THEME STUDIO</span><span style="display:flex;gap:8px"><button class="ghost" onclick="closeThemeStudio()">✕ Done!</button></span></div>
     <h3>Create Your Own Theme!</h3>
     <p style="font-weight:800;color:var(--muted);line-height:1.5;margin:4px 0 12px">Pick a theme that's already made — or mix your own! Choose your three colors (primary, secondary and tertiary), favorite sport, favorite animal and background, and watch your whole learning center change. It saves on this device all by itself.</p>
     <div class="studio-grid" style="grid-template-columns:1fr">
@@ -1319,7 +1504,7 @@ html.is-standard .hub-row{grid-template-columns:repeat(2,1fr)}
 
 <div class="modal" id="trophyModal" role="dialog" aria-modal="true">
   <div class="modal-card">
-    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><span class="fred" style="color:var(--pink-d);font-size:15px;letter-spacing:.08em">🏆 TROPHY CASE</span><span style="display:flex;gap:8px"><button class="home-btn" onclick="goHomeFromOverlay()">🏠 Home</button><button class="ghost" onclick="closeModalId('trophyModal')">✕ Close</button></span></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><span class="fred" style="color:var(--pink-d);font-size:15px;letter-spacing:.08em">🏆 TROPHY CASE</span><span style="display:flex;gap:8px"><button class="ghost" onclick="closeModalId('trophyModal')">✕ Close</button></span></div>
     <h3>Your Trophies &amp; Cheer Gear</h3>
     <div id="trophyBody"></div>
   </div>
@@ -1327,7 +1512,7 @@ html.is-standard .hub-row{grid-template-columns:repeat(2,1fr)}
 
 <div class="modal" id="bonusModal" role="dialog" aria-modal="true">
   <div class="modal-card">
-    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><span class="fred" style="color:var(--pink-d);font-size:15px;letter-spacing:.08em">🎁 BONUS ROUND</span><span style="display:flex;gap:8px"><button class="home-btn" onclick="goHomeFromOverlay()">🏠 Home</button><button class="ghost" onclick="closeBonus()">✕ Close</button></span></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><span class="fred" style="color:var(--pink-d);font-size:15px;letter-spacing:.08em">🎁 BONUS ROUND</span><span style="display:flex;gap:8px"><button class="ghost" onclick="closeBonus()">✕ Close</button></span></div>
     <h3>Bonus Round — Earn Extra Stars!</h3>
     <div id="bonusBody"></div>
   </div>
@@ -1342,7 +1527,7 @@ html.is-standard .hub-row{grid-template-columns:repeat(2,1fr)}
     <div class="modal-btns" style="justify-content:center">
       <button class="goldbtn" onclick="closeWin(true)">▶️ Play Another Competition!</button>
       <button class="ghost" onclick="closeWin(false)">🎀 Keep Practicing</button>
-      <button class="home-btn" onclick="goHomeFromOverlay()">🏠 Home</button>
+
     </div>
   </div>
 </div>
@@ -1373,7 +1558,7 @@ html.is-standard .hub-row{grid-template-columns:repeat(2,1fr)}
 
 <div class="modal" id="nameModal" role="dialog" aria-modal="true" aria-label="What is your name?">
   <div class="modal-card" style="max-width:520px">
-    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><span class="fred" style="color:var(--pink-d);font-size:15px;letter-spacing:.08em">🌹 YOUR NAME</span></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><span class="fred" style="color:var(--pink-d);font-size:15px;letter-spacing:.08em">🌹 YOUR NAME</span><button class="ghost" onclick="submitLearnerName()">✕ Close</button></div>
     <h3>What is your name?</h3>
     <p style="font-weight:800;color:var(--muted);line-height:1.5;margin:4px 0 10px">Type your first name and Coach Belle will say hello to YOU in the big hello at the top of the page! Leave it blank and her hello will say Royce.</p>
     <input class="setup-name-input" id="learnerNameInput" type="text" maxlength="20" autocomplete="off" autocapitalize="words" spellcheck="false" placeholder="enter your name" aria-label="enter your name" onkeydown="if(event.key==='Enter'){event.preventDefault();submitLearnerName();}"/>
@@ -1473,7 +1658,7 @@ money:{title:'Money — Watch Me!',steps:[{h:'Example: 1 quarter + 1 dime + 1 ni
 time:{title:'Telling Time — Watch Me!',steps:[{h:'Example: 4:30',b:'Short hand = <b>hour</b>. Long hand = <b>minutes</b>.'},{h:'Step 1 — Hour hand',b:'Short hand is halfway past 4 → the hour is <b>4</b>.'},{h:'Step 2 — Minute hand',b:'Long hand points to 6 → 6 × 5 = <b>30 minutes</b>.'},{h:'Answer!',b:'<div class="example-big">4:30</div>Each big number on the clock is 5 minutes!'}]},
 fractions:{title:'Fractions — Watch Me!',steps:[{h:'Example: A cupcake tray cut into 4 equal parts, 1 part has a cherry',b:'The bottom number (denominator) = how many <b>equal parts</b> in all: <b>4</b>.'},{h:'Top number = your parts',b:'The top number (numerator) = how many parts you are talking about: <b>1</b>.'},{h:'Answer!',b:'<div class="example-big">1/4 of the tray</div>Parts must be <b>equal</b> for it to be a fraction!'}]},
 wordproblems:{title:'Word Problems — Watch Me!',steps:[{h:'Example story',b:'“Royce had 12 bows. She gave 4 to her friends. How many bows does she have now?”'},{h:'Step 1 — What do we know? What is asked?',b:'Know: started with 12, gave away 4. Asked: how many <b>left</b> → that means <b>subtract</b>.'},{h:'Step 2 — Solve & label',b:'<div class="example-big">12 − 4 = 8 bows</div>Always say what your number means!'}]},
-sightwords:{title:'Sight Words — Watch Me!',steps:[{h:'What is a sight word?',b:'A word you can read & spell <b>in a flash</b>, without sounding it out — like <b>because, always, before</b>.'},{h:'Example: “always”',b:'Look — say — spell — check: <b>a-l-w-a-y-s</b>. Cover it, write it, check it!'},{h:'Your turn!',b:'Your coach will show a sentence with the word missing. Listen with 🔊, picture the word, then type it exactly.'}]},
+sightwords:{title:'Sight Words — Watch Me!',steps:[{h:'What is a sight word?',b:'A word you can read & spell <b>in a flash</b>, without sounding it out — like <b>because, always, before</b>.'},{h:'Example: “always”',b:'Look — say — spell — check: <b>a-l-w-a-y-s</b>. Cover it, write it, check it!'},{h:'Your turn!',b:'Your coach will show a sentence with the word missing. Listen with 💬, picture the word, then type it exactly.'}]},
 vowels:{title:'Vowel Sounds — Watch Me!',steps:[{h:'Example: “rain”',b:'The vowel team <b>ai</b> works together to say the long A sound: r-<b>ai</b>-n.'},{h:'The rule',b:'When two vowels go walking, the first one does the talking! <b>ai, ay → A &nbsp;•&nbsp; ee, ea → E &nbsp;•&nbsp; oa, ow → O</b>. And a single vowel in a short word usually says its short sound: c-<b>a</b>-t!'},{h:'Your turn!',b:'Listen for the vowel sound, then type the whole word with the right letters.'}]},
 plurals:{title:'Plurals — Watch Me!',steps:[{h:'Example: box → ?',b:'Most words just add <b>-s</b>: cat → cats. But <b>box</b> ends in x…'},{h:'The -es rule',b:'Words ending in <b>s, x, z, ch, sh</b> add <b>-es</b>: box → <b>boxes</b>, wish → wishes.'},{h:'The y rule',b:'Consonant + y? Change y to i and add -es: baby → <b>babies</b>. Vowel + y? Just add -s: toy → toys.'}]},
 compound:{title:'Compound Words — Watch Me!',steps:[{h:'Example: cup + cake',b:'Two whole words join together and keep <b>all</b> their letters.'},{h:'Answer!',b:'<div class="example-big">cup + cake = cupcake</div>No spaces, no missing letters!'},{h:'Your turn!',b:'Your coach gives you the two words (or a picture clue). Join them into one word.'}]},
@@ -1498,7 +1683,7 @@ function openWizard(t){
   }
   renderWiz(); document.getElementById('wizardModal').classList.add('open');
 }
-function closeWizard(){ stopWizAuto(); stopBelleSpeech(); document.getElementById('wizardModal').classList.remove('open'); var pv=document.getElementById('practiceView'); if(current&&pv&&pv.offsetParent!==null){ var b=document.getElementById('belleBubble'); if(b&&b.innerHTML) speakBelle(b.innerHTML); } }
+function closeWizard(){ stopWizAuto(); stopBelleSpeech(); document.getElementById('wizardModal').classList.remove('open'); var pv=document.getElementById('practiceView'); if(current&&pv&&pv.offsetParent!==null){ var t=buildTaskSpeech(); if(t) speakBelle(t,true,null,document.getElementById('belleBubble')); } }
 function renderWiz(){ if(!wizSteps) wizSteps=WIZARDS.howto.steps; document.getElementById('wizTitle').textContent=wizTitleStr||'Watch me first!'; var st=wizSteps[wizStep]; document.getElementById('wizBody').innerHTML='<div style="font-family:Fredoka;font-size:20px;margin-bottom:6px">'+st.h+'</div>'+st.b; document.getElementById('wizDots').innerHTML=wizSteps.map(function(_,i){return '<div class="dot'+(i===wizStep?' on':'')+'"></div>'}).join(''); document.getElementById('wizNext').textContent= wizStep===wizSteps.length-1 ? "✅ See How? Now You Try Yours! 🎀" : 'Next Step →'; document.getElementById('wizBack').style.visibility= wizStep===0?'hidden':'visible'; if(st) speakBelle(st.h+'. '+st.b); }
 function wizMove(d){ stopWizAuto(); if(d>0 && wizSteps && wizStep===wizSteps.length-1){ closeWizard(); return; } wizStep=Math.max(0,Math.min((wizSteps?wizSteps.length:1)-1,wizStep+d)); renderWiz(); }
 
@@ -1741,7 +1926,7 @@ function genMath(id,tier){
 }
 function genSpelling(id,tier){
   var G=gradeIdx;
-  if(id==='sightwords'){ var bank= G===0?DOLCH_PRE.concat(DOLCH_PRIMER) : G===1?DOLCH_PRIMER.concat(DOLCH1) : G===2?DOLCH2 : G===3?DOLCH3.concat(DOLCH2) : G===4?FRY4 : FRY5; var w=pick(bank); var sent=SENT_MAP[w.toLowerCase()]; var clue= sent? sent+'<br><small>Tap 🔊 Hear the Word, then type the whole word.</small>' : 'Belle will say the word out loud. Listen carefully, picture it, then type the whole word.<br><small>Tap 🔊 Hear the Word as many times as you like!</small>'; return {q:'Spell the missing sight word',clue:clue,ans:w,display:'text',speak:w,hint:'Picture the word in your mind. Say it slowly, letter by letter: it has <b>'+w.length+' letters</b> and starts with “<b>'+w[0]+'</b>”.',check:function(g){ if(g.length<w.length) return 'You\'re missing a letter — the word has <b>'+w.length+' letters</b>. Try again and count them!'; if(g.length>w.length) return 'One letter too many — the word has exactly <b>'+w.length+' letters</b>.'; return 'Check the <b>middle letters</b> carefully. It starts with “'+w[0]+'” and ends with “'+w[w.length-1]+'”. Sound it out slowly.'; }}; }
+  if(id==='sightwords'){ var bank= G===0?DOLCH_PRE.concat(DOLCH_PRIMER) : G===1?DOLCH_PRIMER.concat(DOLCH1) : G===2?DOLCH2 : G===3?DOLCH3.concat(DOLCH2) : G===4?FRY4 : FRY5; var w=pick(bank); var sent=SENT_MAP[w.toLowerCase()]; var clue= sent? sent+'<br><small>Tap 💬, then type the whole word.</small>' : 'Belle will say the word out loud. Listen carefully, picture it, then type the whole word.<br><small>Tap 💬 as many times as you like!</small>'; return {q:'Spell the missing sight word',clue:clue,ans:w,display:'text',speak:w,hint:'Picture the word in your mind. Say it slowly, letter by letter: it has <b>'+w.length+' letters</b> and starts with “<b>'+w[0]+'</b>”.',check:function(g){ if(g.length<w.length) return 'You\'re missing a letter — the word has <b>'+w.length+' letters</b>. Try again and count them!'; if(g.length>w.length) return 'One letter too many — the word has exactly <b>'+w.length+' letters</b>.'; return 'Check the <b>middle letters</b> carefully. It starts with “'+w[0]+'” and ends with “'+w[w.length-1]+'”. Sound it out slowly.'; }}; }
   if(id==='vowels'){
     if(G===0){ var cv=pick(CVC_WORDS); var blankedC=cv.w.replace(cv.m,'_'); return {q:'Fill in the missing vowel letter to spell the word',clue:'Word: <span style="font-family:Fredoka;font-size:30px">'+blankedC+'</span><br>The missing letter makes the <b>'+cv.s+' sound</b>. Type the <b>whole word</b>.',ans:cv.w,display:'text',speak:cv.w,hint:'This is a short-vowel word. The middle letter is the vowel that says the <b>'+cv.s+' sound</b>: “'+cv.m+'”.',check:function(g){ return 'Say the word slowly and listen to the middle sound — the '+cv.s+' sound. Which vowel letter makes that sound?'; }}; }
     var bankV= G===1? MAGIC_E.concat(VOWEL_WORDS.filter(function(x){return ['ai','ay','ee','ea','oa'].indexOf(x.team)>-1;})) : G===2? VOWEL_WORDS : G===3? R_WORDS : G===4? DIP_WORDS : ADV_WORDS;
@@ -1779,6 +1964,8 @@ function stackHTML(rows,op,showPlaces){
 function numsFromQ(){ var m=String(current.q).match(/\d+/g); return m?m.map(function(x){return parseInt(x,10)}):[]; }
 var fracDen=0;
 function toggleFrac(btn){ btn.classList.toggle('on'); var bar=document.getElementById('fracBar'); if(!bar) return; var on=bar.querySelectorAll('.frac-cell.on').length; var c=document.getElementById('fracCount'); if(c) c.textContent='Tap the parts to shade them. Shaded: '+on+' of '+fracDen; }
+function toggleToolsMenu(){ var m=document.getElementById('toolsMenu'), b=document.getElementById('toolsToggleBtn'); if(!m) return; var open=m.style.display==='none'; m.style.display= open? 'grid':'none'; if(b) b.setAttribute('aria-expanded', open? 'true':'false'); if(typeof sfx==='function') sfx('pop'); }
+function closeToolsMenu(){ var m=document.getElementById('toolsMenu'), b=document.getElementById('toolsToggleBtn'); if(m) m.style.display='none'; if(b) b.setAttribute('aria-expanded','false'); }
 function toggleWorkPanel(force){
   var panel=document.getElementById('workPanel'), layout=document.getElementById('playLayout'), btn=document.getElementById('workToggleBtn');
   if(!panel) return;
@@ -1845,7 +2032,18 @@ function initPad(){
 }
 function padStroke(){ if(!padCtx) return; if(padTool==='eraser'){ padCtx.globalCompositeOperation='destination-out'; padCtx.lineWidth=22; } else { padCtx.globalCompositeOperation='source-over'; padCtx.strokeStyle='#C2185B'; padCtx.lineWidth=4; } padCtx.stroke(); padCtx.globalCompositeOperation='source-over'; }
 
-/* ---------- BELLE'S VOICE (device speech, warm female voice when available) ---------- */
+/* ---------- BELLE'S VOICE (device speech, warm female voice when available) ----------
+   Michelle's pick (Nov 8, 2026): SAMPLE 7 from the coach-voice samples
+   (belle-sample-7.mp3, the mature variant of the sample-3 feel she liked).
+   Identified the same way Leo's sample 3 was identified on Karter's page —
+   measured from the sample file itself: a warm, mature adult woman's
+   voice, median pitch ≈ 250 Hz (about the same pitch as sample 3, but a
+   more grown-up tone with a wider, more expressive range), delivered at
+   a brisk natural pace — the same script read in ≈ 9.5s vs sample 3's
+   ≈ 10.2s, about 7% quicker. coachPitch()/coachRate() below are set to
+   that character, and EVERYTHING Belle says (greeting, hints, examples,
+   Hear It) goes through speakBelle(), so she sounds like sample 7
+   everywhere she speaks. */
 var belleVoices=[];
 function belleLoadVoices(){ try{ if('speechSynthesis' in window){ var vs=window.speechSynthesis.getVoices(); if(vs&&vs.length) belleVoices=vs; } }catch(e){} }
 function bellePrime(){ belleLoadVoices(); try{ if('speechSynthesis' in window && window.speechSynthesis.onvoiceschanged!==undefined){ window.speechSynthesis.onvoiceschanged=belleLoadVoices; } }catch(e){} }
@@ -1860,7 +2058,8 @@ function pickBelleVoice(){
   for(var i=0;i<prefs.length;i++){ var hit=pool.find(function(v){ return (v.name||'').toLowerCase().indexOf(prefs[i])>-1; }); if(hit) return hit; }
   return pool[0];
 }
-function coachPitch(){ return 1.12; }
+function coachPitch(){ return 1.08; }
+function coachRate(){ return 1.04; }
 var NUM_ONES=['zero','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen'];
 var NUM_TENS=['','','twenty','thirty','forty','fifty','sixty','seventy','eighty','ninety'];
 function plainSpeechText(text){
@@ -1879,24 +2078,79 @@ function equationInWords(q){
 }
 function chunkSpeech(t){ var parts=[]; var s=String(t); while(s.length>170){ var cut=s.lastIndexOf('. ',170); if(cut<60) cut=s.lastIndexOf(' ',170); if(cut<60) cut=170; parts.push(s.slice(0,cut+1)); s=s.slice(cut+1); } if(s.trim()) parts.push(s); return parts; }
 var belleSpeakTimer=null;
-function speakBelle(text,force,rate){
+/* ----- Reading captions (game view): when Belle reads the instructions
+   aloud, her words appear as CAPTIONS in the instructions bubble at the
+   top of the game view — sentence by sentence as she says them, each one
+   a proper sentence (capital letter to start, proper ending
+   punctuation). The sentences build up in the bubble, so when she
+   finishes, the full instruction text stays sitting there for the
+   learner to glance back at. The 💬 replays the voice and the captions
+   together. A generation counter plus timers keep a stopped or replaced
+   reading from ever writing into the bubble again. ----- */
+var belleCaptionGen=0, belleCaptionTimers=[];
+function clearCaptionTimers(){ for(var ci=0;ci<belleCaptionTimers.length;ci++) clearTimeout(belleCaptionTimers[ci]); belleCaptionTimers=[]; }
+function captionSentences(plain){
+  var raw=String(plain||'').match(/[^.!?]+[.!?]+["'”]?|[^.!?]+$/g)||[];
+  var out=[];
+  raw.forEach(function(s){
+    s=String(s).replace(/\s+/g,' ').trim();
+    if(!s) return;
+    s=s.charAt(0).toUpperCase()+s.slice(1);
+    if(!/[.!?]["'”]?$/.test(s)) s+='.';
+    out.push(s);
+  });
+  return out;
+}
+function speakBelle(text,force,rate,captionEl){
+  var plain=plainSpeechText(text);
+  if(!plain) return;
+  belleCaptionGen++; var gen=belleCaptionGen; clearCaptionTimers();
+  if(belleSpeakTimer){ clearTimeout(belleSpeakTimer); belleSpeakTimer=null; }
+  var hasTTS=false; try{ hasTTS=('speechSynthesis' in window); }catch(e){}
+  if(hasTTS){ try{ window.speechSynthesis.cancel(); }catch(e){} }
+  var r= rate||(typeof coachRate==='function'? coachRate() : 1.04);
+  var pitch= (typeof coachPitch==='function'? coachPitch() : 1.08);
+  if(captionEl){
+    var sentences=captionSentences(plain);
+    if(sentences.length){
+      captionEl.textContent='';
+      var shown=0;
+      var reveal=function(n){ if(gen!==belleCaptionGen) return; if(n>shown){ shown=n; captionEl.textContent=sentences.slice(0,shown).join(' '); } };
+      /* Fallback timing: if the voice reports no start events, each
+         sentence still appears about when she would reach it. */
+      var starts=[], acc=0;
+      sentences.forEach(function(s){ starts.push(acc); var wds=s.split(/\s+/).length; acc+=Math.max(650,(wds*360)/r); });
+      sentences.forEach(function(s,i){ belleCaptionTimers.push(setTimeout(function(){ reveal(i+1); }, starts[i]+900)); });
+      belleCaptionTimers.push(setTimeout(function(){ reveal(sentences.length); }, acc+900));
+      if(hasTTS){
+        try{
+          var v=pickBelleVoice();
+          sentences.forEach(function(s,i){
+            var u=new SpeechSynthesisUtterance(s);
+            if(v) u.voice=v;
+            u.rate=r; u.pitch=pitch;
+            u.onstart=function(){ reveal(i+1); };
+            u.onend=function(){ if(i===sentences.length-1) reveal(sentences.length); };
+            window.speechSynthesis.speak(u);
+          });
+        }catch(e){}
+      }
+      return;
+    }
+  }
+  if(!hasTTS) return;
   try{
-    if(!('speechSynthesis' in window)) return;
-    var plain=plainSpeechText(text);
-    if(!plain) return;
-    window.speechSynthesis.cancel();
-    if(belleSpeakTimer){ clearTimeout(belleSpeakTimer); belleSpeakTimer=null; }
     var chunks=chunkSpeech(plain);
-    var v=pickBelleVoice();
+    var v2=pickBelleVoice();
     chunks.forEach(function(ch,i){
       var u=new SpeechSynthesisUtterance(ch);
-      if(v) u.voice=v;
-      u.rate= rate||0.98; u.pitch= (typeof coachPitch==='function'? coachPitch() : 1.12);
+      if(v2) u.voice=v2;
+      u.rate=r; u.pitch=pitch;
       window.speechSynthesis.speak(u);
     });
   }catch(e){}
 }
-function stopBelleSpeech(){ if(belleSpeakTimer){ clearTimeout(belleSpeakTimer); belleSpeakTimer=null; } try{ if('speechSynthesis' in window) window.speechSynthesis.cancel(); }catch(e){} }
+function stopBelleSpeech(){ belleCaptionGen++; clearCaptionTimers(); if(belleSpeakTimer){ clearTimeout(belleSpeakTimer); belleSpeakTimer=null; } try{ if('speechSynthesis' in window) window.speechSynthesis.cancel(); }catch(e){} }
 function spokenProblemText(){ if(!current) return ''; var eq=equationInWords(current.q); if(eq) return eq; return plainSpeechText(current.q); }
 function buildTaskSpeech(){
   if(!current) return '';
@@ -1909,7 +2163,7 @@ function buildTaskSpeech(){
   if(current.display==='choice'&&current.choices&&current.choices.length) parts.push('Your choices are: '+current.choices.join(', ')+'.');
   return parts.filter(function(p){return !!p;}).join(' ');
 }
-function hearCurrentTask(){ var t=buildTaskSpeech(); if(t) speakBelle(t,true); else toast('Pick a game first — then '+coachLineName()+' can read it to you! 🌹'); }
+function hearCurrentTask(){ var t=buildTaskSpeech(); if(t) speakBelle(t,true,null,document.getElementById('belleBubble')); else toast('Pick a game first — then '+coachLineName()+' can read it to you! 🌹'); }
 function hearWizardStep(){ if(!wizSteps||!wizSteps.length) return; var st=wizSteps[wizStep]; if(st) speakBelle(st.h+'. '+st.b,true); }
 
 /* ---------- SOUND EFFECTS (WebAudio, cheer themed) ---------- */
@@ -2209,9 +2463,9 @@ function castleCardsHTML(){
   else if(gradeIdx===1){ wDesc='Writing time, Royal Rose! Trace your small letters, then trace your 1st grade spelling words letter by letter — and build whole words on the big touch keypad. '+cnSpan+' cheers you on for every word!'; traceLbl='✏️ Trace Letters &amp; Words'; keyLbl='⌨️ Word Keypad'; }
   else { wDesc='Writing time, champion! Trace your 2nd grade spelling words letter by letter on the big touch pad — and build whole words on the big touch keypad. '+cnSpan+' cheers you on for every word!'; traceLbl='✏️ Trace Spelling Words'; keyLbl='⌨️ Word Keypad'; }
   var rDesc;
-  if(gradeIdx===0) rDesc='Sounds first, superstar! Learn the sound every letter makes, blend little words sound by sound, and read your sight words in a flash — '+cnSpan+' reads everything out loud with the 🔊 button.';
-  else if(gradeIdx===1) rDesc='Blend it, reader! Sound out CVC words, master the digraphs sh, ch, th, wh and ck, read silent-e words, and flash-read your sight words — '+cnSpan+' reads everything out loud with the 🔊 button.';
-  else rDesc='Teamwork letters, champion! Read vowel teams and r-controlled vowels, spot common word endings, and flash-read your sight words — '+cnSpan+' reads everything out loud with the 🔊 button.';
+  if(gradeIdx===0) rDesc='Sounds first, superstar! Learn the sound every letter makes, blend little words sound by sound, and read your sight words in a flash — '+cnSpan+' reads everything out loud with the 💬 speech symbol.';
+  else if(gradeIdx===1) rDesc='Blend it, reader! Sound out CVC words, master the digraphs sh, ch, th, wh and ck, read silent-e words, and flash-read your sight words — '+cnSpan+' reads everything out loud with the 💬 speech symbol.';
+  else rDesc='Teamwork letters, champion! Read vowel teams and r-controlled vowels, spot common word endings, and flash-read your sight words — '+cnSpan+' reads everything out loud with the 💬 speech symbol.';
   var w='<article class="tcard"><div style="display:flex;justify-content:space-between;align-items:start"><div class="ticon">✏️</div><span class="meta">'+(wp.done>0?'⭐ Keep Going!':'New Game')+'</span></div><h3>Writing Castle</h3><p>'+wDesc+'</p><button class="play-btn" onclick="openWriting(\'trace\')">'+traceLbl+'</button><button class="play-btn" onclick="openWriting(\'keypad\')">'+keyLbl+'</button></article>';
   var r='<article class="tcard"><div style="display:flex;justify-content:space-between;align-items:start"><div class="ticon">📖</div><span class="meta">'+(rp.done>0?'⭐ Keep Going!':'New Game')+'</span></div><h3>Reading Castle</h3><p>'+rDesc+'</p><button class="play-btn" onclick="openReading()">📖 Read with Belle</button></article>';
   return w+r;
@@ -2221,8 +2475,12 @@ function renderGrid(){ var g=document.getElementById('topicGrid'); g.innerHTML=T
   var p=topicProg(t.id); var started=p.done>0; var finished=p.done>=240; return '<article class="tcard"><div style="display:flex;justify-content:space-between;align-items:start"><div class="ticon">'+t.icon+'</div><span class="meta">'+(finished?'🏆 Finished!':started?'⭐ Keep Going!':'New Game')+'</span></div><h3>'+displayTitle(t)+'</h3><p>'+displayDesc(t)+'</p><button class="play-btn" onclick="startTopic(\''+t.id+'\')">'+(started&&!finished?'▶ Keep Playing!':finished?'▶ Play Again!':'▶ Start Playing!')+'</button></article>'; }).join('')+castleCardsHTML(); }
 function updateTotals(){ var ts=collection.bonusStars; for(var gk in progStore.per){ var bucket=progStore.per[gk]; for(var tid in bucket){ ts+=bucket[tid].stars||0; } } var el=document.getElementById('totalStars'); if(el) el.textContent=ts; var hs=document.getElementById('heroStars'); if(hs) hs.textContent=ts; var hw=document.getElementById('heroWins'); if(hw) hw.textContent=collection.wins; }
 function belleSay(html){ document.getElementById('belleBubble').innerHTML=html; speakBelle(html); }
-function startTopic(id){ if(gradeLockedTopic(topicById(id))){ lockedGradeTap(id); return; } /* GRADE GATE: refuses below 3rd grade no matter which UI path calls it */ currentTopic=TOPICS.find(function(t){return t.id===id}); document.getElementById('homeView').style.display='none'; document.getElementById('practiceView').style.display='block'; if(typeof renderSportSwitcher==='function'){ try{ renderSportSwitcher(); }catch(e){} } /* the compact in-game switcher bar shows inside every game */ document.getElementById('pTitle').textContent=currentTopic.icon+' '+displayTitle(currentTopic); window.scrollTo({top:0}); clearInterval(timerInt); timerInt=setInterval(function(){ topicProg(id).sec+=5; if(topicProg(id).sec%30===0) saveP(progress); },5000); initGameSession(id); renderAllCheerleaders(); resetCheerToStart(true); nextPrompt(true); }
-function goHome(){ stopBelleSpeech(); stopRoutine(); if(typeof toggleWorkPanel==='function') toggleWorkPanel(false); clearInterval(timerInt); saveP(progress); document.getElementById('practiceView').style.display='none'; document.getElementById('homeView').style.display='block'; if(typeof renderSportSwitcher==='function'){ try{ renderSportSwitcher(); }catch(e){} } /* the home switcher shows again on return */ renderGrid(); updateTotals(); renderAllCheerleaders(); window.scrollTo({top:0}); }
+/* The hero is homepage information: while any game view is open it leaves
+   the screen entirely, so the game sits fully in view at the top — the
+   same layout as Karter's game view — and it returns on the way home. */
+function setHeroVisible(v){ var h=document.getElementById('heroSection'); if(h) h.style.display= v? '' : 'none'; }
+function startTopic(id){ if(gradeLockedTopic(topicById(id))){ lockedGradeTap(id); return; } /* GRADE GATE: refuses below 3rd grade no matter which UI path calls it */ currentTopic=TOPICS.find(function(t){return t.id===id}); if(typeof closeHintPanel==='function') closeHintPanel(); if(typeof toggleWorkPanel==='function') toggleWorkPanel(false); document.getElementById('homeView').style.display='none'; document.getElementById('practiceView').style.display='block'; setHeroVisible(false); if(typeof renderSportSwitcher==='function'){ try{ renderSportSwitcher(); }catch(e){} } /* the home sport switcher refreshes; no sport-picker card lives inside the game view */ window.scrollTo({top:0}); clearInterval(timerInt); timerInt=setInterval(function(){ topicProg(id).sec+=5; if(topicProg(id).sec%30===0) saveP(progress); },5000); initGameSession(id); renderAllCheerleaders(); resetCheerToStart(true); nextPrompt(true); }
+function goHome(){ stopBelleSpeech(); stopRoutine(); if(typeof closeHintPanel==='function') closeHintPanel(); if(typeof toggleWorkPanel==='function') toggleWorkPanel(false); clearInterval(timerInt); saveP(progress); document.getElementById('practiceView').style.display='none'; document.getElementById('homeView').style.display='block'; if(typeof renderSportSwitcher==='function'){ try{ renderSportSwitcher(); }catch(e){} } /* the home switcher shows again on return */ setHeroVisible(true); renderGrid(); updateTotals(); renderAllCheerleaders(); window.scrollTo({top:0}); }
 function goHomeFromOverlay(){
   stopWizAuto(); stopBelleSpeech(); stopFt();
   ['wizardModal','studioModal','themeModal','coachModal','trophyModal','bonusModal','winModal','lockedModal'].forEach(function(mid){ var m=document.getElementById(mid); if(m) m.classList.remove('open'); });
@@ -2254,6 +2512,7 @@ function navGoHome(){
 function nextPrompt(first){
   if(currentTopic&&gradeLockedTopic(currentTopic)){ var lid=currentTopic.id; goHome(); lockedGradeTap(lid); return; } /* GRADE GATE: never serve a prompt for a locked topic (covers competition restarts too) */
   stopBelleSpeech();
+  if(typeof closeHintPanel==='function') closeHintPanel(); if(typeof closeToolsMenu==='function') closeToolsMenu(); lastHintHTML='';
   resetCheerToStart(false);
   var p=topicProg(currentTopic.id); var tier=levelFor(p.done);
   current= currentTopic.cat==='math'? genMath(currentTopic.id,tier) : genSpelling(currentTopic.id,tier);
@@ -2263,20 +2522,37 @@ function nextPrompt(first){
   document.getElementById('qVisual').innerHTML=current.visual||'';
   var clue=document.getElementById('qClue'); if(current.clue){clue.style.display='block'; clue.innerHTML=current.clue;} else clue.style.display='none';
   var inp=document.getElementById('answerInput'); inp.value=''; inp.placeholder=current.placeholder||'Type here'; inp.type= current.display==='number'?'number':'text'; inp.inputMode= current.display==='number'?'numeric':'text';
-  document.getElementById('hearBtn').style.display= current.speak?'inline-block':'none';
+  document.getElementById('hearBtn').style.display= current.speak?'inline-grid':'none';
   var ch=document.getElementById('choiceArea');
   if(current.display==='choice'){ document.getElementById('inputRow').style.display='none'; ch.innerHTML='<div class="choices">'+current.choices.map(function(c){return '<button class="choice" onclick="pickChoice(this,\''+c.replace(/'/g,"\\'")+'\')">'+c+'</button>'}).join('')+'</div>'; }
   else { document.getElementById('inputRow').style.display='flex'; ch.innerHTML=''; }
   document.getElementById('feedback').className='feedback'; document.getElementById('feedback').textContent='';
   setupWork();
-  belleSay(first? 'Welcome to <b>'+(typeof effectiveWorldName==='function'? effectiveWorldName() : "Royce's Royal Roses")+'</b>! Let\'s play <b>'+displayTitle(currentTopic)+'</b>! Watch my example with the ✨ button if you need it, then try this one. You\'ve got this, superstar! 🎀' : pick((typeof isSportWorld==='function'&&isSportWorld())? ['New one! Read it carefully, then answer to play! '+sportWorld().emoji,'Here we go — I know you can get this one!','Ready? Here\'s your next one at the '+sportWorld().venue+'!'] : ['New one! Read it carefully, then answer to build the pyramid! 📣','Here we go — I know you can get this one!','Pom poms up… here\'s your next one!']));
+  if(first){
+    /* Game open: there is NO static instructions card. Belle reads the
+       instruction on this game screen aloud — the problem, its clue, the
+       word, and the choices — and as she reads, her words appear as
+       CAPTIONS in the instructions bubble at the top, sentence by
+       sentence in proper sentence structure. When she finishes, the
+       full instruction text stays in the bubble to glance back at, and
+       the 💬 replays the voice and the captions together. An example
+       never opens or gets read here; it is read only when the learner
+       picks it. */
+    var wb=document.getElementById('belleBubble'); if(wb) wb.textContent='';
+    var taskSpeech=buildTaskSpeech(); if(taskSpeech) speakBelle(taskSpeech,true,null,wb);
+  } else {
+    belleSay(pick((typeof isSportWorld==='function'&&isSportWorld())? ['New one! Read it carefully, then answer to play! '+sportWorld().emoji,'Here we go — I know you can get this one!','Ready? Here\'s your next one at the '+sportWorld().venue+'!'] : ['New one! Read it carefully, then answer to build the pyramid! 📣','Here we go — I know you can get this one!','Pom poms up… here\'s your next one!']));
+  }
   startRoutine();
   setTimeout(function(){ if(current.display!=='choice') inp.focus(); },80);
 }
 var chosen=null;
 function pickChoice(btn,val){ chosen=val; document.querySelectorAll('.choice').forEach(function(b){b.style.background='#fff'}); btn.style.background='#FFF3C4'; checkAnswer(); }
 function hearWord(){ if(!current||!current.speak) return; speakBelle(current.speak,true,0.8); }
-function belleHint(){ belleSay('💡 <b>'+coachPossessive()+' Hint:</b> '+current.hint); toast('Hint from '+coachLineName()+'! Check the speech bubble 🌹'); }
+var lastHintHTML='';
+function belleHint(){ if(!current) return; lastHintHTML=current.hint||''; var ht=document.getElementById('hintText'); if(ht) ht.innerHTML=lastHintHTML; var hp=document.getElementById('hintPanel'); if(hp) hp.style.display='block'; belleSay('💡 <b>'+coachPossessive()+' Hint:</b> '+current.hint); /* Belle reads the hint aloud the moment it opens; the 💬 speech symbol in the panel replays it */ }
+function closeHintPanel(){ var hp=document.getElementById('hintPanel'); if(hp) hp.style.display='none'; }
+function replayHint(){ if(lastHintHTML) speakBelle(lastHintHTML,true); }
 function toast(msg){ var t=document.getElementById('toast'); t.textContent=msg; t.style.display='block'; setTimeout(function(){t.style.display='none'},2400); }
 function normalize(v){ return String(v).trim().toLowerCase().replace(/\s+/g,''); }
 function checkAnswer(){
@@ -3468,6 +3744,11 @@ function submitLearnerName(){
   var m=document.getElementById('nameModal'); if(m) m.classList.remove('open');
   paintHeroGreeting();
   if(typeof sfx==='function') sfx('sparkle');
+  /* Grade picked + name entered — the home page is what she lands on
+     now, and only NOW (never before or during the pop-ups) Belle reads
+     the hero welcome script aloud, word for word, with the name she
+     just entered in its slot ("Royce" if she left it blank). */
+  if(typeof speakBelle==='function') speakBelle(heroGreetingText(),true);
 }
 function heroLearnerName(){
   if(window.isCustomEdition()){
@@ -4807,7 +5088,11 @@ function finishSetup(){
      grade — in the normal flow it is identical and nothing fires. */
   if(setupGradePending!==null&&setupGradePending!==gradeIdx&&typeof selectGrade==='function'){ selectGrade(setupGradePending); }
   if(typeof sfx==='function') sfx('fanfare');
-  if(typeof speakBelle==='function') speakBelle('Welcome to '+wn+'! Your world is ready! Pick a game and shine!',true);
+  /* Grade picked + name entered in the wizard — as the home page
+     lands, Belle reads the hero welcome script aloud, word for word,
+     with her entered name in its slot. (The world-ready line still
+     shows as the toast below; the spoken welcome is the hero script.) */
+  if(typeof speakBelle==='function') speakBelle(heroGreetingText(),true);
   setTimeout(function(){ toast('🎀 Welcome to '+wn+' — your world is ready! Pick a game and shine!'); },450);
 }
 /* First paint of the theme / sport world. This MUST stay at the END of this
@@ -5208,6 +5493,7 @@ function openWriting(mode){
   if(!wGradesOK()){ if(typeof toast==='function') toast('✏️ Writing Castle is for Kindergarten, 1st and 2nd grade! 🌱'); return; }
   ['homeView','practiceView','readingView','meaningsView'].forEach(function(id){ var el=document.getElementById(id); if(el) el.style.display='none'; });
   var wv=document.getElementById('writingView'); if(wv) wv.style.display='block';
+  setHeroVisible(false);
   var lv=document.getElementById('writingLevel'); if(lv) lv.textContent='🌱 '+GRADE_NAMES[gradeIdx];
   var bk=document.getElementById('wmodeKeypad'); if(bk) bk.textContent= gradeIdx===0? '⌨️ Letter Keypad' : '⌨️ Word Keypad';
   var bt=document.getElementById('wmodeTrace'); if(bt) bt.textContent= gradeIdx===2? '✏️ Trace the Word' : '✏️ Trace the Letter';
@@ -5219,6 +5505,7 @@ function closeWriting(){
   if(typeof stopBelleSpeech==='function') stopBelleSpeech();
   var wv=document.getElementById('writingView'), hv=document.getElementById('homeView');
   if(wv) wv.style.display='none'; if(hv) hv.style.display='block';
+  setHeroVisible(true);
   try{ renderGrid(); updateTotals(); renderAllCheerleaders(); }catch(e){}
   window.scrollTo({top:0});
 }
@@ -5550,9 +5837,9 @@ function refreshReadingHome(){
   if(show){
     var badge=document.getElementById('readingBadge'); if(badge) badge.textContent='🌱 '+GRADE_NAMES[gradeIdx];
     var d=document.getElementById('readingHomeDesc'), cd=document.getElementById('readingCardDesc');
-    if(gradeIdx===0){ if(d) d.innerHTML='Sounds first, superstar! Learn the sound every letter makes, blend little words sound by sound, and read your sight words in a flash — <span class="coach-name-text">Cheer Coach Belle</span> reads everything out loud with the 🔊 button.'; if(cd) cd.textContent='Letter sounds, beginning sounds, blending and sight words — all at your grade level!'; }
-    else if(gradeIdx===1){ if(d) d.innerHTML='Blend it, reader! Sound out CVC words, master the digraphs sh, ch, th, wh and ck, read silent-e words, and flash-read your sight words — <span class="coach-name-text">Cheer Coach Belle</span> reads everything out loud with the 🔊 button.'; if(cd) cd.textContent='CVC blending, digraphs, silent-e words and sight words — all at your grade level!'; }
-    else { if(d) d.innerHTML='Teamwork letters, champion! Read vowel teams and r-controlled vowels, spot common word endings, and flash-read your sight words — <span class="coach-name-text">Cheer Coach Belle</span> reads everything out loud with the 🔊 button.'; if(cd) cd.textContent='Vowel teams, r-controlled vowels, word endings and sight words — all at your grade level!'; }
+    if(gradeIdx===0){ if(d) d.innerHTML='Sounds first, superstar! Learn the sound every letter makes, blend little words sound by sound, and read your sight words in a flash — <span class="coach-name-text">Cheer Coach Belle</span> reads everything out loud with the 💬 speech symbol.'; if(cd) cd.textContent='Letter sounds, beginning sounds, blending and sight words — all at your grade level!'; }
+    else if(gradeIdx===1){ if(d) d.innerHTML='Blend it, reader! Sound out CVC words, master the digraphs sh, ch, th, wh and ck, read silent-e words, and flash-read your sight words — <span class="coach-name-text">Cheer Coach Belle</span> reads everything out loud with the 💬 speech symbol.'; if(cd) cd.textContent='CVC blending, digraphs, silent-e words and sight words — all at your grade level!'; }
+    else { if(d) d.innerHTML='Teamwork letters, champion! Read vowel teams and r-controlled vowels, spot common word endings, and flash-read your sight words — <span class="coach-name-text">Cheer Coach Belle</span> reads everything out loud with the 💬 speech symbol.'; if(cd) cd.textContent='Vowel teams, r-controlled vowels, word endings and sight words — all at your grade level!'; }
   }
 }
 function refreshMeaningsHome(){
@@ -5578,6 +5865,7 @@ function openReading(){
   if(typeof gradeIdx==='undefined'||gradeIdx>2){ if(typeof toast==='function') toast('📖 Reading Castle is for Kindergarten, 1st and 2nd grade!'); return; }
   ['homeView','practiceView','writingView','meaningsView'].forEach(function(id){ var el=document.getElementById(id); if(el) el.style.display='none'; });
   document.getElementById('readingView').style.display='block';
+  setHeroVisible(false);
   document.getElementById('readingLevel').textContent='🌱 '+GRADE_NAMES[gradeIdx];
   window.scrollTo({top:0});
   var skills=RD_SKILLS[gradeIdx]||RD_SKILLS[0];
@@ -5587,6 +5875,7 @@ function openReading(){
 function closeReading(){
   if(typeof stopBelleSpeech==='function') stopBelleSpeech();
   document.getElementById('readingView').style.display='none';
+  setHeroVisible(true);
   document.getElementById('homeView').style.display='block';
   try{ renderGrid(); updateTotals(); renderAllCheerleaders(); }catch(e){}
   window.scrollTo({top:0});
@@ -5614,18 +5903,18 @@ function genReadingItem(){
       it={key:'bl'+word,prompt:'Blend the sounds together — what word does it make? Tap it!',display:'<div class="rd-big">'+onset+' + '+fam+'</div><div class="rd-sub">Slide the sounds together: '+onset+'… '+fam+'…</div>',speak:'Blend the sounds: '+onset+', '+fam+'. What word does that make?',choices:rdShuffle([word].concat(others)),answer:word,why:'<b>'+onset+' + '+fam+'</b> blends into <b>'+word+'</b>. Slide the sounds together slowly.'};
     } else if(rdSkill==='digraph'){
       var D=rdPick(DIGRAPH_ITEMS);
-      it={key:'dg'+D.w,prompt:'Belle says the whole word. Which two letters are missing? Tap them!',display:'<div class="rd-big">'+D.b+'</div><div class="rd-sub">Tap 🔊 Hear It and listen for the missing sound in <b>'+D.w+'</b>.</div>',speak:'The word is '+D.w+'. '+D.w+'. Which two letters are missing?',choices:rdShuffle([D.a].concat(rdOthers(['sh','ch','th','wh','ck'],D.a,2))),answer:D.a,why:'In <b>'+D.w+'</b>, the missing sound is made by the two letters <b>'+D.a+'</b> working together.'};
+      it={key:'dg'+D.w,prompt:'Belle says the whole word. Which two letters are missing? Tap them!',display:'<div class="rd-big">'+D.b+'</div><div class="rd-sub">Tap 💬 and listen for the missing sound in <b>'+D.w+'</b>.</div>',speak:'The word is '+D.w+'. '+D.w+'. Which two letters are missing?',choices:rdShuffle([D.a].concat(rdOthers(['sh','ch','th','wh','ck'],D.a,2))),answer:D.a,why:'In <b>'+D.w+'</b>, the missing sound is made by the two letters <b>'+D.a+'</b> working together.'};
     } else if(rdSkill==='silente'||rdSkill==='vowelteam'||rdSkill==='rcontrol'){
       var bank= rdSkill==='silente'? SILENT_E_WORDS : rdSkill==='vowelteam'? VOWEL_TEAM_WORDS : R_CONTROL_WORDS;
       var w=rdPick(bank);
       var label= rdSkill==='silente'? 'Silent-E word' : rdSkill==='vowelteam'? 'Vowel-team word' : 'R-controlled word';
-      it={key:rdSkill+w,prompt:'Listen to Belle, then tap the '+label+' she says!',display:'<div class="rd-emoji">🔊</div><div class="rd-sub">Tap <b>🔊 Hear It</b>, listen carefully, then tap the word Belle says!</div>',speak:'The word is '+w+'. Tap the word '+w+'.',choices:rdShuffle([w].concat(rdOthers(bank,w,2))),answer:w,why:'Listen again with 🔊 — Belle said <b>'+w+'</b>. Sound it out letter by letter.'};
+      it={key:rdSkill+w,prompt:'Listen to Belle, then tap the '+label+' she says!',display:'<div class="rd-emoji">💬</div><div class="rd-sub">Tap <b>💬</b>, listen carefully, then tap the word Belle says!</div>',speak:'The word is '+w+'. Tap the word '+w+'.',choices:rdShuffle([w].concat(rdOthers(bank,w,2))),answer:w,why:'Listen again with 💬 — Belle said <b>'+w+'</b>. Sound it out letter by letter.'};
     } else if(rdSkill==='endings'){
       var E=rdPick(ENDING_ITEMS);
       it={key:'en'+E.right,prompt:'Tap the word that ends with this ending!',display:'<div class="rd-big">'+E.end+'</div><div class="rd-sub">Which word ends with the ending <b>'+E.end+'</b>?</div>',speak:'Which word ends with the ending '+E.end.replace('-','')+'? Look at the end of each word.',choices:rdShuffle([E.right].concat(E.wrong)),answer:E.right,why:'<b>'+E.right+'</b> ends with <b>'+E.end+'</b>. Check the LAST letters of each word.'};
     } else { /* sight words — straight from this grade's own Dolch/Fry bank */
       var bank2=rdSightBank(); var w2=rdPick(bank2);
-      it={key:'sw'+w2,prompt:'Listen to Belle, then tap the sight word she says — read it in a flash!',display:'<div class="rd-emoji">👀</div><div class="rd-sub">Sight words are words you know in a flash! Tap <b>🔊 Hear It</b>, then tap the word.</div>',speak:'The word is '+w2+'. Tap the word '+w2+'.',choices:rdShuffle([w2].concat(rdOthers(bank2,w2,2))),answer:w2,why:'Listen again with 🔊 — Belle said <b>'+w2+'</b>. Picture the word, then find its letters.'};
+      it={key:'sw'+w2,prompt:'Listen to Belle, then tap the sight word she says — read it in a flash!',display:'<div class="rd-emoji">👀</div><div class="rd-sub">Sight words are words you know in a flash! Tap <b>💬</b>, then tap the word.</div>',speak:'The word is '+w2+'. Tap the word '+w2+'.',choices:rdShuffle([w2].concat(rdOthers(bank2,w2,2))),answer:w2,why:'Listen again with 💬 — Belle said <b>'+w2+'</b>. Picture the word, then find its letters.'};
     }
   }while(it && it.key===rdPrevKey && guard<8);
   if(it) rdPrevKey=it.key;
@@ -5680,6 +5969,7 @@ function openMeanings(){
   if(typeof gradeIdx==='undefined'||gradeIdx<3){ if(typeof toast==='function') toast('📚 Word Meanings is for 3rd, 4th and 5th grade!'); return; }
   ['homeView','practiceView','writingView','readingView'].forEach(function(id){ var el=document.getElementById(id); if(el) el.style.display='none'; });
   document.getElementById('meaningsView').style.display='block';
+  setHeroVisible(false);
   document.getElementById('meaningsLevel').textContent='⭐ '+GRADE_NAMES[gradeIdx];
   window.scrollTo({top:0});
   newMeaningItem();
@@ -5687,6 +5977,7 @@ function openMeanings(){
 function closeMeanings(){
   if(typeof stopBelleSpeech==='function') stopBelleSpeech();
   document.getElementById('meaningsView').style.display='none';
+  setHeroVisible(true);
   document.getElementById('homeView').style.display='block';
   try{ renderGrid(); updateTotals(); renderAllCheerleaders(); }catch(e){}
   window.scrollTo({top:0});
@@ -5875,6 +6166,7 @@ function renderGrownups(){
 function openGrownups(){
   ['homeView','practiceView','writingView','readingView','meaningsView'].forEach(function(id){ var el=document.getElementById(id); if(el) el.style.display='none'; });
   var v=document.getElementById('grownupsView'); if(v) v.style.display='block';
+  setHeroVisible(false);
   renderGrownups();
   window.scrollTo({top:0});
   if(typeof sfx==='function') sfx('pop');
@@ -5883,6 +6175,7 @@ function closeGrownups(){
   if(typeof stopBelleSpeech==='function') stopBelleSpeech();
   var v=document.getElementById('grownupsView'), hv=document.getElementById('homeView');
   if(v) v.style.display='none'; if(hv) hv.style.display='block';
+  setHeroVisible(true);
   try{ renderGrid(); updateTotals(); renderAllCheerleaders(); }catch(e){}
   window.scrollTo({top:0});
 }
