@@ -52,6 +52,16 @@ button{font-family:inherit;cursor:pointer}
 .brand small{display:block;font-family:'Nunito';font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:3px}
 .brand-face{width:44px;height:44px;border-radius:50%;object-fit:cover;object-position:50% 12%;border:3px solid var(--gold);background:var(--pink-l)}
 .brand-face-slot svg{width:44px;height:44px;display:block}
+/* Royce's own face, cropped from her hero picture (assets/royce.webp):
+   shown in the top nav bar and in the practice profile beside the Hint /
+   Example bubble, instead of the coach's photo. The wrapper clips a
+   circle and the hero image is scaled so her face fills it — the visible
+   window is the 470x470 area of the 1920x1280 hero starting at (672,50),
+   framing her face and puffs so she reads clearly at 44-64px. */
+.royce-crop{position:relative;overflow:hidden;border-radius:50%}
+.royce-crop--framed{border:3px solid var(--gold);background:var(--pink-l)}
+span.royce-crop>img{position:absolute;left:-143%;top:-10.6%;width:408.5%;height:auto;max-width:none}
+.belle-face .learner-face-slot{display:block;width:100%;height:100%}
 .stars-pill{background:var(--gold);color:#431407;padding:8px 14px;border-radius:999px;font-weight:900;font-size:15px;white-space:nowrap}
 .topbar .stars-pill{background:var(--gold);color:#431407;border:none;border-radius:999px;padding:8px 16px;font-family:'Fredoka';font-weight:700;font-size:15px;white-space:nowrap;box-shadow:0 3px 0 var(--gold-d);display:inline-flex;align-items:center;gap:7px;line-height:1.2}
 .sfx-btn{background:#fff;border:2px solid var(--line);border-radius:999px;padding:7px 12px;font-weight:900;font-size:13px;color:var(--pink-d)}
@@ -888,7 +898,7 @@ html.is-standard .hub-row{grid-template-columns:repeat(2,1fr)}
 <body>
 <div id="worldBackdrop" aria-hidden="true"></div>
 <header class="topbar">
-  <div class="brand"><span class="brand-face-slot" style="display:inline-flex;width:44px;height:44px;flex:0 0 44px"><img class="brand-face" src="assets/coach-belle.webp" alt="Cheer Coach Belle" style="width:44px;height:44px"/></span><span><span id="brandWorld">Royce's Royal Roses</span><small>K to 5th Grade</small></span></div>
+  <div class="brand"><span class="brand-face-slot royce-crop royce-crop--framed" style="display:inline-flex;width:44px;height:44px;flex:0 0 44px"><img src="assets/royce.webp" alt="Royce"/></span><span><span id="brandWorld">Royce's Royal Roses</span><small>K to 5th Grade</small></span></div>
   <div class="nav-actions"><div class="nav-spread"><button type="button" class="nav-home-btn" onclick="navGoHome()" aria-label="Home — go back to the home screen"><span class="nav-home-icon" aria-hidden="true">🏠</span> Home</button><div class="stars-pill">⭐ <span id="totalStars">0</span> Stars</div><div class="menu-wrap"><button type="button" class="menu-btn" id="mainMenuBtn" aria-haspopup="true" aria-expanded="false" aria-controls="mainMenuPanel" onclick="toggleMainMenu()"><span aria-hidden="true">☰</span> Menu <span class="menu-arrow" aria-hidden="true">▾</span></button><div class="menu-panel" id="mainMenuPanel" style="display:none" aria-label="Menu — change grade and progress report"><p class="menu-sec-note">Every game is set to this grade's learning level. Tap your grade to change it — all your games update right away!</p><div class="menu-grade-grid" id="menuGradeGrid" role="group" aria-label="Change grade"></div><hr class="menu-divider"/><button type="button" class="menu-report-btn" onclick="openProgressFromMenu()">📊 Progress Report</button><div id="menuWizardItem" style="display:none"><hr class="menu-divider"/><button type="button" class="menu-report-btn" onclick="openWizardFromMenu()">✨ Make It Yours — Setup Wizard</button><p class="menu-sec-note" style="text-align:center;margin-top:8px">Re-run the step-by-step setup — theme, three colors, animal, background, name and coach. (Your grade is changed from the grade list right above.)</p></div></div></div></div></div>
 </header>
 
@@ -990,7 +1000,7 @@ html.is-standard .hub-row{grid-template-columns:repeat(2,1fr)}
       </div>
     </div>
     <div class="belle-compact">
-      <div class="belle-face"><span class="coach-face-slot"><img src="assets/coach-belle.webp" alt="Cheer Coach Belle" style="width:100%;height:100%;object-fit:cover;object-position:50% 10%"/></span></div>
+      <div class="belle-face"><span class="learner-face-slot royce-crop"><img src="assets/royce.webp" alt="Royce"/></span></div>
       <div class="bubble" id="belleBubble">Let's shine!</div>
       <button class="hear-it-btn" id="hearItBtn" onclick="hearCurrentTask()">🔊 Hear It — <span class="coach-short-text">Belle</span> Reads It!</button>
     </div>
