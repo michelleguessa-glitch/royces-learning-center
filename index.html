@@ -208,7 +208,7 @@ span.royce-crop>img{position:absolute;left:-143%;top:-10.6%;width:408.5%;height:
 .stage svg.bg{position:absolute;inset:0;width:100%;height:100%}
 .stage-floor{position:absolute;left:0;right:0;bottom:0;height:44px;background:linear-gradient(180deg,#EFCDa5,#DFAF7E);border-top:3px solid #C98F5F}
 .beam{position:absolute;left:5%;right:5%;bottom:96px;height:15px;background:linear-gradient(180deg,#FFB1D1,#F76FAE 55%,var(--pink));border-radius:8px;box-shadow:0 7px 16px rgba(157,20,80,.35),inset 0 2px 0 rgba(255,255,255,.6),inset 0 -3px 0 rgba(157,20,80,.35);z-index:3}
-.cheer-shadow{position:absolute;bottom:101px;left:calc(5% + 13px);width:92px;height:16px;border-radius:50%;background:radial-gradient(ellipse at center,rgba(58,20,48,.38),rgba(58,20,48,0) 70%);z-index:3;pointer-events:none;transition:bottom .35s ease,transform .35s ease,opacity .35s ease}
+.cheer-shadow{position:absolute;bottom:101px;left:calc(5% + 13px);width:92px;height:16px;border-radius:50%;background:radial-gradient(ellipse at center,rgba(58,20,48,.38),rgba(58,20,48,0) 70%);z-index:3;pointer-events:none;transition:left .6s ease,bottom .35s ease,transform .35s ease,opacity .35s ease}
 .beam:before,.beam:after{content:"";position:absolute;top:15px;width:16px;height:37px;background:#8A5A78;border-radius:0 0 4px 4px}
 .beam:before{left:6%}.beam:after{right:6%}
 .mat{position:absolute;left:16%;right:16%;bottom:44px;height:15px;background:linear-gradient(180deg,#B794F6,#9D6BEE 60%,var(--purple));border-radius:8px;z-index:2;box-shadow:0 6px 14px rgba(91,33,182,.30),inset 0 2px 0 rgba(255,255,255,.45)}
@@ -299,21 +299,20 @@ span.royce-crop>img{position:absolute;left:-143%;top:-10.6%;width:408.5%;height:
    stays exactly as built — level + ✕ Close, Belle's instructions, the
    scoreboard block, the stage, the question card with the answer box +
    Check It, the dotted line, the centered Helper Tools button. Nothing
-   moves, nothing is added or removed. What changes is only how tall
-   each piece is: while the game view is open it becomes a full-screen
-   column whose height is the screen itself, every fixed piece is a
-   little tighter (smaller gaps, card padding, score digits, question
-   type), and the STAGE is the one flexible piece — it grows or shrinks
-   to whatever room is left, with her cheerleader, the beam, the mat,
-   the squad and the sport props sized as a share of the stage height
-   instead of fixed pixels, so they scale with it. A short problem
-   leaves a tall stage; a long word problem (or the feedback line after
-   an answer) takes its room and the stage gives it up — the problem,
-   the scoreboard, the game and the answer box are ALWAYS all on the
-   one screen together, no scrolling, so she watches her player make
-   or miss the moment she taps Check It. The rules bite only while the
-   view is open (its inline style reads display:block); every other
-   view keeps its exact original sizing. */
+   moves, nothing is added or removed. The STAGE is ONE SET SIZE in
+   every game — it never flexes, never goes slim, never stretches or
+   shrinks per game — with her cheerleader, the beam, the mat, the
+   squad and the sport props sized as a share of that set stage height,
+   so her player is always fully visible at her proper size. The fit
+   comes from the DISPLAY instead: counting objects are structured in
+   balanced rows of about five, and fitGameView() scales a too-tall
+   display down whole (never clipped) and steps type down only when a
+   tall state — a long word problem, the feedback after an answer —
+   needs the room. The problem, the scoreboard, the game and the answer
+   box are ALWAYS all on the one screen together, no scrolling, so she
+   watches her player make or miss the moment she taps Check It. The
+   rules bite only while the view is open (its inline style reads
+   display:block); every other view keeps its exact original sizing. */
 .wrap:has(>#practiceView[style*="block"]){padding-top:8px;padding-bottom:10px}
 #practiceView[style*="block"]{display:flex!important;flex-direction:column;height:calc(100vh - 96px);height:calc(100dvh - 96px)}
 #practiceView .practice-head{flex:0 0 auto;margin-bottom:6px}
@@ -332,7 +331,8 @@ span.royce-crop>img{position:absolute;left:-143%;top:-10.6%;width:408.5%;height:
 #practiceView .sb-name{font-size:13.5px}
 #practiceView .sb-score{font-size:28px}
 #practiceView .champ-banner{flex:0 0 auto;margin-bottom:6px;padding:7px 12px;font-size:15px;border-radius:13px}
-#practiceView .stage{flex:1 1 auto;height:auto;min-height:104px;max-height:330px;margin-bottom:8px;border-radius:20px}
+#practiceView .stage{flex:0 0 auto;height:150px;margin-bottom:8px;border-radius:20px}
+@media (min-width:641px){ #practiceView .stage{height:260px} }
 #practiceView .stage-floor{height:13.5%}
 #practiceView .stage.sport-active .stage-floor{height:15.8%}
 #practiceView .beam{bottom:29%;height:5%;min-height:9px}
@@ -354,7 +354,6 @@ span.royce-crop>img{position:absolute;left:-143%;top:-10.6%;width:408.5%;height:
 #practiceView .sport-target{bottom:29%;font-size:44px}
 #practiceView .sport-prop{bottom:31.5%}
 #practiceView .stage-mascot{top:34px;font-size:40px}
-#practiceView .stage-msg{bottom:6px;font-size:13.5px;padding:6px 13px}
 #practiceView .gamecard{flex:0 1 auto;padding:10px 12px;border-radius:20px}
 #practiceView .qlabel{font-size:14px}
 #practiceView .visual{padding:4px 0 2px;max-height:14vh;max-height:14dvh;overflow:hidden}
@@ -403,6 +402,102 @@ span.royce-crop>img{position:absolute;left:-143%;top:-10.6%;width:408.5%;height:
  #practiceView[style*="block"]{height:calc(100vh - 132px);height:calc(100dvh - 132px)}
  #practiceView .stage{min-height:80px}
 }
+/* fitGameView() steps — sizing ONLY, layout untouched. When a tall
+   state (a long word problem, the full wrong-answer feedback, the open
+   tools menu) needs more room than the counting picture can give, these
+   classes step the type and spacing down a notch so the whole view
+   still ends on the one screen. They are added and removed by
+   fitGameView() alone, state by state. */
+#practiceView.fit-tight .bubble{font-size:13.5px;line-height:1.3;padding:7px 10px}
+#practiceView.fit-tight .belle-face{width:42px;height:42px;flex-basis:42px}
+#practiceView.fit-tight .sb-score{font-size:24px}
+#practiceView.fit-tight .sb-team{padding:5px 7px}
+#practiceView.fit-tight .question{font-size:clamp(19px,3.2vw,24px);line-height:1.24}
+#practiceView.fit-tight .clue{font-size:13.5px;padding:7px 10px}
+#practiceView.fit-tight .feedback{font-size:13.5px;line-height:1.32}
+#practiceView.fit-tight .feedback.good,#practiceView.fit-tight .feedback.bad{padding:8px 10px}
+#practiceView.fit-tighter .bubble{font-size:12.8px;line-height:1.26;padding:6px 9px}
+#practiceView.fit-tighter .belle-face{width:36px;height:36px;flex-basis:36px}
+#practiceView.fit-tighter .belle-compact{padding:6px 8px;margin-bottom:4px}
+#practiceView.fit-tighter .sb-score{font-size:20px}
+#practiceView.fit-tighter .sb-name{font-size:12px}
+#practiceView.fit-tighter .sb-team{padding:4px 6px}
+#practiceView.fit-tighter .sb-top{margin-bottom:4px}
+#practiceView.fit-tighter .scoreboard{margin-bottom:4px}
+#practiceView.fit-tighter .question{font-size:clamp(18px,3vw,22px);line-height:1.2}
+#practiceView.fit-tighter .clue{font-size:12.8px;padding:6px 9px}
+#practiceView.fit-tighter .feedback{font-size:12.8px;line-height:1.26}
+#practiceView.fit-tighter .feedback.good,#practiceView.fit-tighter .feedback.bad{padding:7px 9px}
+#practiceView.fit-tighter .answer-input{font-size:20px;padding:6px 12px}
+#practiceView.fit-tighter .check-btn{font-size:17px;padding:7px 16px}
+#practiceView.fit-tighter .tools-divider{margin-top:6px}
+#practiceView.fit-tighter .tools-btn{margin-top:6px;padding:8px 14px}
+#practiceView.fit-tighter .gamecard{padding:8px 10px}
+#practiceView.fit-tighter .choice{padding:8px 14px;font-size:18px}
+/* Third step, reached only by the tallest state there is — the full
+   wrong-answer feedback under a set-size stage: every piece steps to
+   its readable minimum so the dashed line and the Helper Tools button
+   still land on the screen. The moment she retries and the feedback
+   clears, the view relaxes back to full size on its own. */
+#practiceView.fit-max .bubble{font-size:11.8px;line-height:1.2;padding:5px 8px}
+#practiceView.fit-max .belle-face{width:30px;height:30px;flex-basis:30px}
+#practiceView.fit-max .belle-compact{padding:5px 7px;margin-bottom:3px}
+#practiceView.fit-max .practice-head{margin-bottom:3px}
+#practiceView.fit-max .practice-head .stars-pill{padding:4px 10px;font-size:12px}
+#practiceView.fit-max .game-close-btn{padding:5px 11px;font-size:12px}
+#practiceView.fit-max .sb-score{font-size:17px}
+#practiceView.fit-max .sb-name{font-size:11px}
+#practiceView.fit-max .sb-team{padding:3px 5px}
+#practiceView.fit-max .sb-top{margin-bottom:3px}
+#practiceView.fit-max .sb-target,#practiceView.fit-max .streak-pill{padding:3px 9px;font-size:11px}
+#practiceView.fit-max .scoreboard{margin-bottom:3px}
+#practiceView.fit-max .stage{margin-bottom:4px}
+#practiceView.fit-max .gamecard{padding:6px 8px}
+#practiceView.fit-max .qlabel{font-size:12.5px}
+#practiceView.fit-max .question{font-size:clamp(17px,2.8vw,20px);line-height:1.18}
+#practiceView.fit-max .feedback{font-size:11.5px;line-height:1.18}
+#practiceView.fit-max .feedback.good,#practiceView.fit-max .feedback.bad{padding:6px 8px}
+#practiceView.fit-max .answer-input{font-size:19px;padding:3px 10px}
+#practiceView.fit-max .check-btn{font-size:16px;padding:5px 14px}
+#practiceView.fit-max .tools-divider{margin-top:2px}
+#practiceView.fit-max .tools-btn{margin-top:2px;padding:5px 12px}
+#practiceView.fit-max .tools-head{font-size:13.5px}
+#practiceView.fit-max .choice{padding:6px 12px;font-size:17px}
+/* Fourth step, reached ONLY while the Helper Tools menu itself is open
+   on top of the tallest state (the full wrong-answer feedback): the
+   menu's own three buttons step down and every margin gives back its
+   last few pixels, so Work It Out / Show Me an Example / Get a Hint all
+   land on the same screen too — no scrolling to reach a tool, ever.
+   The stage height is still never touched. Closing the menu relaxes
+   the view back to its natural size on its own. */
+#practiceView.fit-menu .tools-menu{gap:6px;margin-top:6px}
+#practiceView.fit-menu .tools-menu .goldbtn,#practiceView.fit-menu .tools-menu .ghost{padding:6px 12px;font-size:14px}
+#practiceView.fit-menu .bubble{font-size:11px;line-height:1.14;padding:4px 7px}
+#practiceView.fit-menu .belle-compact{padding:3px 6px;margin-bottom:0}
+#practiceView.fit-menu .practice-head{margin-bottom:0}
+#practiceView.fit-menu .sb-score{font-size:15px}
+#practiceView.fit-menu .sb-team{padding:2px 4px}
+#practiceView.fit-menu .sb-top{margin-bottom:0}
+#practiceView.fit-menu .sb-target,#practiceView.fit-menu .streak-pill{padding:2px 8px;font-size:10.5px}
+#practiceView.fit-menu .scoreboard{margin-bottom:0}
+#practiceView.fit-menu .stage{margin-bottom:0}
+#practiceView.fit-menu .gamecard{padding:5px 7px}
+#practiceView.fit-menu .question{margin:1px 0}
+#practiceView.fit-menu .answer-row{margin-top:4px}
+#practiceView.fit-menu .feedback{font-size:10.8px;line-height:1.1;margin-top:4px}
+#practiceView.fit-menu .feedback.good,#practiceView.fit-menu .feedback.bad{padding:4px 7px}
+#practiceView.fit-menu .tools-divider{margin-top:0}
+#practiceView.fit-menu .tools-btn{margin-top:0;padding:4px 10px}
+/* Full-screen tool panels (Hint, Work It Out): they live at body level
+   when open (see belleHint / toggleWorkPanel) so nothing can cover
+   them, they sit above every bar, and their header row — face/title,
+   replay, ✕ Close / ✕ Done — stays pinned at the panel's own top even
+   while the panel's content scrolls. The close always lands back on
+   the same game and the same problem. */
+.hint-panel{z-index:90}
+.work-panel{z-index:90}
+.hint-panel .hint-head{position:sticky;top:-20px;background:var(--pink-l);padding:10px 0;z-index:2}
+.work-panel .work-head{position:sticky;top:-18px;background:#FFF9FD;padding:10px 0;z-index:2}
 .btn-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
 .btn-row .goldbtn,.btn-row .ghost{width:100%;padding:14px 16px;font-size:15px}
 @media(max-width:560px){.btn-row{grid-template-columns:1fr}.btn-row .goldbtn,.btn-row .ghost{padding:15px 16px}.answer-input{min-width:0}.check-btn{padding:12px 18px}}
@@ -1208,7 +1303,10 @@ html.is-standard .hub-row{grid-template-columns:repeat(2,1fr)}
       <div class="dance-barre" id="danceBarre" aria-hidden="true" style="display:none"><div class="barre-bar barre-top"></div><div class="barre-bar barre-low"></div><div class="barre-post" style="left:4%"></div><div class="barre-post" style="left:48%"></div><div class="barre-post" style="left:92%"></div></div>
       <div class="sport-target" id="sportTarget" aria-hidden="true" style="display:none"></div>
       <div class="sport-prop" id="sportProp" aria-hidden="true" style="display:none"></div>
-      <div class="stage-msg" id="stageMsg">Your squad is ready at the base, pom poms in hand — answer to build the pyramid! 📣</div>
+      <!-- NO text or prompt sits on the game itself (Michelle): the
+           stage shows only the venue, her player, and the game's
+           moving object. The old dark status bar across the stage is
+           gone entirely; setStageMsg() is a no-op without it. -->
     </div>
     <div class="gamecard" id="gameCard">
       <div class="play-layout" id="playLayout">
@@ -1825,9 +1923,10 @@ var TRYAGAIN=['Good try — champions always try again!','So close! Let\'s fix o
    within 1000 (3.NBT.2) • 4th division by 1-digit divisors only (4.NBT.6) • 5th 2-digit divisors (5.NBT.6). */
 /* Counting visuals are BIG in Kindergarten & 1st grade (ages 5–7 need large, easy-to-count objects) and
    keep their regular size in grades 2–5. Groups flex-wrap into rows, so big objects never scroll sideways. */
-function dotsVisual(a,b){ var BIG=gradeIdx<=1; var sz= BIG?46:24; function dots(n,c){ var s=''; for(var i=0;i<n;i++) s+='<span style="color:'+c+';font-size:'+sz+'px;line-height:1.1">●</span>'; return '<span style="display:inline-flex;flex-wrap:wrap;justify-content:center;gap:'+(BIG?4:1)+'px;max-width:min(400px,86vw)">'+s+'</span>'; } return '<div style="text-align:center"><div>'+dots(a,'#E84393')+'</div><div style="font-family:Fredoka;font-size:'+(BIG?36:22)+'px;color:#7C3AED;line-height:1.1">+</div><div>'+dots(b,'#7C3AED')+'</div></div>'; }
-function takeAwayVisual(a,b){ var BIG=gradeIdx<=1; var sz= BIG?46:24; var xs= BIG?36:19; var s=''; for(var i=0;i<a;i++){ if(i>=a-b){ s+='<span style="position:relative;color:#CBB3C6;font-size:'+sz+'px;line-height:1.1">●<span style="position:absolute;left:50%;top:50%;transform:translate(-50%,-58%);color:#C2185B;font-size:'+xs+'px;font-weight:900">✕</span></span>'; } else { s+='<span style="color:#E84393;font-size:'+sz+'px;line-height:1.1">●</span>'; } } return '<div style="text-align:center"><div style="display:inline-flex;flex-wrap:wrap;justify-content:center;gap:'+(BIG?4:1)+'px;max-width:min(400px,86vw)">'+s+'</div><div style="font-weight:900;color:#8A5A78;font-size:'+(BIG?16:14)+'px;margin-top:6px">The ✕ dots are taken away — count the pink dots left!</div></div>'; }
-function storyVisual(e,a,b,mode){ var BIG=gradeIdx<=1; var sz= BIG?42:26; function grp(n,dimFrom){ var s=''; for(var i=0;i<n;i++){ var dim=(dimFrom!==null&&dimFrom!==undefined&&i>=dimFrom); s+='<span style="position:relative;font-size:'+sz+'px;line-height:1.15;'+(dim?'opacity:.4':'')+'">'+e+(dim?'<span style="position:absolute;left:50%;top:50%;transform:translate(-50%,-55%);color:#C2185B;font-size:'+Math.round(sz*0.85)+'px;font-weight:900">✕</span>':'')+'</span>'; } return '<span style="display:inline-flex;flex-wrap:wrap;justify-content:center;gap:2px;max-width:min(380px,84vw)">'+s+'</span>'; } if(mode==='sub'){ return '<div style="text-align:center">'+grp(a,a-b)+'<div style="font-weight:900;color:#8A5A78;font-size:'+(BIG?16:14)+'px;margin-top:6px">The ✕ ones were given away — count what is left!</div></div>'; } return '<div style="display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;text-align:center">'+grp(a,null)+'<span style="font-family:Fredoka;font-size:'+(BIG?36:22)+'px;color:#7C3AED">+</span>'+grp(b,null)+'</div>'; }
+function dotsVisual(a,b){ var BIG=gradeIdx<=1; var sz= BIG?46:24; var gw= BIG?250:124; /* counting objects never run in one long line across: each group wraps into balanced rows of about five (9 dots = 5 on the top row, 4 on the bottom), and the two groups sit side by side with the + between them */
+ function dots(n,c){ var s=''; for(var i=0;i<n;i++) s+='<span style="color:'+c+';font-size:'+sz+'px;line-height:1.1">●</span>'; return '<span style="display:inline-flex;flex-wrap:wrap;justify-content:center;gap:'+(BIG?4:1)+'px;max-width:'+gw+'px">'+s+'</span>'; } return '<div style="display:flex;align-items:center;justify-content:center;gap:'+(BIG?12:8)+'px;flex-wrap:wrap;text-align:center">'+dots(a,'#E84393')+'<span style="font-family:Fredoka;font-size:'+(BIG?36:22)+'px;color:#7C3AED;line-height:1.1">+</span>'+dots(b,'#7C3AED')+'</div>'; }
+function takeAwayVisual(a,b){ var BIG=gradeIdx<=1; var sz= BIG?46:24; var xs= BIG?36:19; var s=''; for(var i=0;i<a;i++){ if(i>=a-b){ s+='<span style="position:relative;color:#CBB3C6;font-size:'+sz+'px;line-height:1.1">●<span style="position:absolute;left:50%;top:50%;transform:translate(-50%,-58%);color:#C2185B;font-size:'+xs+'px;font-weight:900">✕</span></span>'; } else { s+='<span style="color:#E84393;font-size:'+sz+'px;line-height:1.1">●</span>'; } } return '<div style="text-align:center"><div style="display:inline-flex;flex-wrap:wrap;justify-content:center;gap:'+(BIG?4:1)+'px;max-width:'+(BIG?250:124)+'px">'+s+'</div><div style="font-weight:900;color:#8A5A78;font-size:'+(BIG?16:14)+'px;margin-top:6px">The ✕ dots are taken away — count the pink dots left!</div></div>'; }
+function storyVisual(e,a,b,mode){ var BIG=gradeIdx<=1; var sz= BIG?42:26; function grp(n,dimFrom){ var s=''; for(var i=0;i<n;i++){ var dim=(dimFrom!==null&&dimFrom!==undefined&&i>=dimFrom); s+='<span style="position:relative;font-size:'+sz+'px;line-height:1.15;'+(dim?'opacity:.4':'')+'">'+e+(dim?'<span style="position:absolute;left:50%;top:50%;transform:translate(-50%,-55%);color:#C2185B;font-size:'+Math.round(sz*0.85)+'px;font-weight:900">✕</span>':'')+'</span>'; } return '<span style="display:inline-flex;flex-wrap:wrap;justify-content:center;gap:2px;max-width:'+(BIG?250:140)+'px">'+s+'</span>'; } if(mode==='sub'){ return '<div style="text-align:center">'+grp(a,a-b)+'<div style="font-weight:900;color:#8A5A78;font-size:'+(BIG?16:14)+'px;margin-top:6px">The ✕ ones were given away — count what is left!</div></div>'; } return '<div style="display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;text-align:center">'+grp(a,null)+'<span style="font-family:Fredoka;font-size:'+(BIG?36:22)+'px;color:#7C3AED">+</span>'+grp(b,null)+'</div>'; }
 function clockVisual(hrs,mins){ var angM=mins*6, angH=(hrs%12)*30+mins*0.5; return '<svg width="150" height="150" viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="#fff" stroke="#C2185B" stroke-width="4"/><g font-size="10" font-weight="900" text-anchor="middle" fill="#3A1430"><text x="50" y="14">12</text><text x="88" y="53">3</text><text x="50" y="93">6</text><text x="12" y="53">9</text></g><line x1="50" y1="50" x2="'+(50+24*Math.sin(angH*Math.PI/180))+'" y2="'+(50-24*Math.cos(angH*Math.PI/180))+'" stroke="#3A1430" stroke-width="5" stroke-linecap="round"/><line x1="50" y1="50" x2="'+(50+36*Math.sin(angM*Math.PI/180))+'" y2="'+(50-36*Math.cos(angM*Math.PI/180))+'" stroke="#C2185B" stroke-width="3" stroke-linecap="round"/><circle cx="50" cy="50" r="4" fill="#E4B33C"/></svg>'; }
 function moneyStr(cents){ var d=Math.floor(cents/100), c=cents%100; return d+'.'+(c<10?'0'+c:c); }
 function genMath(id,tier){
@@ -1964,12 +2063,13 @@ function stackHTML(rows,op,showPlaces){
 function numsFromQ(){ var m=String(current.q).match(/\d+/g); return m?m.map(function(x){return parseInt(x,10)}):[]; }
 var fracDen=0;
 function toggleFrac(btn){ btn.classList.toggle('on'); var bar=document.getElementById('fracBar'); if(!bar) return; var on=bar.querySelectorAll('.frac-cell.on').length; var c=document.getElementById('fracCount'); if(c) c.textContent='Tap the parts to shade them. Shaded: '+on+' of '+fracDen; }
-function toggleToolsMenu(){ var m=document.getElementById('toolsMenu'), b=document.getElementById('toolsToggleBtn'); if(!m) return; var open=m.style.display==='none'; m.style.display= open? 'grid':'none'; if(b) b.setAttribute('aria-expanded', open? 'true':'false'); if(typeof sfx==='function') sfx('pop'); }
-function closeToolsMenu(){ var m=document.getElementById('toolsMenu'), b=document.getElementById('toolsToggleBtn'); if(m) m.style.display='none'; if(b) b.setAttribute('aria-expanded','false'); }
+function toggleToolsMenu(){ var m=document.getElementById('toolsMenu'), b=document.getElementById('toolsToggleBtn'); if(!m) return; var open=m.style.display==='none'; m.style.display= open? 'grid':'none'; if(b) b.setAttribute('aria-expanded', open? 'true':'false'); if(typeof sfx==='function') sfx('pop'); if(typeof fitGameView==='function') fitGameView(); }
+function closeToolsMenu(){ var m=document.getElementById('toolsMenu'), b=document.getElementById('toolsToggleBtn'); if(m) m.style.display='none'; if(b) b.setAttribute('aria-expanded','false'); if(typeof fitGameView==='function') fitGameView(); }
 function toggleWorkPanel(force){
   var panel=document.getElementById('workPanel'), layout=document.getElementById('playLayout'), btn=document.getElementById('workToggleBtn');
   if(!panel) return;
   var show= (typeof force==='boolean')? force : panel.style.display==='none';
+  if(show){ if(panel.parentNode!==document.body) document.body.appendChild(panel); panel.scrollTop=0; } /* body level while open: the "✕ Done" header can never land underneath the sticky top bar */
   panel.style.display= show? 'block':'none';
   if(layout) layout.classList.toggle('with-work',show);
   if(btn) btn.textContent= show? '✏️ Close Work It Out' : '✏️ Work It Out';
@@ -2115,7 +2215,7 @@ function speakBelle(text,force,rate,captionEl){
     if(sentences.length){
       captionEl.textContent='';
       var shown=0;
-      var reveal=function(n){ if(gen!==belleCaptionGen) return; if(n>shown){ shown=n; captionEl.textContent=sentences.slice(0,shown).join(' '); } };
+      var reveal=function(n){ if(gen!==belleCaptionGen) return; if(n>shown){ shown=n; captionEl.textContent=sentences.slice(0,shown).join(' '); if(typeof fitGameView==='function') fitGameView(); } };
       /* Fallback timing: if the voice reports no start events, each
          sentence still appears about when she would reach it. */
       var starts=[], acc=0;
@@ -2151,17 +2251,17 @@ function speakBelle(text,force,rate,captionEl){
   }catch(e){}
 }
 function stopBelleSpeech(){ belleCaptionGen++; clearCaptionTimers(); if(belleSpeakTimer){ clearTimeout(belleSpeakTimer); belleSpeakTimer=null; } try{ if('speechSynthesis' in window) window.speechSynthesis.cancel(); }catch(e){} }
-function spokenProblemText(){ if(!current) return ''; var eq=equationInWords(current.q); if(eq) return eq; return plainSpeechText(current.q); }
+/* The coach's bubble holds ONLY her instructions (Michelle): the
+   problem itself lives in its own card under the game, once — it is
+   never read into the bubble, and there is no "Here is your problem."
+   opener. On game open Belle reads these instructions aloud and they
+   roll in as captions in the bubble; the 💬 replay beside the bubble
+   replays the same instructions, voice and captions together. */
 function buildTaskSpeech(){
-  if(!current) return '';
-  var parts=[];
-  parts.push('Here is your problem. '+spokenProblemText());
-  if(current.clue) parts.push(plainSpeechText(current.clue));
-  if(current.speak) parts.push('The word is: '+current.speak+'.');
-  if(current.visual && currentTopic && currentTopic.id==='fractions') parts.push('Look at the pink shaded parts and count all the equal parts.');
-  if(current.visual && currentTopic && currentTopic.id==='time') parts.push('Look at the clock. The short hand tells the hour, and the long hand tells the minutes.');
-  if(current.display==='choice'&&current.choices&&current.choices.length) parts.push('Your choices are: '+current.choices.join(', ')+'.');
-  return parts.filter(function(p){return !!p;}).join(' ');
+  if(!currentTopic) return '';
+  var wn=(typeof effectiveWorldName==='function')? effectiveWorldName() : "Royce's Royal Roses";
+  var title=(typeof displayTitle==='function'&&displayTitle(currentTopic))||currentTopic.title||'';
+  return 'Welcome to '+wn+'! Let\u2019s play '+title+'! Watch my example with the \u2728 button if you need it, then try this one. You\u2019ve got this, superstar! \uD83C\uDF80';
 }
 function hearCurrentTask(){ var t=buildTaskSpeech(); if(t) speakBelle(t,true,null,document.getElementById('belleBubble')); else toast('Pick a game first — then '+coachLineName()+' can read it to you! 🌹'); }
 function hearWizardStep(){ if(!wizSteps||!wizSteps.length) return; var st=wizSteps[wizStep]; if(st) speakBelle(st.h+'. '+st.b,true); }
@@ -2276,12 +2376,27 @@ function headSVG(d,cx,cy,scale){
    tennis world is active. The racket is part of her SVG — gripped where
    her hand is — so it moves with her body and can never leave her hand.
    Only the separate ball prop ever travels across the court. */
-function stageCheerOpts(){ try{ var sw=(typeof isSportWorld==='function'&&isSportWorld())? sportWorldId() : ''; return {racket: sw==='tennis', hockey: sw==='hockey'}; }catch(e){ return {}; } }
+function stageCheerOpts(){ try{ var sw=(typeof isSportWorld==='function'&&isSportWorld())? sportWorldId() : ''; return {racket: sw==='tennis', hockey: sw==='hockey', rope: sw==='jumprope'}; }catch(e){ return {}; } }
 /* Where the sport prop (the ball / puck) rests while a problem waits:
    the soccer ball sits ON THE GROUND under her right foot, the hockey
    puck sits on the ice right in front of her stick blade, and every
    other sport keeps the classic spot by her hand. */
-function sportPropHome(){ var id=''; try{ id=sportWorldId(); }catch(e){} if(id==='soccer') return {left:'calc(5% + 52px)',bottom:'100px'}; if(id==='hockey') return {left:'calc(5% + 96px)',bottom:'100px'}; if(id==='tennis') return {left:'calc(5% + 89px)',bottom:'159px'}; return {left:'calc(5% + 96px)',bottom:'104px'}; }
+function sportPropHome(){ var id=''; try{ id=sportWorldId(); }catch(e){}
+  /* The offsets below were tuned on the 260px desktop stage. The stage
+     is ONE set size per breakpoint (150px on phones), and her figure's
+     size is a fixed share of the stage height — so the prop's home is
+     scaled by the stage's real height, keeping the ball / puck in the
+     exact same spot relative to her hand, blade and foot at every size:
+     soccer ball on the ground under her foot, puck at her stick blade,
+     tennis ball right at her racket strings. */
+  var st=document.getElementById('beamStage'); var f=1; if(st&&st.clientHeight){ f=st.clientHeight/260; }
+  function L(px){ return 'calc(5% + '+Math.round(px*f)+'px)'; }
+  function B(px){ return Math.round(px*f)+'px'; }
+  if(id==='soccer') return {left:L(52),bottom:B(100)};
+  if(id==='hockey') return {left:L(96),bottom:B(100)};
+  if(id==='tennis') return {left:L(89),bottom:B(159)};
+  return {left:L(96),bottom:B(104)};
+}
 function cheerSVG(d,pose,opts){
   var skin=SKINS[d.skin]||SKINS[2];
   var top= d.topSpecial==='gold' ? '#E4B33C' : d.top;
@@ -2290,6 +2405,7 @@ function cheerSVG(d,pose,opts){
   var sparkle= d.pomSpecial==='sparkle';
   var wantRacket= !!(opts&&opts.racket);
   var wantHockey= !!(opts&&opts.hockey);
+  var wantRope= !!(opts&&opts.rope);
   if(pose==='split'){
     var s2='<svg viewBox="0 0 260 170" role="img" aria-label="Your cheerleader landing in a split">';
     s2+='<g class="cheer-body">';
@@ -2314,8 +2430,20 @@ function cheerSVG(d,pose,opts){
   /* torso / uniform top */
   s+='<path d="M76 92 L124 92 L128 152 L72 152 Z" fill="'+top+'"/><path d="M80 92 L100 122 L120 92 L110 92 L100 106 L90 92 Z" fill="#fff" opacity=".85"/><text x="100" y="142" text-anchor="middle" font-size="16" fill="#E4B33C">★</text>';
   /* arms out in a T, holding pom poms */
-  s+='<g class="arm-l"><line x1="78" y1="100" x2="38" y2="84" stroke="'+skin+'" stroke-width="11" stroke-linecap="round"/>'+(d.wristbands?'<line x1="50" y1="89" x2="43" y2="86" stroke="'+d.bow+'" stroke-width="6"/>':'')+pomSVG(28,80,20,pomA,pomB,sparkle)+'</g>';
-  if(wantRacket){
+  if(wantRope){
+    /* jump rope: the rope itself is part of her figure — its arc runs
+       from one hand, down UNDER her shoes, and up to the other hand,
+       drawn behind her legs so it passes under her feet. The handles
+       sit in her hands (drawn with the arms below), so the rope is
+       truly held — it hops and travels with her, never beside her. */
+    s+='<path d="M45 148 C 56 232, 72 254, 100 256 C 128 254, 144 232, 155 148" fill="none" stroke="#C2185B" stroke-width="5" stroke-linecap="round"/>';
+    s+='<g class="arm-l"><line x1="78" y1="100" x2="47" y2="143" stroke="'+skin+'" stroke-width="11" stroke-linecap="round"/><line x1="40" y1="137" x2="50" y2="157" stroke="#8A5A78" stroke-width="6.5" stroke-linecap="round"/><circle cx="47" cy="145" r="6.5" fill="'+skin+'"/></g>';
+  } else {
+    s+='<g class="arm-l"><line x1="78" y1="100" x2="38" y2="84" stroke="'+skin+'" stroke-width="11" stroke-linecap="round"/>'+(d.wristbands?'<line x1="50" y1="89" x2="43" y2="86" stroke="'+d.bow+'" stroke-width="6"/>':'')+pomSVG(28,80,20,pomA,pomB,sparkle)+'</g>';
+  }
+  if(wantRope){
+    s+='<g class="arm-r"><line x1="122" y1="100" x2="153" y2="143" stroke="'+skin+'" stroke-width="11" stroke-linecap="round"/><line x1="150" y1="137" x2="160" y2="157" stroke="#8A5A78" stroke-width="6.5" stroke-linecap="round"/><circle cx="153" cy="145" r="6.5" fill="'+skin+'"/></g>';
+  } else if(wantRacket){
     /* tennis: her right arm angles down at her side and her hand grips
        the racket handle — the racket is drawn as part of this group, so
        it stays in her hand through every bounce, swing and reset. */
@@ -2358,8 +2486,13 @@ function squadMembers(){ return [document.getElementById('squadM1'),document.get
 function renderSquad(){
   squadMembers().forEach(function(m,i){ if(m) m.innerHTML=cheerSVG(squadDesign(i),'stand'); });
 }
-function resetSquad(){
-  squadMembers().forEach(function(m){ if(!m) return; m.classList.remove('routine'); m.style.transition='none'; m.style.transform=''; m.style.left=''; void m.offsetWidth; m.style.transition=''; });
+function resetSquad(instant){
+  squadMembers().forEach(function(m){ if(!m) return; m.classList.remove('routine');
+    if(instant){ m.style.transition='none'; m.style.transform=''; m.style.left=''; void m.offsetWidth; m.style.transition=''; }
+    else { /* between problems the squad WALKS back to the base with her — nobody snaps across the stage */
+      m.style.transition='left .65s ease, transform .65s ease'; m.style.transform=''; m.style.left='';
+      (function(mm){ setTimeout(function(){ mm.style.transition=''; },700); })(m);
+    } });
 }
 function renderAllCheerleaders(){
   document.querySelectorAll('.cheer-slot').forEach(function(el){
@@ -2474,7 +2607,7 @@ function renderGrid(){ var g=document.getElementById('topicGrid'); g.innerHTML=T
   if(gradeLockedTopic(t)){ return '<article class="tcard locked" onclick="lockedGradeTap(\''+t.id+'\')" aria-label="'+displayTitle(t)+' — locked, opens in 3rd Grade"><div style="display:flex;justify-content:space-between;align-items:start;gap:8px"><div class="ticon">'+t.icon+'</div><span class="lock-badge">🔒 Opens in 3rd Grade!</span></div><h3>'+displayTitle(t)+'</h3><p>'+displayDesc(t)+'</p><button class="play-btn lock-btn" type="button">🔒 Locked</button></article>'; }
   var p=topicProg(t.id); var started=p.done>0; var finished=p.done>=240; return '<article class="tcard"><div style="display:flex;justify-content:space-between;align-items:start"><div class="ticon">'+t.icon+'</div><span class="meta">'+(finished?'🏆 Finished!':started?'⭐ Keep Going!':'New Game')+'</span></div><h3>'+displayTitle(t)+'</h3><p>'+displayDesc(t)+'</p><button class="play-btn" onclick="startTopic(\''+t.id+'\')">'+(started&&!finished?'▶ Keep Playing!':finished?'▶ Play Again!':'▶ Start Playing!')+'</button></article>'; }).join('')+castleCardsHTML(); }
 function updateTotals(){ var ts=collection.bonusStars; for(var gk in progStore.per){ var bucket=progStore.per[gk]; for(var tid in bucket){ ts+=bucket[tid].stars||0; } } var el=document.getElementById('totalStars'); if(el) el.textContent=ts; var hs=document.getElementById('heroStars'); if(hs) hs.textContent=ts; var hw=document.getElementById('heroWins'); if(hw) hw.textContent=collection.wins; }
-function belleSay(html){ document.getElementById('belleBubble').innerHTML=html; speakBelle(html); }
+function belleSay(html){ document.getElementById('belleBubble').innerHTML=html; speakBelle(html); if(typeof fitGameView==='function') fitGameView(); }
 /* The hero is homepage information: while any game view is open it leaves
    the screen entirely, so the game sits fully in view at the top — the
    same layout as Karter's game view — and it returns on the way home. */
@@ -2509,6 +2642,58 @@ function navGoHome(){
   }
   window.scrollTo({top:0});
 }
+/* ===== GAME VIEW FIT PASS — sizing only, layout untouched =====
+   The game window (stage) is ONE SET SIZE in every game (Michelle):
+   it never flexes, never goes slim, and her player is always fully
+   visible on it at her proper size. The fit comes from the DISPLAY:
+   counting objects are generated in balanced rows of about five, and
+   this pass — run whenever the view's contents change (game open,
+   captions landing, an answer's feedback, the tools menu opening) —
+   measures the view against the actually-visible screen and, only if
+   a tall state still needs room, scales the counting/problem picture
+   down WHOLE (every dot and object stays visible; nothing is ever
+   clipped) and steps the type down a notch via fit-tight /
+   fit-tighter. The bar, every game, every state: problem / display,
+   answer box, Check It, the dashed line and the Helper Tools button
+   all on the one screen, no scrolling — at open and again after
+   answering, with the feedback showing. */
+function fitGameView(){
+  var pv=document.getElementById('practiceView');
+  if(!pv||pv.style.display==='none') return;
+  var vis=document.getElementById('qVisual');
+  var inner=vis?vis.firstElementChild:null;
+  pv.classList.remove('fit-tight'); pv.classList.remove('fit-tighter'); pv.classList.remove('fit-max'); pv.classList.remove('fit-menu');
+  if(vis){ vis.style.height=''; vis.style.maxHeight=''; vis.style.flex=''; }
+  if(inner){ inner.style.transform=''; inner.style.transformOrigin=''; inner.style.maxHeight=''; }
+  var natH=0;
+  if(inner){ vis.style.maxHeight='none'; vis.style.flex='0 0 auto'; inner.style.maxHeight='none'; natH=inner.getBoundingClientRect().height; }
+  function over(){
+    var topAtScroll0=pv.getBoundingClientRect().top+window.scrollY;
+    return (topAtScroll0+pv.scrollHeight)-window.innerHeight;
+  }
+  var ov=over();
+  if(ov<=0) return;
+  function visScale(){
+    if(!inner||natH<=0||ov<=0) return;
+    var curH=vis.getBoundingClientRect().height;
+    var target=Math.max(20,curH-ov);
+    var s=target/(natH+6);
+    if(s>=1) return;
+    inner.style.transformOrigin='center top';
+    inner.style.transform='scale('+s+')';
+    vis.style.height=Math.max(20,Math.round(natH*s)+6)+'px';
+    ov=over();
+  }
+  visScale();
+  if(ov>0){ pv.classList.add('fit-tight'); ov=over(); }
+  if(ov>0){ visScale(); }
+  if(ov>0){ pv.classList.add('fit-tighter'); ov=over(); }
+  if(ov>0){ visScale(); }
+  if(ov>0){ pv.classList.add('fit-max'); ov=over(); }
+  if(ov>0){ visScale(); }
+  if(ov>0){ var tm=document.getElementById('toolsMenu'); if(tm&&tm.style.display!=='none'){ pv.classList.add('fit-menu'); ov=over(); if(ov>0){ visScale(); } } }
+}
+window.addEventListener('resize',function(){ fitGameView(); });
 function nextPrompt(first){
   if(currentTopic&&gradeLockedTopic(currentTopic)){ var lid=currentTopic.id; goHome(); lockedGradeTap(lid); return; } /* GRADE GATE: never serve a prompt for a locked topic (covers competition restarts too) */
   stopBelleSpeech();
@@ -2529,11 +2714,11 @@ function nextPrompt(first){
   document.getElementById('feedback').className='feedback'; document.getElementById('feedback').textContent='';
   setupWork();
   if(first){
-    /* Game open: there is NO static instructions card. Belle reads the
-       instruction on this game screen aloud — the problem, its clue, the
-       word, and the choices — and as she reads, her words appear as
-       CAPTIONS in the instructions bubble at the top, sentence by
-       sentence in proper sentence structure. When she finishes, the
+    /* Game open: there is NO static instructions card. Belle reads her
+       INSTRUCTIONS for the game aloud — never the problem, which lives
+       only in its own card under the game — and as she reads, her words
+       appear as CAPTIONS in the instructions bubble at the top, sentence
+       by sentence in proper sentence structure. When she finishes, the
        full instruction text stays in the bubble to glance back at, and
        the 💬 replays the voice and the captions together. An example
        never opens or gets read here; it is read only when the learner
@@ -2544,13 +2729,17 @@ function nextPrompt(first){
     belleSay(pick((typeof isSportWorld==='function'&&isSportWorld())? ['New one! Read it carefully, then answer to play! '+sportWorld().emoji,'Here we go — I know you can get this one!','Ready? Here\'s your next one at the '+sportWorld().venue+'!'] : ['New one! Read it carefully, then answer to build the pyramid! 📣','Here we go — I know you can get this one!','Pom poms up… here\'s your next one!']));
   }
   startRoutine();
-  setTimeout(function(){ if(current.display!=='choice') inp.focus(); },80);
+  fitGameView();
+  /* Focus for typing WITHOUT scrolling: the game must open cleanly at
+     its own top — level, ✕ Close and Belle's instructions right there —
+     never scrolled down to the answer box. */
+  setTimeout(function(){ if(current.display!=='choice'){ try{ inp.focus({preventScroll:true}); }catch(e){ inp.focus(); } } },80);
 }
 var chosen=null;
 function pickChoice(btn,val){ chosen=val; document.querySelectorAll('.choice').forEach(function(b){b.style.background='#fff'}); btn.style.background='#FFF3C4'; checkAnswer(); }
 function hearWord(){ if(!current||!current.speak) return; speakBelle(current.speak,true,0.8); }
 var lastHintHTML='';
-function belleHint(){ if(!current) return; lastHintHTML=current.hint||''; var ht=document.getElementById('hintText'); if(ht) ht.innerHTML=lastHintHTML; var hp=document.getElementById('hintPanel'); if(hp) hp.style.display='block'; belleSay('💡 <b>'+coachPossessive()+' Hint:</b> '+current.hint); /* Belle reads the hint aloud the moment it opens; the 💬 speech symbol in the panel replays it */ }
+function belleHint(){ if(!current) return; lastHintHTML=current.hint||''; var ht=document.getElementById('hintText'); if(ht) ht.innerHTML=lastHintHTML; var hp=document.getElementById('hintPanel'); if(hp){ if(hp.parentNode!==document.body) document.body.appendChild(hp); /* the panel lives at body level while open — no ancestor and no sticky bar can ever cover its header or its ✕ Close */ hp.scrollTop=0; hp.style.display='block'; } belleSay('💡 <b>'+coachPossessive()+' Hint:</b> '+current.hint); /* Belle reads the hint aloud the moment it opens; the 💬 speech symbol in the panel replays it */ }
 function closeHintPanel(){ var hp=document.getElementById('hintPanel'); if(hp) hp.style.display='none'; }
 function replayHint(){ if(lastHintHTML) speakBelle(lastHintHTML,true); }
 function toast(msg){ var t=document.getElementById('toast'); t.textContent=msg; t.style.display='block'; setTimeout(function(){t.style.display='none'},2400); }
@@ -2560,7 +2749,7 @@ function checkAnswer(){
   if(typeof toggleWorkPanel==='function') toggleWorkPanel(false);
   var guess= current.display==='choice'? chosen : document.getElementById('answerInput').value;
   var fb=document.getElementById('feedback');
-  if(guess===null||guess===undefined||normalize(guess)===''){ fb.className='feedback bad'; fb.innerHTML='✏️ Type (or tap) an answer first, then check it!'; return; }
+  if(guess===null||guess===undefined||normalize(guess)===''){ fb.className='feedback bad'; fb.innerHTML='✏️ Type (or tap) an answer first, then check it!'; fitGameView(); return; }
   var correct= normalize(guess)===normalize(current.ans);
   if(current.display==='number'||currentTopic.cat==='math'){ var gn=parseFloat(guess); if(!isNaN(gn) && String(current.ans).indexOf('/')===-1 && String(current.ans).indexOf(':')===-1) correct= gn===parseFloat(current.ans); if(String(current.ans).indexOf(':')>-1) correct= normalize(guess)===normalize(current.ans); }
   attempts++;
@@ -2593,6 +2782,7 @@ function checkAnswer(){
     playBeamFall(function(){ startRoutine(); }); /* she climbs back up and the routine resumes while she retries */
     if(current.display!=='choice'){ var inp=document.getElementById('answerInput'); inp.select(); }
   }
+  fitGameView(); /* whatever the feedback added, the whole view — dashed line and Helper Tools button included — stays on the one screen */
 }
 document.getElementById('answerInput').addEventListener('keydown',function(e){ if(e.key==='Enter') checkAnswer(); });
 /* Scroll hazard guard: a mouse wheel over a focused number input would
@@ -2611,7 +2801,7 @@ function initGameSession(topicId){
   document.getElementById('champBanner').classList.toggle('on',championship);
   document.getElementById('sbTarget').textContent= championship?'CHAMPIONSHIP — First to 24 wins!':'First to 20 wins!';
   updateScoreboard();
-  document.getElementById('stageMsg').textContent= championship?'🏆 Championship! '+(typeof isSportWorld==='function'&&isSportWorld()? sportWorld().readyMsg : 'Answer to build the pyramid!') : (typeof isSportWorld==='function'&&isSportWorld()? sportWorld().readyMsg : 'Your squad is ready at the base, pom poms in hand — answer to build the pyramid! 📣');
+  setStageMsg(championship?'🏆 Championship! '+(typeof isSportWorld==='function'&&isSportWorld()? sportWorld().readyMsg : 'Answer to build the pyramid!') : (typeof isSportWorld==='function'&&isSportWorld()? sportWorld().readyMsg : 'Your squad is ready at the base, pom poms in hand — answer to build the pyramid! 📣')); /* no-op now: no text sits on the game */
 }
 function updateScoreboard(){
   if(!gameSession) return;
@@ -2700,19 +2890,30 @@ function stopRoutine(){ var el=stageCheerEl(); if(el) el.classList.remove('routi
 function resetCheerToStart(instant){
   var el=stageCheerEl(); if(!el) return;
   stopRoutine();
-  resetSquad();
+  resetSquad(instant);
   el.classList.remove('walking','wobbling','split-land','split-mode');
   el.dataset.pose='stand';
   el.innerHTML=cheerSVG(effectiveDesign(),'stand',stageCheerOpts());
-  el.style.transition='none';
-  el.style.transform='translateY(0) rotate(0deg)';
   var squadMode= !(typeof isSportWorld==='function'&&isSportWorld());
   var startPct= squadMode? 13 : 5;
-  el.style.left=startPct+'%';
+  if(instant||REDUCED){
+    el.style.transition='none';
+    el.style.transform='translateY(0) rotate(0deg)';
+    el.style.left=startPct+'%';
+  } else {
+    /* Between problems she GLIDES back to her start — from the pyramid,
+       from the far pool wall, from the finish line — in one continuous
+       trip. She never vanishes and reappears at the start. (Resets that
+       happen behind a fade, or before a game first paints, pass
+       instant=true and stay instant.) */
+    el.style.transition='left .65s cubic-bezier(.3,.6,.4,1), transform .65s ease';
+    el.style.transform='translateY(0) rotate(0deg)';
+    el.style.left=startPct+'%';
+    setTimeout(function(){ el.style.transition=''; },700);
+  }
   var propR=document.getElementById('sportProp'); if(propR){ var phR=sportPropHome(); propR.style.transition=''; propR.style.left=phR.left; propR.style.bottom=phR.bottom; propR.style.transform=''; }
   syncShadow(startPct,{bottom: squadMode? '51px':'101px',scale:1,opacity:1});
-  void el.offsetWidth;
-  el.style.transition='';
+  if(instant||REDUCED){ void el.offsetWidth; el.style.transition=''; }
 }
 function sparkleBurst(xPct,bottomBase){
   var stage=document.getElementById('beamStage'); if(!stage) return;
@@ -2765,13 +2966,13 @@ function playSportScore(done){
     if(el&&!REDUCED){ el.classList.add('racket-swing'); setTimeout(function(){ el.classList.remove('racket-swing'); },520); }
     if(prop){
       prop.className='sport-prop';
-      if(REDUCED){ prop.style.left='82%'; prop.style.bottom='112px'; }
+      if(REDUCED){ prop.style.left='82%'; prop.style.bottom='43%'; }
       else {
         prop.style.transition='left .55s cubic-bezier(.3,.6,.4,1), bottom .55s cubic-bezier(.17,.67,.35,1), transform .55s ease';
-        prop.style.left='49%'; prop.style.bottom='250px'; prop.style.transform='rotate(160deg)';
-        setTimeout(function(){ prop.style.transition='left .5s cubic-bezier(.4,.6,.6,1), bottom .5s cubic-bezier(.55,0,1,1), transform .5s ease'; prop.style.left='82%'; prop.style.bottom='112px'; prop.style.transform='rotate(320deg)'; },570);
-        setTimeout(function(){ prop.style.transition='bottom .17s ease-out'; prop.style.bottom='126px'; },1090);
-        setTimeout(function(){ prop.style.transition='bottom .18s ease-in, transform .18s ease'; prop.style.bottom='112px'; prop.style.transform='rotate(340deg) scaleY(.92)'; },1280);
+        prop.style.left='49%'; prop.style.bottom='96%'; prop.style.transform='rotate(160deg)';
+        setTimeout(function(){ prop.style.transition='left .5s cubic-bezier(.4,.6,.6,1), bottom .5s cubic-bezier(.55,0,1,1), transform .5s ease'; prop.style.left='82%'; prop.style.bottom='43%'; prop.style.transform='rotate(320deg)'; },570);
+        setTimeout(function(){ prop.style.transition='bottom .17s ease-out'; prop.style.bottom='48%'; },1090);
+        setTimeout(function(){ prop.style.transition='bottom .18s ease-in, transform .18s ease'; prop.style.bottom='43%'; prop.style.transform='rotate(340deg) scaleY(.92)'; },1280);
       }
     }
     sfx('sparkle'); setTimeout(function(){ sfx('cheer'); },300);
@@ -2790,11 +2991,11 @@ function playSportScore(done){
     if(el&&!REDUCED){ el.style.transition='transform .3s ease'; el.style.transform='translateY(-8px)'; setTimeout(function(){ el.style.transform=''; },340); }
     if(prop){
       prop.className='sport-prop';
-      if(REDUCED){ prop.style.left='81%'; prop.style.bottom='128px'; }
+      if(REDUCED){ prop.style.left='81%'; prop.style.bottom='49%'; }
       else {
         prop.style.transition='left .55s cubic-bezier(.3,.7,.3,1), bottom .55s cubic-bezier(.3,1.3,.4,1)';
-        prop.style.left='80%'; prop.style.bottom='186px'; prop.style.transform='rotate(140deg)';
-        setTimeout(function(){ prop.style.transition='left .18s ease, bottom .5s cubic-bezier(.55,0,1,1), transform .5s ease'; prop.style.left='81.5%'; prop.style.bottom='118px'; prop.style.transform='rotate(200deg) scaleY(.92)'; },580);
+        prop.style.left='80%'; prop.style.bottom='72%'; prop.style.transform='rotate(140deg)';
+        setTimeout(function(){ prop.style.transition='left .18s ease, bottom .5s cubic-bezier(.55,0,1,1), transform .5s ease'; prop.style.left='81.5%'; prop.style.bottom='45%'; prop.style.transform='rotate(200deg) scaleY(.92)'; },580);
       }
     }
     sfx('sparkle'); setTimeout(function(){ sfx('cheer'); },420);
@@ -2836,7 +3037,7 @@ function playSportScore(done){
   if(sportWorldId()==='swimming'){
     /* Swimming score: SHE swims — in the water, feet kicking — from her
        side of the pool all the way across to the far wall. She stays at
-       the wall; the next question resets her to the start. */
+       the wall; the next problem glides her back to the start. */
     if(prop){ prop.className='sport-prop idle-swimming'; }
     if(el){
       el.classList.add('swim-idle');
@@ -2908,8 +3109,8 @@ function playSportScore(done){
     if(el&&!REDUCED){ el.style.transition='transform .3s ease'; el.style.transform='translateY(-7px)'; setTimeout(function(){ el.style.transform=''; },340); }
     if(prop){
       prop.className='sport-prop';
-      if(REDUCED){ prop.style.left='83%'; prop.style.bottom='118px'; }
-      else { prop.style.transition='left .6s cubic-bezier(.3,.7,.3,1), bottom .6s cubic-bezier(.3,1.15,.4,1), transform .6s ease'; prop.style.left='83%'; prop.style.bottom='118px'; prop.style.transform='rotate(300deg)'; }
+      if(REDUCED){ prop.style.left='83%'; prop.style.bottom='45%'; }
+      else { prop.style.transition='left .6s cubic-bezier(.3,.7,.3,1), bottom .6s cubic-bezier(.3,1.15,.4,1), transform .6s ease'; prop.style.left='83%'; prop.style.bottom='45%'; prop.style.transform='rotate(300deg)'; }
     }
     sfx('sparkle'); setTimeout(function(){ sfx('cheer'); },300);
     sparkleBurst(84,130);
@@ -2940,10 +3141,37 @@ function playSportScore(done){
     }, REDUCED?80:1150);
     return;
   }
+  if(sportWorldId()==='running'){
+    /* Running score: SHE runs the race — striding at ground level in
+       quick steps all the way down the track and across the finish
+       line first. She never leaves the ground in an arc, and nothing
+       flies: no prop is tossed, kicked or thrown — the run is hers.
+       She stays at the finish; the next problem glides her back to
+       the start line. */
+    if(prop){ prop.className='sport-prop'; prop.style.opacity='0'; }
+    if(el){
+      if(REDUCED){ el.style.left='64%'; }
+      else {
+        el.classList.add('walking');
+        el.style.transition='left 1.15s cubic-bezier(.3,.6,.4,1)';
+        el.style.left='64%'; syncShadow(64);
+        setTimeout(function(){ if(el) el.classList.remove('walking'); },1220);
+      }
+    }
+    sfx('sparkle'); setTimeout(function(){ sfx('cheer'); },300);
+    sparkleBurst(70,120);
+    setTimeout(function(){
+      if(el){ el.style.transition=''; }
+      if(prop){ prop.style.opacity=''; }
+      beamBusy=false;
+      if(done) done();
+    }, REDUCED?80:1450);
+    return;
+  }
   if(prop){
     prop.className='sport-prop';
-    if(REDUCED){ prop.style.left='82%'; prop.style.bottom='150px'; }
-    else { prop.style.transition='left 0.85s cubic-bezier(.25,.7,.3,1), bottom 0.85s cubic-bezier(.3,1.4,.4,1), transform 0.85s ease'; prop.style.left='82%'; prop.style.bottom='168px'; prop.style.transform='rotate(320deg) scale(1.15)'; }
+    if(REDUCED){ prop.style.left='82%'; prop.style.bottom='58%'; }
+    else { prop.style.transition='left 0.85s cubic-bezier(.25,.7,.3,1), bottom 0.85s cubic-bezier(.3,1.4,.4,1), transform 0.85s ease'; prop.style.left='82%'; prop.style.bottom='65%'; prop.style.transform='rotate(320deg) scale(1.15)'; }
   }
   if(el&&!REDUCED){ el.style.transition='left .7s ease'; el.style.left='16%'; }
   sfx('sparkle'); setTimeout(function(){ sfx('cheer'); },160);
@@ -2971,13 +3199,13 @@ function playSportMiss(done){
     if(tel&&!REDUCED){ tel.classList.add('racket-swing'); setTimeout(function(){ tel.classList.remove('racket-swing'); },520); }
     if(prop){
       prop.className='sport-prop';
-      if(REDUCED){ prop.style.left='45%'; prop.style.bottom='102px'; }
+      if(REDUCED){ prop.style.left='45%'; prop.style.bottom='39%'; }
       else {
         prop.style.transition='left .3s ease-out, bottom .3s ease-out, transform .3s ease';
-        prop.style.left='45%'; prop.style.bottom='158px'; prop.style.transform='rotate(110deg)';
-        setTimeout(function(){ prop.style.transition='left .34s ease-in, bottom .4s cubic-bezier(.55,0,1,1), transform .4s ease'; prop.style.left='45.5%'; prop.style.bottom='102px'; prop.style.transform='rotate(170deg) scaleY(.9)'; },330);
-        setTimeout(function(){ prop.style.transition='bottom .15s ease-out'; prop.style.bottom='112px'; },760);
-        setTimeout(function(){ prop.style.transition='bottom .16s ease-in, transform .16s ease'; prop.style.bottom='102px'; prop.style.transform='rotate(185deg)'; },930);
+        prop.style.left='45%'; prop.style.bottom='61%'; prop.style.transform='rotate(110deg)';
+        setTimeout(function(){ prop.style.transition='left .34s ease-in, bottom .4s cubic-bezier(.55,0,1,1), transform .4s ease'; prop.style.left='45.5%'; prop.style.bottom='39%'; prop.style.transform='rotate(170deg) scaleY(.9)'; },330);
+        setTimeout(function(){ prop.style.transition='bottom .15s ease-out'; prop.style.bottom='43%'; },760);
+        setTimeout(function(){ prop.style.transition='bottom .16s ease-in, transform .16s ease'; prop.style.bottom='39%'; prop.style.transform='rotate(185deg)'; },930);
       }
     }
     setTimeout(function(){
@@ -3010,7 +3238,7 @@ function playSportMiss(done){
       setTimeout(function(){ del.style.transition=''; del.style.transform=''; del.style.transformOrigin=''; },1320);
     }
     setTimeout(function(){
-      if(prop){ prop.style.transition=''; prop.style.left='calc(5% + 96px)'; prop.style.bottom='104px'; prop.style.transform=''; }
+      if(prop){ var phD=sportPropHome(); prop.style.transition=''; prop.style.left=phD.left; prop.style.bottom=phD.bottom; prop.style.transform=''; }
       beamBusy=false;
       if(done) done();
     }, REDUCED?120:1450);
@@ -3022,17 +3250,17 @@ function playSportMiss(done){
        her — no basket, and she shoots the same problem again. */
     if(prop){
       prop.className='sport-prop';
-      if(REDUCED){ prop.style.left='calc(5% + 96px)'; prop.style.bottom='54px'; }
+      if(REDUCED){ var phBR=sportPropHome(); prop.style.left=phBR.left; prop.style.bottom='21%'; }
       else {
         prop.style.transition='left .45s ease-out, bottom .45s cubic-bezier(.3,1.2,.4,1)';
-        prop.style.left='78%'; prop.style.bottom='172px';
-        setTimeout(function(){ prop.style.transition='left .26s ease-out, bottom .26s ease-out'; prop.style.left='82%'; prop.style.bottom='212px'; prop.style.transform='rotate(90deg)'; },470);
-        setTimeout(function(){ prop.style.transition='left .42s ease-in, bottom .42s cubic-bezier(.55,0,1,1)'; prop.style.left='72%'; prop.style.bottom='52px'; prop.style.transform='rotate(160deg)'; },760);
-        setTimeout(function(){ prop.style.transition='left .65s cubic-bezier(.2,.6,.3,1), transform .65s ease'; prop.style.left='calc(5% + 96px)'; prop.style.bottom='52px'; prop.style.transform='rotate(-320deg)'; },1220);
+        prop.style.left='78%'; prop.style.bottom='66%';
+        setTimeout(function(){ prop.style.transition='left .26s ease-out, bottom .26s ease-out'; prop.style.left='82%'; prop.style.bottom='82%'; prop.style.transform='rotate(90deg)'; },470);
+        setTimeout(function(){ prop.style.transition='left .42s ease-in, bottom .42s cubic-bezier(.55,0,1,1)'; prop.style.left='72%'; prop.style.bottom='20%'; prop.style.transform='rotate(160deg)'; },760);
+        setTimeout(function(){ var phB=sportPropHome(); prop.style.transition='left .65s cubic-bezier(.2,.6,.3,1), transform .65s ease'; prop.style.left=phB.left; prop.style.bottom='20%'; prop.style.transform='rotate(-320deg)'; },1220);
       }
     }
     setTimeout(function(){
-      if(prop){ prop.style.transition=''; prop.style.left='calc(5% + 96px)'; prop.style.bottom='104px'; prop.style.transform=''; }
+      if(prop){ var phB2=sportPropHome(); prop.style.transition=''; prop.style.left=phB2.left; prop.style.bottom=phB2.bottom; prop.style.transform=''; }
       beamBusy=false;
       if(done) done();
     }, REDUCED?120:2000);
@@ -3050,9 +3278,9 @@ function playSportMiss(done){
       setTimeout(function(){ gel.style.transition='transform .55s cubic-bezier(.2,.9,.3,1.15)'; gel.style.transform='translateY(0) rotate(0deg)'; },1000);
       setTimeout(function(){ gel.style.transition=''; gel.style.transform=''; },1620);
     }
-    if(prop){ prop.className='sport-prop'; if(!REDUCED){ prop.style.transition='bottom .45s ease-in'; prop.style.bottom='56px'; } }
+    if(prop){ prop.className='sport-prop'; if(!REDUCED){ prop.style.transition='bottom .45s ease-in'; prop.style.bottom='22%'; } }
     setTimeout(function(){
-      if(prop){ prop.style.transition=''; prop.style.left='calc(5% + 96px)'; prop.style.bottom='104px'; prop.style.transform=''; }
+      if(prop){ var phGm=sportPropHome(); prop.style.transition=''; prop.style.left=phGm.left; prop.style.bottom=phGm.bottom; prop.style.transform=''; }
       beamBusy=false;
       if(done) done();
     }, REDUCED?120:1750);
@@ -3069,9 +3297,9 @@ function playSportMiss(done){
       setTimeout(function(){ sel.style.transition='transform .65s cubic-bezier(.2,.9,.3,1.15)'; sel.style.transform='translateY(0) rotate(0deg)'; },700);
       setTimeout(function(){ sel.style.transition=''; sel.style.transform=''; },1450);
     }
-    if(prop){ prop.className='sport-prop'; if(!REDUCED){ prop.style.transition='bottom .5s ease-in'; prop.style.bottom='60px'; } }
+    if(prop){ prop.className='sport-prop'; if(!REDUCED){ prop.style.transition='bottom .5s ease-in'; prop.style.bottom='23%'; } }
     setTimeout(function(){
-      if(prop){ prop.style.transition=''; prop.style.left='calc(5% + 96px)'; prop.style.bottom='104px'; prop.style.transform=''; }
+      if(prop){ var phSm=sportPropHome(); prop.style.transition=''; prop.style.left=phSm.left; prop.style.bottom=phSm.bottom; prop.style.transform=''; }
       beamBusy=false;
       if(done) done();
     }, REDUCED?120:1550);
@@ -3083,11 +3311,11 @@ function playSportMiss(done){
        problem is served again. */
     if(prop){
       prop.className='sport-prop';
-      if(REDUCED){ prop.style.left='88%'; prop.style.bottom='208px'; }
+      if(REDUCED){ prop.style.left='88%'; prop.style.bottom='80%'; }
       else {
         prop.style.transition='left .5s ease-out, bottom .5s cubic-bezier(.3,1.1,.4,1), transform .5s ease';
-        prop.style.left='88%'; prop.style.bottom='208px'; prop.style.transform='rotate(240deg)';
-        setTimeout(function(){ prop.style.transition='left .35s ease-in, bottom .45s cubic-bezier(.55,0,1,1), transform .45s ease'; prop.style.left='91%'; prop.style.bottom='54px'; prop.style.transform='rotate(320deg)'; },540);
+        prop.style.left='88%'; prop.style.bottom='80%'; prop.style.transform='rotate(240deg)';
+        setTimeout(function(){ prop.style.transition='left .35s ease-in, bottom .45s cubic-bezier(.55,0,1,1), transform .45s ease'; prop.style.left='91%'; prop.style.bottom='21%'; prop.style.transform='rotate(320deg)'; },540);
       }
     }
     setTimeout(function(){
@@ -3115,13 +3343,31 @@ function playSportMiss(done){
     }, REDUCED?120:1000);
     return;
   }
+  if(sportWorldId()==='running'){
+    /* Running miss: she STUMBLES in place on the track — a quick dip
+       and tilt with her feet staying on the ground — no travel, no
+       finish line, and she runs this same one again. */
+    var rel=stageCheerEl();
+    if(rel&&!REDUCED){
+      rel.style.transition='transform .28s ease-in';
+      rel.style.transform='translateY(9px) rotate(11deg)';
+      setTimeout(function(){ rel.style.transition='transform .5s cubic-bezier(.2,.9,.3,1.2)'; rel.style.transform='translateY(0) rotate(0deg)'; },340);
+      setTimeout(function(){ rel.style.transition=''; rel.style.transform=''; },900);
+    }
+    if(prop){ prop.className='sport-prop'; }
+    setTimeout(function(){
+      beamBusy=false;
+      if(done) done();
+    }, REDUCED?120:1000);
+    return;
+  }
   if(prop){
     prop.className='sport-prop';
-    if(REDUCED){ prop.style.bottom='52px'; }
-    else { prop.style.transition='left .5s ease-in, bottom .5s cubic-bezier(.55,0,1,1), transform .5s ease'; prop.style.left='calc(5% + 150px)'; prop.style.bottom='52px'; prop.style.transform='rotate(90deg)'; }
+    if(REDUCED){ prop.style.bottom='20%'; }
+    else { prop.style.transition='left .5s ease-in, bottom .5s cubic-bezier(.55,0,1,1), transform .5s ease'; prop.style.left='calc(5% + 150px)'; prop.style.bottom='20%'; prop.style.transform='rotate(90deg)'; }
   }
   setTimeout(function(){
-    if(prop){ prop.style.transition=''; prop.style.left='calc(5% + 96px)'; prop.style.bottom='104px'; prop.style.transform=''; }
+    if(prop){ var phG=sportPropHome(); prop.style.transition=''; prop.style.left=phG.left; prop.style.bottom=phG.bottom; prop.style.transform=''; }
     beamBusy=false;
     if(done) done();
   }, REDUCED?120:950);
@@ -3809,12 +4055,13 @@ function applySportWorld(){
   var dBarre=document.getElementById('danceBarre'); if(dBarre){ dBarre.style.display= (sport&&sportWorldId()==='dance')?'block':'none'; }
   var sqEl=document.getElementById('cheerSquad'); if(sqEl){ sqEl.style.display= sport?'none':'block'; } if(stage){ stage.classList.toggle('squad-active',!sport); stage.classList.toggle('swimming-active',!!(sport&&sportWorldId()==='swimming')); stage.classList.toggle('jumprope-active',!!(sport&&sportWorldId()==='jumprope')); } if(!sport&&typeof renderSquad==='function'){ renderSquad(); }
   if(vlabel){ vlabel.style.display= sport?'block':'none'; vlabel.textContent= sport? (((sportWorldId()==='dance'||sportWorldId()==='gymnastics')? '' : (w.emoji+' '))+w.venue) : ''; }
-  if(prop){ prop.style.display= sport?'block':'none'; if(sport&&sportWorldId()==='tennis'){ prop.innerHTML=TENNIS_BALL_HTML; } else { prop.textContent= sport? w.prop : ''; } prop.className='sport-prop'+(sport&&w.idleClass?' '+w.idleClass:''); var phA=sportPropHome(); prop.style.left=phA.left; prop.style.bottom=phA.bottom; prop.style.transform=''; }
+  if(prop){ prop.style.display= (sport&&sportWorldId()!=='jumprope')?'block':'none'; /* jump rope carries NO separate prop: her rope is in her hands, drawn into her figure — a second rope floating beside her would be a duplicate */ if(sport&&sportWorldId()==='tennis'){ prop.innerHTML=TENNIS_BALL_HTML; } else { prop.textContent= sport? w.prop : ''; } prop.className='sport-prop'+(sport&&w.idleClass?' '+w.idleClass:''); var phA=sportPropHome(); prop.style.left=phA.left; prop.style.bottom=phA.bottom; prop.style.transform=''; }
   if(target){ target.style.display= sport?'block':'none'; target.textContent= sport? w.target : ''; }
   /* Repaint the on-stage figure for the sport: in tennis she holds her
-     racket in her hand, in hockey she holds her stick in her hands; in
-     every other world she holds her pom poms. The equipment is part of
-     her figure — only the ball / puck prop ever travels. */
+     racket in her hand, in hockey she holds her stick in her hands, in
+     jump rope she holds her rope handles with the rope under her feet;
+     in every other world she holds her pom poms. The equipment is part
+     of her figure — only the ball / puck prop ever travels. */
   var scEl=document.getElementById('stageCheer'); if(scEl&&scEl.dataset.pose!=='split'){ try{ scEl.innerHTML=cheerSVG(effectiveDesign(),'stand',stageCheerOpts()); }catch(e){} }
   if(headline){ headline.textContent=''; headline.classList.remove('on'); }
   /* The hero greeting is the FIXED script (see paintHeroGreeting above):
