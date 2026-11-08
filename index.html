@@ -4021,13 +4021,16 @@ function enchantedSceneSVG(c,uid,fit){
    The enchanted castle background is the one exception to the
    classic rule below: it is the DEFAULT background on both links, so
    whenever the effective background pick is 'enchanted' (always, on a
-   classic link) the PAGE backdrop is the EXACT castle from her hero
-   picture itself — the photo in assets/royce.webp, used directly as
-   the background image, never a redrawn scene — inside the fixed
-   full-viewport backdrop layer, so it stays steady and never zooms
-   or re-scales on scroll, with only the light ws-wash edge tint over
-   it. The drawn enchanted scene still paints inside the stage only
-   while no sport game is being played (the classic cheer ballroom). */
+   classic link) the PAGE backdrop is the castle from her hero
+   picture — the background-only version in assets/royce-background.webp,
+   the same castle interior with the girl and the bench / beam she
+   stood on removed, so the room sits empty behind the page — inside
+   the fixed full-viewport backdrop layer, so it stays steady and
+   never zooms or re-scales on scroll, with only the light ws-wash
+   edge tint over it. The hero picture itself (assets/royce.webp)
+   is unchanged and still shows the girl. The drawn enchanted scene
+   still paints inside the stage only while no sport game is being
+   played (the classic cheer ballroom). */
 function paintWorldScene(){
   var bd=document.getElementById('worldBackdrop'), ws=document.getElementById('worldScene');
   var stage=document.getElementById('beamStage');
@@ -4044,7 +4047,7 @@ function paintWorldScene(){
     else { if(ws) ws.innerHTML=''; if(stage) stage.classList.remove('has-world-scene'); }
     keepBackdropBelowHero(); return;
   }
-  if(bd){ bd.innerHTML=(enchanted? '<img class="hero-castle-bg" src="assets/royce.webp" alt="" aria-hidden="true"/>' : worldSceneSVG(sid,c,'p'))+'<div class="ws-wash"></div>'; bd.classList.add('on'); }
+  if(bd){ bd.innerHTML=(enchanted? '<img class="hero-castle-bg" src="assets/royce-background.webp" alt="" aria-hidden="true"/>' : worldSceneSVG(sid,c,'p'))+'<div class="ws-wash"></div>'; bd.classList.add('on'); }
   if(playingSport){
     /* Inside the stage, the played sport's OWN venue scene replaces the
        home world's scene, and the stage's base gradient is the played
