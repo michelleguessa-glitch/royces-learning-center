@@ -102,13 +102,15 @@ button{font-family:inherit;cursor:pointer}
 .cat-head{display:flex;justify-content:space-between;align-items:end;gap:14px;flex-wrap:wrap;margin:6px 0 6px}
 .cat-head h2{font-size:clamp(24px,4vw,34px);margin:0;color:var(--pink-dd)}
 .cat-head p{color:var(--muted);font-weight:800;margin:6px 0 0;max-width:60ch;line-height:1.45}
-/* Legibility over the immersive page backdrop: the few texts that sit
-   directly on the background scene (section heading + intro, the sport
-   switcher note, the footer line) carry a soft light halo behind the
-   letters themselves, so they stay clearly readable wherever the scene
-   passes behind them — the scene itself is never washed out for them.
-   Everything else already sits on its own solid card / panel backing. */
-.cat-head h2,.cat-head p,.sport-switch-note,body>footer{text-shadow:0 0 9px rgba(255,248,252,.96),0 0 9px rgba(255,248,252,.96),0 0 24px rgba(255,248,252,.92),0 1px 2px rgba(255,248,252,.9)}
+/* Legibility over the immersive page backdrop: the texts that sit
+   directly on the castle scene rest on a soft frosted plate — a wide,
+   rounded, semi-opaque blush panel with soft glowing, feathered edges
+   (the same concept as the cream plate on Karter's page) — so the dark
+   plum words read easily while the castle stays visible and immersive
+   all around the plate. The background itself is never washed out, and
+   everything else already sits on its own solid card / panel backing. */
+.cat-head{background:rgba(255,246,250,.88);-webkit-backdrop-filter:blur(7px);backdrop-filter:blur(7px);border-radius:26px;padding:18px 22px;box-shadow:0 0 0 1px rgba(255,255,255,.45),0 12px 34px rgba(255,238,247,.5),0 0 54px rgba(255,244,250,.55)}
+.practice-head .fred{background:rgba(255,246,250,.88);-webkit-backdrop-filter:blur(7px);backdrop-filter:blur(7px);border-radius:999px;padding:7px 16px;box-shadow:0 0 0 1px rgba(255,255,255,.45),0 8px 24px rgba(255,238,247,.5),0 0 34px rgba(255,244,250,.55)}
 .ghost{background:#fff;border:2px solid var(--line);color:var(--pink-d);border-radius:999px;padding:10px 16px;font-weight:900;font-size:14px}
 .goldbtn{background:var(--gold);border:none;color:#431407;border-radius:999px;padding:11px 18px;font-weight:900;font-size:15px;box-shadow:0 4px 0 #B98A1F}
 .goldbtn:active{transform:translateY(2px);box-shadow:0 2px 0 #B98A1F}
@@ -265,19 +267,41 @@ button{font-family:inherit;cursor:pointer}
 .pad-clear{background:#fff;border:2px solid var(--pink);border-radius:999px;padding:8px 14px;font-weight:900;font-size:14px;color:var(--pink-d)}
 #scratchPad{width:100%;height:190px;background:#fff;border:3px dashed var(--purple);border-radius:14px;touch-action:none;display:block}
 /* music dock */
-.music-dock{position:fixed;left:50%;transform:translateX(-50%);bottom:10px;z-index:30;background:#fff;border:3px solid var(--pink);border-radius:999px;padding:6px 12px;display:flex;flex-direction:row;align-items:center;justify-content:center;flex-wrap:wrap;gap:5px 10px;box-shadow:0 10px 26px rgba(157,20,80,.25);max-width:min(620px,calc(100vw - 16px))}
-.music-row{display:flex;gap:6px;align-items:center;flex-wrap:nowrap}
+.music-dock{position:fixed;left:0;right:0;margin-left:auto;margin-right:auto;width:fit-content;bottom:10px;z-index:30;background:#fff;border:3px solid var(--pink);border-radius:999px;padding:6px 12px;display:flex;flex-direction:row;align-items:center;justify-content:center;flex-wrap:nowrap;gap:5px 10px;box-shadow:0 10px 26px rgba(157,20,80,.25);max-width:min(860px,calc(100vw - 16px))}
+/* min-width:0 on the rows is load-bearing: without it a row cannot shrink
+   below its longest no-wrap line (the song title), so the whole row stayed
+   at natural width and spilled out of the pill on both sides — the Pop
+   button hung off the left edge and the volume slider off the right. With
+   it, the meta text ellipsizes inside the pill whenever space runs out,
+   and at desktop widths the widened pill fits every control in full. */
+.music-row{display:flex;gap:6px;align-items:center;flex-wrap:nowrap;min-width:0}
 .genre-btn{background:#fff;border:2px solid var(--line);border-radius:999px;padding:5px 11px;font-weight:900;font-size:12px;color:var(--pink-d);white-space:nowrap}
 .genre-btn.active{background:var(--pink);color:#fff;border-color:var(--pink)}
 .music-ctl{background:var(--pink-l);border:none;border-radius:50%;width:30px;height:30px;font-size:13px;flex:0 0 auto}
 .music-ctl.on{background:var(--gold)}
 .music-play{background:var(--gold);border:none;border-radius:50%;width:40px;height:40px;font-size:17px;box-shadow:0 3px 0 #B98A1F;flex:0 0 auto}
-.music-meta{display:flex;flex-direction:column;min-width:0;max-width:148px}
+.music-meta{display:flex;flex-direction:column;min-width:0;flex:0 1 auto}
 .music-meta b{font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .music-meta span{font-size:10.5px;color:var(--muted);font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.music-vol{display:flex;gap:5px;align-items:center;font-size:12px;font-weight:900;color:var(--muted)}
+.music-vol{display:flex;gap:5px;align-items:center;font-size:12px;font-weight:900;color:var(--muted);flex:0 0 auto}
 .music-vol input{width:62px}
 .audio-only{position:absolute;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none}
+/* ===== Music player on narrow screens (phones): the pill always fits
+   INSIDE the screen with a margin on both sides — never wider than the
+   phone. The controls row wraps inside the pill: previous, play, next,
+   repeat and the volume stay together on one line, and the two text
+   lines drop to their own full-width line where they wrap inside the
+   pill instead of clipping with ellipses, so the song title and the
+   status are always readable in full. The dock stays fixed at the
+   bottom center, identical at every scroll position. ===== */
+@media(max-width:820px){
+ .music-dock{width:calc(100vw - 16px);padding:8px 10px;gap:4px 8px;flex-wrap:wrap}
+ .music-row{flex-wrap:wrap;justify-content:center;row-gap:4px;min-width:0}
+ .music-meta{flex:1 1 100%;order:10;text-align:center}
+ .music-meta b,.music-meta span{white-space:normal;overflow:visible;text-overflow:clip}
+ .music-vol{min-width:0}
+ .music-vol input{width:54px;min-width:0}
+}
 /* ===== Music player skin — CUSTOMIZED world only (html.is-custom) =====
    On a personalized link the player wears the child's three picked theme
    colors, in the same roles they have everywhere else on the page, and
