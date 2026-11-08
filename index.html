@@ -386,9 +386,10 @@ html.is-custom .music-vol input{accent-color:var(--tert)}
    its own solid primary color. It is
    painted ONLY from her home (wizard) sport, so switching the games to
    another sport never repaints it. On a classic link it never renders. */
-#worldBackdrop{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;opacity:0}
+#worldBackdrop{position:fixed;inset:0;top:0!important;left:0;right:0;bottom:0;z-index:0;pointer-events:none;overflow:hidden;opacity:0}
 #worldBackdrop.on{opacity:1}
 #worldBackdrop svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+#worldBackdrop .hero-castle-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block}
 #worldBackdrop .ws-wash{position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,244,250,.16) 0%,rgba(255,244,250,.05) 38%,rgba(255,244,250,.08) 76%,rgba(255,244,250,.18) 100%)}
 main.wrap,body>footer{position:relative;z-index:1}
 .world-scene{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
@@ -1156,7 +1157,7 @@ html.is-standard .hub-row{grid-template-columns:repeat(2,1fr)}
   </div>
 </main>
 
-<footer><span id="footerWorld">Royce's Learning Center</span> — practice makes champions. Wrong answers never take anything away: your cheerleader climbs back up, <span class="coach-short-text">Belle</span> gives you a tip, and you try the same problem again until you nail it. 🌹</footer>
+
 
 <div class="music-dock" id="musicDock" aria-label="Music player">
   <div class="music-row">
@@ -3861,38 +3862,43 @@ function worldSceneSVG(sportId,c,uid,fit){
   }
   return '<svg viewBox="0 0 800 330" preserveAspectRatio="'+(fit==='meet'?'xMidYMid meet':'xMidYMid slice')+'" aria-hidden="true"><defs>'+defs+'</defs>'+s+'</svg>';
 }
-/* ================= ENCHANTED CASTLE SCENE =================
-   The DEFAULT background on BOTH builds: an original enchanted castle
-   in the same look as the castle in Royce's hero picture — light
-   lavender-pink stone walls built from rounded blocks, two round
-   turrets with crenellated battlements, tall pointed-arch windows
-   glowing soft gold-white, a dark arched wooden door, and pink and
-   purple bunting strung across the top, with pink roses climbing the
-   walls and sparkles in the air. No people or characters in the scene
-   — it is a place, not a portrait.
+/* ================= ENCHANTED CASTLE INTERIOR SCENE =================
+   The DEFAULT background on BOTH builds: the INSIDE of Royce's
+   enchanted castle — the grand castle room she stands in inside her
+   hero picture, seen from within. Lavender-pink stone walls built
+   from rounded blocks; three tall pointed-arch windows glowing
+   gold-white, with soft daylight streaming through them and pooling
+   on the pink stone floor; two round stone columns framing the
+   room; a small round rose window glowing high on the wall; a
+   shallow vaulted arch across the ceiling; pink and purple bunting
+   strung across the top of the room; gold trophies standing on a
+   low stone ledge; soft gym mats stacked by the wall, like her
+   castle gym; and pink roses climbing the columns and resting in
+   the corners, with sparkles in the air. No people or characters
+   in the scene — it is a place, not a portrait.
    The scene is drawn ONLY in Royce's own scheme — Royal Pink primary,
    Castle Purple secondary, Belle Gold tertiary, white — taken from
    the same palette object (c) every other template flattens her three
    picks into, so it recolors exactly like the sport scenes do; roses
-   keep their real red and leaf green and the door keeps natural wood,
-   the standing real-world exceptions.
+   keep their real red and leaf green, the standing real-world
+   exceptions.
    It is the background pick 'enchanted': the classic link's fixed
    default, and the Customized edition's starting default — there it
    stays only until she picks another background, exactly like any
-   other pick, and picking it again brings this castle back. */
+   other pick, and picking it again brings this castle room back. */
 function enchantedSceneSVG(c,uid,fit){
   uid=uid||'e'; var P=c.primary,PD=c.dark,PX=c.deep,PL=c.light,A=c.accent,AD=c.accentDark,AL=c.accentLight,T=c.tertiary||'#E4B33C',TD=c.tertiaryDark||'#B98A1F',TL=c.tertiaryLight||'#FFF3C7';
-  var WOOD='#6E4536', WOODD='#523126', LEAF='#3E9B4F';
+  var LEAF='#3E9B4F';
   /* pointed-arch outline: flat bottom, straight sides, two curves
-     meeting at a soft point on top — the window and door shape from
-     her hero castle */
+     meeting at a soft point on top — the window shape seen from
+     inside her hero castle room */
   function archPath(x,w,top,bottom){
     var apex=top, shoulder=top+(w*0.40);
     return 'M'+x+' '+bottom+' L'+x+' '+shoulder+' Q'+x+' '+top+' '+(x+w/2)+' '+apex+' Q'+(x+w)+' '+top+' '+(x+w)+' '+shoulder+' L'+(x+w)+' '+bottom+' Z';
   }
   /* stone block courses for a rectangular area: horizontal mortar
-     lines with staggered vertical joints, like the hero's rounded
-     stone walls */
+     lines with staggered vertical joints, like the hero room's
+     rounded stone walls */
   function stoneLines(x,y,w,h){
     var s='', row=0;
     for(var yy=y+24; yy<h+y-6; yy+=24, row++){
@@ -3902,16 +3908,15 @@ function enchantedSceneSVG(c,uid,fit){
     }
     return '<g stroke="'+A+'" stroke-width="2.2" opacity=".30">'+s+'</g>';
   }
-  /* one round turret: shaded stone drum, battlements on top */
-  function turret(x){
-    var s='<rect x="'+x+'" y="34" width="112" height="234" fill="url(#'+uid+'t)"/>';
-    s+='<rect x="'+x+'" y="34" width="26" height="234" fill="#FFFFFF" opacity=".20"/><rect x="'+(x+84)+'" y="34" width="28" height="234" fill="'+PX+'" opacity=".10"/>';
-    s+=stoneLines(x,34,112,234);
-    s+='<rect x="'+(x-7)+'" y="22" width="126" height="17" rx="4" fill="'+AL+'" stroke="'+A+'" stroke-opacity=".35" stroke-width="2"/>';
-    for(var ti=0;ti<4;ti++){ s+='<rect x="'+(x-3+ti*32)+'" y="2" width="21" height="22" rx="4" fill="'+AL+'" stroke="'+A+'" stroke-opacity=".35" stroke-width="2"/>'; }
-    /* a small arched slit window glowing gold on the turret */
-    s+='<path d="'+archPath(x+42,28,96,164)+'" fill="url(#'+uid+'g)" stroke="'+TD+'" stroke-width="3.4" stroke-linejoin="round"/>';
-    s+='<line x1="'+(x+56)+'" y1="100" x2="'+(x+56)+'" y2="164" stroke="'+TD+'" stroke-width="2" opacity=".55"/>';
+  /* one round interior column: shaded stone drum with a capital
+     at the top and a base at the foot, framing the room */
+  function column(x){
+    var s='<rect x="'+x+'" y="30" width="52" height="222" fill="url(#'+uid+'t)"/>';
+    s+='<rect x="'+x+'" y="30" width="13" height="222" fill="#FFFFFF" opacity=".22"/><rect x="'+(x+40)+'" y="30" width="12" height="222" fill="'+PX+'" opacity=".12"/>';
+    s+=stoneLines(x,30,52,222);
+    s+='<path d="M'+(x-6)+' 36 L'+(x+58)+' 36 L'+(x+48)+' 18 L'+(x+4)+' 18 Z" fill="'+AL+'" stroke="'+A+'" stroke-opacity=".35" stroke-width="2"/>';
+    s+='<rect x="'+(x-8)+'" y="11" width="68" height="9" rx="3" fill="'+AL+'" stroke="'+A+'" stroke-opacity=".35" stroke-width="2"/>';
+    s+='<rect x="'+(x-8)+'" y="240" width="68" height="12" rx="3" fill="'+AL+'" stroke="'+A+'" stroke-opacity=".35" stroke-width="2"/>';
     return s;
   }
   /* one tall pointed-arch window: stone frame, glowing pane */
@@ -3927,52 +3932,80 @@ function enchantedSceneSVG(c,uid,fit){
   function flag(x,y,rot,fill){
     return '<g transform="translate('+x+','+y+') rotate('+rot+')"><path d="M-15 0 L15 0 L0 27 Z" fill="'+fill+'" stroke="#FFFFFF" stroke-opacity=".5" stroke-width="1.4" stroke-linejoin="round"/></g>';
   }
-  /* bunting: two swagged strings across the top, pink and purple
-     flags alternating, gold at the joins — as strung in her hero */
+  /* bunting: two swagged strings across the top of the room, pink
+     and purple flags alternating, gold at the joins — as strung
+     inside her hero castle room */
   var bunt='<path d="M-4 14 Q200 84 402 26" fill="none" stroke="'+TD+'" stroke-width="2.6" opacity=".7"/>'
     +'<path d="M402 26 Q604 80 804 10" fill="none" stroke="'+TD+'" stroke-width="2.6" opacity=".7"/>'
     + flag(38,30,-16,P)+flag(84,44,-9,A)+flag(132,52,-3,P)+flag(182,55,2,A)+flag(232,52,6,P)+flag(280,45,9,A)+flag(326,36,11,P)+flag(368,29,8,T)
     + flag(438,36,4,A)+flag(484,46,-1,P)+flag(532,52,-5,A)+flag(582,52,-7,P)+flag(630,45,-9,A)+flag(678,35,-12,P)+flag(724,24,-14,A)+flag(766,15,-13,P);
+  /* one gold trophy cup standing on the ledge */
+  function trophy(x,y,s){
+    return '<g transform="translate('+x+','+y+') scale('+s+')">'
+      +'<path d="M-16 -34 L16 -34 L13 -12 Q12 -2 0 -2 Q-12 -2 -13 -12 Z" fill="url(#'+uid+'gold)"/>'
+      +'<path d="M-16 -30 Q-27 -28 -24 -18 Q-22 -10 -13 -11" fill="none" stroke="'+TD+'" stroke-width="3.4"/>'
+      +'<path d="M16 -30 Q27 -28 24 -18 Q22 -10 13 -11" fill="none" stroke="'+TD+'" stroke-width="3.4"/>'
+      +'<rect x="-3.4" y="-2" width="6.8" height="7" fill="'+TD+'"/>'
+      +'<rect x="-11" y="5" width="22" height="5" rx="1.6" fill="'+TD+'"/>'
+      +'<polygon points="0,-27 2.6,-21.4 8.6,-21 4.4,-17.4 5.8,-11.6 0,-15 -5.8,-11.6 -4.4,-17.4 -8.6,-21 -2.6,-21.4" fill="#FFFFFF" opacity=".75"/>'
+      +'</g>';
+  }
   var s='<rect width="800" height="330" fill="url(#'+uid+'w)"/>'
-    /* side walls between and beyond the turrets */
-    + stoneLines(0,30,800,238)
-    /* top parapet band with battlements running wall to wall */
-    +'<rect x="0" y="24" width="800" height="15" fill="'+AL+'" opacity=".8"/>'
-    + turret(148) + turret(540)
-    /* left glowing window, grand center window, arched wooden door */
-    + bigWindow(36,92,104,252)
-    + bigWindow(344,112,52,252)
-    /* small round rose window glowing above the center arch */
-    +'<circle cx="400" cy="30" r="15" fill="url(#'+uid+'g)" stroke="'+TD+'" stroke-width="3"/>'
-    +'<circle cx="400" cy="30" r="6" fill="'+P+'" stroke="'+TD+'" stroke-width="1.8"/>'
-    /* the door: dark wood planks under a stone arch, gold knob */
-    +'<path d="'+archPath(663,101,95,252)+'" fill="'+AL+'" stroke="'+A+'" stroke-opacity=".4" stroke-width="2.4"/>'
-    +'<path d="'+archPath(672,83,104,252)+'" fill="'+WOOD+'" stroke="'+WOODD+'" stroke-width="3.4" stroke-linejoin="round"/>'
-    +'<g stroke="'+WOODD+'" stroke-width="2.2" opacity=".65"><line x1="693" y1="118" x2="693" y2="252"/><line x1="714" y1="106" x2="714" y2="252"/><line x1="734" y1="118" x2="734" y2="252"/></g>'
-    +'<circle cx="726" cy="196" r="4.6" fill="'+T+'" stroke="'+TD+'" stroke-width="1.6"/>'
-    /* bunting strung across the top, in front of the stonework */
+    /* the inside back wall: rounded stone blocks, wall to wall */
+    + stoneLines(0,26,800,226)
+    /* a shallow vaulted arch shading the top of the room */
+    +'<path d="M0 0 L800 0 L800 12 Q400 56 0 12 Z" fill="'+PX+'" opacity=".15"/>'
+    /* two side windows, then the grand tall window at the center */
+    + bigWindow(30,88,84,252)
+    + bigWindow(682,88,84,252)
+    + bigWindow(316,168,44,252)
+    /* small round rose window glowing high above the center arch */
+    +'<circle cx="400" cy="18" r="12" fill="url(#'+uid+'g)" stroke="'+TD+'" stroke-width="2.6"/>'
+    +'<circle cx="400" cy="18" r="4.6" fill="'+P+'" stroke="'+TD+'" stroke-width="1.5"/>'
+    /* daylight streaming in: soft rays slanting down from the
+       windows to the floor */
+    +'<polygon points="330,120 470,120 566,330 386,330" fill="#FFFFFF" opacity=".10"/>'
+    +'<polygon points="344,238 456,238 520,330 300,330" fill="'+TL+'" opacity=".13"/>'
+    +'<polygon points="44,120 104,120 190,330 96,330" fill="#FFFFFF" opacity=".08"/>'
+    +'<polygon points="696,120 756,120 704,330 610,330" fill="#FFFFFF" opacity=".08"/>'
+    /* the two round stone columns framing the room */
+    + column(150) + column(598)
+    /* bunting strung across the top of the room, in front of the stonework */
     + bunt
-    /* pink stone floor with a gold trim line at the wall's foot */
-    +'<rect y="268" width="800" height="62" fill="'+PL+'"/>'
-    +'<g stroke="'+A+'" stroke-width="2" opacity=".26"><line x1="0" y1="292" x2="800" y2="292"/><line x1="0" y1="314" x2="800" y2="314"/><line x1="120" y1="268" x2="86" y2="330"/><line x1="300" y1="268" x2="282" y2="330"/><line x1="500" y1="268" x2="518" y2="330"/><line x1="680" y1="268" x2="714" y2="330"/></g>'
-    +'<rect y="264" width="800" height="5" fill="'+T+'"/>'
-    /* climbing roses at the turret feet and the door, real red blooms */
-    +'<path d="M148 268 Q138 214 152 168" fill="none" stroke="'+LEAF+'" stroke-width="3.4" stroke-linecap="round"/>'
-    +'<ellipse cx="140" cy="222" rx="9" ry="4.4" fill="'+LEAF+'" transform="rotate(-28 140 222)"/><ellipse cx="158" cy="192" rx="9" ry="4.4" fill="'+LEAF+'" transform="rotate(22 158 192)"/>'
-    + wsRose(150,160,9) + wsRose(140,232,7.5)
-    +'<path d="M652 268 Q664 220 654 182" fill="none" stroke="'+LEAF+'" stroke-width="3.4" stroke-linecap="round"/>'
-    +'<ellipse cx="662" cy="226" rx="9" ry="4.4" fill="'+LEAF+'" transform="rotate(26 662 226)"/>'
-    + wsRose(656,174,8.5)
+    /* pink stone floor with perspective joints and a gold trim
+       line where the wall meets the floor */
+    +'<rect y="252" width="800" height="78" fill="'+PL+'"/>'
+    +'<g stroke="'+A+'" stroke-width="2" opacity=".26"><line x1="0" y1="280" x2="800" y2="280"/><line x1="0" y1="306" x2="800" y2="306"/><line x1="130" y1="252" x2="92" y2="330"/><line x1="310" y1="252" x2="292" y2="330"/><line x1="490" y1="252" x2="508" y2="330"/><line x1="670" y1="252" x2="708" y2="330"/></g>'
+    +'<rect y="249" width="800" height="5" fill="'+T+'"/>'
+    /* pools of window-light resting on the floor */
+    +'<ellipse cx="400" cy="292" rx="168" ry="21" fill="'+TL+'" opacity=".38"/>'
+    +'<ellipse cx="118" cy="288" rx="72" ry="14" fill="#FFFFFF" opacity=".30"/>'
+    +'<ellipse cx="682" cy="288" rx="72" ry="14" fill="#FFFFFF" opacity=".30"/>'
+    /* gold trophies on a low stone ledge at the right of the room */
+    +'<rect x="662" y="238" width="128" height="14" rx="5" fill="'+AL+'" stroke="'+A+'" stroke-opacity=".35" stroke-width="2"/>'
+    + trophy(690,238,0.82) + trophy(726,238,1.05) + trophy(762,238,0.82)
+    /* soft pink and purple gym mats stacked by the left wall */
+    +'<rect x="26" y="232" width="104" height="20" rx="8" fill="'+A+'" opacity=".55"/>'
+    +'<rect x="34" y="214" width="88" height="19" rx="8" fill="'+PL+'"/>'
+    /* roses climbing the column feet and resting in the corners */
+    +'<path d="M150 252 Q140 208 154 168" fill="none" stroke="'+LEAF+'" stroke-width="3.4" stroke-linecap="round"/>'
+    +'<ellipse cx="142" cy="216" rx="9" ry="4.4" fill="'+LEAF+'" transform="rotate(-28 142 216)"/><ellipse cx="160" cy="190" rx="9" ry="4.4" fill="'+LEAF+'" transform="rotate(22 160 190)"/>'
+    + wsRose(152,162,9) + wsRose(142,228,7.5)
+    +'<path d="M650 252 Q662 210 652 176" fill="none" stroke="'+LEAF+'" stroke-width="3.4" stroke-linecap="round"/>'
+    +'<ellipse cx="660" cy="220" rx="9" ry="4.4" fill="'+LEAF+'" transform="rotate(26 660 220)"/>'
+    + wsRose(654,170,8.5)
     + wsRose(58,282,12) + wsRose(112,300,9) + wsRose(742,288,11) + wsRose(694,304,8.5)
     +'<ellipse cx="34" cy="296" rx="11" ry="5" fill="'+LEAF+'" transform="rotate(-20 34 296)"/><ellipse cx="768" cy="300" rx="11" ry="5" fill="'+LEAF+'" transform="rotate(20 768 300)"/>'
     /* enchantment in the air: twinkling sparkles and two gold stars */
     + wsSparkles(10)
-    + wsStar(238,120,1.15,T) + wsStar(566,140,0.95,T) + wsStar(306,196,0.8,'#FFFFFF') + wsStar(492,84,0.8,'#FFFFFF');
+    + wsStar(238,120,1.15,T) + wsStar(566,140,0.95,T) + wsStar(268,196,0.8,'#FFFFFF') + wsStar(520,84,0.8,'#FFFFFF');
   var defs='<linearGradient id="'+uid+'w" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+AL+'"/><stop offset=".62" stop-color="'+PL+'"/><stop offset="1" stop-color="'+PL+'"/></linearGradient>'
     +'<linearGradient id="'+uid+'t" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="'+AL+'"/><stop offset=".5" stop-color="'+PL+'"/><stop offset="1" stop-color="'+AL+'"/></linearGradient>'
-    +'<linearGradient id="'+uid+'g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".55" stop-color="'+TL+'"/><stop offset="1" stop-color="'+AL+'"/></linearGradient>';
+    +'<linearGradient id="'+uid+'g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".55" stop-color="'+TL+'"/><stop offset="1" stop-color="'+AL+'"/></linearGradient>'
+    +'<linearGradient id="'+uid+'gold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+TL+'"/><stop offset=".5" stop-color="'+T+'"/><stop offset="1" stop-color="'+TD+'"/></linearGradient>';
   return '<svg viewBox="0 0 800 330" preserveAspectRatio="'+(fit==='meet'?'xMidYMid meet':'xMidYMid slice')+'" aria-hidden="true"><defs>'+defs+'</defs>'+s+'</svg>';
 }
+
 /* Paints the world scene onto the page backdrop and the game stage —
    never the hero, which sits on its solid primary color. The PAGE
    backdrop is ALWAYS from the home sport (effectiveTheme().sport),
@@ -3988,9 +4021,13 @@ function enchantedSceneSVG(c,uid,fit){
    The enchanted castle background is the one exception to the
    classic rule below: it is the DEFAULT background on both links, so
    whenever the effective background pick is 'enchanted' (always, on a
-   classic link) this paints the enchanted scene instead of the sport
-   scene — on the page backdrop, and inside the stage only while no
-   sport game is being played (the classic cheer ballroom). */
+   classic link) the PAGE backdrop is the EXACT castle from her hero
+   picture itself — the photo in assets/royce.webp, used directly as
+   the background image, never a redrawn scene — inside the fixed
+   full-viewport backdrop layer, so it stays steady and never zooms
+   or re-scales on scroll, with only the light ws-wash edge tint over
+   it. The drawn enchanted scene still paints inside the stage only
+   while no sport game is being played (the classic cheer ballroom). */
 function paintWorldScene(){
   var bd=document.getElementById('worldBackdrop'), ws=document.getElementById('worldScene');
   var stage=document.getElementById('beamStage');
@@ -4007,7 +4044,7 @@ function paintWorldScene(){
     else { if(ws) ws.innerHTML=''; if(stage) stage.classList.remove('has-world-scene'); }
     keepBackdropBelowHero(); return;
   }
-  if(bd){ bd.innerHTML=(enchanted? enchantedSceneSVG(c,'p') : worldSceneSVG(sid,c,'p'))+'<div class="ws-wash"></div>'; bd.classList.add('on'); }
+  if(bd){ bd.innerHTML=(enchanted? '<img class="hero-castle-bg" src="assets/royce.webp" alt="" aria-hidden="true"/>' : worldSceneSVG(sid,c,'p'))+'<div class="ws-wash"></div>'; bd.classList.add('on'); }
   if(playingSport){
     /* Inside the stage, the played sport's OWN venue scene replaces the
        home world's scene, and the stage's base gradient is the played
@@ -4027,24 +4064,24 @@ function paintWorldScene(){
    figures, built from her picked theme colors — and the enchanted /
    sport backdrop must NEVER show through it. That is structural, not
    just paint order: the hero's shading is layered over a fully opaque
-   solid backing (background-color under an all-opaque gradient), and
-   the fixed backdrop layer's top edge is pinned to the hero's bottom
-   edge, so while any of the hero is on screen the backdrop paints only
-   BELOW it. Once the hero scrolls off, the backdrop returns to the
-   full viewport for the rest of the page, exactly as before. */
-var backdropHeroSyncBound=false;
+   solid backing (background-color under an all-opaque gradient) and
+   the hero stacks above the backdrop (z-index), so the backdrop can
+   safely run the FULL viewport behind everything, exactly like
+   Karter's page background. It is NEVER resized or re-pinned on
+   scroll: an earlier version pinned the backdrop's top edge to the
+   hero's bottom edge and re-synced it on every scroll, which kept
+   changing the backdrop's height — and because the scene SVG fills
+   its box with preserveAspectRatio="slice", every height change
+   re-scaled the scene, so the castle visibly zoomed in and out
+   while scrolling from top to bottom. Fixed full-viewport size =
+   one scale, steady at every scroll position. */
 function keepBackdropBelowHero(){
   var bd=document.getElementById('worldBackdrop'); if(!bd) return;
-  var hero=document.querySelector('.hero');
-  if(hero){ var r=hero.getBoundingClientRect(); bd.style.top=Math.max(0,Math.round(r.bottom))+'px'; }
-  if(!backdropHeroSyncBound){
-    backdropHeroSyncBound=true;
-    var sync=function(){ keepBackdropBelowHero(); };
-    window.addEventListener('scroll',sync,{passive:true});
-    window.addEventListener('resize',sync);
-    window.addEventListener('load',sync);
-    var himg=document.querySelector('.hero-img'); if(himg){ if(himg.complete) sync(); else himg.addEventListener('load',sync); }
-  }
+  /* Steady and fixed: clear any legacy inline top and leave the
+     layer pinned to the full viewport by its CSS (top:0 !important).
+     No scroll, resize or load listener is bound — scrolling must
+     never move, resize or re-scale this layer. */
+  if(bd.style.top){ bd.style.top='0px'; }
 }
 function applyTheme(){
   var et=effectiveTheme();
