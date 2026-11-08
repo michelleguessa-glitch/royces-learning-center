@@ -140,10 +140,10 @@ button{font-family:inherit;cursor:pointer}
 /* ===== practice ===== */
 .practice-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
 .home-btn{background:var(--purple);color:#fff;border:none;border-radius:999px;padding:10px 18px;font-family:'Fredoka';font-weight:700;font-size:15px;box-shadow:0 4px 0 var(--purple-d)}
-.belle-compact{display:flex;gap:12px;align-items:flex-start;background:#fff;border:3px solid var(--line);border-radius:20px;padding:12px;margin-bottom:12px}
+.belle-compact{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-start;background:#fff;border:3px solid var(--line);border-radius:20px;padding:12px;margin-bottom:12px}
 .belle-face{width:64px;height:64px;border-radius:50%;overflow:hidden;border:3px solid var(--gold);flex:0 0 64px;background:var(--pink-l)}
 .belle-face img{width:100%;height:100%;object-fit:cover;object-position:50% 10%}
-.bubble{flex:1;background:var(--pink-l);border-radius:16px;padding:12px 14px;font-weight:800;line-height:1.5;font-size:16px;position:relative}
+.bubble{flex:1 1 220px;min-width:0;background:var(--pink-l);border-radius:16px;padding:12px 14px;font-weight:800;line-height:1.5;font-size:16px;position:relative}
 .bubble:before{content:"";position:absolute;left:-10px;top:22px;border:6px solid transparent;border-right:8px solid var(--pink-l)}
 .hear-it-btn{background:var(--purple);color:#fff;border:none;border-radius:999px;padding:11px 16px;font-weight:900;font-size:14px;white-space:nowrap;box-shadow:0 4px 0 var(--purple-d)}
 .scoreboard{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:stretch;margin-bottom:12px}
@@ -170,7 +170,7 @@ button{font-family:inherit;cursor:pointer}
 .beam:before,.beam:after{content:"";position:absolute;top:15px;width:16px;height:37px;background:#8A5A78;border-radius:0 0 4px 4px}
 .beam:before{left:6%}.beam:after{right:6%}
 .mat{position:absolute;left:16%;right:16%;bottom:44px;height:15px;background:linear-gradient(180deg,#B794F6,#9D6BEE 60%,var(--purple));border-radius:8px;z-index:2;box-shadow:0 6px 14px rgba(91,33,182,.30),inset 0 2px 0 rgba(255,255,255,.45)}
-.stage-cheer{position:absolute;bottom:111px;left:5%;width:118px;height:196px;z-index:4;will-change:left,transform}
+.stage-cheer{position:absolute;bottom:111px;left:5%;width:118px;height:196px;z-index:4;will-change:left,transform;transition:left .5s ease}
 .stage-cheer svg{width:100%;height:100%;overflow:visible;display:block}
 .stage-cheer.split-mode{width:196px;height:150px;bottom:86px}
 .stage-msg{position:absolute;left:50%;transform:translateX(-50%);bottom:8px;z-index:5;background:rgba(58,20,48,.88);color:#fff;font-family:'Fredoka';font-weight:600;font-size:15px;padding:8px 16px;border-radius:999px;white-space:nowrap;max-width:94%;overflow:hidden;text-overflow:ellipsis}
@@ -214,8 +214,9 @@ button{font-family:inherit;cursor:pointer}
 .sb-team{box-shadow:0 6px 16px rgba(157,20,80,.07)}
 .gamecard.bounce{animation:cardBounce .5s ease}
 @keyframes cardBounce{0%{transform:scale(1)}35%{transform:scale(1.015)}100%{transform:scale(1)}}
-.play-layout{display:grid;grid-template-columns:1fr;gap:16px}
-.play-layout.with-work{grid-template-columns:1fr 340px}
+.play-layout{display:grid;grid-template-columns:minmax(0,1fr);gap:16px}
+.play-layout>div{min-width:0}
+.play-layout.with-work{grid-template-columns:minmax(0,1fr) 340px}
 .qlabel{font-family:'Fredoka';font-weight:600;color:var(--purple);font-size:15px;letter-spacing:.02em}
 .visual{display:flex;justify-content:center;padding:14px 0 10px}
 .question{font-family:'Fredoka';font-weight:600;font-size:clamp(26px,4.5vw,36px);line-height:1.25;margin:6px 0 4px}
@@ -229,7 +230,7 @@ button{font-family:inherit;cursor:pointer}
 .tools-head{font-family:'Fredoka';font-weight:600;color:var(--purple-d);font-size:15px;margin-top:24px;padding-top:18px;border-top:3px dashed var(--line)}
 .btn-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
 .btn-row .goldbtn,.btn-row .ghost{width:100%;padding:14px 16px;font-size:15px}
-@media(max-width:560px){.btn-row{grid-template-columns:1fr}.btn-row .goldbtn,.btn-row .ghost{padding:15px 16px}}
+@media(max-width:560px){.btn-row{grid-template-columns:1fr}.btn-row .goldbtn,.btn-row .ghost{padding:15px 16px}.answer-input{min-width:0}.check-btn{padding:12px 18px}}
 .feedback{border-radius:16px;padding:0;font-weight:800;line-height:1.55;margin-top:14px;font-size:16px}
 .feedback.good{background:var(--green-bg);padding:14px}
 .feedback.bad{background:#FDE8F3;padding:14px}
@@ -437,6 +438,7 @@ main.wrap,body>footer{position:relative;z-index:1}
 .world-scene{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
 .world-scene svg{position:absolute;inset:0;width:100%;height:100%;display:block}
 .stage.has-world-scene svg.bg{display:none}
+.stage.sport-active svg.bg{display:none}
 .scene-preview{position:relative;border-radius:16px;overflow:hidden;border:3px solid var(--line);margin-top:12px;background:#FDF3F9}
 .scene-preview svg{width:100%;height:150px;display:block}
 .scene-preview-cap{padding:9px 12px;font-weight:900;font-size:14px;line-height:1.45;color:var(--pink-dd);background:rgba(255,255,255,.92)}
@@ -477,6 +479,8 @@ main.wrap,body>footer{position:relative;z-index:1}
 .opt-chip.on{background:var(--purple);color:#fff;border-color:var(--purple)}
 .opt-chip.locked{opacity:.65;border-style:dashed}
 .trophy-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-top:10px}
+#bonusBody .trophy-grid{grid-template-columns:1fr}
+@media(max-width:560px){#bonusBody .hub-card{padding:16px 14px}}
 .trophy-item{background:#FFF9FD;border:2px solid var(--line);border-radius:16px;padding:12px;text-align:center;font-size:14px}
 .trophy-item .ti{font-size:32px}
 .trophy-item small{display:block;color:var(--muted);font-weight:800;margin-top:3px;line-height:1.4}
@@ -503,7 +507,7 @@ footer{max-width:1080px;margin:0 auto;padding:0 16px 210px;color:var(--muted);fo
 @media(max-width:760px){
  .hero-inner{grid-template-columns:1fr}
  .hub-row{grid-template-columns:1fr}
- .play-layout.with-work{grid-template-columns:1fr}
+ .play-layout.with-work{grid-template-columns:minmax(0,1fr)}
  .studio-grid{grid-template-columns:1fr}
  .stage{height:300px}
  .sb-score{font-size:30px}
@@ -514,6 +518,14 @@ footer{max-width:1080px;margin:0 auto;padding:0 16px 210px;color:var(--muted);fo
  .scoreboard{grid-template-columns:1fr 1fr}
  .sb-mid{grid-column:1/-1;flex-direction:row;order:3}
  .bubble{font-size:15px}
+}
+/* Coach card framing on phones (every game view uses .belle-compact):
+   Belle's words keep the full top row beside her face, and the
+   "Hear It" button drops to its own full-width row INSIDE the card —
+   the bubble is never crushed into a one-word-wide column and the
+   button never hangs off the card's right edge. */
+@media(max-width:640px){
+ .belle-compact .hear-it-btn{order:3;flex:1 1 100%;text-align:center}
 }
 /* ===== WRITING CASTLE (Kindergarten–2nd grade): touch tracing + keypad ===== */
 .trace-kind-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
@@ -720,7 +732,7 @@ html.is-custom.design-locked #hubCheerCard,html.is-custom.design-locked #hubCoac
 .stage .sport-venue svg{position:absolute;inset:0;width:100%;height:100%}
 .sport-venue-label{position:absolute;top:10px;left:50%;transform:translateX(-50%);z-index:2;background:rgba(58,20,48,.82);color:#fff;font-family:'Fredoka';font-weight:600;font-size:14px;padding:6px 14px;border-radius:999px;white-space:nowrap;pointer-events:none}
 .sport-target{position:absolute;right:4%;bottom:96px;z-index:3;font-size:52px;line-height:1;pointer-events:none;filter:drop-shadow(0 5px 7px rgba(58,20,48,.3))}
-.sport-prop{position:absolute;z-index:4;font-size:34px;line-height:1;pointer-events:none;left:calc(5% + 96px);bottom:104px;filter:drop-shadow(0 4px 5px rgba(58,20,48,.3));will-change:left,bottom,transform}
+.sport-prop{position:absolute;z-index:4;font-size:34px;line-height:1;pointer-events:none;left:calc(5% + 96px);bottom:104px;filter:drop-shadow(0 4px 5px rgba(58,20,48,.3));will-change:left,bottom,transform;transition:left .45s ease,bottom .45s ease,transform .45s ease}
 .stage.sport-active .beam,.stage.sport-active .mat{display:none}
 .stage.sport-active .stage-floor{height:52px}
 /* idle moves — what the player does while an answer is being thought about */
@@ -1709,7 +1721,7 @@ function stackHTML(rows,op,showPlaces){
   var cols=0; rows.forEach(function(r){ cols=Math.max(cols,String(r).length); }); cols+=1;
   var totalCols=cols+1;
   var h='<div class="col-wrap">';
-  if(showPlaces){ h+='<div class="col-row"><span class="col-op"></span>'+paddedDigits('',cols).map(function(_,i){ var f=cols-1-i; return '<span style="width:46px;text-align:center;font-size:11px;font-weight:900;color:var(--muted)">'+(PLACE_NAMES[f]||'')+'</span>'; }).join('')+'</div>'; }
+  if(showPlaces){ h+='<div class="col-row"><span class="col-op"></span>'+paddedDigits('',cols).map(function(_,i){ var f=cols-1-i; return '<span style="width:46px;text-align:center;font-size:8.5px;letter-spacing:-.03em;white-space:nowrap;font-weight:900;color:var(--muted)">'+(PLACE_NAMES[f]||'')+'</span>'; }).join('')+'</div>'; }
   rows.forEach(function(r,idx){
     var sym= idx===rows.length-1? op : '';
     h+='<div class="col-row"><span class="col-op">'+sym+'</span>'+paddedDigits(String(r),cols).map(function(d){ return colBox('',d===' '?'·':d); }).join('')+'</div>';
@@ -1743,7 +1755,7 @@ function setupWork(){
   else if(id==='multiplication'){ html='<div class="work-sec-title">✖️ Groups Work Space</div><div class="frac-count" style="text-align:center">Draw the equal groups on the pad below — one circle for each group, dots inside for each one in the group. Then skip-count the dots!</div><div class="col-eq" style="margin-top:8px">'+colBox('','')+'<span>groups of</span>'+colBox('','')+'<span>=</span>'+colBox('','')+'<span>in all</span></div>'; }
   else if(id==='division'){ html='<div class="work-sec-title">➗ Sharing Work Space</div><div class="frac-count" style="text-align:center">Draw circles for the groups on the pad, then share the dots one at a time into each circle until they run out. Count the dots in one circle!</div><div class="col-eq" style="margin-top:8px">'+colBox('','')+'<span>shared by</span>'+colBox('','')+'<span>=</span>'+colBox('','')+'<span>in each group</span></div>'; }
   else if(id==='skipcounting'){ var sd=current.seqData; if(sd){ html='<div class="work-sec-title">🎀 Hop-Along Number Line</div><div class="col-wrap"><div class="col-eq" style="font-size:17px">'+sd.seq.map(function(v,i){return '<span style="font-family:Fredoka;font-size:19px">'+(i===sd.blankAt?'___':v)+'</span>'+(i<sd.seq.length-1?'<span> → +'+sd.by+' → </span>':'');}).join('')+'</div><div class="frac-count">Say each hop out loud — the missing number is one more hop of '+sd.by+'!</div></div>'; } }
-  else if(id==='placevalue'){ var ns2=numsFromQ(); if(ns2.length){ var ds=String(ns2[0]).split(''); html='<div class="work-sec-title">🔢 Break It Apart</div><div class="letter-boxes" style="justify-content:center">'+ds.map(function(d,i){ var f=ds.length-1-i; return '<span class="letter-box">'+d+'<small style="display:block;font-size:10px;font-family:Nunito">'+PLACE_NAMES[f]+'</small></span>'; }).join('')+'</div><div class="col-eq">'+ds.map(function(d,i){ var f=ds.length-1-i; return colBox('','')+'<span>× '+(Math.pow(10,f))+'</span>'; }).join('<span>+</span>')+'</div><div class="frac-count">Each digit × its place. Point from the right: ones, tens, hundreds.</div>'; } }
+  else if(id==='placevalue'){ var ns2=numsFromQ(); if(ns2.length){ var ds=String(ns2[0]).split(''); html='<div class="work-sec-title">🔢 Break It Apart</div><div class="letter-boxes" style="justify-content:center">'+ds.map(function(d,i){ var f=ds.length-1-i; return '<span class="letter-box">'+d+'<small style="display:block;font-size:9px;font-family:Nunito">'+(['ones','tens','hund.','thous.','ten-th.'][f]||'')+'</small></span>'; }).join('')+'</div><div class="col-eq">'+ds.map(function(d,i){ var f=ds.length-1-i; return colBox('','')+'<span>× '+(Math.pow(10,f))+'</span>'; }).join('<span>+</span>')+'</div><div class="frac-count">Each digit × its place. Point from the right: ones, tens, hundreds.</div>'; } }
   else if(id==='money'){ html='<div class="work-sec-title">🪙 Coin Counter</div><div class="col-eq"><span>quarter =</span>'+colBox('','25')+'<span>¢&nbsp; dime =</span>'+colBox('','10')+'<span>¢</span></div><div class="col-eq" style="margin-top:6px"><span>nickel =</span>'+colBox('','5')+'<span>¢&nbsp; penny =</span>'+colBox('','1')+'<span>¢</span></div><div class="frac-count">Write each coin\'s value, start with the biggest, and add them up on the pad below.</div>'; }
   else if(id==='fractions'){ var parts=String(current.ans).split('/'); fracDen=parts.length===2?parseInt(parts[1],10):0; if(fracDen>=2&&fracDen<=8){ var cells=''; for(var k=0;k<fracDen;k++) cells+='<button type="button" class="frac-cell" onclick="toggleFrac(this)" aria-label="Shade this part"></button>'; html='<div class="work-sec-title">🧁 Fraction Work Space — Tap to Shade the Parts</div><div class="col-wrap"><div class="frac-bar" id="fracBar">'+cells+'</div><div class="frac-count" id="fracCount">Tap the parts to shade them. Shaded: 0 of '+fracDen+'</div><div class="col-eq" style="margin-top:10px">'+colBox('','top')+'<span>shaded parts, out of</span>'+colBox('','all')+'<span>parts in all</span></div></div>'; } }
   else { html='<div class="work-sec-title">🌹 Story Work Space</div><div class="frac-count" style="text-align:center">Draw the story on the pad below! What do you know? What is the story asking?<br>Then write your number sentence here: </div><div class="col-eq" style="margin-top:8px">'+colBox('','')+'<span style="font-family:Fredoka;font-size:22px">+ − ×</span>'+colBox('','')+'<span>=</span>'+colBox('','')+'</div>'; }
@@ -3077,7 +3089,7 @@ function coachFigureSVG(d,size){
   if(matchCheer){ skin=SKINS[cheerDesign.skin]||skin; hc=cheerDesign.hairColor||hc; }
   var hair= matchCheer? cheerDesign.hair : cd.hair;
   var s='<svg viewBox="0 0 200 300" role="img" aria-label="'+coachDisplayName()+'">';
-  s+='<text x="168" y="60" font-size="30" text-anchor="middle">'+animalE+'</text>';
+  if(animalE!=='🦋') s+='<text x="168" y="60" font-size="30" text-anchor="middle">'+animalE+'</text>'; /* butterflies are never drawn — Michelle's rule: no butterflies in her scenes, the coach's portrait included */
   s+='<text x="34" y="252" font-size="30" text-anchor="middle">'+sportE+'</text>';
   if(cd.jacketStyle==='royal') s+='<path d="M62 118 Q100 96 138 118 L156 262 L44 262 Z" fill="'+jk+'" opacity=".38"/>';
   if(hair==='waves'||hair==='curls') s+='<path d="M64 62 Q56 128 70 158 L86 158 Q78 110 80 70 Z" fill="'+hc+'"/><path d="M136 62 Q144 128 130 158 L114 158 Q122 110 120 70 Z" fill="'+hc+'"/>';
@@ -3356,10 +3368,13 @@ var TENNIS_BALL_HTML='<svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20
 /* The little sport badge under the stage mascot and the icons in the
    stage's top decor strip use each sport's own emoji exactly as drawn —
    for tennis that is the 🎾 emoji: the ball WITH its tiny racket. The
-   racket stays on the tennis backdrop, exactly as it was. The one thing
-   that comes OFF the tennis backdrop is the butterfly: when tennis is
-   the sport on the stage, no butterfly is painted in the decor strip
-   or as the stage mascot (see applyTheme / applySportWorld below). */
+   racket stays on the tennis backdrop, exactly as it was. Butterflies
+   never appear in a game scene at all (Michelle's rule — first the one
+   on the tennis backdrop, now every scene): when the theme animal is
+   the butterfly, no butterfly is painted in the decor strip or as the
+   stage mascot in ANY sport — the strip runs on the sport's own tools
+   and the mascot keeps just its sport badge, exactly how tennis
+   already worked (see applyTheme / applySportWorld below). */
 function sportBadgeHTML(emoji,id){ return emoji; }
 /* Paints every GAME surface from the sport being played: hero headline
    and words, the coach intro line, the tabs and section heads, the venue
@@ -3376,7 +3391,7 @@ function applySportWorld(){
   var venue=document.getElementById('sportVenue'), vlabel=document.getElementById('sportVenueLabel');
   var prop=document.getElementById('sportProp'), target=document.getElementById('sportTarget');
   var headline=document.getElementById('heroSportLine'), desc=document.getElementById('heroDesc');
-  if(stage){ stage.classList.toggle('sport-active',sport); stage.setAttribute('aria-label', sport? ('Your player in the '+w.venue+' — '+w.name+' games') : 'Your cheer squad in the castle ballroom — pyramid games'); /* The stage's scene itself is painted by paintWorldScene() (via applyTheme) from THIS played sport, so the court inside the stage always matches the game — the page backdrop behind the stage keeps her personalized world's home scene. */ }
+  if(stage){ stage.classList.toggle('sport-active',sport); stage.setAttribute('aria-label', sport? ('Your player in the '+w.venue+' — '+w.name+' games') : 'Your cheer squad in the castle ballroom — pyramid games'); /* The scene inside the stage is THIS played sport's own venue, drawn below by sportVenueSVG over the played sport's stage base gradient (set by paintWorldScene) — never a sport template, which is a page background only. The page backdrop behind the stage keeps her personalized world's home scene. */ }
   /* The decorations INSIDE the game stage follow the played sport too:
      the top strip's tool icons and the mascot's little sport badge are
      repainted from this sport, so a tennis game never carries the home
@@ -3386,9 +3401,9 @@ function applySportWorld(){
      The mascot animal itself is hers and never changes. */
   if(sport){
     var sDecor=document.getElementById('stageDecor');
-    if(sDecor){ try{ var sTools=worldSceneTools(w===SPORT_WORLDS.cheer? 'cheer' : sportWorldId()); var sAnimal='🦋'; try{ sAnimal=themeById(THEME_ANIMALS,effectiveTheme().animal).emoji; }catch(e){} var sPat=[]; if(sportWorldId()==='tennis'){ for(var si2=0;si2<6;si2++){ sPat.push(sTools[si2%sTools.length]); } } else { for(var si2=0;si2<6;si2++){ sPat.push(si2%2? sTools[((si2-1)/2)%sTools.length] : sAnimal); } } sDecor.innerHTML=sPat.map(function(e){return '<span>'+sportBadgeHTML(e,sportWorldId())+'</span>';}).join(''); }catch(e){} }
+    if(sDecor){ try{ var sTools=worldSceneTools(w===SPORT_WORLDS.cheer? 'cheer' : sportWorldId()); var sAnimal='🦋'; try{ sAnimal=themeById(THEME_ANIMALS,effectiveTheme().animal).emoji; }catch(e){} var sPat=[]; if(sportWorldId()==='tennis'||sAnimal==='🦋'){ for(var si2=0;si2<6;si2++){ sPat.push(sTools[si2%sTools.length]); } } else { for(var si2=0;si2<6;si2++){ sPat.push(si2%2? sTools[((si2-1)/2)%sTools.length] : sAnimal); } } sDecor.innerHTML=sPat.map(function(e){return '<span>'+sportBadgeHTML(e,sportWorldId())+'</span>';}).join(''); }catch(e){} }
     var sMascot=document.getElementById('stageMascot');
-    if(sMascot){ try{ var mAnimal='🦋'; try{ mAnimal=themeById(THEME_ANIMALS,effectiveTheme().animal).emoji; }catch(e){} sMascot.innerHTML= (sportWorldId()==='tennis'? '' : mAnimal)+'<small>'+sportBadgeHTML(w.emoji,sportWorldId())+'</small>'; }catch(e){} }
+    if(sMascot){ try{ var mAnimal='🦋'; try{ mAnimal=themeById(THEME_ANIMALS,effectiveTheme().animal).emoji; }catch(e){} sMascot.innerHTML= ((sportWorldId()==='tennis'||mAnimal==='🦋')? '' : mAnimal)+'<small>'+sportBadgeHTML(w.emoji,sportWorldId())+'</small>'; }catch(e){} }
   }
   if(venue){ venue.style.display= sport?'block':'none'; venue.innerHTML= sport? sportVenueSVG(w) : ''; }
   var swimW=document.getElementById('swimWater'); if(swimW){ swimW.style.display= (sport&&sportWorldId()==='swimming')?'block':'none'; }
@@ -3519,7 +3534,7 @@ function effectiveTheme(){ return window.isCustomEdition()? myTheme : defaultThe
 var WORLD_SCENE_META={
  cheer:{name:'Castle Ballroom of Pom Poms',desc:'Beautiful pom poms in YOUR theme colors fill your castle ballroom!'},
  dance:{name:'Repeating Ballerina Pattern',desc:'Ballerinas in tutus repeat all across your background — arms out on pointe, legs up and arms raised — with little hearts and stars scattered in!'},
- gymnastics:{name:'Gymnasts in Every Pose',desc:'Girl gymnasts fill your background in every pose — side and center splits, leg holds, arabesque, handstands, a backbend, a hoop and exercise balls!'},
+ gymnastics:{name:'Emoji Gymnasts in Motion',desc:'Smooth emoji-style gymnasts fill your background — girls of every skin tone, from light to deep, with different hair — buns, ponytails, puffs, curls, long hair and braids — and different outfits, scattered everywhere doing handstand splits, cartwheels, leaps, leg holds and backbends!'},
  hockey:{name:'Ice Rink',desc:'A full arena rink fills your background — a goal net, a stick and puck at center ice, face-off circles, boards, arena seats and two big floodlights shining down!'},
  basketball:{name:'Basketball Court',desc:'A real basketball court fills your background — hoops up high and basketballs ready!'},
  soccer:{name:'Soccer Field',desc:'A green soccer field fills your background — goals, white lines and soccer balls!'},
@@ -3531,62 +3546,88 @@ var WORLD_SCENE_META={
 function worldSceneTools(id){ var m={cheer:['🎀','🌹'],dance:['🩰','🎵'],gymnastics:['🤸','🏅'],hockey:['🏒','⚫'],basketball:['🏀','🏆'],soccer:['⚽','🥅'],tennis:['🎾','🏆'],swimming:['💦','🏁'],running:['👟','🏁'],jumprope:['🪢','☀️']}; return m[id]||['⭐','🎀']; }
 function wsSparkles(n){ var pts=[[60,60],[180,34],[330,70],[505,40],[655,66],[752,36],[120,150],[705,150],[262,120],[548,128]]; var s=''; for(var i=0;i<n&&i<pts.length;i++){ s+='<circle class="ws-twinkle" style="animation-delay:'+(i*0.55)+'s" cx="'+pts[i][0]+'" cy="'+pts[i][1]+'" r="'+(2.2+(i%3))+'" fill="#FFFFFF"/>'; } return s; }
 function wsPom(x,y,r,c1,c2){ var s='<g>'; for(var i=0;i<14;i++){ var a=(Math.PI*2*i)/14, x2=(x+Math.cos(a)*r).toFixed(1), y2=(y+Math.sin(a)*r*0.92).toFixed(1); s+='<line x1="'+x+'" y1="'+y+'" x2="'+x2+'" y2="'+y2+'" stroke="'+(i%2? c1:c2)+'" stroke-width="'+(r*0.36).toFixed(1)+'" stroke-linecap="round"/>'; } return s+'<circle cx="'+x+'" cy="'+y+'" r="'+(r*0.4).toFixed(1)+'" fill="'+c2+'"/></g>'; }
-/* Detailed girl gymnast for the Gymnastics scatter: natural skin + hair,
-   outfit (top + skirt/shorts or leggings) in ONE wizard color, props in
-   a second wizard color. Poses from Michelle's ref grid: 'leghold',
-   'arabesque', 'tree', 'bigball', 'hoop', 'split-center', 'handstand',
-   'cartwheel', 'backbend', 'split-side', 'jump', 'smallball'.
-   Origin = the floor under her. */
-function wsGymnastGirl(x,y,s,flip,outfit,accent,skin,hair,pose){
-  var sx=flip? -s:s, head='', torso='', limbs='', props='', skirt='';
-  function hd(cx,cy,bunDir){ return '<circle cx="'+cx+'" cy="'+cy+'" r="9.5" fill="'+skin+'"/><path d="M'+(cx-9.5)+' '+cy+' A9.5 9.5 0 0 1 '+(cx+9.5)+' '+cy+' L'+(cx+9.5)+' '+(cy-3)+' A9.5 8 0 0 0 '+(cx-9.5)+' '+(cy-3)+' Z" fill="'+hair+'"/><circle cx="'+cx+'" cy="'+(cy+(bunDir||-11))+'" r="4.6" fill="'+hair+'"/><circle cx="'+(cx-3.2)+'" cy="'+(cy+0.5)+'" r="1.2" fill="#3A2430"/><circle cx="'+(cx+3.2)+'" cy="'+(cy+0.5)+'" r="1.2" fill="#3A2430"/><path d="M'+(cx-2.4)+' '+(cy+4.4)+' Q'+cx+' '+(cy+6.2)+' '+(cx+2.4)+' '+(cy+4.4)+'" stroke="#3A2430" stroke-width="1.2" fill="none" stroke-linecap="round"/>'; }
-  function top(){ return '<path d="M-7 -84 L7 -84 L8.5 -44 L-8.5 -44 Z" fill="'+outfit+'" stroke="#3A1430" stroke-opacity=".14" stroke-width="1.4"/>'; }
-  function flare(){ return '<path d="M-15 -46 Q0 -51 15 -46 L11 -33 Q0 -28 -11 -33 Z" fill="'+outfit+'" stroke="#3A1430" stroke-opacity=".14" stroke-width="1.2"/>'; }
-  var L='stroke="'+skin+'" stroke-width="7" stroke-linecap="round" fill="none"';
-  var LP='stroke="'+outfit+'" stroke-width="8" stroke-linecap="round" fill="none"';
-  if(pose==='leghold'){
-    limbs='<path d="M0 -44 L2 0 M0 -44 L7 -98" '+L+'/><path d="M0 -76 L24 -94 M0 -76 L-27 -62" '+L+'/>';
-    torso=top(); skirt=flare(); head=hd(1,-95);
-  } else if(pose==='arabesque'){
-    limbs='<path d="M0 -44 L2 0 M0 -44 L40 -54" '+L+'/><path d="M0 -76 L-29 -64 M0 -76 L27 -86" '+L+'/>';
-    torso=top(); skirt=flare(); head=hd(1,-95);
-  } else if(pose==='tree'){
-    limbs='<path d="M0 -44 L1 0 M0 -44 L17 -27 L3 -19" '+L+'/><path d="M0 -76 L-10 -105 M0 -76 L11 -105" '+L+'/>';
-    torso=top(); skirt=flare(); head=hd(1,-95);
-  } else if(pose==='bigball'){
-    props='<circle cx="0" cy="-120" r="21" fill="'+accent+'" stroke="#3A1430" stroke-opacity=".16" stroke-width="1.6"/><path d="M-19 -128 A21 21 0 0 1 12 -136" stroke="#FFFFFF" stroke-opacity=".5" stroke-width="3.4" fill="none"/>';
-    limbs='<path d="M0 -44 L-15 0 M0 -44 L15 0" '+L+'/><path d="M0 -76 L-17 -102 M0 -76 L17 -102" '+L+'/>';
-    torso=top(); head=hd(1,-95);
-  } else if(pose==='smallball'){
-    limbs='<path d="M0 -44 L-8 0 M0 -44 L9 0" '+L+'/><path d="M0 -76 L-13 -52 M0 -76 L13 -52" '+L+'/>';
-    torso=top(); skirt=flare(); head=hd(1,-95);
-    props='<circle cx="0" cy="-46" r="10" fill="'+accent+'" stroke="#3A1430" stroke-opacity=".16" stroke-width="1.4"/>';
-  } else if(pose==='jump'){
-    limbs='<path d="M0 -44 L-7 -13 M0 -44 L9 -15" '+L+'/><path d="M0 -76 L-21 -103 M0 -76 L21 -103" '+L+'/>';
-    torso=top(); skirt=flare(); head=hd(1,-95);
-    props='<ellipse cx="0" cy="3" rx="24" ry="4.4" fill="#3A1430" opacity=".14"/>';
-  } else if(pose==='hoop'){
-    props='<circle cx="2" cy="-58" r="37" fill="none" stroke="'+accent+'" stroke-width="4.2"/>';
-    limbs='<path d="M0 -40 L29 -7 M0 -40 L-11 -13 L-13 0" '+L+'/><path d="M0 -72 L-24 -88 M0 -72 L20 -96" '+L+'/>';
-    torso='<path d="M-7 -80 L7 -80 L8.5 -40 L-8.5 -40 Z" fill="'+outfit+'" stroke="#3A1430" stroke-opacity=".14" stroke-width="1.4"/>'; head=hd(1,-91);
-  } else if(pose==='split-center'){
-    limbs='<path d="M0 -22 L-40 -7 M0 -22 L40 -7" '+LP+'/><path d="M0 -52 L-31 -54 M0 -52 L31 -54" '+L+'/>';
-    torso='<path d="M-7 -60 L7 -60 L8 -22 L-8 -22 Z" fill="'+outfit+'" stroke="#3A1430" stroke-opacity=".14" stroke-width="1.4"/>'; head=hd(0,-71);
-  } else if(pose==='split-side'){
-    limbs='<path d="M0 -18 L-44 -13 M0 -18 L44 -15" '+LP+'/><path d="M0 -50 L-28 -38 M0 -50 L16 -72" '+L+'/>';
-    torso='<path d="M-7 -58 L7 -58 L8 -18 L-8 -18 Z" fill="'+outfit+'" stroke="#3A1430" stroke-opacity=".14" stroke-width="1.4"/>'; head=hd(0,-69);
+/* Emoji-style gymnast for the Gymnastics scatter — copied from
+   Michelle's photo of the gymnast she likes: a smooth, glossy figure
+   with a plain round head (no drawn face), thick rounded arms and
+   legs, and a leotard in ONE solid outfit color. Every figure in the
+   scatter is this same gymnast design — what changes is HER: her
+   skin tone (a real mix — light, tan, brown and deep skin), her hair (different types — a bun,
+   a ponytail, two puffs, curls, long hair, a braid — in black, brown
+   and blonde), her outfit color and her motion: 'star' (the
+   handstand split from Michelle's photo), 'cartwheel', 'handstand',
+   'leap', 'arabesque', 'leghold', 'backbend', 'split' and 'jump'.
+   Hair hangs with gravity: on upside-down poses it falls toward
+   the floor. Origin = the floor under her. */
+function wsEmojiGymnast(x,y,s,flip,body,cloth,hairCol,hairType,pose){
+  var sx=flip? -s:s, inner='', rot=0;
+  var B='stroke="'+body+'" stroke-width="12" stroke-linecap="round" fill="none"';
+  var C='stroke="'+cloth+'" stroke-width="13.5" stroke-linecap="round" fill="none"';
+  function head(cx,cy,inv){ var d=inv? 1:-1, sw=inv? 0:1, h='<circle cx="'+cx+'" cy="'+cy+'" r="11.5" fill="'+body+'" stroke="#3A1430" stroke-opacity=".10" stroke-width="1.2"/>';
+    if(hairType==='long'){
+      /* long hair: panels fall past the head on both sides (toward
+         the floor when she is upside down), face left open */
+      h+='<path d="M'+(cx-11.5)+' '+(cy-d*13)+' L'+(cx-11.5)+' '+(cy+d*3)+' A11.5 11.5 0 0 '+sw+' '+(cx+11.5)+' '+(cy+d*3)+' L'+(cx+11.5)+' '+(cy-d*13)+' L'+(cx+7.5)+' '+(cy-d*13)+' L'+(cx+7.5)+' '+(cy-d*3)+' A7.5 7.5 0 0 '+(inv? 1:0)+' '+(cx-7.5)+' '+(cy-d*3)+' L'+(cx-7.5)+' '+(cy-d*13)+' Z" fill="'+hairCol+'"/>';
+    } else {
+      /* hair cap over the top of the head (the floor side when upside down) */
+      h+='<path d="M'+(cx-11.5)+' '+cy+' A11.5 11.5 0 0 '+sw+' '+(cx+11.5)+' '+cy+' L'+(cx+11.5)+' '+(cy+d*4.5)+' A11.5 9 0 0 '+sw+' '+(cx-11.5)+' '+(cy+d*4.5)+' Z" fill="'+hairCol+'"/>';
+      if(hairType==='bun'){ h+='<circle cx="'+cx+'" cy="'+(cy+d*15)+'" r="5.2" fill="'+hairCol+'"/>'; }
+      else if(hairType==='ponytail'){ h+='<path d="M'+(cx+6)+' '+(cy+d*9)+' Q'+(cx+17)+' '+(cy+d*16)+' '+(cx+13)+' '+(cy+d*30)+'" stroke="'+hairCol+'" stroke-width="6.5" stroke-linecap="round" fill="none"/><circle cx="'+(cx+5)+'" cy="'+(cy+d*11)+'" r="4.4" fill="'+hairCol+'"/>'; }
+      else if(hairType==='puffs'){ h+='<circle cx="'+(cx-8.5)+'" cy="'+(cy+d*10.5)+'" r="5.4" fill="'+hairCol+'"/><circle cx="'+(cx+8.5)+'" cy="'+(cy+d*10.5)+'" r="5.4" fill="'+hairCol+'"/>'; }
+      else if(hairType==='curly'){ h+='<circle cx="'+(cx-8)+'" cy="'+(cy+d*9)+'" r="5" fill="'+hairCol+'"/><circle cx="'+cx+'" cy="'+(cy+d*12.5)+'" r="5.6" fill="'+hairCol+'"/><circle cx="'+(cx+8)+'" cy="'+(cy+d*9)+'" r="5" fill="'+hairCol+'"/>'; }
+      else if(hairType==='braid'){ for(var bi=0;bi<4;bi++){ h+='<circle cx="'+(cx+11+((bi%2)?1.6:-1))+'" cy="'+(cy+d*(6+bi*6.4))+'" r="'+(4.3-bi*0.35)+'" fill="'+hairCol+'"/>'; } }
+    }
+    return h+'<ellipse cx="'+(cx-4)+'" cy="'+(cy-d*4.5)+'" rx="3.2" ry="2.3" fill="#FFFFFF" opacity=".30"/>'; }
+  function foot(cx,cy,r){ return '<ellipse cx="'+cx+'" cy="'+cy+'" rx="6.4" ry="3.4" fill="'+body+'" transform="rotate('+(r||0)+' '+cx+' '+cy+')"/>'; }
+  function hand(cx,cy){ return '<ellipse cx="'+cx+'" cy="'+cy+'" rx="6.2" ry="3.2" fill="'+body+'"/>'; }
+  function torso(y1,y2){ return '<path d="M-10.5 '+y1+' L10.5 '+y1+' L12.5 '+y2+' L-12.5 '+y2+' Z" fill="'+cloth+'" stroke="'+cloth+'" stroke-width="3" stroke-linejoin="round"/>'; }
+  if(pose==='cartwheel'){
+    rot=16;
+    inner='<path d="M-2 -76 L-15 -116 M2 -76 L31 -103" '+B+'/>'
+      +'<path d="M-3 -75 L-9 -94 M3 -75 L16 -89" '+C+'/>'
+      +'<path d="M-8 -54 L-21 -2 M8 -54 L29 -73" '+B+'/>'
+      + torso(-52,-80) + head(17,-33,true) + hand(-22,0) + foot(-17,-119,-38) + foot(34,-105,-52);
   } else if(pose==='handstand'){
-    limbs='<path d="M0 -66 L-15 -109 M0 -66 L17 -105" '+L+'/><path d="M0 -30 L-8 0 M0 -30 L9 0" '+L+'/>';
-    torso='<path d="M-8 -68 L8 -68 L7 -28 L-7 -28 Z" fill="'+outfit+'" stroke="#3A1430" stroke-opacity=".14" stroke-width="1.4"/>'; head=hd(11,-24,10);
-  } else if(pose==='cartwheel'){
-    limbs='<path d="M0 -64 L-36 -98 M0 -64 L35 -100" '+L+'/><path d="M0 -28 L-10 0 M0 -28 L24 -18" '+L+'/>';
-    torso='<path d="M-8 -66 L8 -66 L7 -26 L-7 -26 Z" fill="'+outfit+'" stroke="#3A1430" stroke-opacity=".14" stroke-width="1.4" transform="rotate(14)"/>'; head=hd(13,-20,10);
-  } else { /* backbend */
-    props='<path d="M-31 -2 Q0 -54 31 -2" fill="none" stroke="'+outfit+'" stroke-width="11" stroke-linecap="round"/>';
-    limbs='<path d="M-28 -22 L-33 0 M28 -22 L33 0" '+L+'/>';
-    head=hd(-36,-16,9);
+    inner='<path d="M-2 -78 L-7 -121 M2 -78 L8 -119" '+B+'/>'
+      +'<path d="M-3 -77 L-5 -97 M3 -77 L5 -96" '+C+'/>'
+      +'<path d="M-8 -54 L-11 -2 M8 -54 L11 -2" '+B+'/>'
+      + torso(-52,-80) + head(0,-36,true) + hand(-12,0) + hand(12,0) + foot(-8,-124,-14) + foot(9,-122,16);
+  } else if(pose==='leap'){
+    inner='<ellipse cx="0" cy="4" rx="30" ry="5" fill="#3A1430" opacity=".12"/>'
+      +'<path d="M-3 -46 L-47 -52 M3 -46 L45 -58" '+B+'/>'
+      +'<path d="M-3 -46 L-23 -49 M3 -46 L22 -51" '+C+'/>'
+      +'<path d="M-9 -80 L-37 -92 M9 -80 L35 -98" '+B+'/>'
+      + torso(-86,-48) + head(0,-99) + foot(-50,-52,-8) + foot(48,-59,-18);
+  } else if(pose==='arabesque'){
+    inner='<path d="M-2 -46 L-1 -3 M8 -48 L46 -68" '+B+'/>'
+      +'<path d="M-2 -46 L-2 -24 M8 -48 L25 -57" '+C+'/>'
+      +'<path d="M-9 -82 L-35 -70 M9 -84 L33 -94" '+B+'/>'
+      + torso(-88,-48) + head(1,-101) + foot(-1,0,0) + foot(49,-69,-24);
+  } else if(pose==='leghold'){
+    inner='<path d="M-2 -46 L-1 -3 M2 -46 L17 -104" '+B+'/>'
+      +'<path d="M-2 -46 L-2 -24 M2 -46 L8 -72" '+C+'/>'
+      +'<path d="M-9 -80 L-33 -88 M8 -80 L19 -100" '+B+'/>'
+      + torso(-86,-48) + head(0,-99) + foot(-1,0,0) + foot(18,-107,20);
+  } else if(pose==='backbend'){
+    inner='<path d="M-31 -16 L-41 -1 M32 -15 L45 -17 L48 -1" '+B+'/>'
+      +'<path d="M-34 -5 Q0 -60 34 -5" fill="none" stroke="'+cloth+'" stroke-width="13" stroke-linecap="round"/>'
+      + head(-45,-15,true) + hand(-42,1) + foot(49,0,0);
+  } else if(pose==='split'){
+    inner='<path d="M0 -20 L-47 -13 M0 -20 L47 -15" '+C+'/>'
+      +'<path d="M-9 -56 L-27 -80 M9 -56 L27 -80" '+B+'/>'
+      + torso(-62,-20) + head(0,-75) + foot(-50,-13,0) + foot(50,-15,0);
+  } else if(pose==='jump'){
+    inner='<ellipse cx="0" cy="4" rx="27" ry="4.6" fill="#3A1430" opacity=".12"/>'
+      +'<path d="M-3 -44 L-31 -22 M3 -44 L31 -24" '+B+'/>'
+      +'<path d="M-3 -44 L-16 -34 M3 -44 L16 -35" '+C+'/>'
+      +'<path d="M-9 -78 L-39 -86 M9 -78 L39 -86" '+B+'/>'
+      + torso(-84,-46) + head(0,-97) + foot(-34,-20,-32) + foot(34,-22,32);
+  } else { /* star — the handstand split from Michelle's photo */
+    inner='<path d="M-2 -76 L-50 -84 M2 -76 L36 -113" '+B+'/>'
+      +'<path d="M-3 -75 L-24 -79 M3 -75 L17 -93" '+C+'/>'
+      +'<path d="M-8 -54 L-13 -2 M8 -54 L13 -2" '+B+'/>'
+      + torso(-52,-80) + head(0,-36,true) + hand(-14,0) + hand(14,0) + foot(-53,-85,-8) + foot(39,-116,-52);
   }
-  return '<g transform="translate('+x+','+y+') scale('+sx+','+s+')">'+props+limbs+torso+skirt+head+'</g>';
+  return '<g transform="translate('+x+','+y+') scale('+sx+','+s+')"><g transform="rotate('+rot+')">'+inner+'</g></g>';
 }
 function wsHeart(x,y,s,col){ return '<g transform="translate('+x+','+y+') scale('+s+')"><path d="M0 11 C-15 -3 -7 -17 0 -9 C7 -17 15 -3 0 11 Z" fill="'+col+'"/></g>'; }
 function wsStar(x,y,s,col){ return '<g transform="translate('+x+','+y+') scale('+s+')"><polygon points="0,-11 3,-3.5 11,-3.5 4.5,1.5 7,9.5 0,4.8 -7,9.5 -4.5,1.5 -11,-3.5 -3,-3.5" fill="'+col+'"/></g>'; }
@@ -3735,34 +3776,42 @@ function worldSceneSVG(sportId,c,uid,fit){
      + wsHeart(348,196,1.0,PL) + wsHeart(724,188,0.85,AL)
      + wsHeart(500,262,0.9,T) + wsHeart(52,96,0.8,AL);
   } else if(sportId==='gymnastics'){
-    /* Gymnasts as the design itself (Michelle's ref): a scatter / grid
-       of girl gymnasts in many varied poses across a light background —
-       splits, leg hold, arabesque, handstand, cartwheel, backbend,
-       hoop, big ball overhead, small ball, tree pose and an arms-up
-       jump. Outfits + props take P, A and T in turn; skin and hair
-       stay natural. No beam / bars / rings in the PATTERN — the game's
-       own mat / beam routine still lives in the practice stage. */
+    /* Gymnasts as the design itself (Michelle's photo): the SAME
+       smooth emoji-style gymnast scattered all across a light
+       background, over and over in different motions — the handstand
+       split from her photo, a cartwheel, a straight handstand, a
+       split leap, an arabesque, a leg hold, a backbend, a floor
+       split and a star jump. What changes from girl to girl is HER
+       (Michelle's clarification): her SKIN TONE — a real mix of
+       light, tan, brown and deep skin, never all one color — her HAIR — a bun, a ponytail,
+       two puffs, curls, long hair or a braid, in black, dark brown,
+       brown and blonde — and her OUTFIT color (her theme colors in
+       turn, plus the light gray leotard from the photo). No drawn
+       faces and no props — the game's own beam / bars / rings still
+       live in the practice stage, never in this pattern. */
+    var SK0='#FFDFC4', SK1='#F2C29B', SK2='#C68642', SK3='#8D5524', SK4='#6B4226', GRY='#DDE3EA', HBLK='#1E130C', HDBR='#3B2314', HBRN='#7A4A21', HBLO='#E8B95A';
     defs='<linearGradient id="'+uid+'w" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+PL+'"/><stop offset="1" stop-color="#FFFFFF"/></linearGradient><linearGradient id="'+uid+'m" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+AL+'"/><stop offset="1" stop-color="'+PL+'"/></linearGradient>';
     s='<rect width="800" height="330" fill="url(#'+uid+'w)"/>'
      +'<rect y="300" width="800" height="30" fill="url(#'+uid+'m)" opacity=".55"/><rect y="298" width="800" height="3.4" fill="'+A+'" opacity=".5"/>'
-     +'<g fill="'+P+'"><circle cx="196" cy="42" r="3.2"/><circle cx="596" cy="36" r="3.2"/><circle cx="398" cy="150" r="3.2"/></g><g fill="'+A+'"><circle cx="46" cy="150" r="3.2"/><circle cx="752" cy="146" r="3.2"/><circle cx="200" cy="252" r="3.2"/><circle cx="600" cy="256" r="3.2"/></g>'
+     + wsStar(198,52,0.9,T) + wsStar(600,46,0.8,A) + wsStar(400,158,0.85,P)
+     +'<g fill="'+P+'"><circle cx="52" cy="160" r="3.2"/><circle cx="752" cy="156" r="3.2"/></g><g fill="'+A+'"><circle cx="202" cy="262" r="3.2"/><circle cx="604" cy="264" r="3.2"/></g>'
      /* row 1 */
-     + wsGymnastGirl(96,104,0.78,false,P,A,'#F2C29B','#3B2314','leghold')
-     + wsGymnastGirl(292,104,0.78,false,A,P,'#8D5524','#14100C','arabesque')
-     + wsGymnastGirl(498,104,0.78,false,T,P,'#C68642','#D9A441','tree')
-     + wsGymnastGirl(700,108,0.74,false,P,T,'#F2C29B','#14100C','bigball')
+     + wsEmojiGymnast(96,110,0.76,false,SK1,GRY,HDBR,'ponytail','star')
+     + wsEmojiGymnast(294,110,0.76,false,SK0,A,HBLO,'bun','arabesque')
+     + wsEmojiGymnast(500,110,0.76,false,SK3,T,HBLK,'puffs','leghold')
+     + wsEmojiGymnast(702,110,0.76,true,SK2,P,HBLK,'braid','cartwheel')
      /* row 2 */
-     + wsGymnastGirl(98,212,0.78,false,A,T,'#C68642','#3B2314','hoop')
-     + wsGymnastGirl(296,214,0.8,false,P,A,'#F2C29B','#D9A441','split-center')
-     + wsGymnastGirl(500,212,0.76,false,T,A,'#8D5524','#14100C','handstand')
-     + wsGymnastGirl(702,212,0.76,true,A,P,'#F2C29B','#3B2314','cartwheel')
+     + wsEmojiGymnast(98,214,0.76,false,SK4,A,HBLK,'curly','leap')
+     + wsEmojiGymnast(296,214,0.76,false,SK1,P,HBRN,'long','jump')
+     + wsEmojiGymnast(500,214,0.76,false,SK4,T,HDBR,'bun','split')
+     + wsEmojiGymnast(702,214,0.76,false,SK0,GRY,HBRN,'ponytail','star')
      /* row 3 */
-     + wsGymnastGirl(96,318,0.78,false,T,A,'#F2C29B','#14100C','backbend')
-     + wsGymnastGirl(294,320,0.8,false,A,P,'#C68642','#3B2314','split-side')
-     + wsGymnastGirl(498,306,0.74,false,P,T,'#8D5524','#D9A441','jump')
-     + wsGymnastGirl(700,318,0.78,false,A,P,'#F2C29B','#14100C','smallball')
-     + wsHeart(398,262,0.85,A) + wsHeart(52,262,0.8,P);
-  } else if(sportId==='hockey'){
+     + wsEmojiGymnast(96,318,0.76,false,SK2,P,HDBR,'long','backbend')
+     + wsEmojiGymnast(294,318,0.76,false,SK3,GRY,HBLK,'curly','handstand')
+     + wsEmojiGymnast(500,318,0.76,false,SK0,A,HBLO,'puffs','cartwheel')
+     + wsEmojiGymnast(702,318,0.76,true,SK4,T,HBLK,'braid','arabesque')
+     + wsHeart(398,266,0.8,A) + wsHeart(52,266,0.75,P);
+} else if(sportId==='hockey'){
     /* Full arena rink scene (Michelle's ref): a night arena with two
        big floodlight banks at the top corners shining beams down,
        rows of arena seats behind curved boards, and the ice in
@@ -4053,18 +4102,19 @@ function enchantedSceneSVG(c,uid,fit){
   return '<svg viewBox="0 0 800 330" preserveAspectRatio="'+(fit==='meet'?'xMidYMid meet':'xMidYMid slice')+'" aria-hidden="true"><defs>'+defs+'</defs>'+s+'</svg>';
 }
 
-/* Paints the world scene onto the page backdrop and the game stage —
-   never the hero, which sits on its solid primary color. The PAGE
-   backdrop is ALWAYS from the home sport (effectiveTheme().sport),
-   never from the sport being played, so a sport switch can never
-   repaint her world. The GAME STAGE is the opposite: it is the court,
-   field or studio the game is actually played on, so the scene INSIDE
-   the stage is painted from the sport being PLAYED — a tennis game is
-   always on a real tennis court (net and court lines, and never a
-   basketball hoop or rim), a basketball game always on a basketball
-   court, and so on for every sport. Painting the stage from the home
-   sport instead put the played sport's ball and player on the home
-   sport's court — tennis ball, basketball court, basketball rim.
+/* Paints the world scene onto the page backdrop — never the hero,
+   which sits on its solid primary color, and never a template inside
+   the game stage. The PAGE backdrop is ALWAYS from the home sport
+   (effectiveTheme().sport), never from the sport being played, so a
+   sport switch can never repaint her world. The sport designs from
+   worldSceneSVG are TEMPLATE backgrounds: they belong to the page
+   backdrop only (Michelle's rule — "template backgrounds are only
+   for the backgrounds"). Inside the GAME STAGE, no template is ever
+   painted: the game's own scene is the played sport's stage base
+   gradient plus its real venue — net and court lines for tennis,
+   beam, bars and rings for gymnastics, and so on for every sport —
+   drawn by applySportWorld's sportVenueSVG, so a tennis game is
+   always on a real tennis court and never on a basketball court.
    The enchanted castle background is the one exception to the
    classic rule below: it is the DEFAULT background on both links, so
    whenever the effective background pick is 'enchanted' (always, on a
@@ -4090,22 +4140,34 @@ function paintWorldScene(){
   var playingSport= !!(played && played!=='cheer' && typeof SPORT_WORLDS!=='undefined' && SPORT_WORLDS[played] && typeof worldSceneSVG==='function');
   if(!window.isCustomEdition() && !enchanted){
     if(bd){ bd.innerHTML=''; bd.classList.remove('on'); }
-    if(playingSport){ if(ws) ws.innerHTML=worldSceneSVG(played,c,'s', played==='jumprope'? 'meet':undefined); if(stage){ stage.classList.add('has-world-scene'); stage.style.background=SPORT_WORLDS[played].stage; } }
-    else { if(ws) ws.innerHTML=''; if(stage) stage.classList.remove('has-world-scene'); }
+    /* No template inside the game: the in-stage scene layer stays
+       empty in every case (templates are page backgrounds only). A
+       played sport's own scene is its stage base gradient, set here,
+       plus its real venue drawn by applySportWorld; a cheer game
+       keeps the stage's own castle ballroom drawing. */
+    if(ws) ws.innerHTML=''; if(stage){ stage.classList.remove('has-world-scene'); if(playingSport) stage.style.background=SPORT_WORLDS[played].stage; }
     keepBackdropBelowHero(); return;
   }
   if(bd){ bd.innerHTML=(enchanted? '<img class="hero-castle-bg" src="assets/royce-background.webp" alt="" aria-hidden="true"/>' : worldSceneSVG(sid,c,'p'))+'<div class="ws-wash"></div>'; bd.classList.add('on'); }
   if(playingSport){
-    /* Inside the stage, the played sport's OWN venue scene replaces the
-       home world's scene, and the stage's base gradient is the played
-       sport's — so no part of another sport's court (its hoop, goal,
-       rink or beam) can show behind this sport's game. The page
-       backdrop above still carries her home world, untouched. */
-    if(ws) ws.innerHTML=worldSceneSVG(played,c,'s', played==='jumprope'? 'meet':undefined);
-    if(stage){ stage.classList.add('has-world-scene'); stage.style.background=SPORT_WORLDS[played].stage; }
+    /* Inside the stage, NO template is painted (Michelle's rule: the
+       sport templates from worldSceneSVG are PAGE backgrounds only —
+       "if I'm playing the gymnastics game, my background in the game
+       should not become the template background"). The game's own
+       scene is the played sport's stage base gradient, set here, plus
+       its real venue — beam, bars and rings for gymnastics, net and
+       court lines for tennis — drawn over it by applySportWorld's
+       sportVenueSVG, with the ballroom drawing hidden (sport-active).
+       The page backdrop above still carries her home world, untouched. */
+    if(ws) ws.innerHTML='';
+    if(stage){ stage.classList.remove('has-world-scene'); stage.style.background=SPORT_WORLDS[played].stage; }
   } else {
-    if(ws){ ws.innerHTML= enchanted? enchantedSceneSVG(c,'s') : worldSceneSVG(sid,c,'s'); }
-    if(stage){ stage.classList.add('has-world-scene'); if(enchanted){ var eb=themeById(THEME_BGS,et.bg); if(eb) stage.style.background=eb.stage; } else { var hw=(typeof SPORT_WORLDS!=='undefined')? SPORT_WORLDS[sid] : null; if(hw) stage.style.background=hw.stage; } }
+    /* A cheer game: its own scene is the castle ballroom — the drawn
+       enchanted ballroom when her world is enchanted, otherwise the
+       stage's own built-in ballroom drawing, which shows when this
+       layer is empty. A home-sport template never paints in here. */
+    if(ws){ ws.innerHTML= enchanted? enchantedSceneSVG(c,'s') : ''; }
+    if(stage){ stage.classList.toggle('has-world-scene', enchanted); if(enchanted){ var eb=themeById(THEME_BGS,et.bg); if(eb) stage.style.background=eb.stage; } else { var hw=(typeof SPORT_WORLDS!=='undefined')? SPORT_WORLDS[sid] : null; if(hw) stage.style.background=hw.stage; } }
   }
   keepBackdropBelowHero();
 }
@@ -4166,8 +4228,8 @@ function applyTheme(){
   var meta=document.querySelector('meta[name="theme-color"]'); if(meta) meta.setAttribute('content',c.primary);
   var stage=document.getElementById('beamStage'); if(stage) stage.style.background=b.stage;
   var decor=document.getElementById('stageDecor');
-  if(decor){ var tools=worldSceneTools(s.id); var pat=[]; if(s.id==='tennis'){ for(var i=0;i<6;i++){ pat.push(tools[i%tools.length]); } } else { for(var i=0;i<6;i++){ pat.push(i%2? tools[(i-1)/2%tools.length] : a.emoji); } } decor.innerHTML=pat.map(function(e){return '<span>'+sportBadgeHTML(e,s.id)+'</span>';}).join(''); }
-  var mascot=document.getElementById('stageMascot'); if(mascot) mascot.innerHTML=(s.id==='tennis'? '' : a.emoji)+'<small>'+sportBadgeHTML(s.emoji,s.id)+'</small>';
+  if(decor){ var tools=worldSceneTools(s.id); var pat=[]; if(s.id==='tennis'||a.emoji==='🦋'){ for(var i=0;i<6;i++){ pat.push(tools[i%tools.length]); } } else { for(var i=0;i<6;i++){ pat.push(i%2? tools[(i-1)/2%tools.length] : a.emoji); } } decor.innerHTML=pat.map(function(e){return '<span>'+sportBadgeHTML(e,s.id)+'</span>';}).join(''); }
+  var mascot=document.getElementById('stageMascot'); if(mascot) mascot.innerHTML=((s.id==='tennis'||a.emoji==='🦋')? '' : a.emoji)+'<small>'+sportBadgeHTML(s.emoji,s.id)+'</small>';
   /* Theme chips render ONLY on a custom link. On a standard link the summary
      stays empty — no trace of the saved theme anywhere on the page. */
   var sum=document.getElementById('themeSummary'); if(sum) sum.innerHTML= window.isCustomEdition()? themeSummaryHTML() : '';
