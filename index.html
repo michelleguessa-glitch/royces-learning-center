@@ -511,7 +511,7 @@ span.royce-crop>img{position:absolute;left:-143%;top:-10.6%;width:408.5%;height:
 .letter-box{width:44px;height:52px;border:3px solid var(--purple);border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'Fredoka';font-weight:700;font-size:24px;background:#fff;color:var(--purple-d)}
 .example-big{font-family:'Fredoka';font-weight:700;font-size:30px;background:#fff;border:2px solid var(--line);border-radius:14px;padding:10px 16px;display:inline-block;margin:8px 0}
 .ex-visual{display:flex;justify-content:center;padding:8px 0}
-.group-dots{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0}
+.group-dots{display:flex;flex-direction:column;align-items:flex-start;gap:10px;margin:10px 0} /* equal-group boxes stack one per line, and the objects inside each box wrap at about five per row — no horizontal line of counting objects ever stretches across at any width */
 .group-dots .gd{border:2px dashed var(--purple);border-radius:12px;padding:6px 10px;font-size:18px;letter-spacing:2px;background:var(--purple-l)}
 /* work panel */
 .work-panel{background:#FFF9FD;border:none;border-radius:0;padding:18px 16px calc(18px + env(safe-area-inset-bottom));position:fixed;inset:0;z-index:71;overflow-y:auto}
@@ -631,6 +631,18 @@ html.is-custom .music-note-btn{background:linear-gradient(180deg,#fff,color-mix(
 #wizardModal .modal-btns .check-btn{grid-column:1/-1;padding:15px}
 #wizardModal .modal-btns .ghost{width:100%;padding:12px 10px}
 @media(max-width:560px){#wizardModal .modal-btns{grid-template-columns:1fr 1fr}#wizardModal .modal-btns .check-btn{grid-column:1/-1}}
+/* ===== Example Stage opens FULL SCREEN over the game view — the same
+   way Hint and Work It Out open (Michelle): never a centered modal card
+   floating over the dimmed game. The panel covers the whole screen,
+   its header row (Example Stage title + ✕ Back to My Problem) stays
+   pinned at the panel's own top while the steps scroll, and closing it
+   lands right back on the same game and the same problem (closeWizard
+   is unchanged). The horizontal padding keeps the reading column the
+   same width the card had, centered, at every screen size. ===== */
+#wizardModal{padding:0;background:#FFF9FD;z-index:90}
+#wizardModal.open{display:block}
+#wizardModal .modal-card{max-width:none;width:100%;min-height:100%;margin:0;border:none;border-radius:0;box-shadow:none;background:#FFF9FD;padding:20px max(16px,calc((100% - 760px)/2)) calc(20px + env(safe-area-inset-bottom))}
+#wizardModal .wiz-head{position:sticky;top:-20px;background:#FFF9FD;padding:10px 0;z-index:2}
 .studio-grid{display:grid;grid-template-columns:210px 1fr;gap:16px}
 .studio-preview{background:linear-gradient(180deg,var(--pink-l),#fff);border:2px solid var(--line);border-radius:18px;display:flex;flex-direction:column;align-items:center;padding:10px}
 .studio-preview .pv{height:248px}
@@ -998,7 +1010,6 @@ html.is-custom.design-locked #hubCheerCard,html.is-custom.design-locked #hubCoac
 .hero-sport-line.on{display:block}
 .stage .sport-venue{position:absolute;inset:0;z-index:1;pointer-events:none}
 .stage .sport-venue svg{position:absolute;inset:0;width:100%;height:100%}
-.sport-venue-label{position:absolute;top:10px;left:50%;transform:translateX(-50%);z-index:2;background:rgba(58,20,48,.82);color:#fff;font-family:'Fredoka';font-weight:600;font-size:14px;padding:6px 14px;border-radius:999px;white-space:nowrap;pointer-events:none}
 .sport-target{position:absolute;right:4%;bottom:96px;z-index:3;font-size:52px;line-height:1;pointer-events:none;filter:drop-shadow(0 5px 7px rgba(58,20,48,.3))}
 .sport-prop{position:absolute;z-index:4;font-size:34px;line-height:1;pointer-events:none;left:calc(5% + 96px);bottom:104px;filter:drop-shadow(0 4px 5px rgba(58,20,48,.3));will-change:left,bottom,transform;transition:left .45s ease,bottom .45s ease,transform .45s ease}
 .stage.sport-active .beam,.stage.sport-active .mat{display:none}
@@ -1290,7 +1301,10 @@ html.is-standard .hub-row{grid-template-columns:repeat(2,1fr)}
       </svg>
       <div class="world-scene" id="worldScene" aria-hidden="true"></div>
       <div class="sport-venue" id="sportVenue" aria-hidden="true" style="display:none"></div>
-      <div class="sport-venue-label" id="sportVenueLabel" style="display:none"></div>
+      <!-- NO venue-name pill sits on the stage (Michelle): no added
+           floating images or text bars on the game — the venue shows
+           clean with the player on it. The old dark "Dance Studio" /
+           "Castle Playground" pill is gone entirely. -->
       <div class="stage-decor" id="stageDecor" aria-hidden="true"></div>
       <div class="stage-mascot" id="stageMascot" aria-hidden="true"></div>
       <div class="stage-floor"></div>
@@ -1550,9 +1564,9 @@ html.is-standard .hub-row{grid-template-columns:repeat(2,1fr)}
 <div class="audio-only" id="ytWrap" aria-hidden="true"><div id="ytPlayer"></div></div>
 <button class="music-note-btn" id="musicNoteBtn" onclick="openMusicPlayer()" aria-label="Open the music player">🎵</button>
 
-<div class="modal" id="wizardModal" role="dialog" aria-modal="true">
+<div class="modal" id="wizardModal" role="dialog" aria-modal="true" aria-label="Example — Belle works a different problem step by step">
   <div class="modal-card">
-    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><span class="fred" style="color:var(--pink-d);font-size:15px;letter-spacing:.08em">✨ <span class="coach-poss-text">BELLE'S</span> EXAMPLE STAGE</span><span style="display:flex;gap:8px"><button class="ghost" onclick="closeWizard()">✕ Back to My Problem</button></span></div>
+    <div class="wiz-head" style="display:flex;justify-content:space-between;align-items:center;gap:10px"><span class="fred" style="color:var(--pink-d);font-size:15px;letter-spacing:.08em">✨ <span class="coach-poss-text">BELLE'S</span> EXAMPLE STAGE</span><span style="display:flex;gap:8px"><button class="ghost" onclick="closeWizard()">✕ Back to My Problem</button></span></div>
     <h3 id="wizTitle">Watch me first!</h3>
     <div class="ex-note" id="wizNote">🌹 This is a <b>different problem just like yours</b> — <span class="coach-short-text">Belle</span> works it step by step so you can see HOW. Your problem stays right where you left it!</div>
     <div class="stepdots" id="wizDots"></div>
@@ -1796,7 +1810,7 @@ function exCol(a,b,op,answer,carryNote){
   return '<div class="ex-visual">'+h+'</div></div>';
 }
 function dotsStr(n,ch){ var o=''; for(var i=0;i<n;i++) o+=ch; return o; }
-function groupsHTML(groups,per,ch){ var h='<div class="group-dots">'; for(var i=0;i<groups;i++) h+='<span class="gd">'+dotsStr(per,ch||'●')+'</span>'; return h+'</div>'; }
+function groupsHTML(groups,per,ch){ var h='<div class="group-dots">'; for(var i=0;i<groups;i++){ var items=''; for(var j=0;j<per;j++) items+='<span>'+(ch||'●')+'</span>'; h+='<span class="gd" style="display:inline-flex;flex-wrap:wrap;justify-content:center;gap:2px;max-width:150px">'+items+'</span>'; } return h+'</div>'; } /* each group's objects wrap inside their own box in balanced rows of about five (150px holds five bows/dots per row) — a group of 9 or 10 never runs in one long line across */
 function buildWorkedExample(id){
   if((id==='multiplication'||id==='division')&&gradeIdx<3) return null; /* GRADE GATE (example layer): no × or ÷ worked example can be built below 3rd grade */
   var topic=TOPICS.find(function(x){return x.id===id}); if(!topic) return null;
@@ -1923,10 +1937,10 @@ var TRYAGAIN=['Good try — champions always try again!','So close! Let\'s fix o
    within 1000 (3.NBT.2) • 4th division by 1-digit divisors only (4.NBT.6) • 5th 2-digit divisors (5.NBT.6). */
 /* Counting visuals are BIG in Kindergarten & 1st grade (ages 5–7 need large, easy-to-count objects) and
    keep their regular size in grades 2–5. Groups flex-wrap into rows, so big objects never scroll sideways. */
-function dotsVisual(a,b){ var BIG=gradeIdx<=1; var sz= BIG?46:24; var gw= BIG?250:124; /* counting objects never run in one long line across: each group wraps into balanced rows of about five (9 dots = 5 on the top row, 4 on the bottom), and the two groups sit side by side with the + between them */
- function dots(n,c){ var s=''; for(var i=0;i<n;i++) s+='<span style="color:'+c+';font-size:'+sz+'px;line-height:1.1">●</span>'; return '<span style="display:inline-flex;flex-wrap:wrap;justify-content:center;gap:'+(BIG?4:1)+'px;max-width:'+gw+'px">'+s+'</span>'; } return '<div style="display:flex;align-items:center;justify-content:center;gap:'+(BIG?12:8)+'px;flex-wrap:wrap;text-align:center">'+dots(a,'#E84393')+'<span style="font-family:Fredoka;font-size:'+(BIG?36:22)+'px;color:#7C3AED;line-height:1.1">+</span>'+dots(b,'#7C3AED')+'</div>'; }
-function takeAwayVisual(a,b){ var BIG=gradeIdx<=1; var sz= BIG?46:24; var xs= BIG?36:19; var s=''; for(var i=0;i<a;i++){ if(i>=a-b){ s+='<span style="position:relative;color:#CBB3C6;font-size:'+sz+'px;line-height:1.1">●<span style="position:absolute;left:50%;top:50%;transform:translate(-50%,-58%);color:#C2185B;font-size:'+xs+'px;font-weight:900">✕</span></span>'; } else { s+='<span style="color:#E84393;font-size:'+sz+'px;line-height:1.1">●</span>'; } } return '<div style="text-align:center"><div style="display:inline-flex;flex-wrap:wrap;justify-content:center;gap:'+(BIG?4:1)+'px;max-width:'+(BIG?250:124)+'px">'+s+'</div><div style="font-weight:900;color:#8A5A78;font-size:'+(BIG?16:14)+'px;margin-top:6px">The ✕ dots are taken away — count the pink dots left!</div></div>'; }
-function storyVisual(e,a,b,mode){ var BIG=gradeIdx<=1; var sz= BIG?42:26; function grp(n,dimFrom){ var s=''; for(var i=0;i<n;i++){ var dim=(dimFrom!==null&&dimFrom!==undefined&&i>=dimFrom); s+='<span style="position:relative;font-size:'+sz+'px;line-height:1.15;'+(dim?'opacity:.4':'')+'">'+e+(dim?'<span style="position:absolute;left:50%;top:50%;transform:translate(-50%,-55%);color:#C2185B;font-size:'+Math.round(sz*0.85)+'px;font-weight:900">✕</span>':'')+'</span>'; } return '<span style="display:inline-flex;flex-wrap:wrap;justify-content:center;gap:2px;max-width:'+(BIG?250:140)+'px">'+s+'</span>'; } if(mode==='sub'){ return '<div style="text-align:center">'+grp(a,a-b)+'<div style="font-weight:900;color:#8A5A78;font-size:'+(BIG?16:14)+'px;margin-top:6px">The ✕ ones were given away — count what is left!</div></div>'; } return '<div style="display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;text-align:center">'+grp(a,null)+'<span style="font-family:Fredoka;font-size:'+(BIG?36:22)+'px;color:#7C3AED">+</span>'+grp(b,null)+'</div>'; }
+function dotsVisual(a,b){ var BIG=gradeIdx<=1; var sz= BIG?40:24; var gw= BIG?218:124; /* counting objects never run in one long line across at ANY screen width (Michelle's rows rule): each group wraps into balanced rows of about five (9 dots = 5 on the top row, 4 on the bottom), and the two groups STACK — first group, the + under it, second group under that — so no horizontal line ever holds more than about five dots, on a wide desktop screen just as on a phone. Side-by-side groups shared one line and read as a single row of 8 or 9 stretched across. */
+ function dots(n,c){ var s=''; for(var i=0;i<n;i++) s+='<span style="color:'+c+';font-size:'+sz+'px;line-height:1.1">●</span>'; return '<span style="display:inline-flex;flex-wrap:wrap;justify-content:center;gap:'+(BIG?4:1)+'px;max-width:'+gw+'px">'+s+'</span>'; } return '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:'+(BIG?6:4)+'px;text-align:center">'+dots(a,'#E84393')+'<span style="font-family:Fredoka;font-size:'+(BIG?30:22)+'px;color:#7C3AED;line-height:1.1">+</span>'+dots(b,'#7C3AED')+'</div>'; }
+function takeAwayVisual(a,b){ var BIG=gradeIdx<=1; var sz= BIG?40:24; var xs= BIG?31:19; var s=''; for(var i=0;i<a;i++){ if(i>=a-b){ s+='<span style="position:relative;color:#CBB3C6;font-size:'+sz+'px;line-height:1.1">●<span style="position:absolute;left:50%;top:50%;transform:translate(-50%,-58%);color:#C2185B;font-size:'+xs+'px;font-weight:900">✕</span></span>'; } else { s+='<span style="color:#E84393;font-size:'+sz+'px;line-height:1.1">●</span>'; } } return '<div style="text-align:center"><div style="display:inline-flex;flex-wrap:wrap;justify-content:center;gap:'+(BIG?4:1)+'px;max-width:'+(BIG?218:124)+'px">'+s+'</div><div style="font-weight:900;color:#8A5A78;font-size:'+(BIG?16:14)+'px;margin-top:6px">The ✕ dots are taken away — count the pink dots left!</div></div>'; }
+function storyVisual(e,a,b,mode){ var BIG=gradeIdx<=1; var sz= BIG?38:26; function grp(n,dimFrom){ var s=''; for(var i=0;i<n;i++){ var dim=(dimFrom!==null&&dimFrom!==undefined&&i>=dimFrom); s+='<span style="position:relative;font-size:'+sz+'px;line-height:1.15;'+(dim?'opacity:.4':'')+'">'+e+(dim?'<span style="position:absolute;left:50%;top:50%;transform:translate(-50%,-55%);color:#C2185B;font-size:'+Math.round(sz*0.85)+'px;font-weight:900">✕</span>':'')+'</span>'; } return '<span style="display:inline-flex;flex-wrap:wrap;justify-content:center;gap:2px;max-width:'+(BIG?218:140)+'px">'+s+'</span>'; } if(mode==='sub'){ return '<div style="text-align:center">'+grp(a,a-b)+'<div style="font-weight:900;color:#8A5A78;font-size:'+(BIG?16:14)+'px;margin-top:6px">The ✕ ones were given away — count what is left!</div></div>'; } return '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:'+(BIG?6:4)+'px;text-align:center">'+grp(a,null)+'<span style="font-family:Fredoka;font-size:'+(BIG?36:22)+'px;color:#7C3AED">+</span>'+grp(b,null)+'</div>'; } /* story add displays STACK like the dot displays: the two groups never share a horizontal line, so no row ever holds more than about five objects at any width */
 function clockVisual(hrs,mins){ var angM=mins*6, angH=(hrs%12)*30+mins*0.5; return '<svg width="150" height="150" viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="#fff" stroke="#C2185B" stroke-width="4"/><g font-size="10" font-weight="900" text-anchor="middle" fill="#3A1430"><text x="50" y="14">12</text><text x="88" y="53">3</text><text x="50" y="93">6</text><text x="12" y="53">9</text></g><line x1="50" y1="50" x2="'+(50+24*Math.sin(angH*Math.PI/180))+'" y2="'+(50-24*Math.cos(angH*Math.PI/180))+'" stroke="#3A1430" stroke-width="5" stroke-linecap="round"/><line x1="50" y1="50" x2="'+(50+36*Math.sin(angM*Math.PI/180))+'" y2="'+(50-36*Math.cos(angM*Math.PI/180))+'" stroke="#C2185B" stroke-width="3" stroke-linecap="round"/><circle cx="50" cy="50" r="4" fill="#E4B33C"/></svg>'; }
 function moneyStr(cents){ var d=Math.floor(cents/100), c=cents%100; return d+'.'+(c<10?'0'+c:c); }
 function genMath(id,tier){
@@ -2649,11 +2663,12 @@ function navGoHome(){
    counting objects are generated in balanced rows of about five, and
    this pass — run whenever the view's contents change (game open,
    captions landing, an answer's feedback, the tools menu opening) —
-   measures the view against the actually-visible screen and, only if
-   a tall state still needs room, scales the counting/problem picture
-   down WHOLE (every dot and object stays visible; nothing is ever
-   clipped) and steps the type down a notch via fit-tight /
-   fit-tighter. The bar, every game, every state: problem / display,
+   measures the view against the actually-visible screen (the Helper
+   Tools button's real on-screen position) and, only if a tall state
+   still needs room, steps the type down a notch via fit-tight /
+   fit-tighter FIRST, then scales the counting/problem picture down
+   WHOLE — never below half size — so every dot and object stays
+   visible and nothing is ever clipped. The bar, every game, every state: problem / display,
    answer box, Check It, the dashed line and the Helper Tools button
    all on the one screen, no scrolling — at open and again after
    answering, with the feedback showing. */
@@ -2668,30 +2683,35 @@ function fitGameView(){
   var natH=0;
   if(inner){ vis.style.maxHeight='none'; vis.style.flex='0 0 auto'; inner.style.maxHeight='none'; natH=inner.getBoundingClientRect().height; }
   function over(){
-    var topAtScroll0=pv.getBoundingClientRect().top+window.scrollY;
-    return (topAtScroll0+pv.scrollHeight)-window.innerHeight;
+    /* Measure what is ACTUALLY on screen: how far the last thing that
+       must stay visible (the Helper Tools button, or the open tools
+       menu under it) hangs past the bottom of the screen. The old
+       scrollHeight measure over-reported the overflow and crushed the
+       counting picture to a sliver even when the view nearly fit. */
+    var tm=document.getElementById('toolsMenu');
+    var el=(tm&&tm.style.display!=='none')? tm : document.getElementById('toolsToggleBtn');
+    if(!el) return 0;
+    return Math.max(0, Math.round(el.getBoundingClientRect().bottom - window.innerHeight + 6));
+  }
+  function visScale(){
+    if(!inner||natH<=0||ov<=0) return;
+    var s=(natH-ov)/natH;
+    if(s>=1) return;
+    if(s<0.5) s=0.5; /* the counting picture scales down WHOLE but never below half size — every object stays big enough to count, and the box is sized to the scaled picture so nothing is ever clipped */
+    inner.style.transformOrigin='center top';
+    inner.style.transform='scale('+s+')';
+    vis.style.height=Math.round(natH*s+6)+'px';
+    ov=over();
   }
   var ov=over();
   if(ov<=0) return;
-  function visScale(){
-    if(!inner||natH<=0||ov<=0) return;
-    var curH=vis.getBoundingClientRect().height;
-    var target=Math.max(20,curH-ov);
-    var s=target/(natH+6);
-    if(s>=1) return;
-    inner.style.transformOrigin='center top';
-    inner.style.transform='scale('+s+')';
-    vis.style.height=Math.max(20,Math.round(natH*s)+6)+'px';
-    ov=over();
-  }
-  visScale();
-  if(ov>0){ pv.classList.add('fit-tight'); ov=over(); }
-  if(ov>0){ visScale(); }
+  /* Type steps FIRST — they are the cheap room. The picture scales
+     only by whatever overflow is left after them, exactly once. */
+  pv.classList.add('fit-tight'); ov=over();
   if(ov>0){ pv.classList.add('fit-tighter'); ov=over(); }
   if(ov>0){ visScale(); }
   if(ov>0){ pv.classList.add('fit-max'); ov=over(); }
-  if(ov>0){ visScale(); }
-  if(ov>0){ var tm=document.getElementById('toolsMenu'); if(tm&&tm.style.display!=='none'){ pv.classList.add('fit-menu'); ov=over(); if(ov>0){ visScale(); } } }
+  if(ov>0){ var tm2=document.getElementById('toolsMenu'); if(tm2&&tm2.style.display!=='none'){ pv.classList.add('fit-menu'); ov=over(); } }
 }
 window.addEventListener('resize',function(){ fitGameView(); });
 function nextPrompt(first){
@@ -4030,7 +4050,7 @@ function paintHeroGreeting(){
 function applySportWorld(){
   var w=sportWorld(), sport=isSportWorld(), custom=window.isCustomEdition();
   var stage=document.getElementById('beamStage');
-  var venue=document.getElementById('sportVenue'), vlabel=document.getElementById('sportVenueLabel');
+  var venue=document.getElementById('sportVenue');
   var prop=document.getElementById('sportProp'), target=document.getElementById('sportTarget');
   var headline=document.getElementById('heroSportLine'), desc=document.getElementById('heroDesc');
   if(stage){ stage.classList.toggle('sport-active',sport); stage.classList.toggle('gym-beam-on',!!(sport&&sportWorldId()==='gymnastics')); stage.setAttribute('aria-label', sport? ('Your player in the '+w.venue+' — '+w.name+' games') : 'Your cheer squad in the castle ballroom — pyramid games'); /* The scene inside the stage is THIS played sport's own venue, drawn below by sportVenueSVG over the played sport's stage base gradient (set by paintWorldScene) — never a sport template, which is a page background only. The page backdrop behind the stage keeps her personalized world's home scene. */ }
@@ -4054,7 +4074,8 @@ function applySportWorld(){
   var swimW=document.getElementById('swimWater'); if(swimW){ swimW.style.display= (sport&&sportWorldId()==='swimming')?'block':'none'; }
   var dBarre=document.getElementById('danceBarre'); if(dBarre){ dBarre.style.display= (sport&&sportWorldId()==='dance')?'block':'none'; }
   var sqEl=document.getElementById('cheerSquad'); if(sqEl){ sqEl.style.display= sport?'none':'block'; } if(stage){ stage.classList.toggle('squad-active',!sport); stage.classList.toggle('swimming-active',!!(sport&&sportWorldId()==='swimming')); stage.classList.toggle('jumprope-active',!!(sport&&sportWorldId()==='jumprope')); } if(!sport&&typeof renderSquad==='function'){ renderSquad(); }
-  if(vlabel){ vlabel.style.display= sport?'block':'none'; vlabel.textContent= sport? (((sportWorldId()==='dance'||sportWorldId()==='gymnastics')? '' : (w.emoji+' '))+w.venue) : ''; }
+  /* No venue-name pill is painted on the stage — it was removed for
+     good (Michelle: no added floating images or text bars on the game). */
   if(prop){ prop.style.display= (sport&&sportWorldId()!=='jumprope')?'block':'none'; /* jump rope carries NO separate prop: her rope is in her hands, drawn into her figure — a second rope floating beside her would be a duplicate */ if(sport&&sportWorldId()==='tennis'){ prop.innerHTML=TENNIS_BALL_HTML; } else { prop.textContent= sport? w.prop : ''; } prop.className='sport-prop'+(sport&&w.idleClass?' '+w.idleClass:''); var phA=sportPropHome(); prop.style.left=phA.left; prop.style.bottom=phA.bottom; prop.style.transform=''; }
   if(target){ target.style.display= sport?'block':'none'; target.textContent= sport? w.target : ''; }
   /* Repaint the on-stage figure for the sport: in tennis she holds her
