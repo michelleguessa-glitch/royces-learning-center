@@ -283,11 +283,11 @@ span.royce-crop>img{position:absolute;left:-143%;top:-10.6%;width:408.5%;height:
    arms lifted — travels the beam's length in the air, and lands ON
    the beam. Her shadow never leaves the beam's top surface. */
 .stage-cheer.leaping{animation:leapArc .9s cubic-bezier(.3,.55,.4,1)}
-@keyframes leapArc{0%{transform:translateY(0)}42%{transform:translateY(-36px)}100%{transform:translateY(0)}}
+@keyframes leapArc{0%{transform:translateY(0)}42%{transform:translateY(-48px)}100%{transform:translateY(0)}}
 .stage-cheer.leaping .leg-l{transform-origin:104px 196px;animation:leapLegF .9s ease-in-out}
 .stage-cheer.leaping .leg-r{transform-origin:120px 196px;animation:leapLegB .9s ease-in-out}
-@keyframes leapLegF{0%,100%{transform:rotate(0deg)}35%,68%{transform:rotate(-42deg)}}
-@keyframes leapLegB{0%,100%{transform:rotate(0deg)}35%,68%{transform:rotate(38deg)}}
+@keyframes leapLegF{0%,100%{transform:rotate(0deg)}35%,68%{transform:rotate(-56deg)}}
+@keyframes leapLegB{0%,100%{transform:rotate(0deg)}35%,68%{transform:rotate(50deg)}}
 .stage-cheer.leaping .arm-l{transform-origin:96px 122px;animation:leapArmL .9s ease-in-out}
 .stage-cheer.leaping .arm-r{transform-origin:128px 122px;animation:leapArmR .9s ease-in-out}
 @keyframes leapArmL{0%,100%{transform:rotate(0deg)}35%,68%{transform:rotate(-34deg)}}
@@ -1173,7 +1173,7 @@ footer{max-width:1080px;margin:0 auto;padding:0 16px 210px;color:var(--muted);fo
 .idle-gymnastics{animation:propBounce 0.7s ease-in-out infinite alternate}
 @keyframes propBounce{from{transform:translateY(0)}to{transform:translateY(-26px)}}
 @keyframes propDribble{from{transform:translateY(0) scaleY(1)}to{transform:translateY(20px) scaleY(.88)}}
-@keyframes soccerFootRoll{0%,100%{transform:translateX(-7px) rotate(-30deg)}50%{transform:translateX(7px) rotate(30deg)}}
+@keyframes soccerFootRoll{0%,100%{transform:translateX(-9px) rotate(-38deg)}50%{transform:translateX(9px) rotate(38deg)}}
 @keyframes propBob{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-12px) rotate(4deg)}}
 @keyframes puckHandle{0%,100%{transform:translateX(-10px)}50%{transform:translateX(10px)}}
 @keyframes propToss{0%,100%{transform:translateY(0)}45%{transform:translateY(-38px) rotate(160deg)}55%{transform:translateY(-38px) rotate(200deg)}}
@@ -1213,19 +1213,19 @@ footer{max-width:1080px;margin:0 auto;padding:0 16px 210px;color:var(--muted);fo
 /* RUNNING locomotion: a real run, not a walk — quicker, bigger strides
    and a springier bob with a forward lean, used in the Running game
    for the race itself and for her trip back to the start line. */
-.running .leg-l{animation:runStepL .19s ease-in-out infinite alternate;transform-box:view-box;transform-origin:88px 196px}
-.running .leg-r{animation:runStepR .19s ease-in-out infinite alternate;transform-box:view-box;transform-origin:112px 196px}
-@keyframes runStepL{from{transform:rotate(28deg)}to{transform:rotate(-25deg)}}
-@keyframes runStepR{from{transform:rotate(-25deg)}to{transform:rotate(28deg)}}
-.running .cheer-body{animation:runBob .19s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:50% 100%}
+.running .leg-l{animation:runStepL .23s ease-in-out infinite alternate;transform-box:view-box;transform-origin:88px 196px}
+.running .leg-r{animation:runStepR .23s ease-in-out infinite alternate;transform-box:view-box;transform-origin:112px 196px}
+@keyframes runStepL{from{transform:rotate(34deg)}to{transform:rotate(-31deg)}}
+@keyframes runStepR{from{transform:rotate(-31deg)}to{transform:rotate(34deg)}}
+.running .cheer-body{animation:runBob .23s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:50% 100%}
 @keyframes runBob{from{transform:translateY(0) rotate(2.5deg)}to{transform:translateY(-7px) rotate(4.5deg)}}
 /* RUNNING ARMS (shared-sport parity): her arms PUMP the whole way she
    runs — swinging in opposite phases to her legs like a real runner,
    never hanging still while her legs stride. */
-.running .arm-l{animation:runArmL .19s ease-in-out infinite alternate;transform-box:view-box;transform-origin:78px 100px}
-.running .arm-r{animation:runArmR .19s ease-in-out infinite alternate;transform-box:view-box;transform-origin:122px 100px}
-@keyframes runArmL{from{transform:rotate(27deg)}to{transform:rotate(-23deg)}}
-@keyframes runArmR{from{transform:rotate(-23deg)}to{transform:rotate(27deg)}}
+.running .arm-l{animation:runArmL .23s ease-in-out infinite alternate;transform-box:view-box;transform-origin:78px 100px}
+.running .arm-r{animation:runArmR .23s ease-in-out infinite alternate;transform-box:view-box;transform-origin:122px 100px}
+@keyframes runArmL{from{transform:rotate(32deg)}to{transform:rotate(-28deg)}}
+@keyframes runArmR{from{transform:rotate(-28deg)}to{transform:rotate(32deg)}}
 /* HOCKEY skating locomotion: if she ever has ice to cross she SKATES
    it — long leg pushes side to side with a gliding body sway between
    pushes — never a still-legged slide. (In the current games only the
@@ -1316,7 +1316,7 @@ footer{max-width:1080px;margin:0 auto;padding:0 16px 210px;color:var(--muted);fo
 .sport-player-bob{animation:playerBob 1.5s ease-in-out infinite}
 /* dance waiting: she TWIRLS at the barre — a full pirouette spin in
    place at her barre spot while the learner thinks */
-.dance-idle{animation:danceTwirl 1.5s ease-in-out infinite;transform-origin:50% 100%}
+.dance-idle{animation:danceTwirl 1.9s ease-in-out infinite;transform-origin:50% 100%}
 @keyframes danceTwirl{0%{transform:rotateY(0deg)}100%{transform:rotateY(360deg)}}
 /* TRUE BALLERINA TWIRL (Michelle): she does not spin as a flat figure
    with both legs hanging straight. Through the whole turn she holds
@@ -1328,13 +1328,13 @@ footer{max-width:1080px;margin:0 auto;padding:0 16px 210px;color:var(--muted);fo
    articulated the whole way — actual motion, never a cardboard cutout
    merely rotating. */
 .dance-idle .leg-r{animation:passePump .38s ease-in-out infinite alternate;transform-box:view-box;transform-origin:112px 196px}
-@keyframes passePump{from{transform:rotate(46deg)}to{transform:rotate(57deg)}}
+@keyframes passePump{from{transform:rotate(58deg)}to{transform:rotate(68deg)}}
 .dance-idle .leg-l{animation:passeStand .75s ease-in-out infinite alternate;transform-box:view-box;transform-origin:88px 196px}
 @keyframes passeStand{from{transform:rotate(0deg)}to{transform:rotate(3deg)}}
 .dance-idle .arm-l{animation:twirlArmL .75s ease-in-out infinite alternate;transform-box:view-box;transform-origin:78px 100px}
-@keyframes twirlArmL{from{transform:rotate(24deg)}to{transform:rotate(40deg)}}
+@keyframes twirlArmL{from{transform:rotate(38deg)}to{transform:rotate(52deg)}}
 .dance-idle .arm-r{animation:twirlArmR .75s ease-in-out infinite alternate;transform-box:view-box;transform-origin:122px 100px}
-@keyframes twirlArmR{from{transform:rotate(-24deg)}to{transform:rotate(-40deg)}}
+@keyframes twirlArmR{from{transform:rotate(-38deg)}to{transform:rotate(-52deg)}}
 .dance-idle .cheer-body{animation:twirlBob .38s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:50% 100%}
 @keyframes twirlBob{from{transform:translateY(0)}to{transform:translateY(-4px)}}
 /* DANCE ROUTINE TRAVEL (Michelle): when the routine carries her
@@ -1343,8 +1343,10 @@ footer{max-width:1080px;margin:0 auto;padding:0 16px 210px;color:var(--muted);fo
    body bobbing with each step — the same stepping machinery as her
    walk, never a slide, skate or glide with still legs, and never
    the twirl spin used as travel. */
-.dance-step .leg-l{animation:walkStepL .3s ease-in-out infinite alternate;transform-box:view-box;transform-origin:88px 196px}
-.dance-step .leg-r{animation:walkStepR .3s ease-in-out infinite alternate;transform-box:view-box;transform-origin:112px 196px}
+.dance-step .leg-l{animation:danceStepL .32s ease-in-out infinite alternate;transform-box:view-box;transform-origin:88px 196px}
+.dance-step .leg-r{animation:danceStepR .32s ease-in-out infinite alternate;transform-box:view-box;transform-origin:112px 196px}
+@keyframes danceStepL{from{transform:rotate(27deg)}to{transform:rotate(-25deg)}}
+@keyframes danceStepR{from{transform:rotate(-25deg)}to{transform:rotate(27deg)}}
 .dance-step .arm-l{animation:twirlArmL .6s ease-in-out infinite alternate;transform-box:view-box;transform-origin:78px 100px}
 .dance-step .arm-r{animation:twirlArmR .6s ease-in-out infinite alternate;transform-box:view-box;transform-origin:122px 100px}
 .dance-step .cheer-body{animation:walkBob .3s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:50% 100%}
@@ -2752,9 +2754,9 @@ function sportPropHome(){ var id=''; try{ id=sportWorldId(); }catch(e){}
   var st=document.getElementById('beamStage'); var f=1; if(st&&st.clientHeight){ f=st.clientHeight/260; }
   function L(px){ return 'calc(5% + '+Math.round(px*f)+'px)'; }
   function B(px){ return Math.round(px*f)+'px'; }
-  if(id==='soccer') return {left:L(52),bottom:B(100)};
+  if(id==='soccer') return {left:L(33),bottom:'calc(33.5% - 28px)'};
   if(id==='hockey') return {left:L(96),bottom:B(100)};
-  if(id==='tennis') return {left:L(89),bottom:B(159)};
+  if(id==='tennis') return {left:L(76),bottom:B(104)};
   return {left:L(96),bottom:B(104)};
 }
 function cheerSVG(d,pose,opts){
@@ -4536,7 +4538,7 @@ var SPORT_WORLDS={
  running:{name:'Running',emoji:'🏃',venue:'Running Track',venueShort:'Track',headline:'RUN. LEARN & WIN!',coachRole:'running coach',prop:'',target:'',idleClass:'idle-running',idleMsg:'She\u2019s jogging in place on the starting line, waiting for your answer! 🏃',readyMsg:'Your runner is on her mark — answer to run! 🏃',scoreMsg:'She sprinted down the track and crossed the finish line first!',missStageMsg:'She stumbled and slowed down — no finish yet. Try this same one again! 🏃',rival:'Rival Runners',stage:'linear-gradient(180deg,#7DD3FC 0%,#BAE6FD 34%,#FDBA74 34.2%,#EA580C 72%,#C2410C 100%)',hero:'Welcome to your running track — a bright running track where math and spelling turn into a real race! Running Coach Belle will show you an example first, help you fix mistakes until you get it right, and help you all the way to the championship.'},
  jumprope:{name:'Jump Rope',emoji:'🪢',venue:'Castle Playground',venueShort:'Playground',headline:'JUMP. LEARN & SHINE!',coachRole:'jump rope coach',prop:'🪢',target:'',idleClass:'idle-jumprope',idleMsg:'She\u2019s jumping the rope in place, waiting for your answer! 🪢',readyMsg:'Your jump roper is ready — she\u2019s jumping in place. Answer to send her traveling! 🪢',scoreMsg:'She jumped the rope traveling all the way across to the other side — and came right back!',missStageMsg:'Oh no — the rope stopped right at her feet and she tripped! No progress. Pick the rope back up and try this same one again! 🪢',rival:'Rival Jumpers',stage:'linear-gradient(180deg,#FDE68A 0%,#FEF3C7 40%,#FBCFE8 40.2%,#F9A8D4 76%,#F472B6 100%)',hero:'Welcome to your jump rope playground — a sunny castle playground where math and spelling turn into jump rope! Jump Rope Coach Belle will show you an example first, help you fix mistakes until you get it right, and help you all the way to the championship.'},
  dance:{name:'Dance',emoji:'💃',venue:'Dance Studio',venueShort:'Studio',headline:'DANCE. LEARN & SHINE!',coachRole:'dance coach',prop:'',target:'',idleClass:'',idleMsg:'She\u2019s twirling at the barre in the dance studio, waiting for your answer! 💃',readyMsg:'Your dancer is twirling at the barre. Answer to send her twirling across the studio floor! 💃',scoreMsg:'She twirled all the way across the studio floor to the other side — and twirled right back to the barre! She nailed it!',missStageMsg:'She misstepped and fell — then got right back up at the barre and started twirling again! Try this same one again! 💃',rival:'Rival Dance Crew',stage:'linear-gradient(180deg,#4C1D95 0%,#7C3AED 44%,#C2185B 44.2%,#9D1450 80%,#70133C 100%)',hero:'Welcome to your dance studio — a real dance studio — mirrors on the wall, a wooden floor, and a dance barre — where math and spelling turn into a real performance! Dance Coach Belle will show you an example first, help you fix mistakes until you get it right, and help you all the way to the championship.'},
- gymnastics:{name:'Gymnastics',emoji:'🤸',venue:'Gymnastics Gym',venueShort:'Gym',headline:'FLIP. LEARN & STICK IT!',coachRole:'gymnastics coach',prop:'',target:'',idleClass:'',idleMsg:'She\u2019s standing on the balance beam, arms out and balanced, waiting for your answer! 🤸',readyMsg:'Your gymnast is up on the balance beam — answer to start her walk down the beam! 🤸',scoreMsg:'She walked the beam all the way across, stuck her landing — and came right back!',missStageMsg:'She wobbled and fell off the beam — no score! She gets right back up on the beam and tries this same one again until she nails it! 🤸',rival:'Rival Gym Team',stage:'linear-gradient(180deg,#FDE68A 0%,#FEF3C7 42%,#93C5FD 42.2%,#60A5FA 80%,#3B82F6 100%)',hero:'Welcome to your gymnastics gym — a bright gymnastics gym — mats, balance beam, vault and rings all around her — where math and spelling turn into a real meet! Gymnastics Coach Belle will show you an example first, help you fix mistakes until you get it right, and help you all the way to the championship.'}
+ gymnastics:{name:'Gymnastics',emoji:'🤸',venue:'Gymnastics Gym',venueShort:'Gym',headline:'FLIP. LEARN & STICK IT!',coachRole:'gymnastics coach',prop:'',target:'',idleClass:'',idleMsg:'She\u2019s standing on the balance beam, arms out and balanced, waiting for your answer! 🤸',readyMsg:'Your gymnast is up on the balance beam — answer to send her leaping down the beam! 🤸',scoreMsg:'She LEAPED along the beam in a big split leap, stuck her landing on the other end — and leaped right back!',missStageMsg:'She wobbled and fell off the beam — no score! She gets right back up on the beam and tries this same one again until she nails it! 🤸',rival:'Rival Gym Team',stage:'linear-gradient(180deg,#FDE68A 0%,#FEF3C7 42%,#93C5FD 42.2%,#60A5FA 80%,#3B82F6 100%)',hero:'Welcome to your gymnastics gym — a bright gymnastics gym — mats, balance beam, vault and rings all around her — where math and spelling turn into a real meet! Gymnastics Coach Belle will show you an example first, help you fix mistakes until you get it right, and help you all the way to the championship.'}
 };
 /* ===== CLASSIC TEASER: 3 sports open, the rest locked =====
    Classic (standard) link: Cheer (home) + Dance + Gymnastics are playable.
@@ -4592,7 +4594,7 @@ function sportRivalName(){
    to its ball, which put extra rackets all over the tennis court (the
    waiting ball AND the far-side target); the only racket in the tennis
    world is the one in her hand, drawn inside her figure. */
-var TENNIS_BALL_HTML='<svg viewBox="0 0 40 40" style="width:22px;height:22px" aria-hidden="true"><circle cx="20" cy="20" r="17" fill="#CDE053" stroke="#A4C639" stroke-width="2"/><path d="M8 9 Q20 20 8 31" fill="none" stroke="#FFFFFF" stroke-width="2.4"/><path d="M32 9 Q20 20 32 31" fill="none" stroke="#FFFFFF" stroke-width="2.4"/></svg>';
+var TENNIS_BALL_HTML='<svg viewBox="0 0 40 40" style="width:15px;height:15px" aria-hidden="true"><circle cx="20" cy="20" r="17" fill="#CDE053" stroke="#A4C639" stroke-width="2"/><path d="M8 9 Q20 20 8 31" fill="none" stroke="#FFFFFF" stroke-width="2.4"/><path d="M32 9 Q20 20 32 31" fill="none" stroke="#FFFFFF" stroke-width="2.4"/></svg>';
 /* The basketball is a DRAWN ball, not a font glyph (Michelle: "The
    basketball in the video game should look like 🏀"): a real
    basketball — orange with the black curved seam lines — drawn once
@@ -4909,8 +4911,9 @@ function sportVenue3D(w){
     +'<ellipse cx="400" cy="252" rx="82" ry="26" fill="none" stroke="#FFFFFF" stroke-width="5" opacity=".8"/>'
     +'<polygon points="586,176 750,176 750,330 586,330" fill="none" stroke="#FFFFFF" stroke-width="5" opacity=".85"/>'
     +'<polygon points="636,222 718,222 718,330 636,330" fill="none" stroke="#FFFFFF" stroke-width="4" opacity=".7"/>'
-    +'<polygon points="640,150 622,166 622,282 640,296" fill="#FFFFFF" opacity=".30"/><polygon points="640,150 622,166 746,166 764,150" fill="#FFFFFF" opacity=".38"/>'
-    +'<g stroke="#FFFFFF" stroke-width="1.6" opacity=".55"><line x1="668" y1="158" x2="668" y2="296"/><line x1="702" y1="158" x2="702" y2="296"/><line x1="736" y1="158" x2="736" y2="296"/><line x1="640" y1="192" x2="764" y2="192"/><line x1="640" y1="228" x2="764" y2="228"/><line x1="640" y1="264" x2="764" y2="264"/><line x1="640" y1="158" x2="764" y2="296"/><line x1="764" y1="158" x2="640" y2="296"/></g>'
+    +'<polygon points="640,150 622,166 622,282 640,296" fill="#FFFFFF" opacity=".45"/><polygon points="640,150 622,166 746,166 764,150" fill="#FFFFFF" opacity=".52"/>'
+    +'<g stroke="#FFFFFF" stroke-width="1.6" opacity=".55"><line x1="640" y1="158" x2="628" y2="224"/><line x1="640" y1="224" x2="630" y2="290"/><line x1="764" y1="158" x2="752" y2="224"/><line x1="764" y1="224" x2="754" y2="290"/><line x1="622" y1="200" x2="640" y2="196"/><line x1="622" y1="240" x2="640" y2="238"/></g>'
+    +'<g stroke="#FFFFFF" stroke-width="1.6" opacity=".8"><line x1="668" y1="158" x2="668" y2="296"/><line x1="702" y1="158" x2="702" y2="296"/><line x1="736" y1="158" x2="736" y2="296"/><line x1="640" y1="192" x2="764" y2="192"/><line x1="640" y1="228" x2="764" y2="228"/><line x1="640" y1="264" x2="764" y2="264"/><line x1="640" y1="158" x2="764" y2="296"/><line x1="764" y1="158" x2="640" y2="296"/></g>'
     +'<path d="M640 150 L764 150 L764 296 L640 296 Z" fill="none" stroke="#FFFFFF" stroke-width="7"/>'
     +'<ellipse cx="702" cy="292" rx="30" ry="6" fill="#14532D" opacity=".25"/>'
     +'<g><path d="M702 248 L688 282 M702 248 L716 282" stroke="#1F2937" stroke-width="8" stroke-linecap="round"/><path d="M702 209 L702 248" stroke="url(#v3scKit)" stroke-width="12" stroke-linecap="round"/><path d="M702 218 L668 204 M702 218 L736 204" stroke="#7C3AED" stroke-width="8" stroke-linecap="round"/><circle cx="664" cy="202" r="7" fill="#FDE68A" stroke="#92400E" stroke-width="2"/><circle cx="740" cy="202" r="7" fill="#FDE68A" stroke="#92400E" stroke-width="2"/><circle cx="702" cy="196" r="13" fill="#FCD7B0" stroke="#92400E" stroke-width="2"/></g>');
