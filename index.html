@@ -23,14 +23,15 @@
      same Math / Spelling tabs, same hub-row position, same game-title
      heading, same game grid and the same
      centered music player — identical sections, order and spacing.
-     The difference is content, not layout: the personalized link's
-     hub row carries all four cards (Cheerleader Studio, Coach
-     Studio, Trophy Case, Bonus Round); the classic hub row carries
-     only Trophy Case and Bonus Round, side by side in that same row.
+     Both links' hub rows carry only Trophy Case and Bonus Round,
+     side by side in that same row: the Cheerleader Studio and the
+     Coach Studio are NOT homepage cards on either link — on the
+     personalized link they live inside the Setup Wizard as its
+     step 6 (cheerleader design) and step 7 (coach design).
    • Personalized link: the SAME page ending in ?custom=1 — ALL
      customization opens, so the child can make the world their own:
      design her cheerleader (skin, hair, uniform, skirt, bow, pom poms,
-     shoes), name the world, and pick three colors (primary, secondary,
+     shoes), enter her first name, and pick three colors (primary, secondary,
      tertiary), a favorite sport and a favorite animal.
    There is no other path in: no code field and no other parameter or hash
    turns personalization on. */
@@ -340,17 +341,19 @@ span.royce-crop>img{position:absolute;left:-143%;top:-10.6%;width:408.5%;height:
 #practiceView .mat{bottom:13.5%;height:5%;min-height:8px}
 #practiceView .stage-cheer{bottom:33.5%;height:59%;width:auto;aspect-ratio:118/196}
 #practiceView .stage-cheer.split-mode{bottom:26%;height:45.5%;width:auto;aspect-ratio:196/150}
-#practiceView .stage.squad-active .stage-cheer{bottom:14%}
+#practiceView .stage.squad-active .stage-cheer{bottom:13.5%}
 #practiceView .stage.sport-active.gym-beam-on .stage-cheer{bottom:24.2%}
 #practiceView .stage.swimming-active .stage-cheer{bottom:4.8%}
+#practiceView .stage.dance-active .stage-cheer{bottom:15.8%}
+#practiceView .stage.jumprope-active .stage-cheer{bottom:10.3%}
 #practiceView .cheer-shadow{bottom:30.5%;height:5%;min-height:8px}
-#practiceView .squad-member{bottom:14%;height:46.7%;width:auto;aspect-ratio:94/154}
-#practiceView #squadM3{bottom:15.2%}
+#practiceView .squad-member{bottom:13.5%;height:46.7%;width:auto;aspect-ratio:94/154}
+#practiceView #squadM3{bottom:13.5%}
 #practiceView .swim-water{height:35.8%}
 #practiceView .dance-barre{height:69.7%}
-#practiceView .barre-bar.barre-top{bottom:89.6%}
-#practiceView .barre-bar.barre-low{bottom:81.3%}
-#practiceView .barre-post{bottom:21.7%;height:70.4%}
+#practiceView .barre-bar.barre-top{bottom:72%}
+#practiceView .barre-bar.barre-low{bottom:66%}
+#practiceView .barre-post{bottom:21.7%;height:50%}
 #practiceView .sport-target{bottom:29%;font-size:44px}
 #practiceView .sport-prop{bottom:31.5%}
 #practiceView .stage-mascot{top:34px;font-size:40px}
@@ -488,6 +491,24 @@ span.royce-crop>img{position:absolute;left:-143%;top:-10.6%;width:408.5%;height:
 #practiceView.fit-menu .feedback.good,#practiceView.fit-menu .feedback.bad{padding:4px 7px}
 #practiceView.fit-menu .tools-divider{margin-top:0}
 #practiceView.fit-menu .tools-btn{margin-top:0;padding:4px 10px}
+/* Fifth step, reached ONLY when the open Helper Tools menu STILL does
+   not fit after fit-menu (the tallest feedback on a shorter screen):
+   the menu's buttons and the feedback give back their last pixels so
+   Work It Out / Show Me an Example / Get a Hint ALL land fully on the
+   screen — an opened menu is never left tucked past the bottom edge.
+   The stage height is still never touched, and closing the menu
+   relaxes the view back to its natural size on its own. */
+#practiceView.fit-menu2 .tools-menu{gap:4px;margin-top:4px}
+#practiceView.fit-menu2 .tools-menu .goldbtn,#practiceView.fit-menu2 .tools-menu .ghost{padding:3px 10px;font-size:13px}
+#practiceView.fit-menu2 .feedback{font-size:10px;line-height:1.04;margin-top:2px}
+#practiceView.fit-menu2 .feedback.good,#practiceView.fit-menu2 .feedback.bad{padding:3px 6px}
+#practiceView.fit-menu2 .gamecard{padding:4px 6px}
+#practiceView.fit-menu2 .belle-compact{padding:2px 5px;margin-bottom:0}
+#practiceView.fit-menu2 .qlabel{font-size:11.5px}
+#practiceView.fit-menu2 .question{font-size:clamp(16px,2.6vw,19px);margin:0}
+#practiceView.fit-menu2 .answer-input{font-size:18px;padding:2px 9px}
+#practiceView.fit-menu2 .check-btn{font-size:15px;padding:4px 12px}
+#practiceView.fit-menu2 .tools-btn{padding:3px 10px}
 /* Full-screen tool panels (Hint, Work It Out): they live at body level
    when open (see belleHint / toggleWorkPanel) so nothing can cover
    them, they sit above every bar, and their header row — face/title,
@@ -575,6 +596,12 @@ span.royce-crop>img{position:absolute;left:-143%;top:-10.6%;width:408.5%;height:
 .music-note-btn{position:fixed;right:14px;bottom:14px;z-index:30;width:56px;height:56px;border-radius:50%;background:#fff;border:3px solid var(--pink);font-size:26px;line-height:1;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 26px rgba(157,20,80,.25);cursor:pointer;padding:0;animation:noteBob 2.4s ease-in-out infinite}
 .music-note-btn:active{transform:scale(.92)}
 .music-note-btn.gone{display:none}
+/* While the Helper Tools menu is open it owns the bottom of the game
+   view: the fixed 🎵 note steps aside so it can never sit on top of
+   the menu's last option (Show Me an Example / Get a Hint stayed
+   partly covered and untappable at that corner). It comes right back
+   the moment the menu closes. */
+body.tools-menu-open .music-note-btn{opacity:0;pointer-events:none}
 @keyframes noteBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 @media (prefers-reduced-motion: reduce){.music-note-btn{animation:none}}
 .music-close{background:#fff;border:2px solid var(--ink);border-radius:50%;width:32px;height:32px;flex:0 0 32px;font-size:15px;font-weight:900;line-height:1;display:grid;place-items:center;color:var(--pink-d);box-shadow:0 2px 0 var(--ink);padding:0;cursor:pointer}
@@ -982,7 +1009,6 @@ footer{max-width:1080px;margin:0 auto;padding:0 16px 210px;color:var(--muted);fo
 .setup-switch.on .setup-switch-knob{left:31px}
 #setupBody.setup-locked button{opacity:.45;cursor:not-allowed}
 #themeOptions.theme-locked button:disabled{opacity:.45;cursor:not-allowed}
-html.is-custom.design-locked #hubCheerCard,html.is-custom.design-locked #hubCoachCard{border-color:var(--gold);border-style:dashed}
 #setupModal .grade-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
 /* ===== Coach Studio (personalized link only) ===== */
 .coach-summary{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
@@ -1063,13 +1089,25 @@ html.is-custom.design-locked #hubCheerCard,html.is-custom.design-locked #hubCoac
    The player is the flyer; three teammates — two bases and a back spot —
    ready at the base with pom poms in hand while a problem waits. The beam
    and mat belong to gymnastics now, so in the cheer scene they step aside. */
-.squad-member{position:absolute;bottom:46px;width:94px;height:154px;z-index:3;will-change:left,transform}
+.squad-member{position:absolute;bottom:44px;width:94px;height:154px;z-index:3;will-change:left,transform}
 .squad-member svg{width:100%;height:100%;overflow:visible;display:block}
 #squadM1{left:37%}
 #squadM2{left:56%}
-#squadM3{left:46.5%;bottom:50px;z-index:2}
+#squadM3{left:46.5%;bottom:44px;z-index:2}
 .stage.squad-active .beam,.stage.squad-active .mat{display:none}
-.stage.squad-active .stage-cheer{bottom:46px}
+.stage.squad-active .stage-cheer{bottom:44px}
+/* dance: she stands ON the studio floor at the barre — feet on the
+   floor line (44px = the top of the stage floor), never up at the
+   beam height the other waiting spots use. She stays AT the barre,
+   leaning on it with her hand resting on the bar; only her footing
+   is the floor. */
+.stage.dance-active .stage-cheer{bottom:44px}
+/* jump rope: she stands on the playground ground line drawn in her
+   venue (y296 of 330 = 34px up) — feet on that ground, jumping in
+   place with her own rope turning over her head and under her feet.
+   The scene carries nothing else: no sun, no cloud, no spare rope
+   arches, no medal — just her, her rope, and the plain ground. */
+.stage.jumprope-active .stage-cheer{bottom:34px}
 /* swimming: she plays IN the water, not on the deck — her figure sits
    low in the stage so the swim-water layer (z-index 5, in front of her)
    covers her lower body while she waits kicking, swims across on a
@@ -1083,9 +1121,9 @@ html.is-custom.design-locked #hubCheerCard,html.is-custom.design-locked #hubCoac
    spot — she waits AT it, holding on, in front of the mirrored wall */
 .dance-barre{position:absolute;left:1%;width:47%;bottom:0;height:230px;z-index:5;pointer-events:none}
 .barre-bar{position:absolute;left:0;right:0;height:9px;border-radius:5px;background:linear-gradient(180deg,#FDE68A,#B45309);box-shadow:0 2px 5px rgba(58,20,48,.35)}
-.barre-bar.barre-top{bottom:206px}
-.barre-bar.barre-low{bottom:187px}
-.barre-post{position:absolute;bottom:50px;width:7px;height:162px;background:#92400E;border-radius:3px}
+.barre-bar.barre-top{bottom:158px}
+.barre-bar.barre-low{bottom:142px}
+.barre-post{position:absolute;bottom:44px;width:7px;height:114px;background:#92400E;border-radius:3px}
 /* gymnastics waiting: she stands ON the balance beam, balanced with
    arms out — a gentle side-to-side balance sway around her feet only.
    Her feet never leave the beam: no bounce, no lift, no gap. */
@@ -1099,6 +1137,19 @@ html.is-custom.design-locked #hubCheerCard,html.is-custom.design-locked #hubCoac
 .dance-idle{animation:danceTwirl 1.5s ease-in-out infinite;transform-origin:50% 100%}
 @keyframes danceTwirl{0%{transform:rotateY(0deg)}100%{transform:rotateY(360deg)}}
 .jumprope-jumping{animation:jumpRopeHop .52s ease-in-out infinite}
+/* jump rope MISS — she DROPS the rope and picks it back up: the rope
+   slumps out of her hands onto the ground at her feet (it collapses
+   to the ground line, fully visible the whole time — no fade, no
+   vanish), her hands open as it falls, then she bends down from her
+   feet, the rope rises back into her hands, and she straightens up
+   and jumps again. All transitions, all continuous. */
+.stage.jumprope-active .jr-rope{transition:transform .45s ease-in;transform-box:fill-box;transform-origin:50% 100%}
+.stage.jumprope-active .stage-cheer.rope-dropped .jr-rope{transform:translateY(2px) scaleY(.08)}
+.stage.jumprope-active .arm-l,.stage.jumprope-active .arm-r{transition:transform .4s ease}
+.stage.jumprope-active .stage-cheer.rope-dropped .arm-l{transform:rotate(-16deg);transform-box:fill-box;transform-origin:88% 88%}
+.stage.jumprope-active .stage-cheer.rope-dropped .arm-r{transform:rotate(16deg);transform-box:fill-box;transform-origin:12% 88%}
+.stage.jumprope-active .cheer-body{transition:transform .45s ease}
+.stage.jumprope-active .stage-cheer.jr-bend .cheer-body{transform:rotate(13deg) translateY(8px);transform-box:fill-box;transform-origin:50% 100%}
 @keyframes jumpRopeHop{0%,100%{transform:translateY(0)}38%{transform:translateY(-19px)}62%{transform:translateY(-19px)}82%{transform:translateY(0)}}
 @keyframes playerBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 /* tennis: the racket lives IN her hand — it is drawn inside her figure,
@@ -1140,18 +1191,15 @@ html.is-custom.design-locked #hubCheerCard,html.is-custom.design-locked #hubCoac
  .cheer-shadow{transition:none}
  html{scroll-behavior:auto}
 }
-/* ===== Classic vs Custom hub row =====
-   The studio hub cards (My Cheerleader, My Coach) belong ONLY to the
-   Customized (?custom=1) link. On a classic link they are removed from
-   the page entirely — not locked, not greyed out, not shown. The hub
-   row itself stays in the exact same place with the same card design;
-   classic simply fills it with its two cards, Trophy Case and Bonus
-   Round, side by side (stacked on phones, like every hub row). The
-   html.is-standard class is set in <head> before the body paints, so
-   the studio cards never flash on a classic link. */
-html.is-standard #hubCheerCard,html.is-standard #hubCoachCard{display:none!important}
-html.is-standard .hub-row{grid-template-columns:repeat(2,1fr)}
-@media(max-width:760px){html.is-standard .hub-row{grid-template-columns:1fr}}
+/* ===== Hub row (both links) =====
+   The hub row holds only Trophy Case and Bonus Round on BOTH links.
+   The Cheerleader Studio and Coach Studio are never homepage cards:
+   on the personalized link they live inside the Setup Wizard as
+   steps 6 and 7; on a classic link they do not exist at all. The hub
+   row itself stays in the exact same place with the same card design,
+   its two cards side by side (stacked on phones, like every hub row). */
+.hub-row{grid-template-columns:repeat(2,1fr)}
+@media(max-width:760px){.hub-row{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -1187,7 +1235,7 @@ html.is-standard .hub-row{grid-template-columns:repeat(2,1fr)}
     <section class="sport-switcher" id="sportSwitcherHome" style="display:none" aria-label="Pick your sport for today">
       <button type="button" class="sport-pick-btn" id="sportPickBtnHome" aria-expanded="false" aria-controls="sportPanelHome" onclick="toggleSportPanel('home')"><span class="sport-pick-main">🎀 Pick Your Sport for Today!</span><span class="sport-pick-today" id="sportNowHome">Today: 📣 Cheer — tap to change</span><span class="sport-pick-arrow" aria-hidden="true">▼</span></button>
       <div class="sport-panel" id="sportPanelHome" style="display:none">
-        <p class="sport-panel-hint" id="sportPanelHintHome">Bored of today's sport? Pick a new one! The place you play, your coach's title, and how every game scores all switch right away — your grade, stars and designs stay just as they are.</p>
+        <p class="sport-panel-hint" id="sportPanelHintHome">Bored of today's sport? Pick a new one!</p>
         <!-- THE single unlock presentation for the classic build: ONE "Upgrade to Unlock" button at the TOP of the sport panel, above the grid, always there on the classic build. placeSharedUnlock() moves this one element into whichever sport panel (home or practice) is open, so there is never a second copy. On the custom build it never shows. Tapping a locked sport simply scrolls this button into view — no banner, no message, no pop-up, no switch. -->
         <div class="sport-unlock-area" id="sportUnlockShared" style="display:none">
           <p>This classic world includes 3 sports — 📣 Cheer, 💃 Dance and 🤸 Gymnastics. Upgrade to unlock all 10 sports, customize your page, and dress your player!</p>
@@ -1212,8 +1260,6 @@ html.is-standard .hub-row{grid-template-columns:repeat(2,1fr)}
       <button class="tab" id="tabSpell" onclick="showCat('spelling')">📣 SPELLING CASTLE</button>
     </div>
     <div class="hub-row">
-      <button class="hub-card" id="hubCheerCard" onclick="openStudio()"><span class="mini-cheer cheer-slot" data-size="mini"></span><span><b id="hubCheerTitle">🎀 My Cheerleader — Design &amp; Dress Her!</b><span id="hubCheerDesc">Pick her skin, hair, uniform, bow, shoes and pom poms. She performs in every game!</span></span></button>
-      <button class="hub-card" id="hubCoachCard" onclick="openCoachStudio()"><span class="mini-cheer coach-mini-slot" aria-hidden="true"></span><span><b>🏆 My Coach — Make Her Yours!</b><span>Name your coach, dress her your way, and pick who she is — a coach, a mentor or a captain. She's always a girl coach, like Belle!</span></span></button>
       <button class="hub-card" onclick="openTrophies()"><span class="hub-emoji">🏆</span><span><b>Trophy Case</b><span>See every trophy and piece of cheer gear you have won.</span></span></button>
       <button class="hub-card" onclick="openBonus()"><span class="hub-emoji">🎁</span><span><b>Bonus Round</b><span>Split-timing and tap-the-right-pom games for bonus stars!</span></span></button>
     </div>
@@ -1577,29 +1623,6 @@ html.is-standard .hub-row{grid-template-columns:repeat(2,1fr)}
       <button class="speak-plain" onclick="hearWizardStep()" aria-label="Hear Belle read this example step out loud"><img class="speak-icon" src="assets/speak-icon.png" alt=""/></button>
       <button class="ghost" id="wizAuto" onclick="toggleWizAuto()">▶️ Watch It Play</button>
       <button class="check-btn" id="wizNext" onclick="wizMove(1)" style="flex:1">Next Step →</button>
-    </div>
-  </div>
-</div>
-
-<div class="modal" id="studioModal" role="dialog" aria-modal="true">
-  <div class="modal-card" style="max-width:760px">
-    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><span class="fred" style="color:var(--pink-d);font-size:15px;letter-spacing:.08em">🎀 MY CHEERLEADER STUDIO</span><span style="display:flex;gap:8px"><button class="ghost" onclick="closeStudio()">✕ Done!</button></span></div>
-    <h3>Design Your Cheerleader!</h3>
-    <div class="studio-grid">
-      <div class="studio-preview"><div class="pv" id="studioPreview"></div><div class="pname" id="studioName">Your Cheerleader ⭐</div></div>
-      <div id="studioOptions"></div>
-    </div>
-  </div>
-</div>
-
-<div class="modal" id="coachModal" role="dialog" aria-modal="true">
-  <div class="modal-card" style="max-width:760px">
-    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><span class="fred" style="color:var(--pink-d);font-size:15px;letter-spacing:.08em">🏆 MY COACH STUDIO</span><span style="display:flex;gap:8px"><button class="ghost" onclick="closeCoachStudio()">✕ Done!</button></span></div>
-    <h3>Customize Your Coach!</h3>
-    <p style="font-weight:800;color:var(--muted);line-height:1.5;margin:4px 0 12px">Give your coach a name, dress her your way, and choose who she is. Royce's coaches are always girls — pick her style in pinks, purples, rose and gold! Your sport and animal favorites dress her too — a sport prop and an animal friend ride along in her portrait. It saves on this device all by itself.</p>
-    <div class="studio-grid">
-      <div class="studio-preview"><div id="coachPreview"></div><div class="pname" id="coachPreviewName">Cheer Coach Belle</div><div class="coach-look-note" id="coachPreviewNote"></div></div>
-      <div id="coachOptions"></div>
     </div>
   </div>
 </div>
@@ -2078,8 +2101,8 @@ function stackHTML(rows,op,showPlaces){
 function numsFromQ(){ var m=String(current.q).match(/\d+/g); return m?m.map(function(x){return parseInt(x,10)}):[]; }
 var fracDen=0;
 function toggleFrac(btn){ btn.classList.toggle('on'); var bar=document.getElementById('fracBar'); if(!bar) return; var on=bar.querySelectorAll('.frac-cell.on').length; var c=document.getElementById('fracCount'); if(c) c.textContent='Tap the parts to shade them. Shaded: '+on+' of '+fracDen; }
-function toggleToolsMenu(){ var m=document.getElementById('toolsMenu'), b=document.getElementById('toolsToggleBtn'); if(!m) return; var open=m.style.display==='none'; m.style.display= open? 'grid':'none'; if(b) b.setAttribute('aria-expanded', open? 'true':'false'); if(typeof sfx==='function') sfx('pop'); if(typeof fitGameView==='function') fitGameView(); }
-function closeToolsMenu(){ var m=document.getElementById('toolsMenu'), b=document.getElementById('toolsToggleBtn'); if(m) m.style.display='none'; if(b) b.setAttribute('aria-expanded','false'); if(typeof fitGameView==='function') fitGameView(); }
+function toggleToolsMenu(){ var m=document.getElementById('toolsMenu'), b=document.getElementById('toolsToggleBtn'); if(!m) return; var open=m.style.display==='none'; m.style.display= open? 'grid':'none'; if(b) b.setAttribute('aria-expanded', open? 'true':'false'); document.body.classList.toggle('tools-menu-open', open); if(typeof sfx==='function') sfx('pop'); if(typeof fitGameView==='function') fitGameView(); }
+function closeToolsMenu(){ var m=document.getElementById('toolsMenu'), b=document.getElementById('toolsToggleBtn'); if(m) m.style.display='none'; if(b) b.setAttribute('aria-expanded','false'); document.body.classList.remove('tools-menu-open'); if(typeof fitGameView==='function') fitGameView(); }
 function toggleWorkPanel(force){
   var panel=document.getElementById('workPanel'), layout=document.getElementById('playLayout'), btn=document.getElementById('workToggleBtn');
   if(!panel) return;
@@ -2421,7 +2444,7 @@ function headSVG(d,cx,cy,scale){
    tennis world is active. The racket is part of her SVG — gripped where
    her hand is — so it moves with her body and can never leave her hand.
    Only the separate ball prop ever travels across the court. */
-function stageCheerOpts(){ try{ var sw=(typeof isSportWorld==='function'&&isSportWorld())? sportWorldId() : ''; return {racket: sw==='tennis', hockey: sw==='hockey', rope: sw==='jumprope'}; }catch(e){ return {}; } }
+function stageCheerOpts(){ try{ var sw=(typeof isSportWorld==='function'&&isSportWorld())? sportWorldId() : ''; return {racket: sw==='tennis', hockey: sw==='hockey', rope: sw==='jumprope', bare: ['basketball','soccer','swimming','running','gymnastics','dance'].indexOf(sw)>-1, bareDown: sw==='basketball'}; }catch(e){ return {}; } }
 /* Where the sport prop (the ball / puck) rests while a problem waits:
    the soccer ball sits ON THE GROUND under her right foot, the hockey
    puck sits on the ice right in front of her stick blade, and every
@@ -2451,6 +2474,16 @@ function cheerSVG(d,pose,opts){
   var wantRacket= !!(opts&&opts.racket);
   var wantHockey= !!(opts&&opts.hockey);
   var wantRope= !!(opts&&opts.rope);
+  /* EQUIPMENT RULE (Michelle): in every sport game her hands hold ONLY
+     that sport's equipment — the racket, the stick, the rope — and in
+     the sports whose equipment is the separate ball / puck prop (or no
+     prop at all) her hands are EMPTY. Pom poms exist only in cheer:
+     she never holds pom poms while playing basketball, soccer, tennis,
+     hockey, swimming, running, gymnastics, dance or jump rope. 'bare'
+     draws both hands empty; 'bareDown' (basketball) also angles her
+     right arm down so her palm is over the dribbling ball. */
+  var wantBare= !!(opts&&opts.bare);
+  var wantBareDown= !!(opts&&opts.bareDown);
   if(pose==='split'){
     var s2='<svg viewBox="0 0 260 170" role="img" aria-label="Your cheerleader landing in a split">';
     s2+='<g class="cheer-body">';
@@ -2465,7 +2498,7 @@ function cheerSVG(d,pose,opts){
     s2+='</g></svg>';
     return s2;
   }
-  var s='<svg viewBox="0 0 200 270" role="img" aria-label="Your cheerleader">';
+  var s='<svg viewBox="0 0 200 250" preserveAspectRatio="xMidYMax meet" role="img" aria-label="Your cheerleader">';
   s+='<g class="cheer-body">';
   /* legs + shoes */
   s+='<g class="leg-l"><line x1="88" y1="196" x2="84" y2="238" stroke="'+skin+'" stroke-width="13" stroke-linecap="round"/><rect x="70" y="236" width="24" height="12" rx="5" fill="'+d.shoes+'" stroke="rgba(0,0,0,.13)"/>'+(d.ribbons?'<path d="M78 232 l10 -8 M88 232 l-10 -8" stroke="'+d.bow+'" stroke-width="2.6"/>':'')+'</g>';
@@ -2481,8 +2514,11 @@ function cheerSVG(d,pose,opts){
        drawn behind her legs so it passes under her feet. The handles
        sit in her hands (drawn with the arms below), so the rope is
        truly held — it hops and travels with her, never beside her. */
-    s+='<path d="M45 148 C 56 232, 72 254, 100 256 C 128 254, 144 232, 155 148" fill="none" stroke="#C2185B" stroke-width="5" stroke-linecap="round"/>';
+    s+='<path class="jr-rope" d="M45 148 C 56 232, 72 254, 100 256 C 128 254, 144 232, 155 148" fill="none" stroke="#C2185B" stroke-width="5" stroke-linecap="round"/>';
     s+='<g class="arm-l"><line x1="78" y1="100" x2="47" y2="143" stroke="'+skin+'" stroke-width="11" stroke-linecap="round"/><line x1="40" y1="137" x2="50" y2="157" stroke="#8A5A78" stroke-width="6.5" stroke-linecap="round"/><circle cx="47" cy="145" r="6.5" fill="'+skin+'"/></g>';
+  } else if(wantBare||wantBareDown){
+    /* empty left hand — no pom pom outside cheer */
+    s+='<g class="arm-l"><line x1="78" y1="100" x2="38" y2="84" stroke="'+skin+'" stroke-width="11" stroke-linecap="round"/>'+(d.wristbands?'<line x1="50" y1="89" x2="43" y2="86" stroke="'+d.bow+'" stroke-width="6"/>':'')+'<circle cx="38" cy="84" r="6.5" fill="'+skin+'"/></g>';
   } else {
     s+='<g class="arm-l"><line x1="78" y1="100" x2="38" y2="84" stroke="'+skin+'" stroke-width="11" stroke-linecap="round"/>'+(d.wristbands?'<line x1="50" y1="89" x2="43" y2="86" stroke="'+d.bow+'" stroke-width="6"/>':'')+pomSVG(28,80,20,pomA,pomB,sparkle)+'</g>';
   }
@@ -2505,6 +2541,14 @@ function cheerSVG(d,pose,opts){
       +'<g class="hockey-stick-g"><line x1="150" y1="138" x2="180" y2="234" stroke="#92400E" stroke-width="7" stroke-linecap="round"/>'
       +'<path d="M180 234 L203 234" stroke="#92400E" stroke-width="7" stroke-linecap="round"/>'
       +'<circle cx="155" cy="145" r="7" fill="'+skin+'"/></g></g>';
+  } else if(wantBareDown){
+    /* basketball: her right arm angles down and her open palm rides
+       over the dribbling ball — the ball is the separate prop right
+       under this hand. No pom pom: the ball is her only equipment. */
+    s+='<g class="arm-r"><line x1="122" y1="100" x2="155" y2="145" stroke="'+skin+'" stroke-width="11" stroke-linecap="round"/>'+(d.wristbands?'<line x1="145" y1="132" x2="152" y2="139" stroke="'+d.bow+'" stroke-width="6"/>':'')+'<circle cx="155" cy="145" r="7" fill="'+skin+'"/></g>';
+  } else if(wantBare){
+    /* empty right hand — no pom pom outside cheer */
+    s+='<g class="arm-r"><line x1="122" y1="100" x2="162" y2="84" stroke="'+skin+'" stroke-width="11" stroke-linecap="round"/>'+(d.wristbands?'<line x1="150" y1="89" x2="157" y2="86" stroke="'+d.bow+'" stroke-width="6"/>':'')+'<circle cx="162" cy="84" r="6.5" fill="'+skin+'"/></g>';
   } else {
     s+='<g class="arm-r"><line x1="122" y1="100" x2="162" y2="84" stroke="'+skin+'" stroke-width="11" stroke-linecap="round"/>'+(d.wristbands?'<line x1="150" y1="89" x2="157" y2="86" stroke="'+d.bow+'" stroke-width="6"/>':'')+pomSVG(172,80,20,pomA,pomB,sparkle)+'</g>';
   }
@@ -2545,12 +2589,12 @@ function renderAllCheerleaders(){
     if(isStage){ if(el.dataset.pose!=='split') el.innerHTML=cheerSVG(effectiveDesign(),'stand',stageCheerOpts()); }
     else el.innerHTML=cheerSVG(effectiveDesign(),'stand');
   });
-  var sp=document.getElementById('studioPreview'); if(sp&&document.getElementById('studioModal').classList.contains('open')) sp.innerHTML=cheerSVG(effectiveDesign(),'stand');
+  var sp=document.getElementById('studioPreview'); if(sp) sp.innerHTML=cheerSVG(effectiveDesign(),'stand');
   renderSquad();
 }
 /* ----- studio ----- */
-function openStudio(){ if(!window.isCustomEdition()){ toast('🔒 The Cheerleader Design Studio opens in the Customized edition!'); return; } if(typeof designLocked==='function'&&designLocked()){ if(typeof openWizardAtBackground==='function') openWizardAtBackground(); return; } /* page locked on Royce's original design — only updating the page background unlocks it */ renderStudio(); document.getElementById('studioModal').classList.add('open'); renderAllCheerleaders(); }
-function closeStudio(){ document.getElementById('studioModal').classList.remove('open'); saveDesign(); renderAllCheerleaders(); }
+function openStudio(){ if(!window.isCustomEdition()){ toast('🔒 The Cheerleader Design Studio opens in the Customized edition!'); return; } if(typeof designLocked==='function'&&designLocked()){ if(typeof openWizardAtBackground==='function') openWizardAtBackground(); return; } /* page locked on Royce's original design — only updating the page background unlocks it */ /* The Cheerleader Design Studio lives INSIDE the Setup Wizard as step 6 — there is no studio card or modal on the homepage. Opening it means opening the wizard on that step. */ if(typeof openSetupWizard==='function'){ openSetupWizard(true); var ci=SETUP_STEPS.indexOf('cheerleader'); if(ci>=0){ setupStep=ci; renderSetupWizard(); } } }
+function closeStudio(){ saveDesign(); renderAllCheerleaders(); }
 function setDesign(key,val){ if(!window.isCustomEdition()) return; if(typeof designLocked==='function'&&designLocked()) return; /* page locked on Royce's original design */ cheerDesign[key]=val; saveDesign(); renderStudio(); renderAllCheerleaders(); }
 function toggleDesign(key){ if(!window.isCustomEdition()) return; if(typeof designLocked==='function'&&designLocked()) return; /* page locked on Royce's original design */ cheerDesign[key]=!cheerDesign[key]; saveDesign(); renderStudio(); renderAllCheerleaders(); }
 function setHair(v){ setDesign('hair',v); }
@@ -2661,7 +2705,7 @@ function startTopic(id){ if(gradeLockedTopic(topicById(id))){ lockedGradeTap(id)
 function goHome(){ stopBelleSpeech(); stopRoutine(); if(typeof closeHintPanel==='function') closeHintPanel(); if(typeof toggleWorkPanel==='function') toggleWorkPanel(false); clearInterval(timerInt); saveP(progress); document.getElementById('practiceView').style.display='none'; document.getElementById('homeView').style.display='block'; if(typeof renderSportSwitcher==='function'){ try{ renderSportSwitcher(); }catch(e){} } /* the home switcher shows again on return */ setHeroVisible(true); renderGrid(); updateTotals(); renderAllCheerleaders(); window.scrollTo({top:0}); }
 function goHomeFromOverlay(){
   stopWizAuto(); stopBelleSpeech(); stopFt();
-  ['wizardModal','studioModal','themeModal','coachModal','trophyModal','bonusModal','winModal','lockedModal'].forEach(function(mid){ var m=document.getElementById(mid); if(m) m.classList.remove('open'); });
+  ['wizardModal','themeModal','trophyModal','bonusModal','winModal','lockedModal'].forEach(function(mid){ var m=document.getElementById(mid); if(m) m.classList.remove('open'); });
   saveDesign();
   if(document.getElementById('practiceView').style.display!=='none') goHome(); else { renderGrid(); updateTotals(); renderAllCheerleaders(); }
 }
@@ -2673,7 +2717,7 @@ function navGoHome(){
      progress, re-rendering the home grid) still runs exactly as before. */
   try{ if(typeof stopWizAuto==='function') stopWizAuto(); }catch(e){}
   try{ if(typeof stopFt==='function') stopFt(); }catch(e){}
-  ['wizardModal','studioModal','themeModal','coachModal','trophyModal','bonusModal','winModal','lockedModal'].forEach(function(mid){ var m=document.getElementById(mid); if(m) m.classList.remove('open'); });
+  ['wizardModal','themeModal','trophyModal','bonusModal','winModal','lockedModal'].forEach(function(mid){ var m=document.getElementById(mid); if(m) m.classList.remove('open'); });
   var did=false;
   var wv=document.getElementById('writingView'); if(wv&&wv.style.display==='block'){ closeWriting(); did=true; }
   var rv=document.getElementById('readingView'); if(rv&&rv.style.display==='block'){ closeReading(); did=true; }
@@ -2708,7 +2752,7 @@ function fitGameView(){
   if(!pv||pv.style.display==='none') return;
   var vis=document.getElementById('qVisual');
   var inner=vis?vis.firstElementChild:null;
-  pv.classList.remove('fit-tight'); pv.classList.remove('fit-tighter'); pv.classList.remove('fit-max'); pv.classList.remove('fit-menu');
+  pv.classList.remove('fit-tight'); pv.classList.remove('fit-tighter'); pv.classList.remove('fit-max'); pv.classList.remove('fit-menu'); pv.classList.remove('fit-menu2');
   if(vis){ vis.style.height=''; vis.style.maxHeight=''; vis.style.flex=''; }
   if(inner){ inner.style.transform=''; inner.style.transformOrigin=''; inner.style.maxHeight=''; }
   var natH=0;
@@ -2720,9 +2764,16 @@ function fitGameView(){
        scrollHeight measure over-reported the overflow and crushed the
        counting picture to a sliver even when the view nearly fit. */
     var tm=document.getElementById('toolsMenu');
-    var el=(tm&&tm.style.display!=='none')? tm : document.getElementById('toolsToggleBtn');
+    var menuOpen= !!(tm&&tm.style.display!=='none');
+    var el= menuOpen? tm : document.getElementById('toolsToggleBtn');
     if(!el) return 0;
-    return Math.max(0, Math.round(el.getBoundingClientRect().bottom - window.innerHeight + 6));
+    /* While the menu is open, "fits" means more than barely inside:
+       the menu's last option must end with real clearance (10px)
+       above the screen's bottom edge. Ending flush at the edge —
+       the old pass mark — is exactly what read as tucked / cut off
+       on a real phone, so the fit steps keep working until the
+       opened menu lands clear of the edge. */
+    return Math.max(0, Math.round(el.getBoundingClientRect().bottom - window.innerHeight + (menuOpen? 10 : 6)));
   }
   function visScale(){
     if(!inner||natH<=0||ov<=0) return;
@@ -2743,6 +2794,10 @@ function fitGameView(){
   if(ov>0){ visScale(); }
   if(ov>0){ pv.classList.add('fit-max'); ov=over(); }
   if(ov>0){ var tm2=document.getElementById('toolsMenu'); if(tm2&&tm2.style.display!=='none'){ pv.classList.add('fit-menu'); ov=over(); } }
+  /* Last guarantee for the open menu: if it STILL hangs past the
+     bottom after fit-menu, the fit-menu2 step gives back the final
+     pixels — the opened menu always ends fully in view. */
+  if(ov>0){ var tm3=document.getElementById('toolsMenu'); if(tm3&&tm3.style.display!=='none'){ pv.classList.add('fit-menu2'); ov=over(); } }
 }
 window.addEventListener('resize',function(){ fitGameView(); });
 function nextPrompt(first){
@@ -2964,8 +3019,8 @@ function resetCheerToStart(instant){
     el.style.left=startPct+'%';
     setTimeout(function(){ el.style.transition=''; },700);
   }
-  var propR=document.getElementById('sportProp'); if(propR){ var phR=sportPropHome(); propR.style.transition=''; propR.style.left=phR.left; propR.style.bottom=phR.bottom; propR.style.transform=''; }
-  syncShadow(startPct,{bottom: squadMode? '51px':'101px',scale:1,opacity:1});
+  var propR=document.getElementById('sportProp'); if(propR){ var phR=sportPropHome(); if(instant||REDUCED){ propR.style.transition=''; propR.style.left=phR.left; propR.style.bottom=phR.bottom; propR.style.transform=''; } else { /* between problems the ball / puck TRAVELS back to her in one continuous trip — it never snaps across the stage */ propR.style.transition='left .65s ease, bottom .65s ease, transform .65s ease'; propR.style.left=phR.left; propR.style.bottom=phR.bottom; propR.style.transform=''; (function(pp){ setTimeout(function(){ pp.style.transition=''; },700); })(propR); } }
+  syncShadow(startPct,{bottom: squadMode? '13.5%':((typeof sportWorldId==='function'&&sportWorldId()==='dance')? '15.8%':((typeof sportWorldId==='function'&&sportWorldId()==='jumprope')? '10.3%':'101px')),scale:1,opacity:1});
   if(instant||REDUCED){ void el.offsetWidth; el.style.transition=''; }
 }
 function sparkleBurst(xPct,bottomBase){
@@ -3141,8 +3196,8 @@ function playSportScore(done){
       if(REDUCED){ el.style.left='5%'; }
       else {
         el.style.transition='left 1s cubic-bezier(.3,.6,.4,1)';
-        el.style.left='58%';
-        setTimeout(function(){ el.style.transition='left 1s cubic-bezier(.3,.6,.4,1)'; el.style.left='5%'; },1050);
+        el.style.left='58%'; syncShadow(58);
+        setTimeout(function(){ el.style.transition='left 1s cubic-bezier(.3,.6,.4,1)'; el.style.left='5%'; syncShadow(5); },1050);
       }
     }
     sfx('sparkle'); setTimeout(function(){ sfx('cheer'); },200);
@@ -3201,7 +3256,7 @@ function playSportScore(done){
        flies: no prop is tossed, kicked or thrown — the run is hers.
        She stays at the finish; the next problem glides her back to
        the start line. */
-    if(prop){ prop.className='sport-prop'; prop.style.opacity='0'; }
+    if(prop){ prop.className='sport-prop'; }
     if(el){
       if(REDUCED){ el.style.left='64%'; }
       else {
@@ -3215,7 +3270,6 @@ function playSportScore(done){
     sparkleBurst(70,120);
     setTimeout(function(){
       if(el){ el.style.transition=''; }
-      if(prop){ prop.style.opacity=''; }
       beamBusy=false;
       if(done) done();
     }, REDUCED?80:1450);
@@ -3262,17 +3316,31 @@ function playSportMiss(done){
       }
     }
     setTimeout(function(){
-      if(prop){ var phT=sportPropHome(); prop.style.transition=''; prop.style.left=phT.left; prop.style.bottom=phT.bottom; prop.style.transform=''; }
+      if(prop){ var phT=sportPropHome(); prop.style.transition= REDUCED? '' : 'left .6s ease, bottom .6s ease, transform .6s ease'; prop.style.left=phT.left; prop.style.bottom=phT.bottom; prop.style.transform=''; if(!REDUCED){ (function(pp){ setTimeout(function(){ pp.style.transition=''; },650); })(prop); } }
       beamBusy=false;
       if(done) done();
     }, REDUCED?120:1250);
     return;
   }
   if(sportWorldId()==='jumprope'){
-    /* Jump Rope miss: the rope stops at her feet and she trips in place —
-       a quick stumble tilt, no travel, no progress. */
+    /* Jump Rope miss (Michelle's exact behavior): she DROPS the rope —
+       it falls out of her hands and slumps onto the ground at her
+       feet — then she bends down, picks it back up, straightens, and
+       resumes jumping in place for the same problem. Every step is
+       visible continuous motion: the rope never vanishes, she never
+       teleports. */
     var jel=stageCheerEl();
-    if(jel&&!REDUCED){ jel.style.transition='transform .3s ease-in'; jel.style.transform='translateY(10px) rotate(-16deg)'; setTimeout(function(){ jel.style.transition='transform .45s cubic-bezier(.2,.9,.3,1.2)'; jel.style.transform='translateY(0) rotate(0deg)'; },380); setTimeout(function(){ jel.style.transition=''; },900); }
+    if(jel&&!REDUCED){
+      jel.classList.add('rope-dropped');
+      setTimeout(function(){ jel.classList.add('jr-bend'); },520);
+      setTimeout(function(){ jel.classList.remove('rope-dropped'); },1080);
+      setTimeout(function(){ jel.classList.remove('jr-bend'); },1420);
+    }
+    setTimeout(function(){
+      beamBusy=false;
+      if(done) done();
+    }, REDUCED?120:1750);
+    return;
   }
   if(sportWorldId()==='dance'){
     /* Dance miss: she MISSTEPS at the barre and FALLS — tips over onto
@@ -3291,7 +3359,7 @@ function playSportMiss(done){
       setTimeout(function(){ del.style.transition=''; del.style.transform=''; del.style.transformOrigin=''; },1320);
     }
     setTimeout(function(){
-      if(prop){ var phD=sportPropHome(); prop.style.transition=''; prop.style.left=phD.left; prop.style.bottom=phD.bottom; prop.style.transform=''; }
+      if(prop){ var phD=sportPropHome(); prop.style.transition= REDUCED? '' : 'left .6s ease, bottom .6s ease, transform .6s ease'; prop.style.left=phD.left; prop.style.bottom=phD.bottom; prop.style.transform=''; if(!REDUCED){ (function(pp){ setTimeout(function(){ pp.style.transition=''; },650); })(prop); } }
       beamBusy=false;
       if(done) done();
     }, REDUCED?120:1450);
@@ -3313,7 +3381,7 @@ function playSportMiss(done){
       }
     }
     setTimeout(function(){
-      if(prop){ var phB2=sportPropHome(); prop.style.transition=''; prop.style.left=phB2.left; prop.style.bottom=phB2.bottom; prop.style.transform=''; }
+      if(prop){ var phB2=sportPropHome(); prop.style.transition= REDUCED? '' : 'left .6s ease, bottom .6s ease, transform .6s ease'; prop.style.left=phB2.left; prop.style.bottom=phB2.bottom; prop.style.transform=''; if(!REDUCED){ (function(pp){ setTimeout(function(){ pp.style.transition=''; },650); })(prop); } }
       beamBusy=false;
       if(done) done();
     }, REDUCED?120:2000);
@@ -3333,64 +3401,70 @@ function playSportMiss(done){
     }
     if(prop){ prop.className='sport-prop'; if(!REDUCED){ prop.style.transition='bottom .45s ease-in'; prop.style.bottom='22%'; } }
     setTimeout(function(){
-      if(prop){ var phGm=sportPropHome(); prop.style.transition=''; prop.style.left=phGm.left; prop.style.bottom=phGm.bottom; prop.style.transform=''; }
+      if(prop){ var phGm=sportPropHome(); prop.style.transition= REDUCED? '' : 'left .6s ease, bottom .6s ease, transform .6s ease'; prop.style.left=phGm.left; prop.style.bottom=phGm.bottom; prop.style.transform=''; if(!REDUCED){ (function(pp){ setTimeout(function(){ pp.style.transition=''; },650); })(prop); } }
       beamBusy=false;
       if(done) done();
     }, REDUCED?120:1750);
     return;
   }
   if(sportWorldId()==='swimming'){
-    /* Swimming miss: she starts to SINK — down into the water in place,
-       no crossing — then gets herself back up at the start and the same
-       problem is served again until she makes it across. */
+    /* Swimming miss (the SHARED swimming logic, same as Karter's): she
+       starts across, then SINKS under the water — no crossing — glides
+       back to the start under the surface and pops back up there, and
+       the same problem is served again until she makes it across. */
     var sel=stageCheerEl();
     if(sel&&!REDUCED){
-      sel.style.transition='transform .55s ease-in';
+      sel.style.transition='left .6s ease-out, transform .55s ease-in';
+      sel.style.left='24%';
       sel.style.transform='translateY(40px) rotate(-6deg)';
-      setTimeout(function(){ sel.style.transition='transform .65s cubic-bezier(.2,.9,.3,1.15)'; sel.style.transform='translateY(0) rotate(0deg)'; },700);
+      setTimeout(function(){ sel.style.transition='left .65s ease, transform .65s cubic-bezier(.2,.9,.3,1.15)'; sel.style.left='5%'; sel.style.transform='translateY(0) rotate(0deg)'; },700);
       setTimeout(function(){ sel.style.transition=''; sel.style.transform=''; },1450);
     }
     if(prop){ prop.className='sport-prop'; if(!REDUCED){ prop.style.transition='bottom .5s ease-in'; prop.style.bottom='23%'; } }
     setTimeout(function(){
-      if(prop){ var phSm=sportPropHome(); prop.style.transition=''; prop.style.left=phSm.left; prop.style.bottom=phSm.bottom; prop.style.transform=''; }
+      if(prop){ var phSm=sportPropHome(); prop.style.transition= REDUCED? '' : 'left .6s ease, bottom .6s ease, transform .6s ease'; prop.style.left=phSm.left; prop.style.bottom=phSm.bottom; prop.style.transform=''; if(!REDUCED){ (function(pp){ setTimeout(function(){ pp.style.transition=''; },650); })(prop); } }
       beamBusy=false;
       if(done) done();
     }, REDUCED?120:1550);
     return;
   }
   if(sportWorldId()==='soccer'){
-    /* Soccer miss: she kicks and the BALL sails WIDE — up over the goal
-       and past it, no goal — then drops beyond the goal and the same
-       problem is served again. */
+    /* Soccer miss (the SHARED soccer logic, same as Karter's): she
+       kicks and the ball hits the POST — it clangs off the goal post,
+       bounces back out, drops to the ground and rolls back to her —
+       no goal, and the same problem is served again. */
     if(prop){
       prop.className='sport-prop';
-      if(REDUCED){ prop.style.left='88%'; prop.style.bottom='80%'; }
+      if(REDUCED){ prop.style.left='79%'; prop.style.bottom='45%'; }
       else {
         prop.style.transition='left .5s ease-out, bottom .5s cubic-bezier(.3,1.1,.4,1), transform .5s ease';
-        prop.style.left='88%'; prop.style.bottom='80%'; prop.style.transform='rotate(240deg)';
-        setTimeout(function(){ prop.style.transition='left .35s ease-in, bottom .45s cubic-bezier(.55,0,1,1), transform .45s ease'; prop.style.left='91%'; prop.style.bottom='21%'; prop.style.transform='rotate(320deg)'; },540);
+        prop.style.left='79%'; prop.style.bottom='47%'; prop.style.transform='rotate(240deg)';
+        setTimeout(function(){ prop.style.transition='left .38s ease-in, bottom .42s cubic-bezier(.55,0,1,1), transform .42s ease'; prop.style.left='68%'; prop.style.bottom='21%'; prop.style.transform='rotate(120deg) scaleY(.9)'; },540);
+        setTimeout(function(){ prop.style.transition='bottom .14s ease-out'; prop.style.bottom='24%'; },990);
+        setTimeout(function(){ prop.style.transition='bottom .15s ease-in'; prop.style.bottom='21%'; },1140);
       }
     }
     setTimeout(function(){
-      if(prop){ var phM=sportPropHome(); prop.style.transition=''; prop.style.left=phM.left; prop.style.bottom=phM.bottom; prop.style.transform=''; }
+      if(prop){ var phM=sportPropHome(); prop.style.transition= REDUCED? '' : 'left .6s ease, bottom .6s ease, transform .6s ease'; prop.style.left=phM.left; prop.style.bottom=phM.bottom; prop.style.transform=''; if(!REDUCED){ (function(pp){ setTimeout(function(){ pp.style.transition=''; },650); })(prop); } }
       beamBusy=false;
       if(done) done();
-    }, REDUCED?120:1250);
+    }, REDUCED?120:1450);
     return;
   }
   if(sportWorldId()==='hockey'){
-    /* Hockey miss: she swings — stick stays in her hands — and the PUCK
-       slides partway and stops SHORT of the net on the ice. No goal,
-       and she shoots the same problem again. */
+    /* Hockey miss (the SHARED hockey logic, same as Karter's): she
+       swings — stick stays in her hands — and the PUCK slides WIDE of
+       the net, past the far post on the ice. No goal, and she shoots
+       the same problem again. */
     var hel=stageCheerEl();
     if(hel&&!REDUCED){ hel.classList.add('stick-swing'); setTimeout(function(){ hel.classList.remove('stick-swing'); },560); }
     if(prop){
       prop.className='sport-prop';
-      if(REDUCED){ prop.style.left='46%'; }
-      else { prop.style.transition='left .55s cubic-bezier(.2,.6,.3,1)'; prop.style.left='46%'; prop.style.transform='rotate(0deg)'; }
+      if(REDUCED){ prop.style.left='93%'; }
+      else { prop.style.transition='left .7s cubic-bezier(.2,.6,.3,1)'; prop.style.left='93%'; prop.style.transform='rotate(0deg)'; }
     }
     setTimeout(function(){
-      if(prop){ var phH=sportPropHome(); prop.style.transition=''; prop.style.left=phH.left; prop.style.bottom=phH.bottom; prop.style.transform=''; }
+      if(prop){ var phH=sportPropHome(); prop.style.transition= REDUCED? '' : 'left .6s ease, bottom .6s ease, transform .6s ease'; prop.style.left=phH.left; prop.style.bottom=phH.bottom; prop.style.transform=''; if(!REDUCED){ (function(pp){ setTimeout(function(){ pp.style.transition=''; },650); })(prop); } }
       beamBusy=false;
       if(done) done();
     }, REDUCED?120:1000);
@@ -3420,7 +3494,7 @@ function playSportMiss(done){
     else { prop.style.transition='left .5s ease-in, bottom .5s cubic-bezier(.55,0,1,1), transform .5s ease'; prop.style.left='calc(5% + 150px)'; prop.style.bottom='20%'; prop.style.transform='rotate(90deg)'; }
   }
   setTimeout(function(){
-    if(prop){ var phG=sportPropHome(); prop.style.transition=''; prop.style.left=phG.left; prop.style.bottom=phG.bottom; prop.style.transform=''; }
+    if(prop){ var phG=sportPropHome(); prop.style.transition= REDUCED? '' : 'left .6s ease, bottom .6s ease, transform .6s ease'; prop.style.left=phG.left; prop.style.bottom=phG.bottom; prop.style.transform=''; if(!REDUCED){ (function(pp){ setTimeout(function(){ pp.style.transition=''; },650); })(prop); } }
     beamBusy=false;
     if(done) done();
   }, REDUCED?120:950);
@@ -3428,37 +3502,66 @@ function playSportMiss(done){
 /* ----- Cheer SQUAD logic (the classic cheer scene) -----
    Waiting: the squad of four readies at the base, pom poms in hand.
    Correct: the bases and back spot build the pyramid, the flyer climbs
-   up, they TOSS her high, and she lands it clean.
-   Wrong: NO toss and NO fall from a height — as she climbs up into the
-   pyramid the whole squad tumbles down GENTLY, no pyramid is completed,
-   and they reset and try the same problem again until she flies. */
+   up onto the bases' shoulders, they TOSS her high, and she lands it
+   clean.
+   Wrong: NO toss — as she climbs partway up, the pyramid gives way and
+   she TUMBLES down to the floor in one continuous fall, the squad
+   settles, gets up and walks back to the base together (never a fade,
+   never a teleport), no pyramid is completed, and they try the same
+   problem again until she flies. */
+function pyramidGeom(){
+  /* The pyramid's real measures, read off the squad on stage. A
+     teammate's shoulders sit at 60% of her figure height (her arms
+     attach at y100 of the 250-tall figure), so the flyer rises by
+     exactly 60% of a base's real on-screen height — her feet land ON
+     the bases' shoulders, never sunk into their chests. And she
+     centers herself over the midpoint of the two bases she stands
+     on (they close in to left 40.5% and 53.5% as they build), so the
+     formation reads as a pyramid — two bases on the floor, flyer on
+     top — at every stage size. */
+  var ms=squadMembers(), m1=ms[0], m2=ms[1], el=stageCheerEl();
+  var stage=document.getElementById('beamStage');
+  var lift=54, left=43;
+  if(m1&&m1.offsetHeight) lift=Math.max(30,Math.round(m1.offsetHeight*0.60));
+  if(stage&&m1&&m2&&el&&stage.clientWidth){
+    var sw=stage.clientWidth;
+    var c1=sw*0.405+m1.offsetWidth/2, c2=sw*0.535+m2.offsetWidth/2;
+    left=Math.round(((c1+c2)/2-el.offsetWidth/2)/sw*1000)/10;
+  }
+  return {lift:lift,left:left};
+}
 function playSquadSuccess(done){
   var el=stageCheerEl(); if(!el){ if(done)done(); return; }
   var ms=squadMembers(), m1=ms[0], m2=ms[1], m3=ms[2];
+  /* A real pyramid: the flyer's feet land ON the two bases' shoulders,
+     centered over the pair — measured by pyramidGeom() from the
+     bases' real on-screen size. */
+  var pg=pyramidGeom(); var liftPx=pg.lift;
   beamBusy=true; stopRoutine();
   setStageMsg('The squad is building the pyramid — bases ready, back spot set! 📣');
   sfx('step');
   if(REDUCED){
-    el.style.left='43%'; syncShadow(43,{bottom:'51px'});
+    el.style.left=pg.left+'%'; syncShadow(pg.left,{bottom:'13.5%'});
     setStageMsg('🌟 SHE FLEW — AND LANDED IT CLEAN! THE PYRAMID WORKED! 🌟');
     sparkleBurst(52,120);
     setTimeout(function(){ beamBusy=false; if(done)done(); },350);
     return;
   }
-  el.style.transition='left .7s cubic-bezier(.3,.6,.4,1)'; el.style.left='43%'; syncShadow(43,{bottom:'51px'});
+  el.style.transition='left .7s cubic-bezier(.3,.6,.4,1)'; el.style.left=pg.left+'%'; syncShadow(pg.left,{bottom:'13.5%'});
   if(m1){ m1.style.transition='left .7s ease'; m1.style.left='40.5%'; }
   if(m2){ m2.style.transition='left .7s ease'; m2.style.left='53.5%'; }
   if(m3){ m3.style.transition='left .7s ease'; m3.style.left='47%'; }
   setTimeout(function(){
-    /* she climbs up into the pyramid, bases dipping under her weight */
-    el.style.transition='transform .55s cubic-bezier(.3,.7,.3,1)'; el.style.transform='translateY(-54px)';
+    /* she climbs up into the pyramid — feet on the bases' shoulders,
+       bases dipping under her weight */
+    el.style.transition='transform .55s cubic-bezier(.3,.7,.3,1)'; el.style.transform='translateY(-'+liftPx+'px)';
     if(m1){ m1.style.transition='transform .55s ease'; m1.style.transform='translateY(4px) scaleY(.96)'; }
     if(m2){ m2.style.transition='transform .55s ease'; m2.style.transform='translateY(4px) scaleY(.96)'; }
     setStageMsg('She\'s up in the pyramid… here comes the toss! 📣');
   },780);
   setTimeout(function(){
-    /* THE TOSS: she flies up off their hands */
-    el.style.transition='transform .42s cubic-bezier(.2,.7,.3,1)'; el.style.transform='translateY(-142px) rotate(-5deg)';
+    /* THE TOSS: she flies up off their hands, from the top of the pyramid */
+    el.style.transition='transform .42s cubic-bezier(.2,.7,.3,1)'; el.style.transform='translateY(-'+(liftPx+Math.round(liftPx*0.55))+'px) rotate(-5deg)';
     if(m1){ m1.style.transform='translateY(0) scaleY(1)'; }
     if(m2){ m2.style.transform='translateY(0) scaleY(1)'; }
     sfx('sparkle'); sparkleBurst(52,190);
@@ -3489,119 +3592,57 @@ function playSquadFall(done){
     setTimeout(function(){ resetCheerToStart(true); beamBusy=false; if(done)done(); },500);
     return;
   }
-  el.style.transition='left .6s ease, transform .55s cubic-bezier(.3,.7,.3,1)'; el.style.left='43%'; syncShadow(43,{bottom:'51px'});
+  /* She climbs partway up the bases (measured from a base's real
+     on-screen size, the same shoulder measure as the successful
+     pyramid) — then the pyramid gives way below. */
+  var pg=pyramidGeom(); var liftPx=pg.lift;
+  var climbPx=Math.round(liftPx*0.45);
+  el.style.transition='left .6s ease, transform .55s cubic-bezier(.3,.7,.3,1)'; el.style.left=pg.left+'%'; syncShadow(pg.left,{bottom:'13.5%'});
   if(m1){ m1.style.transition='left .6s ease'; m1.style.left='40.5%'; }
   if(m2){ m2.style.transition='left .6s ease'; m2.style.left='53.5%'; }
   if(m3){ m3.style.transition='left .6s ease'; m3.style.left='47%'; }
-  setTimeout(function(){ el.style.transform='translateY(-30px)'; },640);
+  setTimeout(function(){ el.style.transform='translateY(-'+climbPx+'px)'; },640);
   setTimeout(function(){
-    /* GENTLE tumble: she was barely off the ground — the whole squad
-       sinks and tilts down softly together. No toss, no fall, nobody
-       hurt, and no pyramid completed. */
+    /* THE TUMBLE: the part-built pyramid gives way and she comes DOWN —
+       tipping off it and tumbling to the floor in front of the bases in
+       one continuous fall (gravity ease-in: slow tip, fast drop). She
+       pivots on her own feet: as she tips forward her lift unwinds back
+       to the floor line, so she lands ON the floor — never sunk into
+       it — and comes to rest lying in front of the bases, while the
+       bases stagger with their feet planted. Nobody fades out, nobody
+       vanishes, nobody teleports: she settles for a moment, then gets
+       up and the whole squad walks back to the base together. No toss,
+       no pyramid completed, nobody hurt. */
     sfx('fall');
-    el.style.transition='transform .7s ease'; el.style.transform='translateY(8px) rotate(-6deg)';
-    if(m1){ m1.style.transition='transform .7s ease'; m1.style.transform='translateY(10px) rotate(-9deg)'; }
-    if(m2){ m2.style.transition='transform .7s ease'; m2.style.transform='translateY(10px) rotate(9deg)'; }
-    if(m3){ m3.style.transition='transform .7s ease'; m3.style.transform='translateY(12px) rotate(-4deg)'; }
+    el.style.transformOrigin='50% 100%';
+    el.style.transition='transform .55s cubic-bezier(.55,0,1,1)';
+    el.style.transform='translate(14px,0px) rotate(79deg)';
+    if(m1){ m1.style.transformOrigin='50% 100%'; m1.style.transition='transform .6s cubic-bezier(.55,0,1,1)'; m1.style.transform='rotate(-12deg) scaleY(.94)'; }
+    if(m2){ m2.style.transformOrigin='50% 100%'; m2.style.transition='transform .6s cubic-bezier(.55,0,1,1)'; m2.style.transform='rotate(13deg) scaleY(.94)'; }
+    if(m3){ m3.style.transformOrigin='50% 100%'; m3.style.transition='transform .6s cubic-bezier(.55,0,1,1)'; m3.style.transform='rotate(-6deg) scaleY(.95)'; }
     setStageMsg('As she climbed, the pyramid tumbled down gently — no pyramid this time! Read the tip and try this same one again! 📣');
   },1300);
   setTimeout(function(){
-    el.style.transition='opacity .3s'; el.style.opacity='0';
-    setTimeout(function(){
-      resetCheerToStart(true);
-      el.style.opacity='1';
-      beamBusy=false;
-      if(done)done();
-    },320);
-  },2250);
+    /* landed: one soft settle onto the floor */
+    el.style.transition='transform .35s ease-out';
+    el.style.transform='translate(16px,2px) rotate(72deg)';
+  },1920);
+  setTimeout(function(){
+    /* she gets up and the squad walks back to the base — the regular
+       glide reset, one continuous trip for all four girls */
+    el.style.transformOrigin='';
+    if(m1)m1.style.transformOrigin=''; if(m2)m2.style.transformOrigin=''; if(m3)m3.style.transformOrigin='';
+    resetCheerToStart(false);
+    setTimeout(function(){ beamBusy=false; if(done)done(); },720);
+  },2500);
 }
 function playBeamSuccess(done){
   if(typeof isSportWorld==='function'&&isSportWorld()){ playSportScore(done); return; }
   playSquadSuccess(done); return;
-  var el=stageCheerEl(); if(!el){ if(done)done(); return; }
-  beamBusy=true; stopRoutine();
-  setStageMsg('She\'s walking the beam… arms out, nice and steady! 🎀');
-  el.classList.add('walking');
-  var start=5, end=64;
-  if(REDUCED){
-    el.style.left=end+'%'; finishWalk();
-    return;
-  }
-  var t0=null, dur=2250;
-  function stepFn(ts){
-    if(!t0) t0=ts;
-    var k=Math.min(1,(ts-t0)/dur);
-    var e= k<.5? 2*k*k : 1-Math.pow(-2*k+2,2)/2; /* ease-in-out: she pushes off gently, glides, and eases into the landing spot — no constant-speed sliding */
-    var pct=start+(end-start)*e;
-    el.style.left=pct+'%';
-    syncShadow(pct);
-    if(k<1) requestAnimationFrame(stepFn); else finishWalk();
-  }
-  requestAnimationFrame(stepFn);
-  var stepSnd=setInterval(function(){ sfx('step'); },300);
-  setTimeout(function(){ clearInterval(stepSnd); },dur);
-  function finishWalk(){
-    el.classList.remove('walking');
-    /* glide the last step into split position (no teleport), then settle into the split with gravity:
-       the splitSettle keyframes drop her in, compress softly, and rebound once — like a real landing */
-    el.dataset.pose='split';
-    el.classList.add('split-mode');
-    if(!REDUCED){ el.style.transition='left .45s cubic-bezier(.25,.7,.3,1)'; }
-    el.style.left='58%';
-    syncShadow(58,{scale:1.55});
-    el.innerHTML=cheerSVG(effectiveDesign(),'split');
-    el.classList.add('split-land');
-    setStageMsg(gameSession&&gameSession.onFire?'🔥 SHE STUCK THE SPLIT — ON FIRE! 🔥':'🌟 SHE STUCK THE SPLIT! 🌟');
-    sfx('sparkle'); setTimeout(function(){ sfx('cheer'); },140);
-    sparkleBurst(68);
-    if(!REDUCED){ setTimeout(function(){ sparkleBurst(50); },260); setTimeout(function(){ el.style.transition=''; },520); } /* a second, softer burst layers behind the first */
-    setTimeout(function(){
-      el.classList.remove('split-land');
-      beamBusy=false;
-      if(done) done();
-    }, REDUCED?60:1250);
-  }
 }
 function playBeamFall(done){
   if(typeof isSportWorld==='function'&&isSportWorld()){ playSportMiss(done); return; }
   playSquadFall(done); return;
-  var el=stageCheerEl(); if(!el){ if(done)done(); return; }
-  beamBusy=true; stopRoutine();
-  el.classList.add('wobbling');
-  setStageMsg('Uh oh — she\'s wobbling…!');
-  setTimeout(function(){
-    el.classList.remove('wobbling');
-    sfx('fall');
-    if(REDUCED){
-      el.style.transform='translateY(38px) rotate(-52deg)';
-      setStageMsg('She slipped off onto the mat — she\'s okay! Read '+coachPossessive()+' tip and try again! 🎀');
-      setTimeout(function(){ resetCheerToStart(true); beamBusy=false; if(done)done(); },500);
-      return;
-    }
-    /* gravity drop: she tips, then falls FASTER as she drops (ease-in), her shadow shrinks on the beam… */
-    var fallPct=parseFloat(el.style.left)||5;
-    syncShadow(fallPct,{scale:.65,opacity:.55});
-    el.style.transition='transform .46s cubic-bezier(.55,0,1,1)';
-    el.style.transform='translateY(40px) rotate(-36deg)';
-    setStageMsg('She slipped off onto the mat — she\'s okay! Read '+coachPossessive()+' tip and try again! 🎀');
-    setTimeout(function(){
-      /* …then the mat catches her: one soft settle into the slumped pose, shadow landing wide on the mat, tiny poof */
-      syncShadow(fallPct,{bottom:'50px',scale:1.45,opacity:.9});
-      sparkleBurst(Math.min(88,fallPct+10),52);
-      el.style.transition='transform .38s cubic-bezier(.2,.9,.3,1.15)';
-      el.style.transform='translateY(44px) rotate(-55deg)';
-      setTimeout(function(){
-        el.style.transition='opacity .3s';
-        el.style.opacity='0';
-        setTimeout(function(){
-          resetCheerToStart(true);
-          el.style.opacity='1';
-          beamBusy=false;
-          if(done)done();
-        },320);
-      },700);
-    },470);
-  }, REDUCED?40:520);
 }
 
 /* ----- Bonus rounds ----- */
@@ -3782,15 +3823,15 @@ function applyCoach(){
     else el.innerHTML=coachClassicFaceHTML(coachDisplayName(),'width:100%;height:100%;object-fit:cover;object-position:50% 10%;border-radius:50%');
   });
   var mini=document.querySelector('.coach-mini-slot'); if(mini) mini.innerHTML= custom? coachFigureSVG(myCoach) : '<img src="assets/coach-belle.webp" alt="" style="width:52px;height:52px;border-radius:50%;object-fit:cover;object-position:50% 10%;border:3px solid var(--gold)"/>';
-  /* Coach controls AND the coach hub card exist only on a personalized
-     link. On a classic link the card is not on the page at all — the
-     Cheerleader Studio and Coach Studio are Customized-edition only. */
+  /* Coach controls exist only on a personalized link, inside the
+     Setup Wizard (step 7) — there is no coach card on the homepage
+     on either link. */
   var sum=document.getElementById('coachSummary'); if(sum) sum.innerHTML= custom? coachSummaryHTML() : '';
-  var hub=document.getElementById('hubCoachCard'); if(hub) hub.style.display= custom? '' : 'none';
+  /* There is no coach hub card: the Coach Design Studio lives in the Setup Wizard (step 7). */
   /* If the Coach Studio is open, refresh only its preview — never rebuild the
      option list here, or the name field would lose focus mid-typing.
      (setCoach() re-renders the options itself after a pick.) */
-  if(document.getElementById('coachModal').classList.contains('open')){
+  if(document.getElementById('coachPreview')){ /* the Coach Studio preview exists only while wizard step 7 is showing it */
     var pv2=document.getElementById('coachPreview'); if(pv2) pv2.innerHTML=coachStudioPreviewHTML();
     var pn2=document.getElementById('coachPreviewName'); if(pn2) pn2.textContent=coachDisplayName();
     var nt2=document.getElementById('coachPreviewNote'); if(nt2) nt2.textContent=coachLookNote();
@@ -3799,11 +3840,11 @@ function applyCoach(){
 function openCoachStudio(){
   if(!window.isCustomEdition()){ toast('🔒 Making your coach yours opens in the Customized edition!'); return; }
   if(typeof designLocked==='function'&&designLocked()){ if(typeof openWizardAtBackground==='function') openWizardAtBackground(); return; } /* page locked on Royce's original design — only updating the page background unlocks it */
-  renderCoachStudio();
-  document.getElementById('coachModal').classList.add('open');
+  /* The Coach Design Studio lives INSIDE the Setup Wizard as step 7 — there is no coach card or modal on the homepage. Opening it means opening the wizard on that step. */
+  if(typeof openSetupWizard==='function'){ openSetupWizard(true); var csi=SETUP_STEPS.indexOf('coachstudio'); if(csi>=0){ setupStep=csi; renderSetupWizard(); } }
   if(typeof renderAllCheerleaders==='function') renderAllCheerleaders();
 }
-function closeCoachStudio(){ document.getElementById('coachModal').classList.remove('open'); saveCoach(); applyCoach(); }
+function closeCoachStudio(){ saveCoach(); applyCoach(); }
 function setCoach(key,val){ if(!window.isCustomEdition()) return; if(typeof designLocked==='function'&&designLocked()) return; /* coach stays as shipped while the page is locked */ if(key==='identity'&&!coachIdentityAllowed(val)) val='girl'; if(key==='jacket'&&!coachJacketAllowed(val)) val='#E4B33C'; if(key==='hair'&&!coachHairAllowed(val)) val='ponytail'; if(key==='hairColor'&&!coachHairColorAllowed(val)) val='#3B2310'; if(key==='skin'&&(typeof val!=='number'||val<0||val>=SKINS.length)) val=2; myCoach[key]=val; saveCoach(); applyCoach(); renderCoachStudio(); if(typeof sfx==='function') sfx('pop'); }
 function setCoachName(v){ if(!window.isCustomEdition()) return; if(typeof designLocked==='function'&&designLocked()) return; /* coach stays as shipped while the page is locked */ myCoach.name=v; saveCoach(); applyCoach(); var pv=document.getElementById('coachPreview'); if(pv) pv.innerHTML=coachStudioPreviewHTML(); var pn=document.getElementById('coachPreviewName'); if(pn) pn.textContent=coachDisplayName(); var nt=document.getElementById('coachPreviewNote'); if(nt) nt.textContent=coachLookNote(); }
 function coachLookNote(){
@@ -3901,12 +3942,12 @@ var THEME_BGS=[
  {id:'snow',name:'Snow Day',emoji:'❄️',page:'#F8FCFF',stage:'linear-gradient(180deg,#E0F2FE 0%,#F0F9FF 55%,#FFFFFF 55.2%,#E2E8F0 100%)'}
 ];
 var THEME_PRESETS=[
- {id:'royal',name:"Royce's Royal Roses",desc:'The classic castle theme',color:'pink',color2:'purple',color3:'gold',sport:'cheer',animal:'butterfly',bg:'enchanted'},
- {id:'ocean',name:'Ocean Splash',desc:'Blue waves & a dolphin friend',color:'violet',color2:'magenta',color3:'pink',sport:'swimming',animal:'dolphin',bg:'beach'},
- {id:'galaxy',name:'Galaxy Stars',desc:'Purple space & a wise owl',color:'purple',color2:'pink',color3:'gold',sport:'dance',animal:'owl',bg:'space'},
- {id:'garden',name:'Garden Party',desc:'Green garden & a bunny pal',color:'rose',color2:'pink',color3:'magenta',sport:'soccer',animal:'bunny',bg:'garden'},
- {id:'rainbow',name:'Rainbow Pop',desc:'Sunset color & a brave lion',color:'magenta',color2:'pink',color3:'purple',sport:'gymnastics',animal:'lion',bg:'rainbow'},
- {id:'snow',name:'Cozy Snow Day',desc:'Teal sparkle & a panda buddy',color:'violet',color2:'purple',color3:'pink',sport:'basketball',animal:'panda',bg:'snow'}
+ {id:'royal',name:'Cheer',desc:'The classic castle theme',color:'pink',color2:'purple',color3:'gold',sport:'cheer',animal:'butterfly',bg:'enchanted'},
+ {id:'ocean',name:'Swimming',desc:'Blue waves & a dolphin friend',color:'violet',color2:'magenta',color3:'pink',sport:'swimming',animal:'dolphin',bg:'beach'},
+ {id:'galaxy',name:'Dance',desc:'Purple space & a wise owl',color:'purple',color2:'pink',color3:'gold',sport:'dance',animal:'owl',bg:'space'},
+ {id:'garden',name:'Soccer',desc:'Green garden & a bunny pal',color:'rose',color2:'pink',color3:'magenta',sport:'soccer',animal:'bunny',bg:'garden'},
+ {id:'rainbow',name:'Gymnastics',desc:'Sunset color & a brave lion',color:'magenta',color2:'pink',color3:'purple',sport:'gymnastics',animal:'lion',bg:'rainbow'},
+ {id:'snow',name:'Basketball',desc:'Teal sparkle & a panda buddy',color:'violet',color2:'purple',color3:'pink',sport:'basketball',animal:'panda',bg:'snow'}
 ];
 /* ================= SPORT WORLDS: the games layer =================
    The sport being PLAYED right now drives the GAMES and their LANGUAGE
@@ -3931,12 +3972,12 @@ var THEME_PRESETS=[
 var SPORT_WORLDS={
  cheer:{name:'Cheer',emoji:'📣',venue:'Castle Ballroom',venueShort:'Castle',headline:'CHEER. LEARN & SHINE!',coachRole:'cheer coach',prop:'📣',target:'🎀',idleClass:'',idleMsg:'The squad is readied at the base, pom poms in hand — answer to build the pyramid! 📣',readyMsg:'Your squad is ready at the base, pom poms in hand — answer to build the pyramid! 📣',scoreMsg:'The squad built the pyramid, tossed her high — and she landed it clean',missStageMsg:'As she climbed into the pyramid, the squad tumbled down gently — no pyramid this time! Read the tip and try this same one again! 📣',rival:'Castle Belles',stage:'linear-gradient(180deg,#EBD9F2 0%,#F7E3F3 55%,#F3D9C8 55.2%,#EAC39F 100%)',hero:'Welcome to your cheer castle — an enchanted castle where math and spelling turn into a cheer competition with a whole squad of four! Cheer Coach Belle will show you an example first, help you fix mistakes until you get it right, and help you all the way to the championship.'},
  tennis:{name:'Tennis',emoji:'🎾',venue:'Tennis Court',venueShort:'Court',headline:'SERVE. LEARN & WIN!',coachRole:'tennis coach',prop:'🎾',target:'',idleClass:'idle-tennis-ball',idleMsg:'She\u2019s bouncing the ball on her racket, waiting for your answer! 🎾',readyMsg:'Your tennis player is ready — answer to serve! 🎾',scoreMsg:'She hit it over the net — the ball landed on the other side. Point for you!',missStageMsg:'Her serve hit the net and the ball dropped on her side — no point. Try this same one again! 🎾',rival:'The Other Side',stage:'linear-gradient(180deg,#7DD3FC 0%,#BAE6FD 46%,#3D9970 46.2%,#2F855A 78%,#276749 100%)',hero:'Welcome to your tennis court — a sunny tennis court where math and spelling turn into a real tennis match! Tennis Coach Belle will show you an example first, help you fix mistakes until you get it right, and help you all the way to the championship.'},
- basketball:{name:'Basketball',emoji:'🏀',venue:'Basketball Court',venueShort:'Court',headline:'SHOOT. LEARN & WIN!',coachRole:'basketball coach',prop:'🏀',target:'🏀',idleClass:'idle-basketball',idleMsg:'She\u2019s dribbling the ball in place, waiting for your answer! 🏀',readyMsg:'Your player is ready, dribbling in place — answer to shoot! 🏀',scoreMsg:'Swish! She shot it and the ball went right through the hoop — basket!',missStageMsg:'The ball bounced UP off the rim, came back down and rolled back to her — no basket! She shoots this same one again until she makes it! 🏀',rival:'Visiting Team',stage:'linear-gradient(180deg,#FDE68A 0%,#FCD34D 40%,#D97706 40.2%,#B45309 78%,#92400E 100%)',hero:'Welcome to your basketball court — a bright basketball court where math and spelling turn into a real game! Basketball Coach Belle will show you an example first, help you fix mistakes until you get it right, and help you all the way to the championship.'},
- soccer:{name:'Soccer',emoji:'⚽',venue:'Soccer Field',venueShort:'Field',headline:'KICK. LEARN & SCORE!',coachRole:'soccer coach',prop:'⚽',target:'🥅',idleClass:'idle-soccer',idleMsg:'Her foot is resting right on top of the ball, rolling it back and forth under her foot while you think! ⚽',readyMsg:'Your soccer star is ready, her foot resting right on top of the ball, rolling it back and forth under her foot — answer to kick! ⚽',scoreMsg:'GOAL! She kicked the ball right past the goalie into the net!',missStageMsg:'The kick went wide of the goal — and the goalie kept it out! No goal. Try this same one again! ⚽',rival:'Rival Team',stage:'linear-gradient(180deg,#7DD3FC 0%,#BAE6FD 38%,#4ADE80 38.2%,#22C55E 78%,#16A34A 100%)',hero:'Welcome to your soccer field — a green grass soccer field — real goal, net and goalie included — where math and spelling turn into a real match! Soccer Coach Belle will show you an example first, help you fix mistakes until you get it right, and help you all the way to the championship.'},
- swimming:{name:'Swimming',emoji:'🏊',venue:'Castle Pool',venueShort:'Pool',headline:'SWIM. LEARN & SPLASH!',coachRole:'swimming coach',prop:'💦',target:'🏁',idleClass:'idle-swimming',idleMsg:'She\u2019s in the water kicking her feet, waiting for her turn to race! 🏊',readyMsg:'Your swimmer is in the water, kicking her feet — answer to start her race across the pool! 🏊',scoreMsg:'She swam all the way from one side of the pool to the other and touched the wall!',missStageMsg:'Oh no — she started to sink! She got herself back up, but there\u2019s no crossing this time. She starts over — try this same one again! 🏊',rival:'The Next Lane',stage:'linear-gradient(180deg,#BAE6FD 0%,#7DD3FC 34%,#38BDF8 34.2%,#0284C7 80%,#0369A1 100%)',hero:'Welcome to your swimming pool — a sparkling castle pool — lane ropes, flags and a starting block — where math and spelling turn into a real swim race! Swimming Coach Belle will show you an example first, help you fix mistakes until you get it right, and help you all the way to the championship.'},
- hockey:{name:'Hockey',emoji:'🏒',venue:'Ice Rink',venueShort:'Rink',headline:'SKATE. LEARN & SCORE!',coachRole:'hockey coach',prop:'⚫',target:'🥅',idleClass:'idle-hockey-puck',idleMsg:'She\u2019s stick-handling the puck right in front of her stick, waiting for your answer — her stick never leaves her hands! 🏒',readyMsg:'Your hockey player is ready, stick in her hands and puck at her blade — answer to shoot the puck! 🏒',scoreMsg:'GOAL! The puck slid right into the net!',missStageMsg:'The puck stopped short of the net — no goal. Try this same one again! 🏒',rival:'Rival Team',stage:'linear-gradient(180deg,#E0F2FE 0%,#F0F9FF 40%,#E2E8F0 40.2%,#F8FAFC 78%,#CBD5E1 100%)',hero:'Welcome to your hockey rink — a frosty ice rink where math and spelling turn into a real hockey game! Hockey Coach Belle will show you an example first, help you fix mistakes until you get it right, and help you all the way to the championship.'},
- running:{name:'Running',emoji:'🏃',venue:'Running Track',venueShort:'Track',headline:'RUN. LEARN & WIN!',coachRole:'running coach',prop:'👟',target:'🏁',idleClass:'idle-running',idleMsg:'She\u2019s jogging in place on the starting line, waiting for your answer! 🏃',readyMsg:'Your runner is on her mark — answer to run! 🏃',scoreMsg:'She sprinted down the track and crossed the finish line first!',missStageMsg:'She stumbled and slowed down — no finish yet. Try this same one again! 🏃',rival:'Rival Runners',stage:'linear-gradient(180deg,#7DD3FC 0%,#BAE6FD 34%,#FDBA74 34.2%,#EA580C 72%,#C2410C 100%)',hero:'Welcome to your running track — a bright running track where math and spelling turn into a real race! Running Coach Belle will show you an example first, help you fix mistakes until you get it right, and help you all the way to the championship.'},
- jumprope:{name:'Jump Rope',emoji:'🪢',venue:'Castle Playground',venueShort:'Playground',headline:'JUMP. LEARN & SHINE!',coachRole:'jump rope coach',prop:'🪢',target:'🏅',idleClass:'idle-jumprope',idleMsg:'She\u2019s jumping the rope in place, waiting for your answer! 🪢',readyMsg:'Your jump roper is ready — she\u2019s jumping in place. Answer to send her traveling! 🪢',scoreMsg:'She jumped the rope traveling all the way across to the other side — and came right back!',missStageMsg:'Oh no — the rope stopped right at her feet and she tripped! No progress. Pick the rope back up and try this same one again! 🪢',rival:'Rival Jumpers',stage:'linear-gradient(180deg,#FDE68A 0%,#FEF3C7 40%,#FBCFE8 40.2%,#F9A8D4 76%,#F472B6 100%)',hero:'Welcome to your jump rope playground — a sunny castle playground where math and spelling turn into jump rope! Jump Rope Coach Belle will show you an example first, help you fix mistakes until you get it right, and help you all the way to the championship.'},
+ basketball:{name:'Basketball',emoji:'🏀',venue:'Basketball Court',venueShort:'Court',headline:'SHOOT. LEARN & WIN!',coachRole:'basketball coach',prop:'🏀',target:'',idleClass:'idle-basketball',idleMsg:'She\u2019s dribbling the ball in place, waiting for your answer! 🏀',readyMsg:'Your player is ready, dribbling in place — answer to shoot! 🏀',scoreMsg:'Swish! She shot it and the ball went right through the hoop — basket!',missStageMsg:'The ball bounced UP off the rim, came back down and rolled back to her — no basket! She shoots this same one again until she makes it! 🏀',rival:'Visiting Team',stage:'linear-gradient(180deg,#FDE68A 0%,#FCD34D 40%,#D97706 40.2%,#B45309 78%,#92400E 100%)',hero:'Welcome to your basketball court — a bright basketball court where math and spelling turn into a real game! Basketball Coach Belle will show you an example first, help you fix mistakes until you get it right, and help you all the way to the championship.'},
+ soccer:{name:'Soccer',emoji:'⚽',venue:'Soccer Field',venueShort:'Field',headline:'KICK. LEARN & SCORE!',coachRole:'soccer coach',prop:'⚽',target:'',idleClass:'idle-soccer',idleMsg:'Her foot is resting right on top of the ball, rolling it back and forth under her foot while you think! ⚽',readyMsg:'Your soccer star is ready, her foot resting right on top of the ball, rolling it back and forth under her foot — answer to kick! ⚽',scoreMsg:'GOAL! She kicked the ball right past the goalie into the net!',missStageMsg:'Off the post! The kick hit the post and bounced back out — no goal! She kicks this same one again until she scores! ⚽',rival:'Rival Team',stage:'linear-gradient(180deg,#7DD3FC 0%,#BAE6FD 38%,#4ADE80 38.2%,#22C55E 78%,#16A34A 100%)',hero:'Welcome to your soccer field — a green grass soccer field — real goal, net and goalie included — where math and spelling turn into a real match! Soccer Coach Belle will show you an example first, help you fix mistakes until you get it right, and help you all the way to the championship.'},
+ swimming:{name:'Swimming',emoji:'🏊',venue:'Castle Pool',venueShort:'Pool',headline:'SWIM. LEARN & SPLASH!',coachRole:'swimming coach',prop:'',target:'',idleClass:'idle-swimming',idleMsg:'She\u2019s in the water kicking her feet, waiting for her turn to race! 🏊',readyMsg:'Your swimmer is in the water, kicking her feet — answer to start her race across the pool! 🏊',scoreMsg:'She swam all the way from one side of the pool to the other and touched the wall!',missStageMsg:'Oh no — she started to sink! She got herself back up, but there\u2019s no crossing this time. She starts over — try this same one again! 🏊',rival:'The Next Lane',stage:'linear-gradient(180deg,#BAE6FD 0%,#7DD3FC 34%,#38BDF8 34.2%,#0284C7 80%,#0369A1 100%)',hero:'Welcome to your swimming pool — a sparkling castle pool — lane ropes, flags and a starting block — where math and spelling turn into a real swim race! Swimming Coach Belle will show you an example first, help you fix mistakes until you get it right, and help you all the way to the championship.'},
+ hockey:{name:'Hockey',emoji:'🏒',venue:'Ice Rink',venueShort:'Rink',headline:'SKATE. LEARN & SCORE!',coachRole:'hockey coach',prop:'⚫',target:'',idleClass:'idle-hockey-puck',idleMsg:'She\u2019s stick-handling the puck right in front of her stick, waiting for your answer — her stick never leaves her hands! 🏒',readyMsg:'Your hockey player is ready, stick in her hands and puck at her blade — answer to shoot the puck! 🏒',scoreMsg:'GOAL! The puck slid right into the net!',missStageMsg:'The puck slid wide of the net — no goal! Try this same one again! 🏒',rival:'Rival Team',stage:'linear-gradient(180deg,#E0F2FE 0%,#F0F9FF 40%,#E2E8F0 40.2%,#F8FAFC 78%,#CBD5E1 100%)',hero:'Welcome to your hockey rink — a frosty ice rink where math and spelling turn into a real hockey game! Hockey Coach Belle will show you an example first, help you fix mistakes until you get it right, and help you all the way to the championship.'},
+ running:{name:'Running',emoji:'🏃',venue:'Running Track',venueShort:'Track',headline:'RUN. LEARN & WIN!',coachRole:'running coach',prop:'',target:'',idleClass:'idle-running',idleMsg:'She\u2019s jogging in place on the starting line, waiting for your answer! 🏃',readyMsg:'Your runner is on her mark — answer to run! 🏃',scoreMsg:'She sprinted down the track and crossed the finish line first!',missStageMsg:'She stumbled and slowed down — no finish yet. Try this same one again! 🏃',rival:'Rival Runners',stage:'linear-gradient(180deg,#7DD3FC 0%,#BAE6FD 34%,#FDBA74 34.2%,#EA580C 72%,#C2410C 100%)',hero:'Welcome to your running track — a bright running track where math and spelling turn into a real race! Running Coach Belle will show you an example first, help you fix mistakes until you get it right, and help you all the way to the championship.'},
+ jumprope:{name:'Jump Rope',emoji:'🪢',venue:'Castle Playground',venueShort:'Playground',headline:'JUMP. LEARN & SHINE!',coachRole:'jump rope coach',prop:'🪢',target:'',idleClass:'idle-jumprope',idleMsg:'She\u2019s jumping the rope in place, waiting for your answer! 🪢',readyMsg:'Your jump roper is ready — she\u2019s jumping in place. Answer to send her traveling! 🪢',scoreMsg:'She jumped the rope traveling all the way across to the other side — and came right back!',missStageMsg:'Oh no — the rope stopped right at her feet and she tripped! No progress. Pick the rope back up and try this same one again! 🪢',rival:'Rival Jumpers',stage:'linear-gradient(180deg,#FDE68A 0%,#FEF3C7 40%,#FBCFE8 40.2%,#F9A8D4 76%,#F472B6 100%)',hero:'Welcome to your jump rope playground — a sunny castle playground where math and spelling turn into jump rope! Jump Rope Coach Belle will show you an example first, help you fix mistakes until you get it right, and help you all the way to the championship.'},
  dance:{name:'Dance',emoji:'💃',venue:'Dance Studio',venueShort:'Studio',headline:'DANCE. LEARN & SHINE!',coachRole:'dance coach',prop:'',target:'',idleClass:'',idleMsg:'She\u2019s twirling at the barre in the dance studio, waiting for your answer! 💃',readyMsg:'Your dancer is twirling at the barre. Answer to send her twirling across the studio floor! 💃',scoreMsg:'She twirled all the way across the studio floor to the other side — and twirled right back to the barre! She nailed it!',missStageMsg:'She misstepped and fell — then got right back up at the barre and started twirling again! Try this same one again! 💃',rival:'Rival Dance Crew',stage:'linear-gradient(180deg,#4C1D95 0%,#7C3AED 44%,#C2185B 44.2%,#9D1450 80%,#70133C 100%)',hero:'Welcome to your dance studio — a real dance studio — mirrors on the wall, a wooden floor, and a dance barre — where math and spelling turn into a real performance! Dance Coach Belle will show you an example first, help you fix mistakes until you get it right, and help you all the way to the championship.'},
  gymnastics:{name:'Gymnastics',emoji:'🤸',venue:'Gymnastics Gym',venueShort:'Gym',headline:'FLIP. LEARN & STICK IT!',coachRole:'gymnastics coach',prop:'',target:'',idleClass:'',idleMsg:'She\u2019s standing on the balance beam, arms out and balanced, waiting for your answer! 🤸',readyMsg:'Your gymnast is up on the balance beam — answer to start her walk down the beam! 🤸',scoreMsg:'She walked the beam all the way across, stuck her landing — and came right back!',missStageMsg:'She wobbled and fell off the beam — no score! She gets right back up on the beam and tries this same one again until she nails it! 🤸',rival:'Rival Gym Team',stage:'linear-gradient(180deg,#FDE68A 0%,#FEF3C7 42%,#93C5FD 42.2%,#60A5FA 80%,#3B82F6 100%)',hero:'Welcome to your gymnastics gym — a bright gymnastics gym — mats, balance beam, vault and rings all around her — where math and spelling turn into a real meet! Gymnastics Coach Belle will show you an example first, help you fix mistakes until you get it right, and help you all the way to the championship.'}
 };
@@ -4087,30 +4128,26 @@ function applySportWorld(){
   var prop=document.getElementById('sportProp'), target=document.getElementById('sportTarget');
   var headline=document.getElementById('heroSportLine'), desc=document.getElementById('heroDesc');
   if(stage){ stage.classList.toggle('sport-active',sport); stage.classList.toggle('gym-beam-on',!!(sport&&sportWorldId()==='gymnastics')); stage.setAttribute('aria-label', sport? ('Your player in the '+w.venue+' — '+w.name+' games') : 'Your cheer squad in the castle ballroom — pyramid games'); /* The scene inside the stage is THIS played sport's own venue, drawn below by sportVenueSVG over the played sport's stage base gradient (set by paintWorldScene) — never a sport template, which is a page background only. The page backdrop behind the stage keeps her personalized world's home scene. */ }
-  /* NO sport venue carries floating graphics (Michelle's rule): while
-     ANY sport game is being played, the stage's decor strip stays
-     EMPTY and the corner mascot stays HIDDEN — no music notes, dancers
-     or slippers floating in the dance studio, no medals or gymnasts
-     floating in the gymnastics gym, and no other sport's tools or
-     animals floating over its court, field, rink, track or pool
-     either. A game's stage shows only that sport's own venue, the
-     player, her prop and her target — nothing else is drawn in it.
-     The strip and mascot belong to the classic cheer ballroom scene
-     alone, and applyTheme() paints them only there. */
-  if(sport){
-    var cDecor=document.getElementById('stageDecor'); if(cDecor) cDecor.innerHTML='';
-    var cMascot=document.getElementById('stageMascot'); if(cMascot) cMascot.style.display='none';
-  } else {
-    var rMascot=document.getElementById('stageMascot'); if(rMascot) rMascot.style.display='';
-  }
+  /* NO game venue carries floating graphics (Michelle's rule): in
+     EVERY game — sport or classic cheer — the stage's decor strip
+     stays EMPTY and the corner mascot stays HIDDEN: no unicorns,
+     bows or roses floating over the cheer game, no music notes,
+     dancers or slippers floating in the dance studio, no medals or
+     gymnasts floating in the gymnastics gym, and no other sport's
+     tools or animals floating over its court, field, rink, track or
+     pool either. A game's stage shows only that game's own venue,
+     the player, her prop and her target — nothing else is drawn in
+     it. applyTheme() holds the same lock. */
+  var cDecor=document.getElementById('stageDecor'); if(cDecor) cDecor.innerHTML='';
+  var cMascot=document.getElementById('stageMascot'); if(cMascot){ cMascot.innerHTML=''; cMascot.style.display='none'; }
   if(venue){ venue.style.display= sport?'block':'none'; venue.innerHTML= sport? sportVenueSVG(w) : ''; }
   var swimW=document.getElementById('swimWater'); if(swimW){ swimW.style.display= (sport&&sportWorldId()==='swimming')?'block':'none'; }
   var dBarre=document.getElementById('danceBarre'); if(dBarre){ dBarre.style.display= (sport&&sportWorldId()==='dance')?'block':'none'; }
-  var sqEl=document.getElementById('cheerSquad'); if(sqEl){ sqEl.style.display= sport?'none':'block'; } if(stage){ stage.classList.toggle('squad-active',!sport); stage.classList.toggle('swimming-active',!!(sport&&sportWorldId()==='swimming')); stage.classList.toggle('jumprope-active',!!(sport&&sportWorldId()==='jumprope')); } if(!sport&&typeof renderSquad==='function'){ renderSquad(); }
+  var sqEl=document.getElementById('cheerSquad'); if(sqEl){ sqEl.style.display= sport?'none':'block'; } if(stage){ stage.classList.toggle('squad-active',!sport); stage.classList.toggle('swimming-active',!!(sport&&sportWorldId()==='swimming')); stage.classList.toggle('jumprope-active',!!(sport&&sportWorldId()==='jumprope')); stage.classList.toggle('dance-active',!!(sport&&sportWorldId()==='dance')); } if(!sport&&typeof renderSquad==='function'){ renderSquad(); }
   /* No venue-name pill is painted on the stage — it was removed for
      good (Michelle: no added floating images or text bars on the game). */
   if(prop){ prop.style.display= (sport&&sportWorldId()!=='jumprope')?'block':'none'; /* jump rope carries NO separate prop: her rope is in her hands, drawn into her figure — a second rope floating beside her would be a duplicate */ if(sport&&sportWorldId()==='tennis'){ prop.innerHTML=TENNIS_BALL_HTML; } else { prop.textContent= sport? w.prop : ''; } prop.className='sport-prop'+(sport&&w.idleClass?' '+w.idleClass:''); var phA=sportPropHome(); prop.style.left=phA.left; prop.style.bottom=phA.bottom; prop.style.transform=''; }
-  if(target){ target.style.display= sport?'block':'none'; target.textContent= sport? w.target : ''; }
+  if(target){ target.style.display= (sport&&w.target)?'block':'none'; target.textContent= sport? w.target : ''; }
   /* Repaint the on-stage figure for the sport: in tennis she holds her
      racket in her hand, in hockey she holds her stick in her hands, in
      jump rope she holds her rope handles with the rope under her feet;
@@ -4152,8 +4189,8 @@ function sportVenueSVG(w){
   else if(w===SPORT_WORLDS.soccer){ lines='<g opacity=".16" fill="#14532D"><rect x="80" y="126" width="80" height="204"/><rect x="240" y="126" width="80" height="204"/><rect x="400" y="126" width="80" height="204"/><rect x="560" y="126" width="80" height="204"/><rect x="720" y="126" width="80" height="204"/></g><line x1="400" y1="126" x2="400" y2="330" stroke="#fff" stroke-width="4" opacity=".75"/><ellipse cx="400" cy="252" rx="82" ry="28" fill="none" stroke="#fff" stroke-width="4" opacity=".75"/><path d="M586 176 L750 176 L750 330 L586 330" fill="none" stroke="#fff" stroke-width="4" opacity=".8"/><g stroke="#F8FAFC" stroke-width="1.6" opacity=".6"><line x1="668" y1="158" x2="668" y2="296"/><line x1="702" y1="158" x2="702" y2="296"/><line x1="736" y1="158" x2="736" y2="296"/><line x1="640" y1="192" x2="764" y2="192"/><line x1="640" y1="228" x2="764" y2="228"/><line x1="640" y1="264" x2="764" y2="264"/><line x1="640" y1="158" x2="764" y2="296"/><line x1="764" y1="158" x2="640" y2="296"/></g><path d="M640 150 L764 150 L764 296 L640 296 Z" fill="none" stroke="#fff" stroke-width="7" opacity=".98"/><g><circle cx="702" cy="196" r="13" fill="#FCD7B0" stroke="#92400E" stroke-width="2"/><path d="M702 209 L702 248" stroke="#7C3AED" stroke-width="11" stroke-linecap="round"/><path d="M702 218 L668 204 M702 218 L736 204" stroke="#7C3AED" stroke-width="8" stroke-linecap="round"/><circle cx="664" cy="202" r="7" fill="#FDE68A" stroke="#92400E" stroke-width="2"/><circle cx="740" cy="202" r="7" fill="#FDE68A" stroke="#92400E" stroke-width="2"/><path d="M702 248 L688 282 M702 248 L716 282" stroke="#111827" stroke-width="8" stroke-linecap="round"/></g>'; }
   else if(w===SPORT_WORLDS.hockey){ lines='<line x1="400" y1="126" x2="400" y2="330" stroke="#DC2626" stroke-width="7" opacity=".8"/><line x1="212" y1="126" x2="212" y2="330" stroke="#2563EB" stroke-width="9" opacity=".75"/><line x1="588" y1="126" x2="588" y2="330" stroke="#2563EB" stroke-width="9" opacity=".75"/><circle cx="150" cy="180" r="26" fill="none" stroke="#DC2626" stroke-width="4" opacity=".7"/><circle cx="150" cy="282" r="26" fill="none" stroke="#DC2626" stroke-width="4" opacity=".7"/><path d="M636 214 A66 52 0 0 1 768 214 L768 266 A66 40 0 0 1 636 266 Z" fill="#BAE6FD" opacity=".8" stroke="#2563EB" stroke-width="3"/><g stroke="#F8FAFC" stroke-width="1.6" opacity=".65"><line x1="676" y1="176" x2="676" y2="268"/><line x1="708" y1="176" x2="708" y2="268"/><line x1="740" y1="176" x2="740" y2="268"/><line x1="660" y1="200" x2="764" y2="200"/><line x1="660" y1="228" x2="764" y2="228"/><line x1="660" y1="252" x2="764" y2="252"/></g><path d="M660 168 L764 168 L764 268 L660 268 Z" fill="none" stroke="#DC2626" stroke-width="7"/>'; }
   else if(w===SPORT_WORLDS.swimming){ lines='<rect x="0" y="150" width="800" height="180" fill="#0EA5E9" opacity=".30"/><rect x="26" y="238" width="52" height="40" rx="6" fill="#F8FAFC" stroke="#0284C7" stroke-width="4"/><text x="52" y="266" font-size="20" text-anchor="middle">1</text><g stroke="#fff" stroke-width="3" opacity=".85"><line x1="180" y1="120" x2="180" y2="150"/><line x1="320" y1="120" x2="320" y2="150"/><line x1="460" y1="120" x2="460" y2="150"/><line x1="600" y1="120" x2="600" y2="150"/></g><path d="M150 122 L650 122" stroke="#DC2626" stroke-width="3" opacity=".8"/><line x1="0" y1="196" x2="800" y2="196" stroke="#FDE68A" stroke-width="6" opacity=".9"/><line x1="0" y1="262" x2="800" y2="262" stroke="#E0F2FE" stroke-width="4" opacity=".65"/><path d="M0 226 Q100 210 200 226 T400 226 T600 226 T800 226" fill="none" stroke="#BAE6FD" stroke-width="5" opacity=".8"/>'; }
-  else if(w===SPORT_WORLDS.running){ lines='<line x1="0" y1="196" x2="800" y2="196" stroke="#fff" stroke-width="4" opacity=".8"/><line x1="0" y1="248" x2="800" y2="248" stroke="#fff" stroke-width="4" opacity=".8"/><line x1="0" y1="300" x2="800" y2="300" stroke="#fff" stroke-width="4" opacity=".8"/><path d="M60 318 L60 282" stroke="#111827" stroke-width="5"/><path d="M92 318 L92 282" stroke="#111827" stroke-width="5"/><line x1="676" y1="130" x2="676" y2="330" stroke="#fff" stroke-width="9" opacity=".95"/><text x="676" y="118" font-size="26" text-anchor="middle">🏁</text>'; }
-  else if(w===SPORT_WORLDS.jumprope){ lines='<g stroke="#8A5A78" stroke-width="6" fill="none"><path d="M612 300 L640 190 L668 300 M626 248 L654 248"/></g><path d="M596 196 Q640 168 684 196" stroke="#C2185B" stroke-width="5" fill="none"/><path d="M300 300 Q400 190 500 300" fill="none" stroke="#C2185B" stroke-width="6" opacity=".75"/><circle cx="180" cy="150" r="24" fill="#FDE68A" opacity=".85"/><circle cx="640" cy="120" r="17" fill="#fff" opacity=".8"/><path d="M60 300 Q200 268 340 300 T620 300 T800 292" fill="none" stroke="#fff" stroke-width="4" opacity=".55"/>'; }
+  else if(w===SPORT_WORLDS.running){ lines='<line x1="0" y1="196" x2="800" y2="196" stroke="#fff" stroke-width="4" opacity=".8"/><line x1="0" y1="248" x2="800" y2="248" stroke="#fff" stroke-width="4" opacity=".8"/><line x1="0" y1="300" x2="800" y2="300" stroke="#fff" stroke-width="4" opacity=".8"/><path d="M60 318 L60 282" stroke="#111827" stroke-width="5"/><path d="M92 318 L92 282" stroke="#111827" stroke-width="5"/><line x1="676" y1="130" x2="676" y2="330" stroke="#fff" stroke-width="9" opacity=".95"/><g><rect x="676" y="90" width="24" height="18" fill="#fff" stroke="#111827" stroke-width="1.5"/><rect x="676" y="90" width="6" height="6" fill="#111827"/><rect x="688" y="90" width="6" height="6" fill="#111827"/><rect x="682" y="96" width="6" height="6" fill="#111827"/><rect x="694" y="96" width="6" height="6" fill="#111827"/><rect x="676" y="102" width="6" height="6" fill="#111827"/><rect x="688" y="102" width="6" height="6" fill="#111827"/></g>'; }
+  else if(w===SPORT_WORLDS.jumprope){ lines='<rect x="0" y="296" width="800" height="34" fill="#FFFFFF" opacity=".25"/><line x1="0" y1="296" x2="800" y2="296" stroke="#FFFFFF" stroke-width="4" opacity=".55"/>'; }
   else if(w===SPORT_WORLDS.dance){ lines='<g><rect x="56" y="22" width="216" height="138" fill="#E0F2FE" opacity=".45"/><rect x="292" y="22" width="216" height="138" fill="#E0F2FE" opacity=".45"/><rect x="528" y="22" width="216" height="138" fill="#E0F2FE" opacity=".45"/><rect x="56" y="22" width="216" height="138" fill="none" stroke="#F8FAFC" stroke-width="5" opacity=".85"/><rect x="292" y="22" width="216" height="138" fill="none" stroke="#F8FAFC" stroke-width="5" opacity=".85"/><rect x="528" y="22" width="216" height="138" fill="none" stroke="#F8FAFC" stroke-width="5" opacity=".85"/><path d="M80 140 L160 40 M320 140 L410 40 M560 140 L650 40" stroke="#fff" stroke-width="7" opacity=".35"/></g><path d="M545 200 L640 268 L735 200 Z" fill="#FDE68A" opacity=".16"/><ellipse cx="640" cy="288" rx="128" ry="28" fill="#FDE68A" opacity=".4"/><g stroke="#70133C" stroke-width="3" opacity=".55"><line x1="60" y1="284" x2="760" y2="284"/><line x1="60" y1="302" x2="760" y2="302"/><line x1="200" y1="270" x2="200" y2="318"/><line x1="420" y1="270" x2="420" y2="318"/><line x1="620" y1="270" x2="620" y2="318"/></g>'; }
   else if(w===SPORT_WORLDS.gymnastics){ lines='<rect x="70" y="278" width="660" height="30" rx="10" fill="#F472B6" opacity=".55"/><rect x="600" y="196" width="118" height="82" rx="8" fill="#FDE68A" opacity=".75"/><rect x="600" y="196" width="118" height="20" rx="8" fill="#F59E0B" opacity=".8"/><path d="M250 60 L250 118 M420 60 L420 118" stroke="#92400E" stroke-width="4"/><circle cx="250" cy="130" r="13" fill="none" stroke="#92400E" stroke-width="5"/><circle cx="420" cy="130" r="13" fill="none" stroke="#92400E" stroke-width="5"/><rect x="96" y="252" width="60" height="16" rx="8" fill="#E0F2FE" stroke="#7DD3FC" stroke-width="3"/>'; }
   return '<svg viewBox="0 0 800 330" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="800" height="330" fill="transparent"/>'+lines+'</svg>';
@@ -4175,26 +4212,9 @@ function themeColor(){ return themeById(THEME_COLORS,myTheme.color); }
 function themeColor2(){ return themeById(THEME_COLORS,myTheme.color2); }
 function themeColor3(){ return themeById(THEME_COLORS,myTheme.color3); }
 /* ================= THE THREE WIZARD COLORS =================
-   The wizard's color step collects THREE picks, and each one has ONE job
-   in the finished world, so the page stays clean and pretty:
-   • PRIMARY (myTheme.color) — the main color: the soft tint of the page
-     background (blended with her background pick in applyTheme), the
-     hero base, headings, main buttons, and the soft border tint around
-     the game cards and the game panel (--line).
-   • SECONDARY (myTheme.color2) — the accent: the border tint around
-     the hub / shortcut cards and big
-     section panels (--sec-line), card labels, helper details and the
-     rival side of the scoreboard.
-   • TERTIARY (myTheme.color3) — the sparkle, used sparingly: the border
-     around the hero picture and the hero's bottom edge — the same kind
-     of border treatment the cards get — plus the stars pill, locks and
-     badges.
-   On top of those three jobs, her favorite-sport pick builds the page's
-   BACKGROUND SCENE (her sport's own place, painted by worldSceneSVG())
-   and her background pick chooses the page's soft base color; the
-   primary tint blends into that base so the whole page — background,
-   hero and cards together — is dressed by the picks she made.
-   paletteFrom() flattens a triple into the single palette object the
+   The wizard's color step collects THREE picks: PRIMARY
+   (myTheme.color), SECONDARY (myTheme.color2) and TERTIARY
+   (myTheme.color3). paletteFrom() flattens a triple into the single palette object the
    scene painter and applyTheme() consume. */
 function paletteFrom(c1,c2,c3){ return {primary:c1.primary,dark:c1.dark,deep:c1.deep,light:c1.light,line:c1.line,accent:c2.primary,accentDark:c2.dark,accentLight:c2.light,accentLine:c2.line,tertiary:c3.primary,tertiaryDark:c3.dark,tertiaryLight:c3.light,tertiaryLine:c3.line}; }
 function mixHex(h1,h2,t){ function rgb(h){ h=String(h||'#FFFFFF').replace('#',''); if(h.length===3) h=h[0]+h[0]+h[1]+h[1]+h[2]+h[2]; var n=parseInt(h,16); return [(n>>16)&255,(n>>8)&255,n&255]; } var a=rgb(h1),b=rgb(h2),o=a.map(function(v,i){ return Math.round(v+(b[i]-v)*t); }); return '#'+o.map(function(v){ return ('0'+v.toString(16)).slice(-2); }).join('').toUpperCase(); }
@@ -4469,7 +4489,7 @@ function worldSceneSVG(sportId,c,uid,fit){
      +'<g><rect x="52" y="84" width="68" height="48" fill="#FFFFFF" stroke="'+P+'" stroke-width="4"/><rect x="72" y="98" width="28" height="22" fill="none" stroke="'+P+'" stroke-width="3"/><ellipse cx="86" cy="140" rx="16" ry="5" fill="none" stroke="'+P+'" stroke-width="4"/><path d="M74 142 L78 164 M86 144 L86 166 M98 142 L94 164 M78 164 L94 164" stroke="#FFFFFF" stroke-width="2.4"/></g>'
      +'<g><rect x="680" y="84" width="68" height="48" fill="#FFFFFF" stroke="'+P+'" stroke-width="4"/><rect x="700" y="98" width="28" height="22" fill="none" stroke="'+P+'" stroke-width="3"/><ellipse cx="714" cy="140" rx="16" ry="5" fill="none" stroke="'+P+'" stroke-width="4"/><path d="M702 142 L706 164 M714 144 L714 166 M726 142 L722 164 M706 164 L722 164" stroke="#FFFFFF" stroke-width="2.4"/></g>'
      +'<path d="M470 168 Q540 84 640 128" stroke="#FFFFFF" stroke-width="3" stroke-dasharray="7 8" fill="none" opacity=".8"/>'
-     + ball(180,296,20) + ball(648,302,16) + ball(420,312,13) + '<g class="ws-float">'+ball(636,118,15)+'</g>';
+     + ball(180,296,20) + ball(648,302,16) + ball(420,312,13);
   } else if(sportId==='soccer'){
     defs='<linearGradient id="'+uid+'s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+PL+'"/><stop offset="1" stop-color="'+AL+'"/></linearGradient><linearGradient id="'+uid+'g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4CC24E"/><stop offset="1" stop-color="#2E9E44"/></linearGradient>';
     var stripes='', crowd='', ci=0; for(var si=0;si<8;si++){ if(si%2) stripes+='<rect x="'+(si*100)+'" y="150" width="100" height="180" fill="#FFFFFF" opacity=".07"/>'; }
@@ -4579,7 +4599,7 @@ function worldSceneSVG(sportId,c,uid,fit){
    default, and the Customized edition's starting default — there it
    stays only until she picks another background, exactly like any
    other pick, and picking it again brings this castle room back. */
-function enchantedSceneSVG(c,uid,fit){
+function enchantedSceneSVG(c,uid,fit,clean){
   uid=uid||'e'; var P=c.primary,PD=c.dark,PX=c.deep,PL=c.light,A=c.accent,AD=c.accentDark,AL=c.accentLight,T=c.tertiary||'#E4B33C',TD=c.tertiaryDark||'#B98A1F',TL=c.tertiaryLight||'#FFF3C7';
   var LEAF='#3E9B4F';
   /* pointed-arch outline: flat bottom, straight sides, two curves
@@ -4643,6 +4663,23 @@ function enchantedSceneSVG(c,uid,fit){
       +'<polygon points="0,-27 2.6,-21.4 8.6,-21 4.4,-17.4 5.8,-11.6 0,-15 -5.8,-11.6 -4.4,-17.4 -8.6,-21 -2.6,-21.4" fill="#FFFFFF" opacity=".75"/>'
       +'</g>';
   }
+  /* Roses climbing the columns, roses resting in the corners, and
+     the sparkles + stars hanging in the air. These dress the wizard
+     preview scene only. Inside a GAME stage (clean=true) they are
+     exactly the mysterious floaters Michelle ordered out of the
+     cheer game window — no roses, no floating sparkles, no stars in
+     the air: the stage shows only the ballroom, the squad and the
+     game's own elements. */
+  var rosesAndAir='<path d="M150 252 Q140 208 154 168" fill="none" stroke="'+LEAF+'" stroke-width="3.4" stroke-linecap="round"/>'
+    +'<ellipse cx="142" cy="216" rx="9" ry="4.4" fill="'+LEAF+'" transform="rotate(-28 142 216)"/><ellipse cx="160" cy="190" rx="9" ry="4.4" fill="'+LEAF+'" transform="rotate(22 160 190)"/>'
+    + wsRose(152,162,9) + wsRose(142,228,7.5)
+    +'<path d="M650 252 Q662 210 652 176" fill="none" stroke="'+LEAF+'" stroke-width="3.4" stroke-linecap="round"/>'
+    +'<ellipse cx="660" cy="220" rx="9" ry="4.4" fill="'+LEAF+'" transform="rotate(26 660 220)"/>'
+    + wsRose(654,170,8.5)
+    + wsRose(58,282,12) + wsRose(112,300,9) + wsRose(742,288,11) + wsRose(694,304,8.5)
+    +'<ellipse cx="34" cy="296" rx="11" ry="5" fill="'+LEAF+'" transform="rotate(-20 34 296)"/><ellipse cx="768" cy="300" rx="11" ry="5" fill="'+LEAF+'" transform="rotate(20 768 300)"/>'
+    + wsSparkles(10)
+    + wsStar(238,120,1.15,T) + wsStar(566,140,0.95,T) + wsStar(268,196,0.8,'#FFFFFF') + wsStar(520,84,0.8,'#FFFFFF');
   var s='<rect width="800" height="330" fill="url(#'+uid+'w)"/>'
     /* the inside back wall: rounded stone blocks, wall to wall */
     + stoneLines(0,26,800,226)
@@ -4680,18 +4717,10 @@ function enchantedSceneSVG(c,uid,fit){
     /* soft pink and purple gym mats stacked by the left wall */
     +'<rect x="26" y="232" width="104" height="20" rx="8" fill="'+A+'" opacity=".55"/>'
     +'<rect x="34" y="214" width="88" height="19" rx="8" fill="'+PL+'"/>'
-    /* roses climbing the column feet and resting in the corners */
-    +'<path d="M150 252 Q140 208 154 168" fill="none" stroke="'+LEAF+'" stroke-width="3.4" stroke-linecap="round"/>'
-    +'<ellipse cx="142" cy="216" rx="9" ry="4.4" fill="'+LEAF+'" transform="rotate(-28 142 216)"/><ellipse cx="160" cy="190" rx="9" ry="4.4" fill="'+LEAF+'" transform="rotate(22 160 190)"/>'
-    + wsRose(152,162,9) + wsRose(142,228,7.5)
-    +'<path d="M650 252 Q662 210 652 176" fill="none" stroke="'+LEAF+'" stroke-width="3.4" stroke-linecap="round"/>'
-    +'<ellipse cx="660" cy="220" rx="9" ry="4.4" fill="'+LEAF+'" transform="rotate(26 660 220)"/>'
-    + wsRose(654,170,8.5)
-    + wsRose(58,282,12) + wsRose(112,300,9) + wsRose(742,288,11) + wsRose(694,304,8.5)
-    +'<ellipse cx="34" cy="296" rx="11" ry="5" fill="'+LEAF+'" transform="rotate(-20 34 296)"/><ellipse cx="768" cy="300" rx="11" ry="5" fill="'+LEAF+'" transform="rotate(20 768 300)"/>'
-    /* enchantment in the air: twinkling sparkles and two gold stars */
-    + wsSparkles(10)
-    + wsStar(238,120,1.15,T) + wsStar(566,140,0.95,T) + wsStar(268,196,0.8,'#FFFFFF') + wsStar(520,84,0.8,'#FFFFFF');
+    /* roses and floating sparkles/stars join the scene ONLY outside
+       the game stage (see rosesAndAir above) — in the stage the
+       ballroom stands clean */
+    + (clean? '' : rosesAndAir);
   var defs='<linearGradient id="'+uid+'w" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+AL+'"/><stop offset=".62" stop-color="'+PL+'"/><stop offset="1" stop-color="'+PL+'"/></linearGradient>'
     +'<linearGradient id="'+uid+'t" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="'+AL+'"/><stop offset=".5" stop-color="'+PL+'"/><stop offset="1" stop-color="'+AL+'"/></linearGradient>'
     +'<linearGradient id="'+uid+'g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".55" stop-color="'+TL+'"/><stop offset="1" stop-color="'+AL+'"/></linearGradient>'
@@ -4771,7 +4800,7 @@ function paintWorldScene(){
        enchanted ballroom when her world is enchanted, otherwise the
        stage's own built-in ballroom drawing, which shows when this
        layer is empty. A home-sport template never paints in here. */
-    if(ws){ ws.innerHTML= enchanted? enchantedSceneSVG(c,'s') : ''; }
+    if(ws){ ws.innerHTML= enchanted? enchantedSceneSVG(c,'s',null,true) : ''; }
     if(stage){ stage.classList.toggle('has-world-scene', enchanted); if(enchanted){ var eb=themeById(THEME_BGS,et.bg); if(eb) stage.style.background=eb.stage; } else { var hw=(typeof SPORT_WORLDS!=='undefined')? SPORT_WORLDS[sid] : null; if(hw) stage.style.background=hw.stage; } }
   }
   keepBackdropBelowHero();
@@ -4832,24 +4861,21 @@ function applyTheme(){
   if(window.isCustomEdition()){ r.setProperty('--gold',c.tertiary); r.setProperty('--gold-d',c.tertiaryDark); r.setProperty('--gold-l',c.tertiaryLight); r.setProperty('--tert',c.tertiary); r.setProperty('--tert-d',c.tertiaryDark); r.setProperty('--tert-l',c.tertiaryLight); }
   var meta=document.querySelector('meta[name="theme-color"]'); if(meta) meta.setAttribute('content',c.primary);
   var stage=document.getElementById('beamStage'); if(stage) stage.style.background=b.stage;
-  /* The stage decor strip and corner mascot are painted ONLY for the
-     classic cheer ballroom scene. While a sport game is being played
-     they stay empty and hidden (Michelle's rule — no floating graphics
-     on any game's venue: no notes, dancers or slippers in the dance
-     studio, no medals or gymnasts in the gymnastics gym, no tools or
-     animals over any court, field, rink, track or pool). Painting them
-     from the home world here used to refill the strip over a sport
-     venue whenever the theme repainted; applySportWorld() below is
-     the second lock on the same rule. */
+  /* The stage decor strip and corner mascot are NEVER painted on a
+     game stage — not for a sport venue and not for the classic cheer
+     ballroom either (Michelle's rule — no floating graphics on any
+     game's stage: no unicorns, bows or roses floating over the cheer
+     game, no notes, dancers or slippers in the dance studio, no
+     medals or gymnasts in the gymnastics gym, no tools or animals
+     over any court, field, rink, track or pool). A game stage shows
+     only its venue, her player / squad, her prop and her target.
+     Painting the strip from the home world here used to refill it
+     over the stage whenever the theme repainted; applySportWorld()
+     below is the second lock on the same rule. */
   var decor=document.getElementById('stageDecor');
   var mascot=document.getElementById('stageMascot');
-  if(typeof isSportWorld==='function'&&isSportWorld()){
-    if(decor) decor.innerHTML='';
-    if(mascot) mascot.style.display='none';
-  } else {
-    if(decor){ var tools=worldSceneTools(s.id); var pat=[]; if(s.id==='tennis'||a.emoji==='🦋'){ for(var i=0;i<6;i++){ pat.push(tools[i%tools.length]); } } else { for(var i=0;i<6;i++){ pat.push(i%2? tools[(i-1)/2%tools.length] : a.emoji); } } decor.innerHTML=pat.map(function(e){return '<span>'+sportBadgeHTML(e,s.id)+'</span>';}).join(''); }
-    if(mascot){ mascot.style.display=''; mascot.innerHTML=((s.id==='tennis'||a.emoji==='🦋')? '' : a.emoji)+'<small>'+sportBadgeHTML(s.emoji,s.id)+'</small>'; }
-  }
+  if(decor) decor.innerHTML='';
+  if(mascot){ mascot.innerHTML=''; mascot.style.display='none'; }
   /* Theme chips render ONLY on a custom link. On a standard link the summary
      stays empty — no trace of the saved theme anywhere on the page. */
   var sum=document.getElementById('themeSummary'); if(sum) sum.innerHTML= window.isCustomEdition()? themeSummaryHTML() : '';
@@ -4951,14 +4977,14 @@ function renderSportSwitcher(){
   var nowText='Today: '+cur.emoji+' '+cur.name+' — tap to change';
   var nh=document.getElementById('sportNowHome'); if(nh) nh.textContent=nowText;
   var np=document.getElementById('sportNowPractice'); if(np) np.textContent=nowText;
-  var hintH=document.getElementById('sportPanelHintHome'); if(hintH){ if(custom){ hintH.style.display=''; hintH.textContent="Bored of today's sport? Pick a new one! The games and their words switch right away — the place inside the game, your coach's title, and how every game scores. Your world stays YOUR world: its colors and background never change, and your grade, stars and designs stay just as they are."; } else { hintH.style.display='none'; } }
+  var hintH=document.getElementById('sportPanelHintHome'); if(hintH){ if(custom){ hintH.style.display=''; hintH.textContent="Bored of today's sport? Pick a new one!"; } else { hintH.style.display='none'; } }
   var hintP=document.getElementById('sportPanelHintPractice'); if(hintP) hintP.textContent= custom? 'Tap a sport and this game switches with you — same problem, same score, brand-new game! Your world\u2019s colors and background stay just as you made them.' : 'Tap Cheer, Dance or Gymnastics to switch this game. Sports with a 🔒 are locked — the Upgrade to Unlock button at the top opens them all.';
   /* Classic build: placeSharedUnlock() positions the single shared
      unlock element at the top of the current panel, above the grid,
      always visible there. On the custom build it never shows at all. */
   placeSharedUnlock();
   var note=document.getElementById('sportSwitchNoteHome');
-  if(note&&w){ note.textContent= cur.id==='cheer'? (custom? 'Tap any sport to leave the castle ballroom and play there instead — tap 📣 Cheer anytime to come back to the pyramid!' : 'Tap 💃 Dance or 🤸 Gymnastics to try a new sport — tap 📣 Cheer anytime to come back to the pyramid! Locked sports need the Customized edition.') : (w.emoji+' '+w.headline+' — '+w.idleMsg+' Tap the big button anytime you want a change!'); }
+  if(note&&w){ note.textContent= cur.id==='cheer'? '' : (w.emoji+' '+w.headline+' — '+w.idleMsg+' Tap the big button anytime you want a change!'); }
   var html=THEME_SPORTS.map(function(x){
     var on= cur.id===x.id;
     if(!custom && !isClassicPlayable(x.id)){
@@ -5061,19 +5087,18 @@ function applyEdition(){
   }
   /* Homepage layout parity: the hub row stays in the exact same place
      on BOTH links — the classic and custom homepages share one layout:
-     same sections, order and spacing. The difference is which hub cards
-     the row holds: the Cheerleader Studio and Coach Studio cards exist
-     ONLY on the personalized link; on a classic link they are removed
-     from the page entirely and the row holds just Trophy Case and Bonus
-     Round. There is NO Ready to Play card on either link — it was
-     removed for good. Theme-building lives in the first-time Setup
-     Wizard, and the wizard's re-run entry lives in the ☰ Menu
-     (custom links only — on classic there is no wizard entry at all). */
+     same sections, order and spacing. The hub row holds just Trophy
+     Case and Bonus Round on BOTH links: the Cheerleader Studio and
+     Coach Studio are not homepage cards at all — on the personalized
+     link they live inside the Setup Wizard as steps 6 and 7. There
+     is NO Ready to Play card on either link — it was removed for
+     good. Theme-building lives in the first-time Setup Wizard, and
+     the wizard's re-run entry lives in the ☰ Menu (custom links
+     only — on classic there is no wizard entry at all). */
   var mw=document.getElementById('menuWizardItem'); if(mw) mw.style.display= custom? 'block':'none';
-  var hubCheer=document.getElementById('hubCheerCard'); if(hubCheer) hubCheer.style.display= custom? '' : 'none';
-  var hubCoach=document.getElementById('hubCoachCard'); if(hubCoach) hubCoach.style.display= custom? '' : 'none';
-  var ht=document.getElementById('hubCheerTitle'); if(ht) ht.textContent='🎀 My Cheerleader — Design & Dress Her!';
-  var hd=document.getElementById('hubCheerDesc'); if(hd) hd.textContent='Pick her skin, hair, uniform, bow, shoes and pom poms. She performs in every game!';
+  /* No studio hub cards on either link: the hub row holds only Trophy
+     Case and Bonus Round. The Cheerleader Studio and Coach Studio
+     live inside the Setup Wizard (steps 6 and 7, custom link only). */
   /* The hero coach bubble is NOT written here: applySportWorld() (reached
      through applyTheme() below) owns it, so its coach title and activity
      wording always follow the current sport. Writing a cheer-only line
@@ -5115,15 +5140,15 @@ function renderThemeStudio(){
   var o=document.getElementById('themeOptions'); if(!o) return;
   var c=themeColor(),c2=themeColor2(),c3=themeColor3(),s=themeSport(),a=themeAnimal(),b=themeBg();
   var h='';
-  h+='<div class="opt-group"><h4>⭐ Ready-Made Themes — tap one and go!</h4><div class="preset-grid">'+THEME_PRESETS.map(function(p){
+  h+='<div class="opt-group"><h4>⭐ Ready-Made Themes</h4><div class="preset-grid">'+THEME_PRESETS.map(function(p){
     return '<button class="preset-card'+(myTheme.preset===p.id?' on':'')+'" onclick="applyThemePreset(\''+p.id+'\')"><div class="preset-swatch">'+worldSceneSVG(p.sport,presetPalette(p),'q'+p.id,'meet')+'</div><b>'+p.name+'</b></button>';
   }).join('')+'</div></div>';
-  h+='<div class="opt-group"><h4>🎨 My Primary Color — my main color</h4><div class="opt-row">'+THEME_COLORS.map(function(x){ return '<button class="swatch'+(myTheme.color===x.id?' on':'')+'" style="background:'+x.primary+'" onclick="setThemeColor(\''+x.id+'\')" aria-label="Primary: '+x.name+'" title="Primary: '+x.name+'"></button>'; }).join('')+'</div><div style="font-weight:900;font-size:13px;color:var(--muted);margin-top:6px">'+c.name+' — your main color: it tints your whole page background, paints your hero, your headings and your main buttons, and makes the borders around your game cards.</div></div>';
-  h+='<div class="opt-group"><h4>💜 My Secondary Color — my accent</h4><div class="opt-row">'+THEME_COLORS.map(function(x){ return '<button class="swatch'+(myTheme.color2===x.id?' on':'')+'" style="background:'+x.primary+'" onclick="setThemePick(\'color2\',\''+x.id+'\')" aria-label="Secondary: '+x.name+'" title="Secondary: '+x.name+'"></button>'; }).join('')+'</div><div style="font-weight:900;font-size:13px;color:var(--muted);margin-top:6px">'+c2.name+' — your accent: it finishes your hero, makes the borders around your shortcut cards and big panels, and colors your card labels and helper details.</div></div>';
-  h+='<div class="opt-group"><h4>⭐ My Tertiary Color — my sparkle</h4><div class="opt-row">'+THEME_COLORS.map(function(x){ return '<button class="swatch'+(myTheme.color3===x.id?' on':'')+'" style="background:'+x.primary+'" onclick="setThemePick(\'color3\',\''+x.id+'\')" aria-label="Tertiary: '+x.name+'" title="Tertiary: '+x.name+'"></button>'; }).join('')+'</div><div style="font-weight:900;font-size:13px;color:var(--muted);margin-top:6px">'+c3.name+' — your sparkle, used just a little: the border around your hero picture and the shiny edge under your hero, your stars, locks and badges.</div></div>';
+  h+='<div class="opt-group"><h4>🎨 My Primary Color — my main color</h4><div class="opt-row">'+THEME_COLORS.map(function(x){ return '<button class="swatch'+(myTheme.color===x.id?' on':'')+'" style="background:'+x.primary+'" onclick="setThemeColor(\''+x.id+'\')" aria-label="Primary: '+x.name+'" title="Primary: '+x.name+'"></button>'; }).join('')+'</div><div style="font-weight:900;font-size:13px;color:var(--muted);margin-top:6px">Your primary: '+c.name+'</div></div>';
+  h+='<div class="opt-group"><h4>💜 My Secondary Color — my accent</h4><div class="opt-row">'+THEME_COLORS.map(function(x){ return '<button class="swatch'+(myTheme.color2===x.id?' on':'')+'" style="background:'+x.primary+'" onclick="setThemePick(\'color2\',\''+x.id+'\')" aria-label="Secondary: '+x.name+'" title="Secondary: '+x.name+'"></button>'; }).join('')+'</div><div style="font-weight:900;font-size:13px;color:var(--muted);margin-top:6px">Your secondary: '+c2.name+'</div></div>';
+  h+='<div class="opt-group"><h4>⭐ My Tertiary Color — my sparkle</h4><div class="opt-row">'+THEME_COLORS.map(function(x){ return '<button class="swatch'+(myTheme.color3===x.id?' on':'')+'" style="background:'+x.primary+'" onclick="setThemePick(\'color3\',\''+x.id+'\')" aria-label="Tertiary: '+x.name+'" title="Tertiary: '+x.name+'"></button>'; }).join('')+'</div><div style="font-weight:900;font-size:13px;color:var(--muted);margin-top:6px">Your tertiary: '+c3.name+'</div></div>';
   h+='<div class="opt-group"><h4>🏆 My Favorite Sport — my world\u2019s home sport!</h4><p style="font-weight:800;color:var(--muted);line-height:1.45;margin:0 0 8px;font-size:14px">This is the home sport of the world you are building — the sport your games start on every time you open your world, together with your color, animal and background. It also BUILDS your world\u2019s background: its own place and tools become the scene behind everything — ballerinas for dance, gymnasts in motion for gymnastics, an ice rink with pucks and sticks for hockey, pom poms in your theme colors for cheer. Later, the big sport bar can switch your GAMES to another sport for a while — the games and their words change, but your world\u2019s theme and background stay exactly as you made them here. Right answers score the playing sport\u2019s way; wrong answers are that sport\u2019s miss, and you try the same problem again. Cheer keeps the classic castle squad and its pyramid.</p><div class="opt-row">'+THEME_SPORTS.map(function(x){ return '<button class="big-chip'+(myTheme.sport===x.id?' on':'')+'" onclick="setThemePick(\'sport\',\''+x.id+'\')"><span class="bce">'+x.emoji+'</span>'+x.name+'</button>'; }).join('')+'</div><div style="font-weight:900;font-size:13px;color:var(--muted);margin-top:6px">Your home sport: '+s.emoji+' '+s.name+' • Playing right now: '+sportWorld().emoji+' '+sportWorld().headline+' — '+coachSportIntro()+'</div></div>';
   h+='<div class="opt-group"><h4>🐾 My Favorite Animal — my mascot!</h4><div class="opt-row">'+THEME_ANIMALS.map(function(x){ return '<button class="big-chip'+(myTheme.animal===x.id?' on':'')+'" onclick="setThemePick(\'animal\',\''+x.id+'\')"><span class="bce">'+x.emoji+'</span>'+x.name+'</button>'; }).join('')+'</div></div>';
-  h+='<div class="opt-group"><h4>🖼️ My Background — built by my favorite sport!</h4><p style="font-weight:800;color:var(--muted);line-height:1.45;margin:0 0 8px;font-size:14px">Your background scene comes from your FAVORITE SPORT above — its own place and tools become the backdrop of your whole world: ballerinas for dance, gymnasts in motion for gymnastics, an ice rink with pucks and sticks for hockey, pom poms in your theme colors for cheer. It stays put — switching sports changes the game inside, never this background. The picks below choose the soft page color, and your primary color tints it, so the whole page wears your colors.</p><div class="opt-row">'+THEME_BGS.map(function(x){ return '<button class="big-chip'+(myTheme.bg===x.id?' on':'')+'" onclick="setThemePick(\'bg\',\''+x.id+'\')"><span class="bce">'+x.emoji+'</span>'+x.name+'</button>'; }).join('')+'</div></div>';
+  h+='<div class="opt-group"><h4>🖼️ My Background</h4><div class="opt-row">'+THEME_BGS.map(function(x){ return '<button class="big-chip'+(myTheme.bg===x.id?' on':'')+'" onclick="setThemePick(\'bg\',\''+x.id+'\')"><span class="bce">'+x.emoji+'</span>'+x.name+'</button>'; }).join('')+'</div></div>';
   h+='<div class="opt-group"><h4>🎀 Match My Cheerleader</h4><p style="font-weight:800;color:var(--muted);line-height:1.45;margin:0 0 8px;font-size:14px">Want your player to wear your theme too? Tap below, or open the Cheerleader Studio and dress her any way you like — skin, hair, uniform, bow, shoes and pom poms.</p><div class="opt-row"><button class="goldbtn" onclick="matchCheerleaderToTheme()">🎀 Match My Cheerleader to My Color</button><button class="ghost" onclick="closeThemeStudio();openStudio()">🎀 Design My Cheerleader</button></div></div>';
   o.innerHTML=h;
   /* Page locked on Royce's original design: every Theme Studio pick is
@@ -5142,13 +5167,20 @@ function renderThemeStudio(){
    through making the
    world theirs one step at a time, with a progress bar — like an intake
    form — in order:
-   1) a ready-made theme (optional shortcut)   2) your three colors
-      (primary, secondary, tertiary — they dress the cards and hero;
-      the favorite sport below builds the background scene itself)
-   3) favorite sport   4) favorite animal   5) background
-   6) name the world — type a first name and the world becomes
-      “Jamie’s Royal Roses”   7) customize the coach —
-   then “Enter My World” steps straight into the world. There is NO
+   1) background — each background is named by its sport and tapping
+      one shows its scene; the pick also sets the home sport
+   2) your three colors
+      (primary, secondary, tertiary — they dress the cards and hero)
+   3) favorite animal
+   4) enter the child's first name — the learner's own first
+      name, the name the welcome script uses
+   5) make your coach
+   6) the cheerleader design studio — design & dress her cheerleader
+      (skin, hair, uniform, bow, shoes and pom poms)
+   7) the coach design studio — the full Coach Studio controls —
+   then “Enter My World” steps straight into the world. The two
+   design studios live ONLY as wizard steps 6 and 7: they are never
+   cards or sections on the homepage. There is NO
    grade step in this wizard: grade was already picked in the pop-up
    that opened first, and it is changed later from the ☰ Menu's grade
    list, so it is never asked twice in one first-open flow. Every pick writes
@@ -5178,10 +5210,11 @@ function applyWorldName(){
 /* Grade is NOT a wizard step: it is picked ONCE in the grade pop-up
    that opens first on every first visit (both links), and changed
    later from the grade list in the ☰ Menu — so the wizard never asks
-   it a second time. The wizard's steps are theme, colors, animal,
-   background, name and coach, and the coach step ends the wizard. */
-var SETUP_STEPS=['theme','color','animal','background','name','coach'];
-var setupStep=0, setupDraft={name:''}, setupGradePending=null, setupAllowClose=false, setupCoachDraft=null, setupKeepOriginal=true, setupSnapshotTheme=null;
+   it a second time. The wizard's steps are background, colors, animal,
+   name, coach, cheerleader design studio and coach design studio —
+   seven steps, and the coach design studio step ends the wizard. */
+var SETUP_STEPS=['background','color','animal','name','coach','cheerleader','coachstudio'];
+var setupStep=0, setupDraft={name:''}, setupGradePending=null, setupAllowClose=false, setupCoachDraft=null, setupKeepOriginal=true, setupSnapshotTheme=null, setupCoachStudioVisited=false;
 /* Royce's theme is the default on a purchased custom build until the user
    changes it. The wizard's default toggle holds that: ON means the world
    keeps Royce's original design (her Royal Roses theme — pink / purple /
@@ -5237,6 +5270,7 @@ function openSetupWizard(rerun){
   if(!window.isCustomEdition()) return;
   setupDraft={name:setupState.name||''};
   setupCoachDraft=null;
+  setupCoachStudioVisited=false;
   if(typeof myCoach!=='undefined'&&myCoach){ setupCoachDraft={name:myCoach.name||'',identity:myCoach.identity||'girl',jacket:myCoach.jacket||'#E4B33C',jacketStyle:myCoach.jacketStyle||'classic',hair:myCoach.hair||'ponytail',hairColor:myCoach.hairColor||'#3B2310',skin:(typeof myCoach.skin==='number'?myCoach.skin:2)}; }
   setupGradePending= (typeof gradeChosen!=='undefined'&&gradeChosen)? gradeIdx : null;
   setupKeepOriginal= (setupState&&typeof setupState.keepOriginal==='boolean')? setupState.keepOriginal : themeIsRoyceDefault();
@@ -5264,28 +5298,23 @@ function renderSetupWizard(){
   var body=document.getElementById('setupBody'); if(!body) return;
   var key=SETUP_STEPS[setupStep], h='';
   var kick='STEP '+(setupStep+1)+' OF '+SETUP_STEPS.length;
-  if(key==='theme'){
-    h+='<div class="setup-kicker">'+kick+' — READY-MADE THEMES</div><div class="setup-q">Start with a ready-made theme? ⭐</div><p class="setup-hint">Tap one theme to set your three colors, sport, animal and background all at once — or just tap Next to build your own theme step by step. Either way, you can change every pick on the steps after this one!</p>';
-    h+='<div class="preset-grid">'+THEME_PRESETS.map(function(p){
-      return '<button class="preset-card'+(myTheme.preset===p.id?' on':'')+'" onclick="setupPickPreset(\''+p.id+'\')"><div class="preset-swatch">'+worldSceneSVG(p.sport,presetPalette(p),'q'+p.id,'meet')+'</div><b>'+p.name+'</b></button>';
-    }).join('')+'</div>';
-  } else if(key==='name'){
-    h+='<div class="setup-kicker">'+kick+' — NAME YOUR WORLD</div><div class="setup-q">What is your first name? 🌹</div><p class="setup-hint">Type your first name and this world takes your name — it becomes your very own Royal Roses, named just for you!</p>';
-    h+='<input class="setup-name-input" id="setupNameInput" type="text" maxlength="20" autocomplete="off" autocapitalize="words" spellcheck="false" placeholder="enter your child\'s name" aria-label="enter your child\'s name" value="'+escAttr(setupDraft.name)+'" oninput="setupNameInput(this.value)"/>';
+  if(key==='name'){
+    h+='<div class="setup-kicker">'+kick+' — YOUR FIRST NAME</div><div class="setup-q">What is your first name? 🌹</div><p class="setup-hint">Type your first name here — this is your name, the name your coach uses to say hello to you!</p>';
+    h+='<input class="setup-name-input" id="setupNameInput" type="text" maxlength="20" autocomplete="off" autocapitalize="words" spellcheck="false" placeholder="enter your first name" aria-label="enter your first name" value="'+escAttr(setupDraft.name)+'" oninput="setupNameInput(this.value)"/>';
   } else if(key==='background'){
     var bmeta=WORLD_SCENE_META[myTheme.sport]||WORLD_SCENE_META.cheer; var enchantedBg=(myTheme.bg==='enchanted' && myTheme.sport===defaultTheme().sport); var ebg=themeById(THEME_BGS,'enchanted');
-    h+='<div class="setup-kicker">'+kick+' — YOUR BACKGROUND</div><div class="setup-q">Your background is built! 🖼️</div><p class="setup-hint">Each background below is built from a sport — its own place and tools become the scene behind everything: pick Dance and ballerinas dance across your background, pick Hockey and you get a shining ice rink with pucks and hockey sticks, pick Cheer and beautiful pom poms in YOUR theme colors fill your ballroom. The sport of the background you pick becomes the home sport of YOUR world, and your games start on it every time you open your world. That scene is the background of your whole page, and it stays your world\u2019s background no matter which sport your games switch to. Your three colors dress everything on top of it — your cards and their borders, your hero and its picture border.</p>';
+    h+='<div class="setup-kicker">'+kick+' — YOUR BACKGROUND</div><div class="setup-q">Your background is built! 🖼️</div>';
     h+='<div class="scene-preview" style="margin:0 0 12px">'+(enchantedBg? enchantedSceneSVG(themePalette(),'w3','meet') : worldSceneSVG(myTheme.sport,themePalette(),'w3','meet'))+'<div class="scene-preview-cap">🖼️ Your background: '+(enchantedBg? ebg.name : bmeta.name)+'</div></div>';
     h+='<div class="opt-row"><button class="big-chip'+(enchantedBg?' on':'')+'" onclick="setupPickBackgroundTemplate(\'enchanted\')"><span class="bce">'+ebg.emoji+'</span>'+ebg.name+'</button>'+THEME_SPORTS.map(function(x){ var m=WORLD_SCENE_META[x.id]||WORLD_SCENE_META.cheer; return '<button class="big-chip'+(!enchantedBg&&myTheme.sport===x.id?' on':'')+'" onclick="setupPickBackgroundTemplate(\''+x.id+'\')"><span class="bce">'+x.emoji+'</span>'+m.name+'</button>'; }).join('')+'</div>';
   } else if(key==='color'){
-    h+='<div class="setup-kicker">'+kick+' — YOUR THREE COLORS</div><div class="setup-q">Pick your three colors! 🎨</div><p class="setup-hint">Your world gets THREE colors, and each one has its own job — that is what keeps your page looking clean and pretty. Your sport builds your background scene; these three colors dress your cards, your hero and everything on top of it. Watch your world change as you tap!</p>';
-    h+='<div class="color-role">1. Primary Color — your main color 🎨</div><p class="color-role-note">It tints your whole page background, paints your hero, your headings and your main buttons, and makes the borders around your game cards.</p>';
+    h+='<div class="setup-kicker">'+kick+' — YOUR THREE COLORS</div><div class="setup-q">Pick your three colors! 🎨</div>';
+    h+='<div class="color-role">1. Primary Color — your main color 🎨</div>';
     h+='<div class="setup-color-grid">'+THEME_COLORS.map(function(x){ return '<button class="setup-color" onclick="setupPickTheme(\'color\',\''+x.id+'\')" aria-label="Primary color: '+x.name+'"><span class="swatch'+(myTheme.color===x.id?' on':'')+'" style="background:'+x.primary+'"></span>'+x.name.replace('Royal ','').replace('Castle ','')+'</button>'; }).join('')+'</div>';
     h+='<div class="color-role-pick">Your primary: '+themeColor().name+'</div>';
-    h+='<div class="color-role">2. Secondary Color — your accent 💜</div><p class="color-role-note">It finishes your hero, makes the borders around your shortcut cards and big panels, and colors your card labels and helper details — the pretty contrast next to your primary.</p>';
+    h+='<div class="color-role">2. Secondary Color — your accent 💜</div>';
     h+='<div class="setup-color-grid">'+THEME_COLORS.map(function(x){ return '<button class="setup-color" onclick="setupPickTheme(\'color2\',\''+x.id+'\')" aria-label="Secondary color: '+x.name+'"><span class="swatch'+(myTheme.color2===x.id?' on':'')+'" style="background:'+x.primary+'"></span>'+x.name.replace('Royal ','').replace('Castle ','')+'</button>'; }).join('')+'</div>';
     h+='<div class="color-role-pick">Your secondary: '+themeColor2().name+'</div>';
-    h+='<div class="color-role">3. Tertiary Color — your sparkle ⭐</div><p class="color-role-note">Just a little of this one, in the special spots: the border around your hero picture and the shiny edge under your hero, your stars, locks and badges.</p>';
+    h+='<div class="color-role">3. Tertiary Color — your sparkle ⭐</div>';
     h+='<div class="setup-color-grid">'+THEME_COLORS.map(function(x){ return '<button class="setup-color" onclick="setupPickTheme(\'color3\',\''+x.id+'\')" aria-label="Tertiary color: '+x.name+'"><span class="swatch'+(myTheme.color3===x.id?' on':'')+'" style="background:'+x.primary+'"></span>'+x.name.replace('Royal ','').replace('Castle ','')+'</button>'; }).join('')+'</div>';
     h+='<div class="color-role-pick">Your tertiary: '+themeColor3().name+'</div>';
   } else if(key==='animal'){
@@ -5297,8 +5326,6 @@ function renderSetupWizard(){
     try{ var csp=themeSport(), can=themeAnimal(); csE=csp.emoji; csN=csp.name; caE=can.emoji; caN=can.name; }catch(e){}
     h+='<div class="setup-kicker">'+kick+' — YOUR COACH</div><div class="setup-q">Make your coach yours! 🏆</div><p class="setup-hint">Name your coach, pick who she is, and dress her. Royce\u2019s coaches are always girls, just like Belle! Your favorite sport and animal come along too — your coach carries a '+csN+' prop '+csE+' and keeps a '+caN+' friend '+caE+' close!</p>';
     h+='<div class="opt-group"><h4>✏️ Coach\u2019s Name</h4><input class="coach-name-input" id="setupCoachNameInput" type="text" maxlength="20" autocomplete="off" autocapitalize="words" spellcheck="false" placeholder="Belle" aria-label="Coach\u2019s name" value="'+escAttr(cd.name)+'" oninput="setupCoachNameInput(this.value)"/></div>';
-    h+='<div class="opt-group"><h4>🌟 Who Is Your Coach?</h4><div class="opt-row">'+COACH_IDENTITIES.map(function(x){ return '<button class="big-chip'+(cd.identity===x.id?' on':'')+'" onclick="setupCoachPick(\'identity\',\''+x.id+'\')">'+x.label+'</button>'; }).join('')+'</div></div>';
-    h+='<p class="coach-look-note" style="margin:0 0 10px">👧 Your coach’s face works just like your cheerleader’s — the same skin tones, the same hair types and the same hair colors to pick from!</p>';
     h+='<div class="opt-group"><h4>🖐️ Skin Tone</h4><div class="opt-row">'+SKINS.map(function(_,i){ return '<button class="swatch'+(cd.skin===i?' on':'')+'" style="background:'+SKINS[i]+'" onclick="setupCoachPick(\'skin\','+i+')" aria-label="Skin tone '+(i+1)+'" title="Skin tone '+(i+1)+'"></button>'; }).join('')+'</div></div>';
     h+='<div class="opt-group"><h4>💇 Hair Style</h4><div class="opt-row">'+COACH_HAIRS.map(function(x){ return '<button class="opt-chip'+(cd.hair===x[0]?' on':'')+'" onclick="setupCoachPick(\'hair\',\''+x[0]+'\')">'+x[1]+'</button>'; }).join('')+'</div></div>';
     h+='<div class="opt-group"><h4>🎨 Hair Color</h4><div class="opt-row">'+HAIR_COLORS.map(function(c){ return '<button class="swatch'+(cd.hairColor===c[0]?' on':'')+'" style="background:'+c[0]+'" onclick="setupCoachPick(\'hairColor\',\''+c[0]+'\')" aria-label="'+c[1]+'" title="'+c[1]+'"></button>'; }).join('')+'</div></div>';
@@ -5312,22 +5339,45 @@ function renderSetupWizard(){
        (cd), so it updates live with every pick on this step. */
     var wcid=(typeof coachById==='function')? coachById(COACH_IDENTITIES,cd.identity) : COACH_IDENTITIES[0];
     var wcjk=(typeof coachById==='function')? coachById(COACH_JACKETS,cd.jacketStyle) : COACH_JACKETS[0];
-    h+='<div class="opt-group"><h4>✨ Your Coach So Far</h4><div class="opt-row"><span class="coach-chip">'+wcid.label+'</span><span class="coach-chip">'+wcjk.emoji+' Dressed in: '+wcjk.name+'</span></div></div>';
+    h+='<div class="opt-group"><h4>✨ Your Coach So Far</h4><div class="opt-row"><span class="coach-chip">'+wcjk.emoji+' Dressed in: '+wcjk.name+'</span></div></div>';
     h+='<div class="opt-group"><h4>🏆 From Your Favorites</h4><div class="opt-row"><span class="coach-chip">'+csE+' '+csN+' prop</span><span class="coach-chip">'+caE+' '+caN+' friend</span></div></div>';
+  } else if(key==='cheerleader'){
+    /* STEP 6 — the Cheerleader Design Studio lives HERE, inside the
+       wizard: the very same studio controls (renderStudio / setDesign,
+       same preview) that used to sit in a homepage card + modal. The
+       containers keep their studio ids, so every studio pick works
+       exactly as it did — only where the studio lives has changed. */
+    h+='<div class="setup-kicker">'+kick+' — MY CHEERLEADER STUDIO</div><div class="setup-q">Design Your Cheerleader! 🎀</div>';
+    h+='<div class="studio-grid"><div class="studio-preview"><div class="pv" id="studioPreview"></div><div class="pname" id="studioName">Your Cheerleader ⭐</div></div><div id="studioOptions"></div></div>';
+  } else if(key==='coachstudio'){
+    /* STEP 7 — the Coach Design Studio lives HERE, inside the wizard,
+       as its OWN step (not folded into the step-5 coach step): the
+       very same studio controls (renderCoachStudio / setCoach, same
+       preview) that used to sit in a homepage card + modal. The step-5
+       draft is handed to the studio the first time this step opens,
+       so the studio starts from the coach she just made; from here
+       the studio works on the coach directly, and finishSetup reads
+       her back from it (see setupCoachStudioVisited there). */
+    if(!setupCoachStudioVisited && setupCoachDraft && typeof myCoach!=='undefined'){ myCoach={name:setupCoachDraft.name||'',identity:setupCoachDraft.identity||'girl',jacket:setupCoachDraft.jacket||'#E4B33C',jacketStyle:setupCoachDraft.jacketStyle||'classic',hair:setupCoachDraft.hair||'ponytail',hairColor:setupCoachDraft.hairColor||'#3B2310',skin:(typeof setupCoachDraft.skin==='number'?setupCoachDraft.skin:2)}; }
+    setupCoachStudioVisited=true;
+    h+='<div class="setup-kicker">'+kick+' — MY COACH STUDIO</div><div class="setup-q">Customize Your Coach! 🏆</div><p class="setup-hint">Give your coach a name, dress her your way, and choose who she is. Royce\u2019s coaches are always girls — pick her style in pinks, purples, rose and gold! Your sport and animal favorites dress her too — a sport prop and an animal friend ride along in her portrait.</p>';
+    h+='<div class="studio-grid"><div class="studio-preview"><div id="coachPreview"></div><div class="pname" id="coachPreviewName">Cheer Coach Belle</div><div class="coach-look-note" id="coachPreviewNote"></div></div><div id="coachOptions"></div></div>';
   }
   /* No grade step here on purpose: grade was already picked in the
      pop-up that opened first, and is changed later from the ☰ Menu —
-     the wizard never asks it again. The coach step above is the last
-     step; its button reads “Enter My World!”. */
+     the wizard never asks it again. The coach design studio step
+     above is the last step; its button reads “Enter My World!”. */
   body.innerHTML=h;
-  /* While the default toggle is ON, the design steps (ready-made theme,
-     colors, animal, coach) show Royce's original design and their
+  if(key==='cheerleader'&&typeof renderStudio==='function') renderStudio();
+  if(key==='coachstudio'&&typeof renderCoachStudio==='function') renderCoachStudio();
+  /* While the default toggle is ON, the design steps (colors, animal,
+     coach) show Royce's original design and their
      picks stay locked. The BACKGROUND step is never locked: choosing a
      new background template there is what unlocks the page — and the
      template pick is also her sport pick, so there is no separate
      sport step. The name step stays open too. (There is no grade step:
      grade is picked in the first-open pop-up and changed in the Menu.) */
-  var designStep= (key==='theme'||key==='color'||key==='animal'||key==='coach');
+  var designStep= (key==='color'||key==='animal'||key==='coach'||key==='cheerleader'||key==='coachstudio');
   if(setupKeepOriginal&&designStep){ body.classList.add('setup-locked'); body.querySelectorAll('button').forEach(function(b){ b.disabled=true; }); body.querySelectorAll('input').forEach(function(b){ b.disabled=true; }); } else { body.classList.remove('setup-locked'); }
   var back=document.getElementById('setupBackBtn'); if(back) back.style.visibility= setupStep===0? 'hidden':'visible';
   var next=document.getElementById('setupNextBtn');
@@ -5366,7 +5416,6 @@ function setupPickBackgroundTemplate(id){
   /* DRAFT only — saved and applied when the wizard finishes, discarded on ✕. */
   myTheme.preset=''; renderSetupWizard(); if(typeof sfx==='function') sfx('pop');
 }
-function setupPickPreset(id){ if(!window.isCustomEdition()) return; if(setupKeepOriginal) return; /* the default toggle holds Royce's original design until the user turns it off */ var p=null; for(var i=0;i<THEME_PRESETS.length;i++){ if(THEME_PRESETS[i].id===id) p=THEME_PRESETS[i]; } if(!p) return; /* DRAFT only — saved and applied when the wizard finishes, discarded on ✕. */ myTheme={color:p.color,color2:p.color2||'purple',color3:p.color3||'gold',sport:p.sport,animal:p.animal,bg:p.bg,preset:p.id}; renderSetupWizard(); if(typeof sfx==='function') sfx('sparkle'); }
 function setupMove(dir){
   if(dir<0){ if(setupStep>0){ setupStep--; renderSetupWizard(); } return; }
   if(setupStep<SETUP_STEPS.length-1){ setupStep++; renderSetupWizard(); if(typeof sfx==='function') sfx('pop'); return; }
@@ -5379,6 +5428,10 @@ function finishSetup(){
      played sport, and repaint the world. */
   setupSnapshotTheme=null; saveTheme(); syncPlaySportToTheme(); applyTheme();
   if(typeof syncPageLockClass==='function') syncPageLockClass();
+  /* Step 7 (coach design studio) worked on the coach directly, so if
+     it was visited, the finished coach is read back from the studio —
+     the step-5 draft must not overwrite her step-7 design picks. */
+  if(setupCoachStudioVisited&&typeof myCoach!=='undefined'){ setupCoachDraft={name:myCoach.name||'',identity:myCoach.identity||'girl',jacket:myCoach.jacket||'#E4B33C',jacketStyle:myCoach.jacketStyle||'classic',hair:myCoach.hair||'ponytail',hairColor:myCoach.hairColor||'#3B2310',skin:(typeof myCoach.skin==='number'?myCoach.skin:2)}; }
   if(!setupKeepOriginal&&setupCoachDraft&&typeof myCoach!=='undefined'){ myCoach={name:(setupCoachDraft.name||'').trim(),identity:setupCoachDraft.identity||'girl',jacket:setupCoachDraft.jacket||'#E4B33C',jacketStyle:setupCoachDraft.jacketStyle||'classic',hair:setupCoachDraft.hair||'ponytail',hairColor:setupCoachDraft.hairColor||'#3B2310',skin:(typeof setupCoachDraft.skin==='number'?setupCoachDraft.skin:2)}; if(typeof saveCoach==='function') saveCoach(); if(typeof applyCoach==='function') applyCoach(); }
   document.getElementById('setupModal').classList.remove('open');
   var wn=effectiveWorldName();
