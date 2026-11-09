@@ -27,7 +27,7 @@
      side by side in that same row: the Cheerleader Studio and the
      Coach Studio are NOT homepage cards on either link — on the
      personalized link they live inside the Setup Wizard as its
-     step 6 (cheerleader design) and step 7 (coach design).
+     step 4 (coach design) and step 5 (cheerleader design).
    • Personalized link: the SAME page ending in ?custom=1 — ALL
      customization opens, so the child can make the world their own:
      design her cheerleader (skin, hair, uniform, skirt, bow, pom poms,
@@ -778,6 +778,7 @@ main.wrap,body>footer{position:relative;z-index:1}
 .stage.sport-active svg.bg{display:none}
 .scene-preview{position:relative;border-radius:16px;overflow:hidden;border:3px solid var(--line);margin-top:12px;background:#FDF3F9}
 .scene-preview svg{width:100%;height:150px;display:block}
+.scene-preview img.scene-photo{width:100%;height:150px;object-fit:cover;object-position:center;display:block}
 .scene-preview-cap{padding:9px 12px;font-weight:900;font-size:14px;line-height:1.45;color:var(--pink-dd);background:rgba(255,255,255,.92)}
 .tp-scene{position:absolute;inset:0;pointer-events:none}
 .tp-scene svg{position:absolute;inset:0;width:100%;height:100%;display:block}
@@ -1252,7 +1253,7 @@ footer{max-width:1080px;margin:0 auto;padding:0 16px 210px;color:var(--muted);fo
    The hub row holds only Trophy Case and Bonus Round on BOTH links.
    The Cheerleader Studio and Coach Studio are never homepage cards:
    on the personalized link they live inside the Setup Wizard as
-   steps 6 and 7; on a classic link they do not exist at all. The hub
+   steps 4 and 5; on a classic link they do not exist at all. The hub
    row itself stays in the exact same place with the same card design,
    its two cards side by side (stacked on phones, like every hub row). */
 .hub-row{grid-template-columns:repeat(2,1fr)}
@@ -2660,7 +2661,7 @@ function renderAllCheerleaders(){
   renderSquad();
 }
 /* ----- studio ----- */
-function openStudio(){ if(!window.isCustomEdition()){ toast('🔒 The Cheerleader Design Studio opens in the Customized edition!'); return; } if(typeof designLocked==='function'&&designLocked()){ if(typeof openWizardAtBackground==='function') openWizardAtBackground(); return; } /* page locked on Royce's original design — only updating the page background unlocks it */ /* The Cheerleader Design Studio lives INSIDE the Setup Wizard as step 6 — there is no studio card or modal on the homepage. Opening it means opening the wizard on that step. */ if(typeof openSetupWizard==='function'){ openSetupWizard(true); var ci=SETUP_STEPS.indexOf('cheerleader'); if(ci>=0){ setupStep=ci; renderSetupWizard(); } } }
+function openStudio(){ if(!window.isCustomEdition()){ toast('🔒 The Cheerleader Design Studio opens in the Customized edition!'); return; } if(typeof designLocked==='function'&&designLocked()){ if(typeof openWizardAtBackground==='function') openWizardAtBackground(); return; } /* page locked on Royce's original design — only updating the page background unlocks it */ /* The Cheerleader Design Studio lives INSIDE the Setup Wizard as step 5 — there is no studio card or modal on the homepage. Opening it means opening the wizard on that step. */ if(typeof openSetupWizard==='function'){ openSetupWizard(true); var ci=SETUP_STEPS.indexOf('cheerleader'); if(ci>=0){ setupStep=ci; renderSetupWizard(); } } }
 function closeStudio(){ saveDesign(); renderAllCheerleaders(); }
 function setDesign(key,val){ if(!window.isCustomEdition()) return; if(typeof designLocked==='function'&&designLocked()) return; /* page locked on Royce's original design */ cheerDesign[key]=val; saveDesign(); renderStudio(); renderAllCheerleaders(); }
 function toggleDesign(key){ if(!window.isCustomEdition()) return; if(typeof designLocked==='function'&&designLocked()) return; /* page locked on Royce's original design */ cheerDesign[key]=!cheerDesign[key]; saveDesign(); renderStudio(); renderAllCheerleaders(); }
@@ -3892,7 +3893,7 @@ function tapPom(btn,val){
 </script>
 
 <script>
-/* ================= MY COACH STUDIO (personalized link only) =================
+/* ================= MY COACH (personalized link only) =================
    On a ?custom=1 link the child (with a grown-up) can customize the coach:
    • NAME — free text; every “Belle” in the coach's own lines, labels and
      buttons becomes the chosen name (game content keeps its own wording).
@@ -4026,34 +4027,29 @@ function applyCoach(){
   });
   var mini=document.querySelector('.coach-mini-slot'); if(mini) mini.innerHTML= custom? coachFigureSVG(myCoach) : '<img src="assets/coach-belle.webp" alt="" style="width:52px;height:52px;border-radius:50%;object-fit:cover;object-position:50% 10%;border:3px solid var(--gold)"/>';
   /* Coach controls exist only on a personalized link, inside the
-     Setup Wizard (step 7) — there is no coach card on the homepage
-     on either link. */
+     Setup Wizard's Coach step (step 4) — there is no coach card on
+     the homepage on either link. */
   var sum=document.getElementById('coachSummary'); if(sum) sum.innerHTML= custom? coachSummaryHTML() : '';
-  /* There is no coach hub card: the Coach Design Studio lives in the Setup Wizard (step 7). */
-  /* If the Coach Studio is open, refresh only its preview — never rebuild the
-     option list here, or the name field would lose focus mid-typing.
-     (setCoach() re-renders the options itself after a pick.) */
-  if(document.getElementById('coachPreview')){ /* the Coach Studio preview exists only while wizard step 7 is showing it */
+  /* There is no coach hub card: coach design lives in the Setup Wizard's Coach step (step 4). */
+  /* If a Coach Studio preview spot were open, refresh only its preview —
+     never rebuild the option list here, or the name field would lose
+     focus mid-typing. (The Coach Studio step was removed as a duplicate
+     of the Coach step, so this spot no longer exists and never fires.) */
+  if(document.getElementById('coachPreview')){ /* coach studio preview spot — removed with its step, guard kept harmless */
     var pv2=document.getElementById('coachPreview'); if(pv2) pv2.innerHTML=coachStudioPreviewHTML();
     var pn2=document.getElementById('coachPreviewName'); if(pn2) pn2.textContent=coachDisplayName();
-    var nt2=document.getElementById('coachPreviewNote'); if(nt2) nt2.textContent=coachLookNote();
   }
 }
 function openCoachStudio(){
   if(!window.isCustomEdition()){ toast('🔒 Making your coach yours opens in the Customized edition!'); return; }
   if(typeof designLocked==='function'&&designLocked()){ if(typeof openWizardAtBackground==='function') openWizardAtBackground(); return; } /* page locked on Royce's original design — only updating the page background unlocks it */
-  /* The Coach Design Studio lives INSIDE the Setup Wizard as step 7 — there is no coach card or modal on the homepage. Opening it means opening the wizard on that step. */
-  if(typeof openSetupWizard==='function'){ openSetupWizard(true); var csi=SETUP_STEPS.indexOf('coachstudio'); if(csi>=0){ setupStep=csi; renderSetupWizard(); } }
+  /* Coach design lives INSIDE the Setup Wizard as its Coach step (step 4) — there is no coach card or modal on the homepage. Opening it means opening the wizard on that step. (The old Coach Studio step was removed: it duplicated the Coach step.) */
+  if(typeof openSetupWizard==='function'){ openSetupWizard(true); var csi=SETUP_STEPS.indexOf('coach'); if(csi>=0){ setupStep=csi; renderSetupWizard(); } }
   if(typeof renderAllCheerleaders==='function') renderAllCheerleaders();
 }
 function closeCoachStudio(){ saveCoach(); applyCoach(); }
 function setCoach(key,val){ if(!window.isCustomEdition()) return; if(typeof designLocked==='function'&&designLocked()) return; /* coach stays as shipped while the page is locked */ if(key==='identity'&&!coachIdentityAllowed(val)) val='girl'; if(key==='jacket'&&!coachJacketAllowed(val)) val='#E4B33C'; if(key==='hair'&&!coachHairAllowed(val)) val='ponytail'; if(key==='hairColor'&&!coachHairColorAllowed(val)) val='#3B2310'; if(key==='skin'&&(typeof val!=='number'||val<0||val>=SKINS.length)) val=2; myCoach[key]=val; saveCoach(); applyCoach(); renderCoachStudio(); if(typeof sfx==='function') sfx('pop'); }
-function setCoachName(v){ if(!window.isCustomEdition()) return; if(typeof designLocked==='function'&&designLocked()) return; /* coach stays as shipped while the page is locked */ myCoach.name=v; saveCoach(); applyCoach(); var pv=document.getElementById('coachPreview'); if(pv) pv.innerHTML=coachStudioPreviewHTML(); var pn=document.getElementById('coachPreviewName'); if(pn) pn.textContent=coachDisplayName(); var nt=document.getElementById('coachPreviewNote'); if(nt) nt.textContent=coachLookNote(); }
-function coachLookNote(){
-  var sE='📣', aE='🦋';
-  try{ sE=themeSport().emoji; aE=themeAnimal().emoji; }catch(e){}
-  return sE+' sport prop • '+aE+' animal friend';
-}
+function setCoachName(v){ if(!window.isCustomEdition()) return; if(typeof designLocked==='function'&&designLocked()) return; /* coach stays as shipped while the page is locked */ myCoach.name=v; saveCoach(); applyCoach(); var pv=document.getElementById('coachPreview'); if(pv) pv.innerHTML=coachStudioPreviewHTML(); var pn=document.getElementById('coachPreviewName'); if(pn) pn.textContent=coachDisplayName(); }
 function coachStudioPreviewHTML(){
   if(coachCustom()) return '<div class="coach-fig">'+coachFigureSVG(myCoach)+'</div>';
   return '<img class="coach-portrait" src="assets/coach-belle.webp" alt="'+coachDisplayName()+'"/>';
@@ -4064,20 +4060,14 @@ function renderCoachStudio(){
   var d=myCoach, id=coachIdentity();
   var h='';
   h+='<div class="opt-group"><h4>✏️ Coach\u2019s Name</h4><input class="coach-name-input" id="coachNameInput" type="text" maxlength="20" autocomplete="off" autocapitalize="words" spellcheck="false" placeholder="Belle" aria-label="Coach\u2019s name" value="'+escAttr(d.name)+'" oninput="setCoachName(this.value)"/><p class="coach-look-note">Leave it blank to keep Belle — or name your coach anything you like!</p></div>';
-  h+='<div class="opt-group"><h4>🌟 Who Is Your Coach?</h4><p class="coach-look-note" style="margin:0 0 8px">Royce\u2019s coaches are always girls — every choice here is a girl coach, mentor or captain, just like Belle!</p><div class="opt-row">'+COACH_IDENTITIES.map(function(x){ return '<button class="big-chip'+(d.identity===x.id?' on':'')+'" onclick="setCoach(\'identity\',\''+x.id+'\')">'+x.label+'</button>'; }).join('')+'</div></div>';
-  h+='<p class="coach-look-note" style="margin:0 0 10px">👧 Your coach’s face works just like your cheerleader’s — the same skin tones, the same hair types and the same hair colors to pick from!</p>';
   h+='<div class="opt-group"><h4>🖐️ Skin Tone</h4><div class="opt-row">'+SKINS.map(function(_,i){ return '<button class="swatch'+(d.skin===i?' on':'')+'" style="background:'+SKINS[i]+'" onclick="setCoach(\'skin\','+i+')" aria-label="Skin tone '+(i+1)+'" title="Skin tone '+(i+1)+'"></button>'; }).join('')+'</div></div>';
   h+='<div class="opt-group"><h4>💇 Hair Style</h4><div class="opt-row">'+COACH_HAIRS.map(function(x){ return '<button class="opt-chip'+(d.hair===x[0]?' on':'')+'" onclick="setCoach(\'hair\',\''+x[0]+'\')">'+x[1]+'</button>'; }).join('')+'</div></div>';
   h+='<div class="opt-group"><h4>🎨 Hair Color</h4><div class="opt-row">'+HAIR_COLORS.map(function(c){ return '<button class="swatch'+(d.hairColor===c[0]?' on':'')+'" style="background:'+c[0]+'" onclick="setCoach(\'hairColor\',\''+c[0]+'\')" aria-label="'+c[1]+'" title="'+c[1]+'"></button>'; }).join('')+'</div></div>';
   h+='<div class="opt-group"><h4>🧥 Jacket Color — Girls\u2019 Pinks, Purples &amp; Gold</h4><div class="opt-row">'+COACH_JACKET_COLORS.map(function(c){ return '<button class="swatch'+(d.jacket===c[0]?' on':'')+'" style="background:'+c[0]+'" onclick="setCoach(\'jacket\',\''+c[0]+'\')" aria-label="'+c[1]+'" title="'+c[1]+'"></button>'; }).join('')+'</div></div>';
   h+='<div class="opt-group"><h4>👕 Jacket Style — How She\u2019s Dressed</h4><div class="opt-row">'+COACH_JACKETS.map(function(x){ return '<button class="big-chip'+(d.jacketStyle===x.id?' on':'')+'" onclick="setCoach(\'jacketStyle\',\''+x.id+'\')"><span class="bce">'+x.emoji+'</span>'+x.name+'</button>'; }).join('')+'</div></div>';
-  var sE='📣', aE='🦋', sN='Cheer', aN='Butterfly';
-  try{ var sp=themeSport(), an=themeAnimal(); sE=sp.emoji; sN=sp.name; aE=an.emoji; aN=an.name; }catch(e){}
-  h+='<div class="opt-group"><h4>🏆 From Your Favorites</h4><p class="coach-look-note" style="margin:0 0 8px">Your coach carries your favorite sport and keeps your favorite animal close — change them anytime in the Setup Wizard or Theme Studio and your coach updates too!</p><div class="opt-row"><span class="coach-chip">'+sE+' '+sN+' prop</span><span class="coach-chip">'+aE+' '+aN+' friend</span></div><div class="opt-row" style="margin-top:8px"><button class="ghost" onclick="closeCoachStudio();openThemeStudio()">🎨 Change My Favorites</button></div></div>';
   o.innerHTML=h;
   var pv=document.getElementById('coachPreview'); if(pv) pv.innerHTML=coachStudioPreviewHTML();
   var pn=document.getElementById('coachPreviewName'); if(pn) pn.textContent=coachDisplayName();
-  var nt=document.getElementById('coachPreviewNote'); if(nt) nt.textContent=coachLookNote();
 }
 function setCoachSkin(i){ setCoach('skin',i); }
 </script>
@@ -4455,97 +4445,23 @@ function effectiveTheme(){ return window.isCustomEdition()? myTheme : defaultThe
 var WORLD_SCENE_META={
  cheer:{name:'Castle Ballroom of Pom Poms',desc:'Beautiful pom poms in YOUR theme colors fill your castle ballroom!'},
  dance:{name:'Repeating Ballerina Pattern',desc:'Ballerinas in tutus repeat all across your background — arms out on pointe, legs up and arms raised — with little hearts and stars scattered in!'},
- gymnastics:{name:'Gymnasts in Motion',desc:'Clean, glossy 3D-style gymnasts fill your background — girls of every skin tone, from light to deep, with different hair — buns, ponytails, puffs, curls, long hair and braids — and different leotards, each in a different motion: handstands, a cartwheel, a split leap, a leg hold, a backbend and floor splits!'},
+ gymnastics:{name:'Gymnasts in Motion',desc:'Girl gymnasts fill your gym — still-rings holds, a cartwheel over the beam, a floor split, a straddle jump and a handstand — girls of every skin tone with different hair, in leotards in YOUR theme colors!'},
  hockey:{name:'Ice Rink',desc:'A full arena rink fills your background — a goal net, a stick and puck at center ice, face-off circles, boards, arena seats and two big floodlights shining down!'},
- basketball:{name:'Basketball Court',desc:'A real basketball court fills your background — hoops up high and basketballs ready!'},
- soccer:{name:'Soccer Field',desc:'A green soccer field fills your background — goals, white lines and soccer balls!'},
- tennis:{name:'Tennis Court',desc:'A sunny tennis court fills your background — a net, rackets and tennis balls!'},
- swimming:{name:'Castle Pool',desc:'A sparkling pool fills your background — lanes, flags and starting blocks!'},
- running:{name:'Running Track',desc:'A running track fills your background — lanes, hurdles and a checkered finish line!'},
- jumprope:{name:'Jump Ropes & Jumping Girls',desc:'Colorful jump ropes fill your background — a crossed double loop, a hanging U-rope, a figure-8 rope and coiled rings with chunky handles, all in YOUR theme colors — plus happy girls mid-jump with the rope arcing overhead!'}
+ basketball:{name:'Basketball Court',desc:'A real basketball gym fills your background — cream paneled walls, a gold chevron band, the glass hoop up high and the polished wood court!'},
+ soccer:{name:'Soccer Field',desc:'A green soccer field fills your background — white lines, corner flags and soccer balls!'},
+ tennis:{name:'Tennis Court',desc:'A tennis court fills your background — white lines, the net and tennis balls!'},
+ swimming:{name:'Swimming Pool',desc:'A sparkling pool fills your background — lane ropes, splashes and a swimmer in the water!'},
+ running:{name:'Running Track',desc:'A running track fills your background — numbered lanes, a checkered finish line and running shoes!'},
+ jumprope:{name:'Jumping Girls',desc:'Happy girls mid-jump with the rope arcing overhead, in YOUR theme colors, on the soft pink playground!'}
 };
 function worldSceneTools(id){ var m={cheer:['🎀','🌹'],dance:['🩰','🎵'],gymnastics:['🤸','🏅'],hockey:['🏒','⚫'],basketball:['🏀','🏆'],soccer:['⚽','🥅'],tennis:['🎾','🏆'],swimming:['💦','🏁'],running:['👟','🏁'],jumprope:['🪢','☀️']}; return m[id]||['⭐','🎀']; }
 function wsSparkles(n){ var pts=[[60,60],[180,34],[330,70],[505,40],[655,66],[752,36],[120,150],[705,150],[262,120],[548,128]]; var s=''; for(var i=0;i<n&&i<pts.length;i++){ s+='<circle class="ws-twinkle" style="animation-delay:'+(i*0.55)+'s" cx="'+pts[i][0]+'" cy="'+pts[i][1]+'" r="'+(2.2+(i%3))+'" fill="#FFFFFF"/>'; } return s; }
-function wsPom(x,y,r,c1,c2){ var s='<g>'; for(var i=0;i<14;i++){ var a=(Math.PI*2*i)/14, x2=(x+Math.cos(a)*r).toFixed(1), y2=(y+Math.sin(a)*r*0.92).toFixed(1); s+='<line x1="'+x+'" y1="'+y+'" x2="'+x2+'" y2="'+y2+'" stroke="'+(i%2? c1:c2)+'" stroke-width="'+(r*0.36).toFixed(1)+'" stroke-linecap="round"/>'; } return s+'<circle cx="'+x+'" cy="'+y+'" r="'+(r*0.4).toFixed(1)+'" fill="'+c2+'"/></g>'; }
 function wsHeart(x,y,s,col){ return '<g transform="translate('+x+','+y+') scale('+s+')"><path d="M0 11 C-15 -3 -7 -17 0 -9 C7 -17 15 -3 0 11 Z" fill="'+col+'"/></g>'; }
 function wsStar(x,y,s,col){ return '<g transform="translate('+x+','+y+') scale('+s+')"><polygon points="0,-11 3,-3.5 11,-3.5 4.5,1.5 7,9.5 0,4.8 -7,9.5 -4.5,1.5 -11,-3.5 -3,-3.5" fill="'+col+'"/></g>'; }
 /* One red rose, drawn as layered stained-glass petals with a dark
    leading spiral at its heart. Roses keep their real red (the same
    exception the cheer template already uses). */
 function wsRose(x,y,r){ return '<g><circle cx="'+(x-r*0.62).toFixed(1)+'" cy="'+(y+r*0.22).toFixed(1)+'" r="'+(r*0.62).toFixed(1)+'" fill="#E2543E"/><circle cx="'+(x+r*0.62).toFixed(1)+'" cy="'+(y+r*0.22).toFixed(1)+'" r="'+(r*0.62).toFixed(1)+'" fill="#E2543E"/><circle cx="'+(x-r*0.3).toFixed(1)+'" cy="'+(y-r*0.5).toFixed(1)+'" r="'+(r*0.6).toFixed(1)+'" fill="#D63A2A"/><circle cx="'+(x+r*0.3).toFixed(1)+'" cy="'+(y-r*0.5).toFixed(1)+'" r="'+(r*0.6).toFixed(1)+'" fill="#D63A2A"/><circle cx="'+x+'" cy="'+(y+r*0.08).toFixed(1)+'" r="'+(r*0.58).toFixed(1)+'" fill="#C22F22"/><path d="M'+(x-r*0.34).toFixed(1)+' '+y+' A'+(r*0.36).toFixed(1)+' '+(r*0.36).toFixed(1)+' 0 1 1 '+x+' '+(y-r*0.36).toFixed(1)+' A'+(r*0.2).toFixed(1)+' '+(r*0.2).toFixed(1)+' 0 1 0 '+(x+r*0.15).toFixed(1)+' '+y+'" fill="none" stroke="#8E1F16" stroke-width="'+(r*0.15).toFixed(1)+'" stroke-linecap="round"/></g>'; }
-/* Detailed ballerina for the Dance pattern: natural skin + hair, tutu /
-   bodice / pointe shoes in ONE wizard color. Poses: 'pointe' (arms out,
-   on pointe), 'arabesque' (leg up behind), 'raised' (one arm raised,
-   one leg up in front). Origin = pointe tip on the floor. */
-function wsBallerina(x,y,s,flip,tutu,skin,hair,pose){
-  var sx=flip? -s:s, arms='', legs='';
-  if(pose==='arabesque'){
-    legs='<path d="M0 -46 L3 0 M0 -46 L40 -64" stroke="'+skin+'" stroke-width="7.5" stroke-linecap="round" fill="none"/><ellipse cx="3" cy="1" rx="7" ry="3.6" fill="'+tutu+'"/><ellipse cx="42" cy="-65" rx="7" ry="3.6" fill="'+tutu+'" transform="rotate(-24 42 -65)"/><path d="M1 -16 L5 -4 M5 -17 L1 -5" stroke="'+tutu+'" stroke-width="1.8" fill="none"/>';
-    arms='<path d="M0 -76 L-30 -62 M0 -76 L28 -94" stroke="'+skin+'" stroke-width="6.5" stroke-linecap="round" fill="none"/>';
-  } else if(pose==='raised'){
-    legs='<path d="M0 -46 L2 0 M0 -46 L24 -34 L28 -14" stroke="'+skin+'" stroke-width="7.5" stroke-linecap="round" fill="none"/><ellipse cx="2" cy="1" rx="7" ry="3.6" fill="'+tutu+'"/><ellipse cx="29" cy="-12" rx="7" ry="3.6" fill="'+tutu+'" transform="rotate(70 29 -12)"/><path d="M0 -16 L4 -4 M4 -17 L0 -5" stroke="'+tutu+'" stroke-width="1.8" fill="none"/>';
-    arms='<path d="M0 -76 L-26 -58 M0 -76 L9 -106" stroke="'+skin+'" stroke-width="6.5" stroke-linecap="round" fill="none"/>';
-  } else {
-    legs='<path d="M0 -46 L-11 0 M0 -46 L13 -1" stroke="'+skin+'" stroke-width="7.5" stroke-linecap="round" fill="none"/><ellipse cx="-11" cy="1" rx="7" ry="3.6" fill="'+tutu+'"/><ellipse cx="13" cy="0" rx="7" ry="3.6" fill="'+tutu+'"/><path d="M-8 -17 L-3 -5 M10 -18 L5 -6" stroke="'+tutu+'" stroke-width="1.8" fill="none"/>';
-    arms='<path d="M0 -76 L-31 -68 M0 -76 L30 -86" stroke="'+skin+'" stroke-width="6.5" stroke-linecap="round" fill="none"/>';
-  }
-  return '<g transform="translate('+x+','+y+') scale('+sx+','+s+')">'
-    + legs + arms
-    +'<path d="M-7 -84 L7 -84 L9 -44 L-9 -44 Z" fill="'+tutu+'"/>'
-    +'<path d="M-27 -46 Q0 -55 27 -46 L21 -29 Q0 -21 -21 -29 Z" fill="'+tutu+'"/>'
-    +'<path d="M-22 -32 Q0 -25 22 -32 L17 -22 Q0 -16 -17 -22 Z" fill="'+tutu+'" opacity=".72"/>'
-    +'<circle cx="1" cy="-95" r="10" fill="'+skin+'"/>'
-    +'<path d="M-9 -97 A10 10 0 0 1 11 -97 L11 -92 A10 7 0 0 0 -9 -92 Z" fill="'+hair+'"/>'
-    +'<circle cx="1" cy="-107" r="5" fill="'+hair+'"/>'
-    +'<circle cx="-3" cy="-94" r="1.3" fill="#3A2430"/><circle cx="5" cy="-94" r="1.3" fill="#3A2430"/>'
-    +'<path d="M-2 -89 Q1 -87 4 -89" stroke="#3A2430" stroke-width="1.3" fill="none" stroke-linecap="round"/>'
-    +'</g>';
-}
-/* Chunky jump-rope handle: a plump teardrop grip. */
-function wsHandle(x,y,ang,col){ return '<g transform="translate('+x+','+y+') rotate('+ang+')"><path d="M0 -13 C7 -13 9 -4 7 4 C5 12 -5 12 -7 4 C-9 -4 -7 -13 0 -13 Z" fill="'+col+'" stroke="#3A1430" stroke-opacity=".20" stroke-width="1.6"/><ellipse cx="-2.5" cy="-5" rx="2" ry="4.5" fill="#FFFFFF" opacity=".38"/></g>'; }
-/* Chunky pear handle from ref 1: a round knob cap on top and a long
-   plump teardrop body hanging below it. Origin = the knob center. */
-function wsPearHandle(x,y,ang,col){
-  return '<g transform="translate('+x+','+y+') rotate('+ang+')">'
-    +'<path d="M0 -6 C8.5 -2 11 8 9 17 C7.2 26.5 -7.2 26.5 -9 17 C-11 8 -8.5 -2 0 -6 Z" fill="'+col+'" stroke="#3A1430" stroke-opacity=".20" stroke-width="1.6"/>'
-    +'<circle cx="0" cy="-11" r="6.8" fill="'+col+'" stroke="#3A1430" stroke-opacity=".20" stroke-width="1.6"/>'
-    +'<ellipse cx="-3" cy="6" rx="2.2" ry="6" fill="#FFFFFF" opacity=".38"/></g>';
-}
-/* Crossed double loop (ref 1, top-left): the rope crosses over itself
-   into two overlapping loops side by side, and the two chunky pear
-   handles hang down the front, one inside each loop. */
-function wsRopeCross(x,y,rope,handle){
-  return '<g transform="translate('+x+','+y+')">'
-    +'<circle cx="-27" cy="0" r="45" fill="none" stroke="'+rope+'" stroke-width="7"/>'
-    +'<circle cx="27" cy="0" r="45" fill="none" stroke="'+rope+'" stroke-width="7"/>'
-    +'<path d="M-27 -45 A45 45 0 0 1 27 -45" fill="none" stroke="'+rope+'" stroke-width="7"/>'
-    + wsPearHandle(-27,2,4,handle) + wsPearHandle(27,2,-4,handle) + '</g>';
-}
-/* Coiled loop rope (ref 1, bottom-right): neat concentric rings of
-   rope, with the two chunky pear handles hanging side by side INSIDE
-   the coil at the front. */
-function wsRopeCoil(x,y,r,rope,handle){
-  return '<g><circle cx="'+x+'" cy="'+y+'" r="'+r+'" fill="none" stroke="'+rope+'" stroke-width="6.4"/><circle cx="'+x+'" cy="'+y+'" r="'+(r*0.73)+'" fill="none" stroke="'+rope+'" stroke-width="5.6" opacity=".92"/><circle cx="'+x+'" cy="'+y+'" r="'+(r*0.46)+'" fill="none" stroke="'+rope+'" stroke-width="5" opacity=".85"/>'
-    + wsPearHandle(x-14,y-4,4,handle) + wsPearHandle(x+14,y-4,-4,handle) + '</g>';
-}
-/* Hanging U rope (ref 1, top-right): the rope droops in one deep,
-   smooth U, with a small chunky bean handle tilted outward at each
-   top end. */
-function wsRopeU(x,y,w,h,rope,handle){
-  return '<g><path d="M'+(x-w/2)+' '+y+' C'+(x-w/2)+' '+(y+h)+' '+(x+w/2)+' '+(y+h)+' '+(x+w/2)+' '+y+'" fill="none" stroke="'+rope+'" stroke-width="6.6" stroke-linecap="round"/>'
-    + wsHandle(x-w/2-3,y-13,-32,handle) + wsHandle(x+w/2+3,y-13,32,handle) + '</g>';
-}
-/* Figure-8 twist rope (ref 1, bottom-left): the rope twists into a
-   small loop at the top, then the two strands hang down in a tall
-   narrow arch to two wavy-grooved grips at the bottom — the left one
-   upright, the right one tipped diagonal, just like the reference. */
-function wsRopeTwist(x,y,s,rope,handle){
-  return '<g transform="translate('+x+','+y+') scale('+s+')">'
-    +'<path d="M-25 30 C-31 -14 -17 -36 -1 -39 M1 -39 C17 -36 31 -14 26 30" fill="none" stroke="'+rope+'" stroke-width="6.2" stroke-linecap="round"/>'
-    +'<ellipse cx="0" cy="-47" rx="11" ry="16" fill="none" stroke="'+rope+'" stroke-width="6.2" transform="rotate(18 0 -47)"/>'
-    +'<g transform="translate(-26,45) rotate(4)"><rect x="-7.5" y="-16" width="15" height="33" rx="6.5" fill="'+handle+'" stroke="#3A1430" stroke-opacity=".20" stroke-width="1.6"/><path d="M-7.5 -7 L7.5 -7 M-7.5 1 L7.5 1 M-7.5 9 L7.5 9" stroke="#3A1430" stroke-opacity=".22" stroke-width="2.4"/></g>'
-    +'<g transform="translate(29,47) rotate(-30)"><rect x="-7.5" y="-16" width="15" height="33" rx="6.5" fill="'+handle+'" stroke="#3A1430" stroke-opacity=".20" stroke-width="1.6"/><path d="M-7.5 -7 L7.5 -7 M-7.5 1 L7.5 1 M-7.5 9 L7.5 9" stroke="#3A1430" stroke-opacity=".22" stroke-width="2.4"/></g></g>';
-}
 /* Happy girl mid-jump, duplicated from ref 2: ONE whole girl inside a
    single big rope loop that arcs high overhead and comes down both
    sides to the small dark grips in her hands; her two segmented braids
@@ -4574,6 +4490,214 @@ function wsJumpGirl(x,y,s,dress,rope,handle){
     +'<circle cx="-7.6" cy="-94.6" r="2.1" fill="#E2543E" opacity=".45"/><circle cx="8.4" cy="-94.6" r="2.1" fill="#E2543E" opacity=".45"/>'
     +'</g>';
 }
+/* ================= SHARED SPORT TEMPLATES — KARTER PARITY =================
+   Michelle's parity rule: for every sport Royce shares with Karter
+   (Basketball, Soccer, Tennis, Gymnastics, Swimming, Hockey and
+   Running), her BACKGROUND TEMPLATE is his background template —
+   the same scene, the same elements, the same composition and
+   design, drawn in the same 1440x900 template canvas his
+   worldBackdropSVG uses — with the ONLY difference being the
+   figures: her girl gymnasts in place of his boy gymnasts, and a
+   woman swimmer in place of his swimmer. The designed parts take
+   ONLY her three picked colors in the same roles his trio fills
+   (P / PD = her primary and its dark, PL = her primary light,
+   A / AL = her secondary and its light, T / TD / TL = her tertiary
+   and its dark / light shades); real things keep their real colors
+   exactly as in his design — grass green, ice icy white, pool
+   water blue, wood brown, hockey's red / blue lines, the black
+   puck. Her own templates (Cheer, Dance, Jump Rope) are NOT here:
+   they keep her own designs in worldSceneSVG below. */
+function sharedBackdropSVG(id,c){
+  var P=c.primary, PD=c.dark, PL=c.light, A=c.accent, AL=c.accentLight, T=c.tertiary, TD=c.tertiaryDark, TL=c.tertiaryLight, W='rgba(255,255,255,.92)';
+  var B2=A, SS=AL, T3=T, T3D=TD, T3S=TL, D=PD, S=PL;
+  function wrap(inner){ return '<svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">'+inner+'</svg>'; }
+  /* Arena floodlight bank (Hockey scene): tilted grid of bright
+     lamps in a dark housing on a pole, trimmed in a trio color.
+     The lamps stay natural white. */
+  function floodW(x,y,s,tilt,trim){ var dots=''; for(var r=0;r<4;r++){ for(var col=0;col<6;col++){ dots+='<circle cx="'+(16+col*19)+'" cy="'+(18+r*20)+'" r="7.6" fill="#FFFFFF"/>'; } } return '<g transform="translate('+x+','+y+') rotate('+tilt+') scale('+s+')"><rect x="53" y="98" width="15" height="92" fill="#3D6076"/><rect x="0" y="0" width="122" height="100" rx="11" fill="#2E4E63" stroke="'+trim+'" stroke-width="5"/>'+dots+'</g>'; }
+  if(id==='hockey') return wrap(
+    /* Michelle's hockey scene (from her rink picture), page-wide:
+       dark arena bowl, rows of trio-colored seats behind curved
+       boards, two floodlight banks in the top corners beaming down
+       onto icy-white ice with its REAL red and blue lines, face-off
+       circles, the goal net on the left and a stick + black puck at
+       center ice. Natural things stay natural: ice icy white, lines
+       real red / real blue, puck black, lamps white. */
+    '<rect width="1440" height="900" fill="#14273D"/>'
+    +[150,218,286,354].map(function(y,ri){ return [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16].map(function(i){ var cols=[P,B2,T3]; return '<rect x="'+(86+i*80)+'" y="'+y+'" width="64" height="50" rx="15" fill="'+cols[(i+ri)%3]+'" opacity="'+(.32+ri*.13)+'"/>'; }).join(''); }).join('')
+    +'<rect y="418" width="1440" height="16" fill="#0B1C2C" opacity=".8"/>'
+    +'<polygon points="130,205 270,205 1010,600 450,600" fill="#FFFFFF" opacity=".25"/>'
+    +'<polygon points="1170,205 1310,205 990,600 430,600" fill="#FFFFFF" opacity=".25"/>'
+    +'<path d="M0 440 Q720 396 1440 440 L1440 548 Q720 500 0 548 Z" fill="'+P+'"/>'
+    +'<path d="M0 512 Q720 466 1440 512 L1440 548 Q720 500 0 548 Z" fill="'+B2+'" opacity=".8"/>'
+    +'<path d="M0 440 Q720 396 1440 440" fill="none" stroke="#FFFFFF" stroke-width="15"/>'
+    +'<path d="M0 548 Q720 500 1440 548 L1440 900 L0 900 Z" fill="#F2F9FF"/>'
+    +'<path d="M0 548 Q720 500 1440 548 L1440 628 Q940 556 540 592 Q220 620 0 700 Z" fill="#DCEEFF" opacity=".65"/>'
+    +'<ellipse cx="1120" cy="806" rx="330" ry="54" fill="#E2F1FD" opacity=".7"/>'
+    +'<polygon points="450,548 990,548 1150,752 540,752" fill="#FFFFFF" opacity=".35"/>'
+    +'<line x1="30" y1="768" x2="862" y2="556" stroke="#E5484D" stroke-width="7" opacity=".45"/>'
+    +'<line x1="596" y1="900" x2="1272" y2="556" stroke="#5B9BD5" stroke-width="19" opacity=".75"/>'
+    +'<ellipse cx="938" cy="648" rx="136" ry="44" fill="none" stroke="#E5484D" stroke-width="6" opacity=".55"/><circle cx="938" cy="648" r="6" fill="#E5484D" opacity=".55"/>'
+    +'<ellipse cx="232" cy="856" rx="186" ry="48" fill="none" stroke="#E5484D" stroke-width="6" opacity=".5"/><circle cx="232" cy="856" r="6" fill="#E5484D" opacity=".5"/>'
+    +'<path d="M1204 900 A172 48 0 0 1 1440 824" fill="none" stroke="#5B9BD5" stroke-width="7" opacity=".6"/>'
+    +'<ellipse cx="272" cy="724" rx="208" ry="24" fill="#B9D9EE" opacity=".8"/>'
+    +'<polygon points="192,542 118,634 192,720" fill="rgba(210,232,245,.75)" stroke="#2B3440" stroke-width="12" stroke-linejoin="round"/>'
+    +'<path d="M118 634 L192 584 M118 634 L192 634 M118 634 L192 684 M192 542 L134 634 L192 720" fill="none" stroke="#7A9BB5" stroke-width="4"/>'
+    +'<rect x="192" y="530" width="226" height="206" rx="6" fill="rgba(225,240,250,.55)" stroke="#2B3440" stroke-width="15"/>'
+    +'<path d="M192 582 L418 686 M192 634 L418 736 M418 582 L192 686 M418 634 L192 736 M305 530 L192 634 M305 530 L418 634 M305 736 L192 634 M305 736 L418 634" stroke="#7A9BB5" stroke-width="4" fill="none"/>'
+    +'<ellipse cx="706" cy="690" rx="228" ry="18" fill="#B9D9EE" opacity=".75"/>'
+    +'<line x1="596" y1="656" x2="930" y2="656" stroke="#8A5A2B" stroke-width="17" stroke-linecap="round"/>'
+    +'<line x1="832" y1="656" x2="930" y2="656" stroke="#1F2937" stroke-width="18" stroke-linecap="round"/>'
+    +'<path d="M606 668 C570 668 560 626 572 596 C578 580 600 578 606 594 C612 610 608 634 618 650 Z" fill="#D92323"/>'
+    +'<g transform="translate(556,700)"><ellipse rx="30" ry="10" cy="7" fill="#000000"/><rect x="-30" y="-7" width="60" height="14" fill="#000000"/><ellipse rx="30" ry="10" cy="-7" fill="#0A0A0A"/></g>'
+    +floodW(14,16,1.8,-5,B2)+floodW(1202,16,1.8,5,P));
+  if(id==='soccer') return wrap(
+    [0,1,2,3,4,5,6,7,8,9,10,11].map(function(i){ return '<rect x="'+(i*120)+'" width="120" height="900" fill="'+(i%2?'#4DA843':'#57B24A')+'"/>'; }).join('')
+    +'<rect x="44" y="44" width="1352" height="812" fill="none" stroke="'+W+'" stroke-width="7"/>'
+    +'<line x1="720" y1="44" x2="720" y2="856" stroke="'+W+'" stroke-width="6"/><circle cx="720" cy="450" r="130" fill="none" stroke="'+W+'" stroke-width="6"/><circle cx="720" cy="450" r="9" fill="'+W+'"/>'
+    +'<rect x="44" y="230" width="250" height="440" fill="none" stroke="'+W+'" stroke-width="6"/><rect x="1050" y="230" width="346" height="440" fill="none" stroke="'+W+'" stroke-width="6"/><rect x="44" y="330" width="110" height="240" fill="none" stroke="'+W+'" stroke-width="6"/><rect x="1286" y="330" width="110" height="240" fill="none" stroke="'+W+'" stroke-width="6"/>'
+    +'<circle cx="720" cy="450" r="146" fill="none" stroke="'+T3+'" stroke-width="6" opacity=".65"/>'
+    /* Corner flags dress in the trio — Primary, Secondary, Tertiary, Primary. */
+    +'<path d="M44 44 l52 14 l-52 14 Z" fill="'+P+'"/><path d="M1396 44 l-52 14 l52 14 Z" fill="'+B2+'"/><path d="M44 856 l52 -14 l-52 -14 Z" fill="'+T3+'"/><path d="M1396 856 l-52 -14 l52 -14 Z" fill="'+P+'"/>'
+    +'<text x="180" y="700" font-size="72">⚽</text><text x="1150" y="240" font-size="56">⚽</text><text x="880" y="790" font-size="46">⚽</text>');
+  if(id==='tennis') return wrap(
+    '<rect width="1440" height="900" fill="#2F9E63"/><rect x="90" y="90" width="1260" height="720" fill="'+T3+'" stroke="'+W+'" stroke-width="8"/><rect x="90" y="90" width="1260" height="18" fill="'+P+'"/><rect x="90" y="792" width="1260" height="18" fill="'+B2+'"/>'
+    +'<line x1="90" y1="200" x2="1350" y2="200" stroke="'+W+'" stroke-width="5"/><line x1="90" y1="700" x2="1350" y2="700" stroke="'+W+'" stroke-width="5"/>'
+    +'<line x1="330" y1="200" x2="330" y2="700" stroke="'+W+'" stroke-width="5"/><line x1="1110" y1="200" x2="1110" y2="700" stroke="'+W+'" stroke-width="5"/><line x1="330" y1="450" x2="1110" y2="450" stroke="'+W+'" stroke-width="5"/>'
+    +'<rect x="700" y="70" width="40" height="760" fill="rgba(255,255,255,.5)"/><rect x="696" y="70" width="7" height="760" fill="#2B1608"/><rect x="737" y="70" width="7" height="760" fill="#2B1608"/><rect x="696" y="70" width="48" height="13" fill="#fff"/>'
+    +'<text x="200" y="620" font-size="64">🎾</text><text x="1180" y="330" font-size="52">🎾</text><text x="520" y="790" font-size="44">🎾</text>');
+  if(id==='swimming') return wrap(
+    '<rect width="1440" height="900" fill="#1E9BD8"/><rect width="1440" height="120" fill="#E9E2D0"/>'
+    +[0,1,2,3,4,5,6,7,8,9].map(function(i){ return '<line x1="'+(i*150+75)+'" y1="0" x2="'+(i*150+75)+'" y2="120" stroke="#CBBFA3" stroke-width="4"/>'; }).join('')
+    +[270,470,670].map(function(y){ return '<line x1="0" y1="'+y+'" x2="1440" y2="'+y+'" stroke="#fff" stroke-width="12" stroke-dasharray="26 20"/><line x1="0" y1="'+y+'" x2="1440" y2="'+y+'" stroke="'+P+'" stroke-width="12" stroke-dasharray="26 20" stroke-dashoffset="23"/><line x1="0" y1="'+y+'" x2="1440" y2="'+y+'" stroke="'+T3+'" stroke-width="12" stroke-dasharray="6 40" stroke-dashoffset="10"/>'; }).join('')
+    +'<rect width="480" height="14" fill="'+P+'"/><rect x="480" width="480" height="14" fill="'+B2+'"/><rect x="960" width="480" height="14" fill="'+T3+'"/>'
+    +'<path d="M0 210 Q80 196 160 210 T320 210 T480 210 T640 210 T800 210 T960 210 T1120 210 T1280 210 T1440 210" stroke="rgba(255,255,255,.35)" stroke-width="7" fill="none"/><path d="M0 830 Q80 816 160 830 T320 830 T480 830 T640 830 T800 830 T960 830 T1120 830 T1280 830 T1440 830" stroke="rgba(255,255,255,.28)" stroke-width="7" fill="none"/>'
+    +'<text x="220" y="420" font-size="72">🏊‍♀️</text><text x="1080" y="620" font-size="60">💦</text><text x="620" y="240" font-size="48">💦</text>');
+  if(id==='running') return wrap(
+    '<rect width="1440" height="900" fill="#B4552D"/><rect width="1440" height="110" fill="#57B24A"/><rect y="110" width="480" height="12" fill="'+P+'"/><rect x="480" y="110" width="480" height="12" fill="'+B2+'"/><rect x="960" y="110" width="480" height="12" fill="'+T3+'"/>'
+    +[290,470,650].map(function(y){ return '<line x1="0" y1="'+y+'" x2="1440" y2="'+y+'" stroke="'+W+'" stroke-width="7"/>'; }).join('')
+    +[['1',215],['2',395],['3',575],['4',755]].map(function(n){ return '<text x="34" y="'+n[1]+'" font-family="Fredoka" font-size="52" font-weight="700" fill="rgba(255,255,255,.85)">'+n[0]+'</text>'; }).join('')
+    +[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19].map(function(i){ return '<rect x="1240" y="'+(110+i*40)+'" width="40" height="40" fill="'+(i%2?'#2B1608':'#fff')+'"/><rect x="1280" y="'+(110+i*40)+'" width="40" height="40" fill="'+(i%2?'#fff':'#2B1608')+'"/>'; }).join('')
+    +'<text x="240" y="700" font-size="64">👟</text><text x="1020" y="330" font-size="54">👟</text>');
+  /* Girl gymnast — the same flat-style gymnast as Karter's boy,
+     in the same named poses at the same coordinates: a leotard in
+     the tank color with a waistband in the pants color, bare legs,
+     and girl hair (bun, ponytail, two puffs or curls, picked per
+     girl). Skin and hair stay natural; only the leotard and its
+     band take trio colors. */
+  var gymGirl=function(pose,x,y,s,leo,band,skin,hair,style){
+    var L=function(x1,y1,x2,y2,c,w){ return '<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="'+c+'" stroke-width="'+(w||11)+'" stroke-linecap="round"/>'; };
+    var HD=function(cx,cy,r){
+      var h='<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="'+skin+'"/>';
+      h+='<path d="M'+(cx-r)+' '+cy+' A'+r+' '+r+' 0 0 1 '+(cx+r)+' '+cy+' Z" fill="'+hair+'"/>';
+      if(style==='bun') h+='<circle cx="'+cx+'" cy="'+(cy-r-2)+'" r="'+(r*.48)+'" fill="'+hair+'"/><circle cx="'+cx+'" cy="'+(cy-r*.55)+'" r="'+(r*.2)+'" fill="'+band+'"/>';
+      else if(style==='ponytail') h+='<path d="M'+(cx+r*.72)+' '+(cy-r*.35)+' Q'+(cx+r*1.55)+' '+(cy+r*.3)+' '+(cx+r*1.05)+' '+(cy+r*1.7)+'" stroke="'+hair+'" stroke-width="'+(r*.58)+'" fill="none" stroke-linecap="round"/><circle cx="'+(cx+r*.72)+'" cy="'+(cy-r*.35)+'" r="'+(r*.24)+'" fill="'+band+'"/>';
+      else if(style==='puffs') h+='<circle cx="'+(cx-r*.66)+'" cy="'+(cy-r*.72)+'" r="'+(r*.44)+'" fill="'+hair+'"/><circle cx="'+(cx+r*.66)+'" cy="'+(cy-r*.72)+'" r="'+(r*.44)+'" fill="'+hair+'"/><circle cx="'+(cx-r*.66)+'" cy="'+(cy-r*.3)+'" r="'+(r*.17)+'" fill="'+band+'"/><circle cx="'+(cx+r*.66)+'" cy="'+(cy-r*.3)+'" r="'+(r*.17)+'" fill="'+band+'"/>';
+      else if(style==='curls') h+='<circle cx="'+(cx-r*.6)+'" cy="'+(cy-r*.8)+'" r="'+(r*.36)+'" fill="'+hair+'"/><circle cx="'+(cx-r*.16)+'" cy="'+(cy-r*.98)+'" r="'+(r*.38)+'" fill="'+hair+'"/><circle cx="'+(cx+r*.3)+'" cy="'+(cy-r*.92)+'" r="'+(r*.35)+'" fill="'+hair+'"/><circle cx="'+(cx+r*.68)+'" cy="'+(cy-r*.6)+'" r="'+(r*.3)+'" fill="'+hair+'"/><path d="M'+(cx+r*.95)+' '+(cy-r*.2)+' Q'+(cx+r*1.2)+' '+(cy+r*.6)+' '+(cx+r*.9)+' '+(cy+r*1.1)+'" stroke="'+hair+'" stroke-width="'+(r*.4)+'" fill="none" stroke-linecap="round"/>';
+      return h;
+    };
+    var torso=function(cx,cy,rot){ return '<g transform="translate('+cx+' '+cy+') rotate('+(rot||0)+')"><path d="M-14.5 0 Q0 -7.5 14.5 0 L10.5 50 Q0 56.5 -10.5 50 Z" fill="'+leo+'"/><path d="M-12.9 31 Q0 37.5 12.9 31 L11.4 43 Q0 48.5 -11.4 43 Z" fill="'+band+'" opacity=".92"/></g>'; };
+    var foot=function(cx,cy){ return '<circle cx="'+cx+'" cy="'+cy+'" r="5.5" fill="'+skin+'"/>'; };
+    var ring=function(cx,cy){ return '<line x1="'+cx+'" y1="-74" x2="'+cx+'" y2="'+(cy-13)+'" stroke="#8A97A5" stroke-width="5"/><circle cx="'+cx+'" cy="'+cy+'" r="11.5" fill="none" stroke="#4B5563" stroke-width="5"/>'; };
+    var inner='';
+    if(pose==='ringsHang'){
+      inner=ring(-56,40)+ring(56,40)
+      +L(-2,32,-52,38,skin,10.5)+L(2,32,52,38,skin,10.5)
+      +torso(0,24,0)+HD(0,10,13)
+      +L(-4,76,-6,162,skin,13)+L(4,76,7,162,skin,13)+foot(-6,168)+foot(7,168);
+    } else if(pose==='ringsLift'){
+      inner=ring(-58,34)+ring(58,34)
+      +L(-2,32,-54,32,skin,10.5)+L(2,32,54,32,skin,10.5)
+      +torso(0,24,0)+HD(0,10,13)
+      +L(0,78,50,30,skin,15)+foot(56,26);
+    } else if(pose==='cartwheel'){
+      inner=L(-22,90,-36,143,skin,10.5)+L(-2,86,14,142,skin,10.5)
+      +'<path d="M-24 92 Q0 60 32 72" stroke="'+leo+'" stroke-width="17.5" fill="none" stroke-linecap="round"/>'
+      +HD(-37,79,12.5)
+      +L(32,72,76,22,skin,13)+L(32,72,88,84,skin,13)+foot(80,18)+foot(92,87);
+    } else if(pose==='split'){
+      inner=L(-3,82,-64,95,skin,14)+L(3,82,64,95,skin,14)+foot(-70,96)+foot(70,96)
+      +torso(0,28,0)+HD(0,14,13)
+      +L(-2,36,-42,2,skin,10.5)+L(2,36,44,22,skin,10.5);
+    } else if(pose==='handstand'){
+      inner=L(-5,92,-11,160,skin,10.5)+L(5,92,11,160,skin,10.5)
+      +torso(0,92,180)+'<g transform="rotate(180 0 105)">'+HD(0,105,12.5)+'</g>'
+      +L(-3,44,-7,-26,skin,13)+L(3,44,7,-26,skin,13)+foot(-7,-31)+foot(7,-31);
+    } else if(pose==='jump'){
+      inner=L(-3,78,-54,114,skin,13)+L(3,78,54,114,skin,13)+foot(-59,117)+foot(59,117)
+      +torso(0,24,0)+HD(0,10,13)
+      +L(-2,32,-48,-10,skin,10.5)+L(2,32,48,-10,skin,10.5);
+    } else {
+      inner=L(-4,78,-7,162,skin,13)+L(4,78,8,162,skin,13)+foot(-7,168)+foot(8,168)
+      +torso(0,24,0)+HD(0,10,13)
+      +L(-2,32,-44,14,skin,10.5)+L(2,32,42,-18,skin,10.5);
+    }
+    return '<g transform="translate('+x+','+y+') scale('+s+')">'+inner+'</g>';
+  };
+  if(id==='gymnastics') return wrap(
+    /* Michelle's boys' gymnastics scene, page-wide, clean flat
+       style: smooth flat GIRL gymnasts scattered through the gym —
+       still-rings holds across the top, a cartwheel over the
+       balance beam at center (her reference pose), and a floor
+       split, stuck-landing salute, straddle jump and handstand
+       along the floor. Skin tones are a real mix, hair differs
+       boy to boy, outfits take the world's trio. Boys only. */
+    '<rect width="1440" height="900" fill="#FDE8C8"/><rect width="1440" height="300" fill="'+T3S+'"/><rect y="300" width="1440" height="12" fill="'+B2+'"/><rect y="312" width="1440" height="6" fill="'+T3+'"/>'
+    +'<rect y="700" width="1440" height="200" fill="#C98B4B"/>'
+    +[760,830].map(function(y){ return '<line x1="0" y1="'+y+'" x2="1440" y2="'+y+'" stroke="rgba(255,255,255,.4)" stroke-width="5"/>'; }).join('')
+    +'<rect x="556" y="664" width="328" height="28" rx="11" fill="'+B2+'" stroke="#2B1608" stroke-width="4"/>'
+    +gymGirl('ringsLift',255,205,1.45,B2,P,'#C68863','#17110B','curls')
+    +gymGirl('ringsHang',480,192,1.3,P,T3,'#F6C79A','#4A2F1D','ponytail')
+    +gymGirl('ringsHang',1185,195,1.35,B2,P,'#8D5A3B','#17110B','bun')
+    +gymGirl('cartwheel',720,383,1.9,P,B2,'#E8B088','#7A4A21','puffs')
+    +gymGirl('split',250,552,1.5,P,B2,'#F6C79A','#7A4A21','bun')
+    +gymGirl('salute',520,498,1.45,P,B2,'#6B4226','#17110B','curls')
+    +gymGirl('jump',1010,520,1.4,B2,T3,'#F6C79A','#17110B','bun')
+    +gymGirl('handstand',1235,462,1.5,P,T3,'#C68863','#4A2F1D','ponytail'));
+  /* BASKETBALL — Coach Leo's own gym, the court from his hero
+     picture, as the whole page's background: the dark arena band
+     with its row of round lights on top, cream paneled walls, the
+     red band with gold chevrons running across the middle, the
+     glass backboard and hoop on the right, and the polished wood
+     floor below with its white court lines and the red painted
+     key. The gym's own materials stay their natural colors (cream
+     panels, wood, glass, navy) exactly as in his hero; the red
+     band and key dress in the world's Primary and the chevrons
+     and trim shine in its Secondary gold, the same way every
+     other scene dresses in the trio. Every other sport keeps its
+     own scene above, untouched. */
+  if(id==='basketball'){ var chev=function(x){ return '<path d="M'+x+' 290 L'+(x+15)+' 305 L'+x+' 320 M'+(x+19)+' 290 L'+(x+34)+' 305 L'+(x+19)+' 320 M'+(x+38)+' 290 L'+(x+53)+' 305 L'+(x+38)+' 320" fill="none" stroke="'+B2+'" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>'; };
+  return wrap(
+    '<rect width="1440" height="900" fill="#F3E3C0"/>'
+    /* Arena ceiling band + its row of round lights */
+    +'<rect width="1440" height="48" fill="#1D2A4A"/><rect y="42" width="1440" height="7" fill="'+B2+'"/>'
+    +[90,216,342,468,594,720,846,972,1098,1224,1350].map(function(x){ return '<circle cx="'+x+'" cy="21" r="11" fill="#FFE9A8" stroke="rgba(255,201,77,.75)" stroke-width="3"/>'; }).join('')
+    /* Cream paneled walls, upper and lower */
+    +'<rect y="48" width="1440" height="228" fill="#F7E7C8"/><rect y="338" width="1440" height="140" fill="#FDF3DC"/>'
+    +[120,240,360,480,600,720,840,960,1080,1200,1320].map(function(x){ return '<line x1="'+x+'" y1="52" x2="'+x+'" y2="272" stroke="rgba(166,124,62,.35)" stroke-width="3"/><line x1="'+x+'" y1="342" x2="'+x+'" y2="474" stroke="rgba(166,124,62,.3)" stroke-width="3"/>'; }).join('')
+    /* The red chevron band across the middle */
+    +'<rect y="270" width="1440" height="6" fill="'+B2+'"/><rect y="276" width="1440" height="62" fill="'+P+'"/><rect y="338" width="1440" height="6" fill="'+B2+'"/>'
+    +chev(56)+chev(296)+chev(536)+chev(776)+chev(1016)+chev(1256)
+    /* Black base line where wall meets floor */
+    +'<rect y="470" width="1440" height="16" fill="#2B1608"/>'
+    /* Polished wood floor: warm planks, glossy sheen, white lines */
+    +'<rect y="486" width="1440" height="414" fill="#E8933A"/>'
+    +[522,560,602,648,698,752,810,872].map(function(y){ return '<line x1="0" y1="'+y+'" x2="1440" y2="'+y+'" stroke="rgba(124,45,18,.28)" stroke-width="5"/>'; }).join('')
+    +'<polygon points="180,486 560,486 430,900 60,900" fill="#FFFFFF" opacity=".09"/><polygon points="820,486 1030,486 1180,900 1010,900" fill="#FFFFFF" opacity=".07"/>'
+    /* The red painted key under the hoop, on the right */
+    +'<polygon points="1020,486 1440,486 1440,706 1100,672" fill="'+P+'" opacity=".94"/><polygon points="1020,486 1440,486 1440,706 1100,672" fill="none" stroke="'+W+'" stroke-width="7"/>'
+    +'<path d="M1100 672 A190 62 0 0 0 1440 640" fill="none" stroke="'+W+'" stroke-width="7"/>'
+    /* Center circle + three-point sweep across the wood */
+    +'<ellipse cx="560" cy="782" rx="330" ry="74" fill="none" stroke="'+W+'" stroke-width="7"/>'
+    +'<path d="M0 640 Q420 566 900 606 T1440 560" fill="none" stroke="'+W+'" stroke-width="6" opacity=".85"/>'
+    +'<line x1="0" y1="560" x2="1440" y2="512" stroke="'+W+'" stroke-width="5" opacity=".6"/>'
+    /* Glass backboard, orange rim and white net — top right, as in his hero */
+    +'<g><rect x="1150" y="58" width="252" height="140" fill="#DFF3F7" opacity=".96" stroke="#16222E" stroke-width="10"/><rect x="1216" y="98" width="118" height="82" fill="none" stroke="#FFFFFF" stroke-width="9"/><rect x="1150" y="168" width="252" height="30" fill="'+P+'"/><line x1="1170" y1="76" x2="1252" y2="168" stroke="#16222E" stroke-width="9"/>'
+    +'<ellipse cx="1276" cy="204" rx="56" ry="11" fill="#E85D0C" stroke="#B23C05" stroke-width="4"/>'
+    +'<path d="M1228 212 L1244 262 M1252 214 L1260 266 M1276 215 L1276 268 M1300 214 L1292 266 M1324 212 L1308 262 M1244 240 L1308 240 M1256 262 L1296 262" stroke="#FFFFFF" stroke-width="5" fill="none" stroke-linecap="round"/></g>');
+ }
+  return '';
+}
 function worldSceneSVG(sportId,c,uid,fit){
   /* ================= ONE FIXED TEMPLATE PER SPORT =================
      Each sport's background is ONE fixed design — the same template for
@@ -4590,196 +4714,62 @@ function worldSceneSVG(sportId,c,uid,fit){
      soccer-ball patches stay black, skin stays skin — plus plain
      white / gray / black neutrals for lines, nets and metal. */
   uid=uid||'v'; var P=c.primary,PD=c.dark,PX=c.deep,PL=c.light,A=c.accent,AD=c.accentDark,AL=c.accentLight,T=c.tertiary||'#E4B33C',TD=c.tertiaryDark||'#B98A1F',TL=c.tertiaryLight||'#FFF3C7',L=PL,D=PX;
+  /* SHARED SPORTS (Karter parity): Basketball, Soccer, Tennis,
+     Gymnastics, Swimming, Hockey and Running use HIS background
+     template design exactly (sharedBackdropSVG above) — the same
+     fixed scene, her three picked colors in the same roles, her
+     girl figures in place of his boy figures. Only her own sports
+     (Dance, Jump Rope, Cheer) are designed below. */
+  if(sportId==='basketball'||sportId==='soccer'||sportId==='tennis'||sportId==='gymnastics'||sportId==='swimming'||sportId==='hockey'||sportId==='running'){ return sharedBackdropSVG(sportId,c); }
+  /* CHEER — the Pom Pom template is Michelle's own photo, never a
+     drawing: colorful pom poms on white (assets/pom-pom-bg.webp),
+     the gray camera-icon badge from its bottom-left corner cropped
+     out and its edges cleaned, every pom pom kept exactly as
+     photographed. The photo itself fills the template frame (slice).
+     paintWorldScene() and the wizard's Background step present the
+     same photo full-bleed as an <img>, like the Enchanted Rose photo;
+     this SVG form covers the remaining template swatches. */
+  if(sportId==='cheer'){ return '<svg viewBox="0 0 800 330" preserveAspectRatio="'+(fit==='meet'?'xMidYMid meet':'xMidYMid slice')+'" aria-hidden="true"><image href="assets/pom-pom-bg.webp" x="0" y="0" width="800" height="330" preserveAspectRatio="xMidYMid slice"/></svg>'; }
+  /* DANCE — the Ballerina template is glossy 3D animated artwork
+     (assets/ballerina-bg.webp), made in the style of Michelle's
+     reference: a row of diverse young girl gymnasts reimagined as
+     BALLERINAS — varied skin tones, buns, puffs, curls and a braid,
+     ballet poses (arabesque, leap, pirouette, relevé, plié, curtsy)
+     and ballet clothes (tutus and leotards in pink, purple, rose
+     and gold, ballet slippers) on a pale blush-pink studio backdrop,
+     with small star and heart accents in the air. It replaces the
+     old flat drawn ballerina pattern entirely. paintWorldScene()
+     and the wizard's Background step present the same artwork
+     full-bleed as an <img>, like the other photo backgrounds; this
+     SVG form covers the remaining template swatches. It is a
+     background template only — never inside a game. */
+  if(sportId==='dance'){ return '<svg viewBox="0 0 800 330" preserveAspectRatio="'+(fit==='meet'?'xMidYMid meet':'xMidYMid slice')+'" aria-hidden="true"><image href="assets/ballerina-bg.webp" x="0" y="0" width="800" height="330" preserveAspectRatio="xMidYMid slice"/></svg>'; }
   var defs='', s='';
-  function ball(x,y,r){ return '<g><circle cx="'+x+'" cy="'+y+'" r="'+r+'" fill="#F97316" stroke="#C2410C" stroke-width="2"/><path d="M'+(x-r)+' '+y+' H'+(x+r)+' M'+x+' '+(y-r)+' V'+(y+r)+'" stroke="#9A3412" stroke-width="1.8" fill="none"/><path d="M'+(x-r*0.7)+' '+(y-r*0.7)+' Q'+x+' '+y+' '+(x-r*0.7)+' '+(y+r*0.7)+' M'+(x+r*0.7)+' '+(y-r*0.7)+' Q'+x+' '+y+' '+(x+r*0.7)+' '+(y+r*0.7)+'" stroke="#9A3412" stroke-width="1.8" fill="none"/></g>'; }
-  function sball(x,y,r){ return '<g><circle cx="'+x+'" cy="'+y+'" r="'+r+'" fill="#FFFFFF" stroke="#94A3B8" stroke-width="2"/><circle cx="'+x+'" cy="'+y+'" r="'+(r*0.34)+'" fill="#1F2937"/><circle cx="'+(x-r*0.62)+'" cy="'+(y-r*0.4)+'" r="'+(r*0.2)+'" fill="#1F2937"/><circle cx="'+(x+r*0.6)+'" cy="'+(y+r*0.45)+'" r="'+(r*0.2)+'" fill="#1F2937"/><circle cx="'+(x+r*0.15)+'" cy="'+(y-r*0.68)+'" r="'+(r*0.18)+'" fill="#1F2937"/></g>'; }
   function puck(x,y){ return '<g><ellipse cx="'+x+'" cy="'+(y+4)+'" rx="14" ry="6" fill="#0B1220"/><ellipse cx="'+x+'" cy="'+y+'" rx="14" ry="6" fill="#1F2937"/><ellipse cx="'+x+'" cy="'+(y-1)+'" rx="9" ry="3.6" fill="#374151"/></g>'; }
-  if(sportId==='dance'){
-    /* Repeating ballerina pattern (Michelle's refs): rows of ballerinas
-       in tutus in varied poses tile the whole background on a dark
-       ground, with small heart + star accents scattered between them.
-       Tutus / bodices / pointe shoes take P, A and T in turn; skin and
-       hair stay natural. No studio, mirrors or barre in the PATTERN —
-       the game's own barre still lives in the practice stage. */
-    defs='<linearGradient id="'+uid+'w" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+PX+'"/><stop offset="1" stop-color="'+AD+'"/></linearGradient>';
-    s='<rect width="800" height="330" fill="url(#'+uid+'w)"/>'
-     /* top partial row — figures cropped by the edge, like wallpaper */
-     + wsBallerina(190,26,0.62,false,A,'#F2C29B','#3B2314','raised') + wsBallerina(560,22,0.62,true,T,'#8D5524','#14100C','pointe') + wsBallerina(760,30,0.58,false,P,'#F2C29B','#D9A441','arabesque')
-     /* main row 1 */
-     + wsBallerina(92,148,0.94,false,P,'#F2C29B','#D9A441','pointe') + wsBallerina(292,142,0.9,false,A,'#8D5524','#14100C','arabesque') + wsBallerina(492,148,0.94,false,T,'#C68642','#3B2314','raised') + wsBallerina(688,142,0.9,true,P,'#F2C29B','#3B2314','pointe')
-     /* main row 2 — offset, poses and tutu colors shuffled */
-     + wsBallerina(192,292,0.96,false,A,'#C68642','#14100C','raised') + wsBallerina(398,288,0.92,true,T,'#F2C29B','#D9A441','pointe') + wsBallerina(596,292,0.96,false,P,'#8D5524','#3B2314','arabesque') + wsBallerina(782,288,0.9,false,A,'#F2C29B','#14100C','pointe')
-     /* heart + star accents in the gaps, palette colors only */
-     + wsHeart(196,66,1.05,T) + wsHeart(640,64,0.9,PL)
-     + wsHeart(348,196,1.0,PL) + wsHeart(724,188,0.85,AL)
-     + wsHeart(500,262,0.9,T) + wsHeart(52,96,0.8,AL);
-  } else if(sportId==='gymnastics'){
-    /* Gymnasts as the design itself — the CLEAN glossy 3D style from
-       Michelle's screenshot (assets/gymnastics-bg.png), NOT a hand
-       redraw: smooth 3D emoji-style girl gymnasts on a soft blush
-       ground, every girl different — skin tones from light to deep,
-       hair in a bun, a ponytail, two puffs, long curls, a braid and
-       loose curls in blonde, brown and black, leotards in pink,
-       purple, gold, teal, coral, gray and lavender — each in her own
-       motion: a straight handstand, a cartwheel, a split leap, a leg
-       hold, a backbend, floor splits and a handstand split. The old
-       stroke-drawn redrawn gymnasts are gone for good. A few theme
-       sparkles float over the scene so her colors still dress it. */
-    defs='';
-    s='<rect width="800" height="330" fill="'+PL+'"/>'
-     +'<image href="assets/gymnastics-bg.png" x="0" y="0" width="800" height="330" preserveAspectRatio="xMidYMid slice"/>'
-     + wsStar(36,30,0.85,T) + wsStar(764,26,0.8,A) + wsStar(400,20,0.7,P)
-     + wsHeart(24,120,0.7,A) + wsHeart(776,128,0.65,P);
-} else if(sportId==='hockey'){
-    /* Full arena rink scene (Michelle's ref): a night arena with two
-       big floodlight banks at the top corners shining beams down,
-       rows of arena seats behind curved boards, and the ice in
-       perspective below — goal net on the left, a stick and black
-       puck at center ice, face-off ellipses and the REAL red / blue
-       rink lines. Designed parts (boards, seating, floodlights,
-       accents) take P / A / T; the ice stays icy white, the rink
-       lines stay hockey red / blue and the puck stays black. */
-    defs='<linearGradient id="'+uid+'i" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FBFEFF"/><stop offset="1" stop-color="#D9EBFA"/></linearGradient><linearGradient id="'+uid+'sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+PX+'"/><stop offset="1" stop-color="'+AD+'"/></linearGradient>';
-    var seatCols=[PX,AD,TD], seats='', sci=0;
-    for(var srow=0;srow<3;srow++){ var sy=96+srow*17; for(var sx=16+(srow%2)*10;sx<766;sx+=32){ seats+='<rect x="'+sx+'" y="'+sy+'" width="24" height="13" rx="5" fill="'+seatCols[sci%3]+'" opacity=".6"/>'; sci++; } }
-    function floodBank(bx){ var bulbs=''; for(var brow=0;brow<4;brow++){ for(var bcol=0;bcol<6;bcol++){ bulbs+='<circle cx="'+(bx+24+bcol*18)+'" cy="'+(33+brow*15)+'" r="6.2" fill="#FFFFFF" stroke="'+TL+'" stroke-width="1.4"/>'; } } return '<rect x="'+bx+'" y="14" width="128" height="78" rx="9" fill="'+A+'" stroke="'+AD+'" stroke-width="3"/>'+bulbs; }
-    s='<rect width="800" height="330" fill="url(#'+uid+'sky)"/>'
-     /* light beams falling from both floodlight banks onto center ice */
-     +'<path d="M84 92 L146 86 L452 246 L294 260 Z" fill="#FFFFFF" opacity=".15"/><path d="M716 92 L654 86 L348 246 L506 260 Z" fill="#FFFFFF" opacity=".15"/>'
-     /* rows of arena seating behind the boards */
-     +'<rect y="86" width="800" height="68" fill="'+PX+'" opacity=".85"/>'+seats
-     +'<path d="M0 112 L800 112 M0 129 L800 129 M0 146 L800 146" stroke="#FFFFFF" stroke-width="1.4" opacity=".14"/>'
-     /* floodlight poles, banks and glints at the top corners */
-     +'<rect x="78" y="92" width="11" height="60" fill="'+AD+'"/><rect x="711" y="92" width="11" height="60" fill="'+AD+'"/>'
-     + floodBank(20) + floodBank(652)
-     /* curved boards around the rink: primary band, white top rail,
-        accent ad panels and a tertiary kick strip along the ice */
-     +'<path d="M0 152 Q400 134 800 152 L800 192 Q400 174 0 192 Z" fill="'+P+'"/>'
-     +'<g stroke="'+PD+'" stroke-width="2" opacity=".3"><path d="M100 148 L100 188 M200 144 L200 184 M300 142 L300 182 M400 142 L400 182 M500 142 L500 182 M600 144 L600 184 M700 148 L700 188"/></g>'
-     +'<rect x="150" y="153" width="84" height="17" rx="5" fill="'+A+'" opacity=".92"/><rect x="358" y="150" width="84" height="17" rx="5" fill="'+T+'" stroke="'+TD+'" stroke-width="1" opacity=".95"/><rect x="566" y="153" width="84" height="17" rx="5" fill="'+A+'" opacity=".92"/>'
-     +'<path d="M0 183 Q400 165 800 183 L800 192 Q400 174 0 192 Z" fill="'+T+'" opacity=".95"/>'
-     +'<path d="M0 152 Q400 134 800 152" stroke="#FFFFFF" stroke-width="6" fill="none"/>'
-     /* the ice in perspective */
-     +'<path d="M0 192 Q400 174 800 192 L800 330 L0 330 Z" fill="url(#'+uid+'i)"/>'
-     +'<ellipse cx="400" cy="248" rx="255" ry="30" fill="#FFFFFF" opacity=".45"/>'
-     +'<g fill="none" stroke="#FFFFFF" stroke-width="2" opacity=".6"><path d="M470 286 Q560 274 650 288"/><path d="M180 312 Q260 300 340 314"/></g>'
-     /* hockey's real lines stay red and blue, tipped by perspective */
-     +'<line x1="0" y1="262" x2="468" y2="208" stroke="#DC2626" stroke-width="3" opacity=".65"/>'
-     +'<line x1="322" y1="330" x2="738" y2="192" stroke="#2563EB" stroke-width="7" opacity=".65"/>'
-     +'<ellipse cx="500" cy="238" rx="82" ry="24" fill="none" stroke="#DC2626" stroke-width="3" opacity=".85"/><circle cx="500" cy="238" r="3.6" fill="#DC2626"/>'
-     +'<ellipse cx="118" cy="334" rx="102" ry="30" fill="none" stroke="#DC2626" stroke-width="3" opacity=".8"/>'
-     +'<ellipse cx="748" cy="330" rx="88" ry="28" fill="none" stroke="#2563EB" stroke-width="3" opacity=".8"/>'
-     +'<ellipse cx="398" cy="298" rx="92" ry="19" fill="none" stroke="#2563EB" stroke-width="2.6" opacity=".4"/>'
-     /* goal net on the left, dark frame and diamond mesh */
-     +'<ellipse cx="138" cy="292" rx="98" ry="11" fill="#64748B" opacity=".3"/>'
-     +'<polygon points="112,198 64,224 64,284 112,292" fill="#DBEAFE" opacity=".3"/>'
-     +'<polygon points="112,198 214,210 214,284 112,292" fill="#FFFFFF" opacity=".28"/>'
-     +'<g stroke="#7C9AB5" stroke-width="1.4" opacity=".7"><path d="M137 201 L137 290 M162 204 L162 288 M189 207 L189 286 M112 232 L214 240 M112 260 L214 264 M112 292 L214 232 M112 206 L214 284 M64 224 L112 262 M64 254 L112 198"/></g>'
-     +'<path d="M112 198 L64 224 L64 284 L112 292" fill="none" stroke="#1F2937" stroke-width="5" stroke-linejoin="round"/>'
-     +'<path d="M112 292 L112 198 L214 210 L214 284 L112 292" fill="none" stroke="#1F2937" stroke-width="7" stroke-linejoin="round"/>'
-     /* stick and black puck at center ice */
-     +'<ellipse cx="342" cy="258" rx="102" ry="9" fill="#64748B" opacity=".2"/>'
-     +'<path d="M272 236 Q252 234 250 216 Q249 205 257 202" stroke="'+P+'" stroke-width="9" fill="none" stroke-linecap="round"/>'
-     +'<line x1="268" y1="238" x2="430" y2="247" stroke="#8FA6BC" stroke-width="6" stroke-linecap="round"/>'
-     +'<line x1="394" y1="244" x2="430" y2="247" stroke="#1F2937" stroke-width="7" stroke-linecap="round"/>'
-     + puck(282,254);
-  } else if(sportId==='basketball'){
-    defs='<linearGradient id="'+uid+'w" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+TL+'"/><stop offset="1" stop-color="'+PL+'"/></linearGradient><linearGradient id="'+uid+'f" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D99A4E"/><stop offset="1" stop-color="#B06F2C"/></linearGradient>';
-    s='<rect width="800" height="330" fill="url(#'+uid+'w)"/><g><rect x="112" y="16" width="54" height="76" fill="'+P+'"/><path d="M112 92 L139 108 L166 92 Z" fill="'+P+'"/><rect x="318" y="16" width="54" height="76" fill="'+A+'"/><path d="M318 92 L345 108 L372 92 Z" fill="'+A+'"/><rect x="524" y="16" width="54" height="76" fill="'+T+'"/><path d="M524 92 L551 108 L578 92 Z" fill="'+T+'"/><circle cx="139" cy="48" r="12" fill="'+T+'" stroke="'+TD+'" stroke-width="2"/><circle cx="345" cy="48" r="12" fill="'+T+'" stroke="'+TD+'" stroke-width="2"/><circle cx="551" cy="48" r="12" fill="#FFFFFF" stroke="'+TD+'" stroke-width="2"/></g><ellipse cx="700" cy="30" rx="46" ry="12" fill="#FFFFFF" opacity=".8"/>'
-     +'<rect y="150" width="800" height="180" fill="url(#'+uid+'f)"/><g stroke="#8F5E2C" stroke-width="2" opacity=".55"><line x1="400" y1="150" x2="60" y2="330"/><line x1="400" y1="150" x2="290" y2="330"/><line x1="400" y1="150" x2="510" y2="330"/><line x1="400" y1="150" x2="740" y2="330"/><line x1="0" y1="205" x2="800" y2="205"/><line x1="0" y1="262" x2="800" y2="262"/></g>'
-     +'<ellipse cx="400" cy="262" rx="112" ry="30" fill="'+P+'" opacity=".18"/><ellipse cx="400" cy="262" rx="112" ry="30" fill="none" stroke="#FFFFFF" stroke-width="4"/><rect x="612" y="196" width="150" height="96" fill="'+A+'" opacity=".32"/><rect x="612" y="196" width="150" height="96" fill="none" stroke="#FFFFFF" stroke-width="4"/><path d="M612 292 A120 62 0 0 1 612 196" fill="none" stroke="#FFFFFF" stroke-width="4"/>'
-     +'<g><rect x="52" y="84" width="68" height="48" fill="#FFFFFF" stroke="'+P+'" stroke-width="4"/><rect x="72" y="98" width="28" height="22" fill="none" stroke="'+P+'" stroke-width="3"/><ellipse cx="86" cy="140" rx="16" ry="5" fill="none" stroke="'+P+'" stroke-width="4"/><path d="M74 142 L78 164 M86 144 L86 166 M98 142 L94 164 M78 164 L94 164" stroke="#FFFFFF" stroke-width="2.4"/></g>'
-     +'<g><rect x="680" y="84" width="68" height="48" fill="#FFFFFF" stroke="'+P+'" stroke-width="4"/><rect x="700" y="98" width="28" height="22" fill="none" stroke="'+P+'" stroke-width="3"/><ellipse cx="714" cy="140" rx="16" ry="5" fill="none" stroke="'+P+'" stroke-width="4"/><path d="M702 142 L706 164 M714 144 L714 166 M726 142 L722 164 M706 164 L722 164" stroke="#FFFFFF" stroke-width="2.4"/></g>'
-     +'<path d="M470 168 Q540 84 640 128" stroke="#FFFFFF" stroke-width="3" stroke-dasharray="7 8" fill="none" opacity=".8"/>'
-     + ball(180,296,20) + ball(648,302,16) + ball(420,312,13);
-  } else if(sportId==='soccer'){
-    defs='<linearGradient id="'+uid+'s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+PL+'"/><stop offset="1" stop-color="'+AL+'"/></linearGradient><linearGradient id="'+uid+'g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4CC24E"/><stop offset="1" stop-color="#2E9E44"/></linearGradient>';
-    var stripes='', crowd='', ci=0; for(var si=0;si<8;si++){ if(si%2) stripes+='<rect x="'+(si*100)+'" y="150" width="100" height="180" fill="#FFFFFF" opacity=".07"/>'; }
-    var crowdCols=[P,A,T,'#FFFFFF'];
-    for(var cx=18;cx<790;cx+=22){ for(var cy=116;cy<142;cy+=13){ crowd+='<circle cx="'+cx+'" cy="'+cy+'" r="3.4" fill="'+crowdCols[ci%4]+'" opacity=".9"/>'; ci++; } }
-    s='<rect width="800" height="330" fill="url(#'+uid+'s)"/><circle cx="716" cy="50" r="26" fill="#FFD93B"/><g fill="#FFFFFF" opacity=".92"><ellipse cx="140" cy="52" rx="52" ry="16"/><ellipse cx="180" cy="42" rx="36" ry="13"/><ellipse cx="430" cy="36" rx="44" ry="13"/></g>'
-     +'<rect y="102" width="800" height="48" fill="'+AD+'" opacity=".95"/>'+crowd+'<rect y="98" width="800" height="6" fill="'+PX+'"/>'
-     +'<rect y="150" width="800" height="180" fill="url(#'+uid+'g)"/>'+stripes
-     +'<rect x="396" y="150" width="7" height="180" fill="#FFFFFF" opacity=".85"/><ellipse cx="400" cy="252" rx="105" ry="30" fill="none" stroke="#FFFFFF" stroke-width="4"/><path d="M0 196 L120 196 L120 308 L0 308" fill="none" stroke="#FFFFFF" stroke-width="4"/><path d="M800 196 L680 196 L680 308 L800 308" fill="none" stroke="#FFFFFF" stroke-width="4"/>'
-     +'<g><path d="M18 190 L96 206 L96 292 L18 300 Z" fill="#FFFFFF" opacity=".32" stroke="#FFFFFF" stroke-width="5"/><path d="M30 200 L30 296 M52 204 L52 296 M74 206 L74 294 M22 226 L94 238 M20 258 L95 266" stroke="#FFFFFF" stroke-width="1.6" opacity=".7"/></g>'
-     +'<g><path d="M782 190 L704 206 L704 292 L782 300 Z" fill="#FFFFFF" opacity=".32" stroke="#FFFFFF" stroke-width="5"/><path d="M770 200 L770 296 M748 204 L748 296 M726 206 L726 294 M778 226 L706 238 M780 258 L705 266" stroke="#FFFFFF" stroke-width="1.6" opacity=".7"/></g>'
-     +'<g stroke="#CBD5E1" stroke-width="3"><line x1="24" y1="330" x2="24" y2="292"/><line x1="776" y1="330" x2="776" y2="292"/></g><path d="M24 292 L48 300 L24 308 Z" fill="'+P+'"/><path d="M776 292 L752 300 L776 308 Z" fill="'+P+'"/>'
-     + sball(300,296,17) + sball(520,272,13) + sball(662,308,15);
-  } else if(sportId==='tennis'){
-    defs='<linearGradient id="'+uid+'s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+PL+'"/><stop offset="1" stop-color="'+AL+'"/></linearGradient>';
-    var mesh=''; for(var mi=0;mi<26;mi++){ mesh+='<line x1="'+(mi*32)+'" y1="84" x2="'+(mi*32+22)+'" y2="128" stroke="#FFFFFF" stroke-width="1.4" opacity=".16"/>'; }
-    /* the net is a real MESH — a dark grid you can see the court through,
-       never a solid black band — under its white top tape */
-    var netMesh=''; for(var nm=0;nm<=57;nm++){ netMesh+='<line x1="'+(58+nm*12)+'" y1="192" x2="'+(58+nm*12)+'" y2="228"/>'; } for(var nh=0;nh<3;nh++){ netMesh+='<line x1="58" y1="'+(201+nh*9)+'" x2="742" y2="'+(201+nh*9)+'"/>'; }
-    s='<rect width="800" height="330" fill="url(#'+uid+'s)"/><g fill="#2E7D46"><circle cx="90" cy="86" r="34"/><circle cx="180" cy="74" r="26"/><circle cx="640" cy="76" r="30"/><circle cx="724" cy="88" r="34"/></g><rect y="84" width="800" height="44" fill="#1F3D2B" opacity=".85"/>'+mesh
-     +'<rect y="120" width="800" height="210" fill="'+AD+'"/><polygon points="150,150 650,150 730,330 70,330" fill="'+A+'"/><g stroke="#FFFFFF" stroke-width="4" fill="none"><polygon points="150,150 650,150 730,330 70,330"/><line x1="118" y1="238" x2="682" y2="238"/><line x1="400" y1="205" x2="400" y2="272"/></g><line x1="132" y1="205" x2="668" y2="205" stroke="#FFFFFF" stroke-width="3"/><line x1="102" y1="272" x2="698" y2="272" stroke="#FFFFFF" stroke-width="3"/>'
-     +'<g><rect x="58" y="192" width="684" height="36" fill="#111827" opacity=".14"/><g stroke="#111827" stroke-width="1.3" opacity=".62">'+netMesh+'</g><rect x="58" y="192" width="684" height="8" fill="#FFFFFF"/><circle cx="58" cy="210" r="7" fill="#1F2937"/><circle cx="742" cy="210" r="7" fill="#1F2937"/></g>'
-     +'<g transform="translate(104,282) rotate(-24)"><ellipse cx="0" cy="0" rx="20" ry="27" fill="#FFFFFF" opacity=".35" stroke="#374151" stroke-width="5"/><path d="M-12 -18 L12 18 M12 -18 L-12 18 M0 -26 L0 26 M-19 -8 L19 -8 M-19 8 L19 8" stroke="#E5E7EB" stroke-width="1.6"/><line x1="0" y1="27" x2="0" y2="52" stroke="#8A5A2E" stroke-width="7" stroke-linecap="round"/></g>'
-     +'<g transform="translate(700,282) rotate(24)"><ellipse cx="0" cy="0" rx="20" ry="27" fill="#FFFFFF" opacity=".35" stroke="#374151" stroke-width="5"/><path d="M-12 -18 L12 18 M12 -18 L-12 18 M0 -26 L0 26 M-19 -8 L19 -8 M-19 8 L19 8" stroke="#E5E7EB" stroke-width="1.6"/><line x1="0" y1="27" x2="0" y2="52" stroke="#8A5A2E" stroke-width="7" stroke-linecap="round"/></g>'
-     +'<g fill="#CDE053" stroke="#A4C639" stroke-width="2"><circle cx="252" cy="302" r="9"/><circle cx="566" cy="316" r="9"/></g><g class="ws-float"><circle cx="636" cy="238" r="9" fill="#CDE053" stroke="#A4C639" stroke-width="2"/></g>';
-  } else if(sportId==='swimming'){
-    defs='<linearGradient id="'+uid+'w" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4FC3F7"/><stop offset="1" stop-color="#0277BD"/></linearGradient>';
-    var flags='', ropes='', fi=0; for(var fx=46;fx<780;fx+=52){ var fy=34+Math.sin((fx/800)*Math.PI)*22; flags+='<polygon points="'+fx+','+fy.toFixed(0)+' '+(fx+22)+','+(fy+3).toFixed(0)+' '+(fx+11)+','+(fy+19).toFixed(0)+'" fill="'+(fi%3===0? P:(fi%3===1? A:T))+'"/>'; fi++; }
-    [150,214].forEach(function(ry){ for(var rx=14;rx<796;rx+=26){ ropes+='<circle cx="'+rx+'" cy="'+ry+'" r="6" fill="'+(Math.round(rx/26)%3===0? P:(Math.round(rx/26)%3===1? '#FFFFFF':A))+'"/>'; } });
-    s='<rect width="800" height="112" fill="'+PL+'"/><path d="M0 32 Q400 84 800 32" stroke="#94A3B8" stroke-width="3" fill="none"/>'+flags
-     +'<g><rect x="34" y="82" width="56" height="28" rx="4" fill="'+P+'"/><rect x="34" y="82" width="56" height="9" fill="'+PD+'" opacity=".55"/><rect x="710" y="82" width="56" height="28" rx="4" fill="'+A+'"/><rect x="710" y="82" width="56" height="9" fill="'+AD+'" opacity=".55"/></g>'
-     +'<rect y="110" width="800" height="220" fill="url(#'+uid+'w)"/>'+ropes
-     +'<g stroke="#01579B" stroke-width="4" stroke-dasharray="16 12" opacity=".7"><line x1="0" y1="300" x2="800" y2="300"/></g><g stroke="#FFFFFF" stroke-width="3" fill="none" opacity=".5"><path d="M40 262 Q90 250 140 262 T240 262"/><path d="M480 282 Q530 270 580 282 T680 282"/><path d="M240 178 Q290 168 340 178 T440 178"/></g>'
-     +'<g><circle cx="404" cy="182" r="9" fill="#F2C29B"/><path d="M395 176 A10 10 0 0 1 413 176 Z" fill="'+P+'"/><path d="M396 186 Q372 168 356 182" stroke="#F2C29B" stroke-width="6" stroke-linecap="round" fill="none"/><g fill="#FFFFFF"><circle cx="368" cy="192" r="4"/><circle cx="428" cy="196" r="5"/><circle cx="386" cy="200" r="3.4"/></g></g>'
-     +'<circle cx="668" cy="272" r="21" fill="none" stroke="'+P+'" stroke-width="9"/><circle cx="668" cy="272" r="21" fill="none" stroke="'+T+'" stroke-width="9" stroke-dasharray="16 24"/>'
-     +'<g><circle cx="122" cy="266" r="17" fill="#FFFFFF"/><path d="M108 256 A17 17 0 0 1 136 256 L122 266 Z" fill="'+P+'"/><path d="M109 276 A17 17 0 0 0 135 276 L122 266 Z" fill="'+A+'"/></g>';
-  } else if(sportId==='running'){
-    defs='<linearGradient id="'+uid+'s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+PL+'"/><stop offset="1" stop-color="'+AL+'"/></linearGradient><linearGradient id="'+uid+'t" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+PD+'"/><stop offset="1" stop-color="'+PX+'"/></linearGradient>';
-    var bunt='', checks='', bi=0; for(var bx=60;bx<770;bx+=54){ var by=20+Math.sin((bx/800)*Math.PI)*20; bunt+='<polygon points="'+bx+','+by.toFixed(0)+' '+(bx+26)+','+(by+2).toFixed(0)+' '+(bx+13)+','+(by+20).toFixed(0)+'" fill="'+(bi%3===0? P:(bi%3===1? A:T))+'"/>'; bi++; }
-    for(var ck=0;ck<15;ck++){ for(var ck2=0;ck2<2;ck2++){ checks+='<rect x="'+(642+ck2*13)+'" y="'+(132+ck*13)+'" width="13" height="13" fill="'+((ck+ck2)%2? '#111827':'#FFFFFF')+'"/>'; } }
-    s='<rect width="800" height="330" fill="url(#'+uid+'s)"/><circle cx="96" cy="48" r="24" fill="#FFD93B"/><g fill="#FFFFFF" opacity=".92"><ellipse cx="330" cy="44" rx="48" ry="14"/><ellipse cx="560" cy="62" rx="38" ry="11"/></g><path d="M0 22 Q400 66 800 22" stroke="#94A3B8" stroke-width="2.6" fill="none"/>'+bunt
-     +'<rect y="88" width="800" height="42" fill="'+AD+'" opacity=".95"/><g fill="'+TL+'"><rect x="104" y="66" width="8" height="24"/><rect x="688" y="66" width="8" height="24"/><rect x="94" y="56" width="28" height="12" rx="3"/><rect x="678" y="56" width="28" height="12" rx="3"/></g><ellipse cx="108" cy="52" rx="30" ry="9" fill="'+TL+'" opacity=".8"/><ellipse cx="692" cy="52" rx="30" ry="9" fill="'+TL+'" opacity=".8"/>'
-     +'<rect y="130" width="800" height="200" fill="url(#'+uid+'t)"/><g stroke="#FFFFFF" stroke-width="4" opacity=".88"><line x1="0" y1="172" x2="800" y2="172"/><line x1="0" y1="214" x2="800" y2="214"/><line x1="0" y1="256" x2="800" y2="256"/><line x1="0" y1="298" x2="800" y2="298"/></g>'+checks
-     +'<g><rect x="196" y="232" width="76" height="9" fill="#FFFFFF" stroke="'+P+'" stroke-width="2"/><path d="M204 241 L196 262 M264 241 L272 262" stroke="#374151" stroke-width="4"/></g><g><rect x="420" y="276" width="76" height="9" fill="#FFFFFF" stroke="'+P+'" stroke-width="2"/><path d="M428 285 L420 306 M488 285 L496 306" stroke="#374151" stroke-width="4"/></g>'
-     +'<g fill="#374151"><rect x="104" y="302" width="26" height="10" rx="3" transform="rotate(-8 117 307)"/><rect x="140" y="308" width="26" height="10" rx="3" transform="rotate(6 153 313)"/></g>';
-  } else if(sportId==='jumprope'){
-    /* Jump ropes as the design itself, duplicated from Michelle's
-       ref 1: the FOUR rope designs from her image in one row — the
-       crossed double loop with chunky pear handles, the deep hanging
-       U with bean handles, the figure-8 twist with wavy grips, and
-       the coiled rings with pear handles hanging inside — above the
-       happy mid-jump girls from her ref 2. Ropes, handles and
-       dresses take P, A and T in turn (the reference's bright
-       rope/handle pairings); skin, hair and the sun stay natural. */
+  if(sportId==='jumprope'){
+    /* Happy mid-jump girls from Michelle's ref 2 over the pink ground,
+       under the sun and the two flat white ovals at the top. The four
+       standalone rope designs and the small heart that used to sit
+       above the girls were taken out at Michelle's request (Nov 8,
+       2026) — the girls' own ropes, arcing overhead in their hands,
+       stay. Dresses take P, A and T in turn; skin, hair and the sun
+       stay natural. */
     defs='<linearGradient id="'+uid+'s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+PL+'"/><stop offset="1" stop-color="'+AL+'"/></linearGradient><linearGradient id="'+uid+'g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="'+TL+'"/></linearGradient>';
     s='<rect width="800" height="330" fill="url(#'+uid+'s)"/>'
      +'<circle cx="754" cy="34" r="19" fill="#FFD93B"/><g stroke="#FFD93B" stroke-width="4" stroke-linecap="round"><line x1="754" y1="6" x2="754" y2="13"/><line x1="728" y1="20" x2="733" y2="25"/><line x1="780" y1="20" x2="775" y2="25"/><line x1="724" y1="38" x2="731" y2="38"/><line x1="784" y1="38" x2="777" y2="38"/></g>'
      +'<g fill="#FFFFFF" opacity=".9"><ellipse cx="330" cy="26" rx="42" ry="11"/><ellipse cx="520" cy="18" rx="32" ry="9"/></g>'
      +'<rect y="272" width="800" height="58" fill="url(#'+uid+'g)" opacity=".85"/><ellipse cx="170" cy="292" rx="130" ry="12" fill="#FFFFFF" opacity=".5"/><ellipse cx="630" cy="292" rx="130" ry="12" fill="#FFFFFF" opacity=".5"/>'
-     /* the four rope designs from ref 1, in the image's own order —
-        crossed double loop, hanging U, figure-8 twist, coiled rings —
-        kept whole inside the middle band above the girls */
-     + wsRopeCross(102,114,T,P)
-     + wsRopeU(296,66,76,94,A,T)
-     + wsRopeTwist(482,112,0.92,P,A)
-     + wsRopeCoil(672,114,43,T,A)
      /* happy girls mid-jump, ropes arcing overhead, like ref 2 */
      + wsJumpGirl(168,302,0.88,A,P,T)
      + wsJumpGirl(400,310,1.0,P,A,T)
      + wsJumpGirl(632,302,0.88,T,P,A)
-     +'<g><circle cx="52" cy="316" r="4" fill="'+P+'"/><circle cx="292" cy="322" r="4" fill="'+A+'"/><circle cx="512" cy="318" r="4" fill="'+P+'"/><circle cx="742" cy="318" r="4" fill="'+A+'"/></g>'
-     + wsHeart(400,138,0.8,A);
-  } else { /* cheer — the classic world, dressed in HER three theme colors */
-    defs='<linearGradient id="'+uid+'w" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+L+'"/><stop offset="1" stop-color="#FFFFFF"/></linearGradient><linearGradient id="'+uid+'f" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F3D9C8"/><stop offset="1" stop-color="#E3B98C"/></linearGradient>';
-    var gar=''; [90,240,400,560,710].forEach(function(gx,i){ gar+=wsPom(gx, i%2? 54:42, i===2? 19:16, i%2? A:P, i%2? P:A); });
-    s='<rect width="800" height="330" fill="url(#'+uid+'w)"/>'
-     +'<g fill="#FFFFFF" opacity=".4" stroke="'+P+'" stroke-width="5"><path d="M70 252 L70 112 Q140 32 210 112 L210 252 Z"/><path d="M330 252 L330 92 Q400 12 470 92 L470 252 Z"/><path d="M590 252 L590 112 Q660 32 730 112 L730 252 Z"/></g>'
-     +'<rect y="250" width="800" height="80" fill="url(#'+uid+'f)"/><ellipse cx="400" cy="282" rx="320" ry="26" fill="#FFFFFF" opacity=".22"/>'
-     +'<path d="M0 24 Q200 72 400 28 Q600 -6 800 38" stroke="'+TD+'" stroke-width="4" fill="none" opacity=".85"/>'+gar
-     +'<g><rect x="316" y="0" width="34" height="88" fill="'+P+'"/><path d="M316 88 L333 70 L350 88 Z" fill="#FFFFFF"/><rect x="450" y="0" width="34" height="88" fill="'+A+'"/><path d="M450 88 L467 70 L484 88 Z" fill="#FFFFFF"/><circle cx="333" cy="26" r="6" fill="'+T+'" stroke="'+TD+'" stroke-width="1.6"/><circle cx="467" cy="26" r="6" fill="'+T+'" stroke="'+TD+'" stroke-width="1.6"/></g>'
-     + wsPom(54,266,36,P,A) + wsPom(746,266,36,A,P) + wsPom(122,296,22,A,P) + wsPom(678,296,22,P,A) + wsPom(400,306,20,P,T)
-     +'<g><circle cx="212" cy="292" r="6" fill="#E2543E"/><circle cx="224" cy="298" r="4.4" fill="#C22F22"/><circle cx="588" cy="292" r="6" fill="#E2543E"/><circle cx="576" cy="298" r="4.4" fill="#C22F22"/></g>';
-  }
+     +'<g><circle cx="52" cy="316" r="4" fill="'+P+'"/><circle cx="292" cy="322" r="4" fill="'+A+'"/><circle cx="512" cy="318" r="4" fill="'+P+'"/><circle cx="742" cy="318" r="4" fill="'+A+'"/></g>';
+  } else { s=''; /* cheer never reaches here — its Pom Pom template is Michelle's photo, returned above */ }
   return '<svg viewBox="0 0 800 330" preserveAspectRatio="'+(fit==='meet'?'xMidYMid meet':'xMidYMid slice')+'" aria-hidden="true"><defs>'+defs+'</defs>'+s+'</svg>';
 }
 /* ================= ENCHANTED CASTLE INTERIOR SCENE =================
-   The DEFAULT background on BOTH builds: the INSIDE of Royce's
-   enchanted castle — the grand castle room she stands in inside her
+   The drawn ballroom inside the cheer game stage: the INSIDE of
+   Royce's enchanted castle — the grand castle room she stands in inside her
    hero picture, seen from within. Lavender-pink stone walls built
    from rounded blocks; three tall pointed-arch windows glowing
    gold-white, with soft daylight streaming through them and pooling
@@ -4797,10 +4787,12 @@ function worldSceneSVG(sportId,c,uid,fit){
    picks into, so it recolors exactly like the sport scenes do; roses
    keep their real red and leaf green, the standing real-world
    exceptions.
-   It is the background pick 'enchanted': the classic link's fixed
-   default, and the Customized edition's starting default — there it
-   stays only until she picks another background, exactly like any
-   other pick, and picking it again brings this castle room back. */
+   This drawn room is NOT the Enchanted Rose page background: the
+   'enchanted' background pick itself is Michelle's photo
+   (assets/enchanted-rose.webp — see paintWorldScene). This scene
+   paints only inside the game stage, as the classic cheer ballroom,
+   while an enchanted world is showing and no sport game is being
+   played. */
 function enchantedSceneSVG(c,uid,fit,clean){
   uid=uid||'e'; var P=c.primary,PD=c.dark,PX=c.deep,PL=c.light,A=c.accent,AD=c.accentDark,AL=c.accentLight,T=c.tertiary||'#E4B33C',TD=c.tertiaryDark||'#B98A1F',TL=c.tertiaryLight||'#FFF3C7';
   var LEAF='#3E9B4F';
@@ -4943,16 +4935,22 @@ function enchantedSceneSVG(c,uid,fit,clean){
    beam, bars and rings for gymnastics, and so on for every sport —
    drawn by applySportWorld's sportVenueSVG, so a tennis game is
    always on a real tennis court and never on a basketball court.
-   The enchanted castle background is the one exception to the
+   The Enchanted Rose background is the one exception to the
    classic rule below: it is the DEFAULT background on both links, so
    whenever the effective background pick is 'enchanted' (always, on a
-   classic link) the PAGE backdrop is the castle from her hero
-   picture — the background-only version in assets/royce-background.webp,
-   the same castle interior with the girl and the bench / beam she
-   stood on removed, so the room sits empty behind the page — inside
-   the fixed full-viewport backdrop layer, so it stays steady and
-   never zooms or re-scales on scroll, with only the light ws-wash
-   edge tint over it. The hero picture itself (assets/royce.webp)
+   classic link) the PAGE backdrop is Michelle's own photo itself —
+   assets/enchanted-rose.webp, the Beauty and the Beast stained-glass
+   scene (Belle in her yellow gown, the Beast behind her, the big red
+   rose in the round window). The photo is cleaned up, not redrawn:
+   the screenshot's screen-edge strip and white padding are trimmed
+   so only the artwork remains, and the cleaned artwork is brought
+   up to 1920px wide — the same size as the castle photo background
+   (assets/royce-background.webp) — so presented the same way that
+   background is presented, full-bleed (object-fit:cover) inside the
+   fixed full-viewport backdrop layer, pinned behind the whole page,
+   it stays steady and never zooms or re-scales on scroll, with only
+   the light ws-wash edge tint over it — the same immersive
+   photo-background treatment. The hero picture itself (assets/royce.webp)
    is unchanged and still shows the girl. The drawn enchanted scene
    still paints inside the stage only while no sport game is being
    played (the classic cheer ballroom). */
@@ -4984,7 +4982,25 @@ function paintWorldScene(){
     if(ws) ws.innerHTML=''; if(stage){ stage.classList.remove('has-world-scene'); if(playingSport) stage.style.background=SPORT_WORLDS[played].stage; }
     keepBackdropBelowHero(); return;
   }
-  if(bd){ bd.innerHTML=(enchanted? '<img class="hero-castle-bg" src="assets/royce-background.webp" alt="" aria-hidden="true"/>' : worldSceneSVG(sid,c,'p'))+'<div class="ws-wash"></div>'; bd.classList.add('on'); }
+  /* The Pom Pom template is Michelle's photo too: whenever the cheer
+     template is the applied background (her home sport is cheer and
+     the Enchanted Rose pick is not in force), the page backdrop is
+     assets/pom-pom-bg.webp itself — the colorful pom poms on white
+     she sent, its gray camera badge cropped out and its edges
+     cleaned, every pom pom as photographed — full-bleed
+     (object-fit:cover) in the fixed backdrop layer with the same
+     light ws-wash edge tint as the Enchanted Rose photo. */
+  var pomPhoto=(!enchanted && sid==='cheer');
+  /* The Ballerina (Dance) template is glossy 3D animated artwork too:
+     whenever the dance template is the applied background, the page
+     backdrop is assets/ballerina-bg.webp itself — the row of diverse
+     ballerinas in tutus on the pale blush-pink studio backdrop, in
+     the style of Michelle's reference — full-bleed (object-fit:cover)
+     in the fixed backdrop layer with the same light ws-wash edge
+     tint as the other photo backgrounds. Background only: it never
+     paints inside a game. */
+  var dancePhoto=(!enchanted && sid==='dance');
+  if(bd){ bd.innerHTML=(enchanted? '<img class="hero-castle-bg" src="assets/enchanted-rose.webp" alt="" aria-hidden="true"/>' : pomPhoto? '<img class="hero-castle-bg" src="assets/pom-pom-bg.webp" alt="" aria-hidden="true"/>' : dancePhoto? '<img class="hero-castle-bg" src="assets/ballerina-bg.webp" alt="" aria-hidden="true"/>' : worldSceneSVG(sid,c,'p'))+'<div class="ws-wash"></div>'; bd.classList.add('on'); }
   if(playingSport){
     /* Inside the stage, NO template is painted (Michelle's rule: the
        sport templates from worldSceneSVG are PAGE backgrounds only —
@@ -5292,7 +5308,7 @@ function applyEdition(){
      same sections, order and spacing. The hub row holds just Trophy
      Case and Bonus Round on BOTH links: the Cheerleader Studio and
      Coach Studio are not homepage cards at all — on the personalized
-     link they live inside the Setup Wizard as steps 6 and 7. There
+     link they live inside the Setup Wizard as steps 4 and 5. There
      is NO Ready to Play card on either link — it was removed for
      good. Theme-building lives in the first-time Setup Wizard, and
      the wizard's re-run entry lives in the ☰ Menu (custom links
@@ -5300,7 +5316,7 @@ function applyEdition(){
   var mw=document.getElementById('menuWizardItem'); if(mw) mw.style.display= custom? 'block':'none';
   /* No studio hub cards on either link: the hub row holds only Trophy
      Case and Bonus Round. The Cheerleader Studio and Coach Studio
-     live inside the Setup Wizard (steps 6 and 7, custom link only). */
+     live inside the Setup Wizard (steps 4 and 5, custom link only). */
   /* The hero coach bubble is NOT written here: applySportWorld() (reached
      through applyTheme() below) owns it, so its coach title and activity
      wording always follow the current sport. Writing a cheer-only line
@@ -5374,15 +5390,14 @@ function renderThemeStudio(){
    2) your three colors
       (primary, secondary, tertiary — they dress the cards and hero)
    3) favorite animal
-   4) enter the child's first name — the learner's own first
-      name, the name the welcome script uses
-   5) make your coach
-   6) the cheerleader design studio — design & dress her cheerleader
+   4) make your coach
+   5) the cheerleader design studio — design & dress her cheerleader
       (skin, hair, uniform, bow, shoes and pom poms)
-   7) the coach design studio — the full Coach Studio controls —
-   then “Enter My World” steps straight into the world. The two
-   design studios live ONLY as wizard steps 6 and 7: they are never
-   cards or sections on the homepage. There is NO
+   6) enter the child's first name — the learner's own first
+      name, the name the welcome script uses —
+   then “Enter My World” steps straight into the world. The coach
+   and cheerleader design steps live ONLY as wizard steps: they are
+   never cards or sections on the homepage. There is NO
    grade step in this wizard: grade was already picked in the pop-up
    that opened first, and it is changed later from the ☰ Menu's grade
    list, so it is never asked twice in one first-open flow. Every pick writes
@@ -5413,10 +5428,11 @@ function applyWorldName(){
    that opens first on every first visit (both links), and changed
    later from the grade list in the ☰ Menu — so the wizard never asks
    it a second time. The wizard's steps are background, colors, animal,
-   name, coach, cheerleader design studio and coach design studio —
-   seven steps, and the coach design studio step ends the wizard. */
-var SETUP_STEPS=['background','color','animal','name','coach','cheerleader','coachstudio'];
-var setupStep=0, setupDraft={name:''}, setupGradePending=null, setupAllowClose=false, setupCoachDraft=null, setupKeepOriginal=true, setupSnapshotTheme=null, setupCoachStudioVisited=false;
+   coach, cheerleader design studio and the child's first name — six
+   steps, and the name step ends the wizard. (The old Coach
+   Studio step duplicated the coach step and was removed.) */
+var SETUP_STEPS=['background','color','animal','coach','cheerleader','name'];
+var setupStep=0, setupDraft={name:''}, setupGradePending=null, setupAllowClose=false, setupCoachDraft=null, setupKeepOriginal=true, setupSnapshotTheme=null;
 /* Royce's theme is the default on a purchased custom build until the user
    changes it. The wizard's default toggle holds that: ON means the world
    keeps Royce's original design (her Royal Roses theme — pink / purple /
@@ -5472,7 +5488,6 @@ function openSetupWizard(rerun){
   if(!window.isCustomEdition()) return;
   setupDraft={name:setupState.name||''};
   setupCoachDraft=null;
-  setupCoachStudioVisited=false;
   if(typeof myCoach!=='undefined'&&myCoach){ setupCoachDraft={name:myCoach.name||'',identity:myCoach.identity||'girl',jacket:myCoach.jacket||'#E4B33C',jacketStyle:myCoach.jacketStyle||'classic',hair:myCoach.hair||'ponytail',hairColor:myCoach.hairColor||'#3B2310',skin:(typeof myCoach.skin==='number'?myCoach.skin:2)}; }
   setupGradePending= (typeof gradeChosen!=='undefined'&&gradeChosen)? gradeIdx : null;
   setupKeepOriginal= (setupState&&typeof setupState.keepOriginal==='boolean')? setupState.keepOriginal : themeIsRoyceDefault();
@@ -5501,12 +5516,12 @@ function renderSetupWizard(){
   var key=SETUP_STEPS[setupStep], h='';
   var kick='STEP '+(setupStep+1)+' OF '+SETUP_STEPS.length;
   if(key==='name'){
-    h+='<div class="setup-kicker">'+kick+' — YOUR FIRST NAME</div><div class="setup-q">What is your first name? 🌹</div><p class="setup-hint">Type your first name here — this is your name, the name your coach uses to say hello to you!</p>';
+    h+='<div class="setup-kicker">'+kick+' — YOUR FIRST NAME</div><div class="setup-q">What is your first name? 🌹</div>';
     h+='<input class="setup-name-input" id="setupNameInput" type="text" maxlength="20" autocomplete="off" autocapitalize="words" spellcheck="false" placeholder="enter your first name" aria-label="enter your first name" value="'+escAttr(setupDraft.name)+'" oninput="setupNameInput(this.value)"/>';
   } else if(key==='background'){
-    var bmeta=WORLD_SCENE_META[myTheme.sport]||WORLD_SCENE_META.cheer; var enchantedBg=(myTheme.bg==='enchanted' && myTheme.sport===defaultTheme().sport); var ebg=themeById(THEME_BGS,'enchanted');
+    var bmeta=WORLD_SCENE_META[myTheme.sport]||WORLD_SCENE_META.cheer; var enchantedBg=(myTheme.bg==='enchanted' && myTheme.sport===defaultTheme().sport); var ebg=themeById(THEME_BGS,'enchanted'); var pomBg=(!enchantedBg && myTheme.sport==='cheer'); var danceBg=(!enchantedBg && myTheme.sport==='dance');
     h+='<div class="setup-kicker">'+kick+' — YOUR BACKGROUND</div><div class="setup-q">Your background is built! 🖼️</div>';
-    h+='<div class="scene-preview" style="margin:0 0 12px">'+(enchantedBg? enchantedSceneSVG(themePalette(),'w3','meet') : worldSceneSVG(myTheme.sport,themePalette(),'w3','meet'))+'<div class="scene-preview-cap">🖼️ Your background: '+(enchantedBg? ebg.name : bmeta.name)+'</div></div>';
+    h+='<div class="scene-preview" style="margin:0 0 12px">'+(enchantedBg? '<img class="scene-photo" src="assets/enchanted-rose.webp" alt="" aria-hidden="true"/>' : pomBg? '<img class="scene-photo" src="assets/pom-pom-bg.webp" alt="" aria-hidden="true"/>' : danceBg? '<img class="scene-photo" src="assets/ballerina-bg.webp" alt="" aria-hidden="true"/>' : worldSceneSVG(myTheme.sport,themePalette(),'w3','meet'))+'<div class="scene-preview-cap">🖼️ Your background: '+(enchantedBg? ebg.name : bmeta.name)+'</div></div>';
     h+='<div class="opt-row"><button class="big-chip'+(enchantedBg?' on':'')+'" onclick="setupPickBackgroundTemplate(\'enchanted\')"><span class="bce">'+ebg.emoji+'</span>'+ebg.name+'</button>'+THEME_SPORTS.map(function(x){ var m=WORLD_SCENE_META[x.id]||WORLD_SCENE_META.cheer; return '<button class="big-chip'+(!enchantedBg&&myTheme.sport===x.id?' on':'')+'" onclick="setupPickBackgroundTemplate(\''+x.id+'\')"><span class="bce">'+x.emoji+'</span>'+m.name+'</button>'; }).join('')+'</div>';
   } else if(key==='color'){
     h+='<div class="setup-kicker">'+kick+' — YOUR THREE COLORS</div><div class="setup-q">Pick your three colors! 🎨</div>';
@@ -5526,7 +5541,7 @@ function renderSetupWizard(){
     var cd=setupCoachDraft||{name:'',identity:'girl',jacket:'#E4B33C',jacketStyle:'classic',hair:'ponytail',hairColor:'#3B2310',skin:2};
     var csE='📣', caE='🦋', csN='Cheer', caN='Butterfly';
     try{ var csp=themeSport(), can=themeAnimal(); csE=csp.emoji; csN=csp.name; caE=can.emoji; caN=can.name; }catch(e){}
-    h+='<div class="setup-kicker">'+kick+' — YOUR COACH</div><div class="setup-q">Make your coach yours! 🏆</div><p class="setup-hint">Name your coach, pick who she is, and dress her. Royce\u2019s coaches are always girls, just like Belle! Your favorite sport and animal come along too — your coach carries a '+csN+' prop '+csE+' and keeps a '+caN+' friend '+caE+' close!</p>';
+    h+='<div class="setup-kicker">'+kick+' — YOUR COACH</div><div class="setup-q">Make your coach yours! 🏆</div>';
     h+='<div class="opt-group"><h4>✏️ Coach\u2019s Name</h4><input class="coach-name-input" id="setupCoachNameInput" type="text" maxlength="20" autocomplete="off" autocapitalize="words" spellcheck="false" placeholder="Belle" aria-label="Coach\u2019s name" value="'+escAttr(cd.name)+'" oninput="setupCoachNameInput(this.value)"/></div>';
     h+='<div class="opt-group"><h4>🖐️ Skin Tone</h4><div class="opt-row">'+SKINS.map(function(_,i){ return '<button class="swatch'+(cd.skin===i?' on':'')+'" style="background:'+SKINS[i]+'" onclick="setupCoachPick(\'skin\','+i+')" aria-label="Skin tone '+(i+1)+'" title="Skin tone '+(i+1)+'"></button>'; }).join('')+'</div></div>';
     h+='<div class="opt-group"><h4>💇 Hair Style</h4><div class="opt-row">'+COACH_HAIRS.map(function(x){ return '<button class="opt-chip'+(cd.hair===x[0]?' on':'')+'" onclick="setupCoachPick(\'hair\',\''+x[0]+'\')">'+x[1]+'</button>'; }).join('')+'</div></div>';
@@ -5544,34 +5559,22 @@ function renderSetupWizard(){
     h+='<div class="opt-group"><h4>✨ Your Coach So Far</h4><div class="opt-row"><span class="coach-chip">'+wcjk.emoji+' Dressed in: '+wcjk.name+'</span></div></div>';
     h+='<div class="opt-group"><h4>🏆 From Your Favorites</h4><div class="opt-row"><span class="coach-chip">'+csE+' '+csN+' prop</span><span class="coach-chip">'+caE+' '+caN+' friend</span></div></div>';
   } else if(key==='cheerleader'){
-    /* STEP 6 — the Cheerleader Design Studio lives HERE, inside the
+    /* STEP 5 — the Cheerleader Design Studio lives HERE, inside the
        wizard: the very same studio controls (renderStudio / setDesign,
        same preview) that used to sit in a homepage card + modal. The
        containers keep their studio ids, so every studio pick works
        exactly as it did — only where the studio lives has changed. */
     h+='<div class="setup-kicker">'+kick+' — MY CHEERLEADER STUDIO</div><div class="setup-q">Design Your Cheerleader! 🎀</div>';
     h+='<div class="studio-grid"><div class="studio-preview"><div class="pv" id="studioPreview"></div><div class="pname" id="studioName">Your Cheerleader ⭐</div></div><div id="studioOptions"></div></div>';
-  } else if(key==='coachstudio'){
-    /* STEP 7 — the Coach Design Studio lives HERE, inside the wizard,
-       as its OWN step (not folded into the step-5 coach step): the
-       very same studio controls (renderCoachStudio / setCoach, same
-       preview) that used to sit in a homepage card + modal. The step-5
-       draft is handed to the studio the first time this step opens,
-       so the studio starts from the coach she just made; from here
-       the studio works on the coach directly, and finishSetup reads
-       her back from it (see setupCoachStudioVisited there). */
-    if(!setupCoachStudioVisited && setupCoachDraft && typeof myCoach!=='undefined'){ myCoach={name:setupCoachDraft.name||'',identity:setupCoachDraft.identity||'girl',jacket:setupCoachDraft.jacket||'#E4B33C',jacketStyle:setupCoachDraft.jacketStyle||'classic',hair:setupCoachDraft.hair||'ponytail',hairColor:setupCoachDraft.hairColor||'#3B2310',skin:(typeof setupCoachDraft.skin==='number'?setupCoachDraft.skin:2)}; }
-    setupCoachStudioVisited=true;
-    h+='<div class="setup-kicker">'+kick+' — MY COACH STUDIO</div><div class="setup-q">Customize Your Coach! 🏆</div><p class="setup-hint">Give your coach a name, dress her your way, and choose who she is. Royce\u2019s coaches are always girls — pick her style in pinks, purples, rose and gold! Your sport and animal favorites dress her too — a sport prop and an animal friend ride along in her portrait.</p>';
-    h+='<div class="studio-grid"><div class="studio-preview"><div id="coachPreview"></div><div class="pname" id="coachPreviewName">Cheer Coach Belle</div><div class="coach-look-note" id="coachPreviewNote"></div></div><div id="coachOptions"></div></div>';
   }
   /* No grade step here on purpose: grade was already picked in the
      pop-up that opened first, and is changed later from the ☰ Menu —
-     the wizard never asks it again. The coach design studio step
-     above is the last step; its button reads “Enter My World!”. */
+     the wizard never asks it again. The name step above is the last
+     step; its button reads “Enter My World!”.
+     (There is no Coach Studio step: it duplicated the Coach step,
+     so coach design lives in step 4 only.) */
   body.innerHTML=h;
   if(key==='cheerleader'&&typeof renderStudio==='function') renderStudio();
-  if(key==='coachstudio'&&typeof renderCoachStudio==='function') renderCoachStudio();
   /* While the default toggle is ON, the design steps (colors, animal,
      coach) show Royce's original design and their
      picks stay locked. The BACKGROUND step is never locked: choosing a
@@ -5579,14 +5582,14 @@ function renderSetupWizard(){
      template pick is also her sport pick, so there is no separate
      sport step. The name step stays open too. (There is no grade step:
      grade is picked in the first-open pop-up and changed in the Menu.) */
-  var designStep= (key==='color'||key==='animal'||key==='coach'||key==='cheerleader'||key==='coachstudio');
+  var designStep= (key==='color'||key==='animal'||key==='coach'||key==='cheerleader');
   if(setupKeepOriginal&&designStep){ body.classList.add('setup-locked'); body.querySelectorAll('button').forEach(function(b){ b.disabled=true; }); body.querySelectorAll('input').forEach(function(b){ b.disabled=true; }); } else { body.classList.remove('setup-locked'); }
   var back=document.getElementById('setupBackBtn'); if(back) back.style.visibility= setupStep===0? 'hidden':'visible';
   var next=document.getElementById('setupNextBtn');
   if(next){
     var isLast= setupStep===SETUP_STEPS.length-1;
     next.textContent= isLast? '🎀 Enter My World!' : 'Next →';
-    next.disabled= false; /* the last step (coach) never waits on a grade pick — grade is already set from the first-open pop-up */
+    next.disabled= false; /* the last step (name) never waits on a grade pick — grade is already set from the first-open pop-up */
   }
   if(key==='name'){ var inp=document.getElementById('setupNameInput'); if(inp){ inp.addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); setupMove(1); } }); } }
   if(key==='coach'){ var cinp=document.getElementById('setupCoachNameInput'); if(cinp){ cinp.addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); setupMove(1); } }); } }
@@ -5630,10 +5633,9 @@ function finishSetup(){
      played sport, and repaint the world. */
   setupSnapshotTheme=null; saveTheme(); syncPlaySportToTheme(); applyTheme();
   if(typeof syncPageLockClass==='function') syncPageLockClass();
-  /* Step 7 (coach design studio) worked on the coach directly, so if
-     it was visited, the finished coach is read back from the studio —
-     the step-5 draft must not overwrite her step-7 design picks. */
-  if(setupCoachStudioVisited&&typeof myCoach!=='undefined'){ setupCoachDraft={name:myCoach.name||'',identity:myCoach.identity||'girl',jacket:myCoach.jacket||'#E4B33C',jacketStyle:myCoach.jacketStyle||'classic',hair:myCoach.hair||'ponytail',hairColor:myCoach.hairColor||'#3B2310',skin:(typeof myCoach.skin==='number'?myCoach.skin:2)}; }
+  /* The coach is designed in step 4 only: the step-4 draft (seeded
+     from her saved coach when the wizard opened) commits here, so a
+     saved coach design is never lost. */
   if(!setupKeepOriginal&&setupCoachDraft&&typeof myCoach!=='undefined'){ myCoach={name:(setupCoachDraft.name||'').trim(),identity:setupCoachDraft.identity||'girl',jacket:setupCoachDraft.jacket||'#E4B33C',jacketStyle:setupCoachDraft.jacketStyle||'classic',hair:setupCoachDraft.hair||'ponytail',hairColor:setupCoachDraft.hairColor||'#3B2310',skin:(typeof setupCoachDraft.skin==='number'?setupCoachDraft.skin:2)}; if(typeof saveCoach==='function') saveCoach(); if(typeof applyCoach==='function') applyCoach(); }
   document.getElementById('setupModal').classList.remove('open');
   var wn=effectiveWorldName();
