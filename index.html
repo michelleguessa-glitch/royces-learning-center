@@ -410,6 +410,23 @@ span.royce-crop>img{position:absolute;left:-143%;top:-10.6%;width:408.5%;height:
 #practiceView .letter-box{width:38px;height:44px;font-size:21px}
 #practiceView .feedback{margin-top:8px;font-size:14.5px;line-height:1.4}
 #practiceView .feedback.good,#practiceView .feedback.bad{padding:9px 11px}
+/* QUESTION NEVER SHIFTS (live-check fix): when the pink feedback
+   card appeared after an answer, the question jumped DOWN about
+   40px, then jumped back when the feedback cleared. The feedback
+   itself sits BELOW the question, so it could not push it — the
+   mover was fitGameView(): the taller layout with feedback showing
+   re-stepped its fit classes (smaller coach face, smaller score
+   numbers, tighter margins — about 40px of shrink above the
+   question), and clearing the feedback relaxed them again. The
+   feedback box now holds ONE FIXED HEIGHT in every state — empty,
+   correct, wrong — so the layout fitGameView() measures is
+   IDENTICAL before, during and after an answer: its steps never
+   re-step on an answer, and the question, the answer box, Check It
+   and the Helper Tools button never move. A long wrong-answer
+   feedback scrolls inside its own pink box instead of growing it;
+   Belle still speaks the fix aloud exactly as before. The same
+   lock the boys' page passed its live check with. */
+#practiceView .feedback{height:102px;max-height:102px;overflow-y:auto;box-sizing:border-box}
 #practiceView .tools-divider{margin-top:10px}
 #practiceView .tools-btn{margin-top:10px;padding:10px 16px}
 #practiceView .tools-head{font-size:15px}
@@ -1202,6 +1219,21 @@ footer{max-width:1080px;margin:0 auto;padding:0 16px 210px;color:var(--muted);fo
    covers her lower body while she waits kicking, swims across on a
    right answer, and sinks a little on a miss. */
 .stage.swimming-active .stage-cheer{bottom:16px}
+/* SWIMMING POSE — SHE SWIMS FLAT IN THE WATER (live-check fix): her
+   figure used to stay UPRIGHT in the pool — standing, head up — with
+   only her arms and legs moving, which read as treading water, never
+   as swimming. Her design (and the boys' page, which passed live)
+   calls for a HORIZONTAL swimmer: body flat in the water, arms
+   stroking, legs kicking, crossing to the touchpad and back. The
+   whole figure now lies flat — head leading in her direction of
+   travel — while the swim-idle animations keep stroking her arms
+   and flutter-kicking her legs around their own joints inside the
+   turned figure, and the moving water layer still flows over her.
+   Outbound she faces the far wall; on the trip back between
+   problems (resetCheerToStart adds .swim-back for that trip only)
+   she faces the start wall, so she never swims backwards. */
+.stage.swimming-active .stage-cheer svg{transform:rotate(88deg);transform-origin:50% 50%;transition:transform .35s ease}
+.stage.swimming-active .stage-cheer.swim-back svg{transform:rotate(-88deg)}
 /* jump rope: the stage scene carries its own ground (the wizard
    preview's ground band), so the cheer stage's tan floor band steps
    aside — it was cutting the scene's jumping girls off at the waist. */
@@ -1235,8 +1267,8 @@ footer{max-width:1080px;margin:0 auto;padding:0 16px 210px;color:var(--muted);fo
 .stage.jumprope-active .jr-rope{transition:transform .45s ease-in;transform-box:fill-box;transform-origin:50% 100%}
 .stage.jumprope-active .stage-cheer.rope-dropped .jr-rope{transform:none}
 .stage.jumprope-active .arm-l,.stage.jumprope-active .arm-r{transition:transform .4s ease}
-.stage.jumprope-active .stage-cheer.rope-dropped .arm-l{transform:rotate(-16deg);transform-box:view-box;transform-origin:78px 100px}
-.stage.jumprope-active .stage-cheer.rope-dropped .arm-r{transform:rotate(16deg);transform-box:view-box;transform-origin:122px 100px}
+.stage.jumprope-active .stage-cheer.rope-dropped .arm-l{transform:rotate(-27deg);transform-box:view-box;transform-origin:78px 100px}
+.stage.jumprope-active .stage-cheer.rope-dropped .arm-r{transform:rotate(27deg);transform-box:view-box;transform-origin:122px 100px}
 .stage.jumprope-active .cheer-body{transition:transform .45s ease}
 .stage.jumprope-active .stage-cheer.jr-bend .cheer-body{transform:rotate(13deg) translateY(8px);transform-box:fill-box;transform-origin:50% 100%}
 @keyframes jumpRopeHop{0%,100%{transform:translateY(0)}38%{transform:translateY(-19px)}62%{transform:translateY(-19px)}82%{transform:translateY(0)}}
@@ -3242,7 +3274,7 @@ function resetCheerToStart(instant){
   var el=stageCheerEl(); if(!el) return;
   stopRoutine();
   resetSquad(instant);
-  el.classList.remove('walking','wobbling','split-land','split-mode');
+  el.classList.remove('walking','wobbling','split-land','split-mode','swim-back');
   el.dataset.pose='stand';
   el.innerHTML=cheerSVG(stageDesign(),'stand',stageCheerOpts());
   var squadMode= !(typeof isSportWorld==='function'&&isSportWorld());
@@ -3291,6 +3323,7 @@ function resetCheerToStart(instant){
       var sidR=(typeof sportWorldId==='function')? sportWorldId() : '';
       var loco= sidR==='swimming' ? 'swim-idle' : (sidR==='dance' ? 'dance-idle' : (sidR==='jumprope' ? 'jumprope-jumping' : (sidR==='gymnastics' ? 'walking' : (sidR==='running' ? 'running' : (sidR==='hockey' ? 'skating' : 'walking')))));
       el.classList.add(loco);
+      if(sidR==='swimming') el.classList.add('swim-back'); /* the return crossing faces the start wall — she never swims backwards */
       if(sidR==='jumprope'&&typeof ensureJrRopeLoop==='function') ensureJrRopeLoop();
       var shR=document.getElementById('cheerShadow'); if(shR){ shR.style.transition='left 1.15s linear, bottom .35s ease, transform .35s ease, opacity .35s ease'; setTimeout(function(){ shR.style.transition=''; },1200); }
       el.style.transition='left 1.15s linear, transform .65s ease';
@@ -3304,10 +3337,17 @@ function resetCheerToStart(instant){
   if(instant||REDUCED){ void el.offsetWidth; el.style.transition=''; }
 }
 function sparkleBurst(xPct,bottomBase){
-  var stage=document.getElementById('beamStage'); if(!stage) return;
-  var chars=['✨','🌟','💖','✨','⭐'];
-  var base= bottomBase||120;
-  for(var i=0;i<13;i++){ var s=document.createElement('span'); s.className='sparkle-bit'; s.textContent=chars[i%chars.length]; s.style.fontSize=(13+Math.random()*14)+'px'; s.style.left='calc('+xPct+'% + '+(Math.random()*90-45)+'px)'; s.style.bottom=(base+Math.random()*90)+'px'; s.style.animationDelay=(Math.random()*0.25)+'s'; stage.appendChild(s); (function(el){ setTimeout(function(){ el.remove(); },1700); })(s); }
+  /* NO IN-STAGE CELEBRATION DECORATIONS (Michelle's standing rule,
+     re-confirmed on the live check): a game stage holds ONLY the
+     venue, her player, the game's own object and its target — never
+     hearts, stars or sparkles flashed inside it on a correct answer.
+     This used to burst ✨ 🌟 💖 ⭐ bits across the stage (seen live
+     in Swimming, Dance, Soccer, Tennis, Hockey and Running); it now
+     deliberately draws NOTHING. The celebration itself is untouched:
+     the applause / cheer sounds, the scoreboard pop and the score
+     changes all still happen exactly as before — only the in-stage
+     decoration is gone. Call sites stay so no game logic changes. */
+  return;
 }
 /* her soft shadow travels with her: on the beam while she walks, widening for the split, dropping to the mat when she falls */
 function syncShadow(pct,opts){
@@ -3328,10 +3368,13 @@ function belleParty(){
   setTimeout(function(){ bc.classList.remove('party'); },1150);
 }
 function stageConfetti(){
-  if(REDUCED) return;
-  var stage=document.getElementById('beamStage'); if(!stage) return;
-  var colors=['#E84393','#E4B33C','#7C3AED','#F78FB8','#fff','#C2185B'];
-  for(var i=0;i<24;i++){ var d=document.createElement('div'); d.className='confetti-bit'; d.style.left=(Math.random()*100)+'%'; d.style.background=colors[i%colors.length]; d.style.animationDuration=(1.5+Math.random()*1.1)+'s'; d.style.animationDelay=(Math.random()*.35)+'s'; stage.appendChild(d); (function(el){ setTimeout(function(){ el.remove(); },3200); })(d); }
+  /* NO IN-STAGE CELEBRATION DECORATIONS (same rule as sparkleBurst
+     above): the ON FIRE moment used to rain confetti bits INSIDE the
+     stage. The stage holds only the venue, the player, the game's
+     own object and its target, so this now deliberately draws
+     NOTHING. The streak, the bonus point, the sounds and the score
+     changes are all untouched. */
+  return;
 }
 /* ----- Sport-world scoring: the prop plays the sport's real logic -----
    Correct: the ball / puck / swimmer travels to the far-side target and
@@ -3429,6 +3472,7 @@ function playSportScore(done){
        strokes and kicks the whole way, never a glide. */
     if(prop){ prop.className='sport-prop idle-swimming'; }
     if(el){
+      el.classList.remove('swim-back'); /* outbound: she faces the far wall and its touchpad */
       el.classList.add('swim-idle');
       if(REDUCED){ el.style.left='62%'; }
       else { el.style.transition='left 1.5s cubic-bezier(.3,.6,.4,1)'; el.style.left='62%'; }
@@ -3619,9 +3663,20 @@ function playSportMiss(done){
        teleports. */
     var jel=stageCheerEl(); ensureJrRopeLoop();
     if(jel&&!REDUCED){
+      var jrope=jel.querySelector('.jr-rope');
       jel.classList.add('rope-dropped');
+      /* Guaranteed-visible drop, independent of the shared rope
+         loop: the rope's own path is ALSO driven straight to its
+         pooled-on-the-ground shape (the exact shape the loop's lerp
+         converges to — control point 200,383 for a far point of
+         100,264) and held there, then lifted straight back into the
+         top of its turn when she picks it up. If the frame loop is
+         running it agrees with these shapes frame by frame; if it
+         ever is not, the drop and the pickup still plainly happen. */
+      setTimeout(function(){ if(jrope) jrope.setAttribute('d','M47 145 Q 200 383 153 145'); },430);
       setTimeout(function(){ jel.classList.add('jr-bend'); },520);
       setTimeout(function(){ jel.classList.remove('rope-dropped'); },1080);
+      setTimeout(function(){ if(jrope) jrope.setAttribute('d','M47 145 Q 200 367 153 145'); ensureJrRopeLoop(); },1180); /* the under-her-feet shape the turn resumes from (phase 0.5) — the loop draws this exact shape when it is running, so the two never fight */
       setTimeout(function(){ jel.classList.remove('jr-bend'); },1420);
     }
     setTimeout(function(){
@@ -3703,11 +3758,12 @@ function playSportMiss(done){
     var sel=stageCheerEl();
     if(sel&&!REDUCED){
       sel.classList.add('swim-idle'); /* she SWIMS out and back — strokes and kicks the whole way, even as she sinks: her body never drifts across with still limbs */
+      sel.classList.remove('swim-back'); /* outbound she faces into the pool */
       sel.style.transition='left .6s ease-out, transform .55s ease-in';
       sel.style.left='24%';
       sel.style.transform='translateY(40px) rotate(-6deg)';
-      setTimeout(function(){ sel.style.transition='left .65s ease, transform .65s cubic-bezier(.2,.9,.3,1.15)'; sel.style.left='5%'; sel.style.transform='translateY(0) rotate(0deg)'; },700);
-      setTimeout(function(){ sel.style.transition=''; sel.style.transform=''; sel.classList.remove('swim-idle'); },1450);
+      setTimeout(function(){ sel.classList.add('swim-back'); sel.style.transition='left .65s ease, transform .65s cubic-bezier(.2,.9,.3,1.15)'; sel.style.left='5%'; sel.style.transform='translateY(0) rotate(0deg)'; },700);
+      setTimeout(function(){ sel.style.transition=''; sel.style.transform=''; sel.classList.remove('swim-idle'); sel.classList.remove('swim-back'); },1450);
     }
     if(prop){ prop.className='sport-prop'; if(!REDUCED){ prop.style.transition='bottom .5s ease-in'; prop.style.bottom='23%'; } }
     setTimeout(function(){
@@ -3813,7 +3869,13 @@ function jrRopeFrame(ts){
   if(REDUCED){ rope.setAttribute('d','M47 145 Q 100 -129 153 145'); return; }
   var dt= jrLastTs? Math.min(64, ts-jrLastTs) : 16; jrLastTs=ts;
   if(el.classList.contains('rope-dropped')){
-    jrFx += (100-jrFx)*0.22; jrFy += (256-jrFy)*0.22;
+    /* THE DROP (live-check fix): the slump used to ease so gently
+       (0.22 toward a far point barely past her shoes) that in live
+       play the rope read as still in her hands in every frame. It
+       now falls FAST and DEEP — most of the way in the first few
+       frames, settling into a wide, unmistakable loop pooled on the
+       ground at her feet, handles still at her open hands. */
+    jrFx += (100-jrFx)*0.34; jrFy += (264-jrFy)*0.34;
     jrPhase=0.5;
   } else {
     jrPhase=(jrPhase+dt/540)%1;
@@ -4729,12 +4791,33 @@ function sportVenue3D(w){
     +'<polygon points="90,258 162,258 170,272 82,272" fill="#E0F2FE" stroke="#7DD3FC" stroke-width="3"/>'
     +'<polygon points="56,272 744,272 770,314 30,314" fill="#F472B6"/><polygon points="56,272 744,272 754,288 46,288" fill="#FFFFFF" opacity=".20"/><polygon points="56,272 744,272 770,314 30,314" fill="none" stroke="#FFFFFF" stroke-width="3" opacity=".55"/>');
   if(w===SPORT_WORLDS.jumprope) return svg(
+    /* JUMP ROPE VENUE (live-check fix): this used to be ONLY a thin
+       ground strip at the very bottom — the rest of the stage was
+       the flat yellow-to-pink theme gradient, so the game read as a
+       flat strip with no venue and a tiny player floating on it. It
+       is now a BUILT playground with real depth, like her other
+       venues: open sky, the castle wall and a playground fence on
+       the horizon, and a ground plane in perspective running from
+       the horizon down to her feet — her ground line stays exactly
+       at y296, where her figure has always stood, and she keeps the
+       same proper size she has in every other game. The venue holds
+       nothing else: no sun, no clouds, no spare ropes, no extras. */
     '<defs>'
-    +'<linearGradient id="v3jrGround" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FBCFE8"/><stop offset="1" stop-color="#F472B6"/></linearGradient>'
+    +'<linearGradient id="v3jrSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FDE68A"/><stop offset="1" stop-color="#FEF3C7"/></linearGradient>'
+    +'<linearGradient id="v3jrGround" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F9A8D4"/><stop offset="1" stop-color="#F472B6"/></linearGradient>'
+    +'<linearGradient id="v3jrWall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E9D5F5"/><stop offset="1" stop-color="#D8B4E8"/></linearGradient>'
     +'</defs>'
-    +'<polygon points="0,290 800,290 800,330 0,330" fill="url(#v3jrGround)"/>'
-    +'<polygon points="0,290 800,290 800,299 0,299" fill="#FFFFFF" opacity=".20"/>'
-    +'<g stroke="rgba(255,255,255,.16)" stroke-width="3"><line x1="252" y1="302" x2="218" y2="330"/><line x1="548" y1="302" x2="582" y2="330"/></g>'
+    +'<rect width="800" height="330" fill="url(#v3jrSky)"/>'
+    +'<rect x="0" y="118" width="800" height="76" fill="url(#v3jrWall)"/>'
+    +'<g fill="url(#v3jrWall)"><rect x="24" y="98" width="34" height="20"/><rect x="92" y="98" width="34" height="20"/><rect x="160" y="98" width="34" height="20"/><rect x="228" y="98" width="34" height="20"/><rect x="296" y="98" width="34" height="20"/><rect x="364" y="98" width="34" height="20"/><rect x="432" y="98" width="34" height="20"/><rect x="500" y="98" width="34" height="20"/><rect x="568" y="98" width="34" height="20"/><rect x="636" y="98" width="34" height="20"/><rect x="704" y="98" width="34" height="20"/></g>'
+    +'<rect x="0" y="188" width="800" height="7" fill="#B08BB8" opacity=".65"/>'
+    +'<g stroke="#8A5A78" stroke-width="4" opacity=".55"><line x1="60" y1="160" x2="60" y2="196"/><line x1="170" y1="160" x2="170" y2="196"/><line x1="280" y1="160" x2="280" y2="196"/><line x1="390" y1="160" x2="390" y2="196"/><line x1="500" y1="160" x2="500" y2="196"/><line x1="610" y1="160" x2="610" y2="196"/><line x1="720" y1="160" x2="720" y2="196"/></g>'
+    +'<rect x="0" y="160" width="800" height="5" fill="#8A5A78" opacity=".55"/><rect x="0" y="176" width="800" height="5" fill="#8A5A78" opacity=".45"/>'
+    +'<polygon points="0,195 800,195 800,330 0,330" fill="url(#v3jrGround)"/>'
+    +'<polygon points="0,195 800,195 800,206 0,206" fill="#FFFFFF" opacity=".14"/>'
+    +'<g stroke="rgba(255,255,255,.20)" stroke-width="3"><line x1="330" y1="206" x2="252" y2="330"/><line x1="470" y1="206" x2="548" y2="330"/><line x1="400" y1="206" x2="400" y2="330"/></g>'
+    +'<g stroke="rgba(157,20,80,.14)" stroke-width="3"><line x1="0" y1="238" x2="800" y2="238"/><line x1="0" y1="272" x2="800" y2="272"/></g>'
+    +'<ellipse cx="400" cy="302" rx="215" ry="17" fill="#FFFFFF" opacity=".16"/>'
     +'<rect x="0" y="294" width="800" height="4" fill="#FFFFFF" opacity=".55"/>');
   return '';
 }
