@@ -4452,7 +4452,7 @@ var WORLD_SCENE_META={
  tennis:{name:'Tennis Court',desc:'A tennis court fills your background — white lines, the net and tennis balls!'},
  swimming:{name:'Swimming Pool',desc:'A sparkling pool fills your background — lane ropes, splashes and a swimmer in the water!'},
  running:{name:'Running Track',desc:'A running track fills your background — numbered lanes, a checkered finish line and running shoes!'},
- jumprope:{name:'Jumping Girls',desc:'Happy girls mid-jump with the rope arcing overhead, in YOUR theme colors, on the soft pink playground!'}
+ jumprope:{name:'Jumping Girls',desc:'Glossy 3D girls mid-jump fill your background — different skin tones, hair and outfit colors, each one turning her own glossy colorful rope over her head and under her feet, in the same style as your gymnasts!'}
 };
 function worldSceneTools(id){ var m={cheer:['🎀','🌹'],dance:['🩰','🎵'],gymnastics:['🤸','🏅'],hockey:['🏒','⚫'],basketball:['🏀','🏆'],soccer:['⚽','🥅'],tennis:['🎾','🏆'],swimming:['💦','🏁'],running:['👟','🏁'],jumprope:['🪢','☀️']}; return m[id]||['⭐','🎀']; }
 function wsSparkles(n){ var pts=[[60,60],[180,34],[330,70],[505,40],[655,66],[752,36],[120,150],[705,150],[262,120],[548,128]]; var s=''; for(var i=0;i<n&&i<pts.length;i++){ s+='<circle class="ws-twinkle" style="animation-delay:'+(i*0.55)+'s" cx="'+pts[i][0]+'" cy="'+pts[i][1]+'" r="'+(2.2+(i%3))+'" fill="#FFFFFF"/>'; } return s; }
@@ -4462,34 +4462,6 @@ function wsStar(x,y,s,col){ return '<g transform="translate('+x+','+y+') scale('
    leading spiral at its heart. Roses keep their real red (the same
    exception the cheer template already uses). */
 function wsRose(x,y,r){ return '<g><circle cx="'+(x-r*0.62).toFixed(1)+'" cy="'+(y+r*0.22).toFixed(1)+'" r="'+(r*0.62).toFixed(1)+'" fill="#E2543E"/><circle cx="'+(x+r*0.62).toFixed(1)+'" cy="'+(y+r*0.22).toFixed(1)+'" r="'+(r*0.62).toFixed(1)+'" fill="#E2543E"/><circle cx="'+(x-r*0.3).toFixed(1)+'" cy="'+(y-r*0.5).toFixed(1)+'" r="'+(r*0.6).toFixed(1)+'" fill="#D63A2A"/><circle cx="'+(x+r*0.3).toFixed(1)+'" cy="'+(y-r*0.5).toFixed(1)+'" r="'+(r*0.6).toFixed(1)+'" fill="#D63A2A"/><circle cx="'+x+'" cy="'+(y+r*0.08).toFixed(1)+'" r="'+(r*0.58).toFixed(1)+'" fill="#C22F22"/><path d="M'+(x-r*0.34).toFixed(1)+' '+y+' A'+(r*0.36).toFixed(1)+' '+(r*0.36).toFixed(1)+' 0 1 1 '+x+' '+(y-r*0.36).toFixed(1)+' A'+(r*0.2).toFixed(1)+' '+(r*0.2).toFixed(1)+' 0 1 0 '+(x+r*0.15).toFixed(1)+' '+y+'" fill="none" stroke="#8E1F16" stroke-width="'+(r*0.15).toFixed(1)+'" stroke-linecap="round"/></g>'; }
-/* Happy girl mid-jump, duplicated from ref 2: ONE whole girl inside a
-   single big rope loop that arcs high overhead and comes down both
-   sides to the small dark grips in her hands; her two segmented braids
-   fly UP in arcs on either side of her head; happy closed eyes and a
-   big open smile; sleeveless dress in a wizard color; knees bent
-   mid-jump with her shoes kicked up. Natural skin + hair. Origin =
-   the ground under her; she hangs in the air above it. */
-function wsJumpGirl(x,y,s,dress,rope,handle){
-  var skin='#B87A4E', hair='#2E1B12';
-  var braid=''; [-1,1].forEach(function(side){ for(var i=0;i<6;i++){ var t=i/5, bx=side*(11+30*t), by=-100-9*t-37*t*t; braid+='<circle cx="'+bx.toFixed(1)+'" cy="'+by.toFixed(1)+'" r="'+(5.7-i*0.28).toFixed(1)+'" fill="'+hair+'"/>'; } braid+='<circle cx="'+(side*44)+'" cy="-148" r="3.4" fill="'+hair+'"/>'; });
-  return '<g transform="translate('+x+','+y+') scale('+s+')">'
-    +'<ellipse cx="0" cy="3" rx="36" ry="5.5" fill="#3A1430" opacity=".16"/>'
-    +'<path d="M-46 -22 C-78 -64 -74 -132 -40 -148 C-10 -160 28 -154 44 -124 C58 -100 56 -50 46 -22" fill="none" stroke="'+rope+'" stroke-width="4.8" stroke-linecap="round"/>'
-    + braid
-    +'<path d="M-7 -80 L-44 -28 M7 -80 L44 -28" stroke="'+skin+'" stroke-width="7.5" stroke-linecap="round" fill="none"/>'
-    +'<g transform="translate(-46,-25) rotate(20)"><rect x="-3.6" y="-10" width="7.2" height="20" rx="3.4" fill="#374151"/></g>'
-    +'<g transform="translate(46,-25) rotate(-20)"><rect x="-3.6" y="-10" width="7.2" height="20" rx="3.4" fill="#374151"/></g>'
-    +'<path d="M-7 -46 L-18 -24 L-8 -9 M8 -46 L19 -25 L10 -10" stroke="'+skin+'" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>'
-    +'<ellipse cx="-7" cy="-8" rx="7.6" ry="3.9" fill="'+handle+'" transform="rotate(-22 -7 -8)"/><ellipse cx="11" cy="-9" rx="7.6" ry="3.9" fill="'+handle+'" transform="rotate(-30 11 -9)"/>'
-    +'<path d="M-9 -89 L10 -89 L22 -47 Q0 -41.5 -22 -47 Z" fill="'+dress+'" stroke="#3A1430" stroke-opacity=".16" stroke-width="1.8"/>'
-    +'<path d="M-20.5 -52.5 Q0 -47.5 20.5 -52.5" fill="none" stroke="#3A1430" stroke-opacity=".18" stroke-width="1.8"/>'
-    +'<circle cx="0" cy="-101" r="11" fill="'+skin+'"/>'
-    +'<path d="M-11 -103 A11 11 0 0 1 11 -103 L11 -97.5 A11 8 0 0 0 -11 -97.5 Z" fill="'+hair+'"/>'
-    +'<path d="M-6.6 -98.6 Q-3.9 -101.2 -1.2 -98.6 M1.6 -98.6 Q4.3 -101.2 7 -98.6" stroke="#2E1B12" stroke-width="1.5" fill="none" stroke-linecap="round"/>'
-    +'<path d="M-3.6 -93.6 Q0.4 -87.6 4.4 -93.6 Q0.4 -90.8 -3.6 -93.6 Z" fill="#7A3B2E"/>'
-    +'<circle cx="-7.6" cy="-94.6" r="2.1" fill="#E2543E" opacity=".45"/><circle cx="8.4" cy="-94.6" r="2.1" fill="#E2543E" opacity=".45"/>'
-    +'</g>';
-}
 /* ================= SHARED SPORT TEMPLATES — KARTER PARITY =================
    Michelle's parity rule: for every sport Royce shares with Karter
    (Basketball, Soccer, Tennis, Gymnastics, Swimming, Hockey and
@@ -4744,28 +4716,27 @@ function worldSceneSVG(sportId,c,uid,fit){
      SVG form covers the remaining template swatches. It is a
      background template only — never inside a game. */
   if(sportId==='dance'){ return '<svg viewBox="0 0 800 330" preserveAspectRatio="'+(fit==='meet'?'xMidYMid meet':'xMidYMid slice')+'" aria-hidden="true"><image href="assets/ballerina-bg.webp" x="0" y="0" width="800" height="330" preserveAspectRatio="xMidYMid slice"/></svg>'; }
-  var defs='', s='';
-  function puck(x,y){ return '<g><ellipse cx="'+x+'" cy="'+(y+4)+'" rx="14" ry="6" fill="#0B1220"/><ellipse cx="'+x+'" cy="'+y+'" rx="14" ry="6" fill="#1F2937"/><ellipse cx="'+x+'" cy="'+(y-1)+'" rx="9" ry="3.6" fill="#374151"/></g>'; }
-  if(sportId==='jumprope'){
-    /* Happy mid-jump girls from Michelle's ref 2 over the pink ground,
-       under the sun and the two flat white ovals at the top. The four
-       standalone rope designs and the small heart that used to sit
-       above the girls were taken out at Michelle's request (Nov 8,
-       2026) — the girls' own ropes, arcing overhead in their hands,
-       stay. Dresses take P, A and T in turn; skin, hair and the sun
-       stay natural. */
-    defs='<linearGradient id="'+uid+'s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+PL+'"/><stop offset="1" stop-color="'+AL+'"/></linearGradient><linearGradient id="'+uid+'g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="'+TL+'"/></linearGradient>';
-    s='<rect width="800" height="330" fill="url(#'+uid+'s)"/>'
-     +'<circle cx="754" cy="34" r="19" fill="#FFD93B"/><g stroke="#FFD93B" stroke-width="4" stroke-linecap="round"><line x1="754" y1="6" x2="754" y2="13"/><line x1="728" y1="20" x2="733" y2="25"/><line x1="780" y1="20" x2="775" y2="25"/><line x1="724" y1="38" x2="731" y2="38"/><line x1="784" y1="38" x2="777" y2="38"/></g>'
-     +'<g fill="#FFFFFF" opacity=".9"><ellipse cx="330" cy="26" rx="42" ry="11"/><ellipse cx="520" cy="18" rx="32" ry="9"/></g>'
-     +'<rect y="272" width="800" height="58" fill="url(#'+uid+'g)" opacity=".85"/><ellipse cx="170" cy="292" rx="130" ry="12" fill="#FFFFFF" opacity=".5"/><ellipse cx="630" cy="292" rx="130" ry="12" fill="#FFFFFF" opacity=".5"/>'
-     /* happy girls mid-jump, ropes arcing overhead, like ref 2 */
-     + wsJumpGirl(168,302,0.88,A,P,T)
-     + wsJumpGirl(400,310,1.0,P,A,T)
-     + wsJumpGirl(632,302,0.88,T,P,A)
-     +'<g><circle cx="52" cy="316" r="4" fill="'+P+'"/><circle cx="292" cy="322" r="4" fill="'+A+'"/><circle cx="512" cy="318" r="4" fill="'+P+'"/><circle cx="742" cy="318" r="4" fill="'+A+'"/></g>';
-  } else { s=''; /* cheer never reaches here — its Pom Pom template is Michelle's photo, returned above */ }
-  return '<svg viewBox="0 0 800 330" preserveAspectRatio="'+(fit==='meet'?'xMidYMid meet':'xMidYMid slice')+'" aria-hidden="true"><defs>'+defs+'</defs>'+s+'</svg>';
+  /* JUMP ROPE — the Jumping Girls template is glossy 3D artwork
+     (assets/jumprope-bg.webp), in the SAME manner as the girls in the
+     Gymnastics background artwork (assets/gymnastics-bg.png): five
+     diverse girls — different skin tones, a blonde bun, Afro puffs,
+     long curls, a braid and a high ponytail, outfits in pink, gold,
+     teal, purple and coral — each caught mid-jump on the same pale
+     blush-pink studio backdrop, AND their ropes in that same manner
+     too: smooth glossy 3D ropes in pink, gold, teal, purple and
+     coral, held in the girls' own hands, turning over their heads
+     and under their feet at different moments of the turn. It
+     replaces the old flat drawn jump-rope scene entirely. The
+     standing removals stay honored: there are no standalone
+     decorative rope designs and no purple heart — the only ropes
+     are the ones in the jumping girls' own hands, as part of the
+     action. paintWorldScene() and the wizard's Background step
+     present the same artwork full-bleed as an <img>, like the
+     Gymnastics template and the other artwork backgrounds; this
+     SVG form covers the remaining template swatches. It is a
+     background template only — never inside a game. */
+  if(sportId==='jumprope'){ return '<svg viewBox="0 0 800 330" preserveAspectRatio="'+(fit==='meet'?'xMidYMid meet':'xMidYMid slice')+'" aria-hidden="true"><image href="assets/jumprope-bg.webp" x="0" y="0" width="800" height="330" preserveAspectRatio="xMidYMid slice"/></svg>'; }
+  return '<svg viewBox="0 0 800 330" preserveAspectRatio="'+(fit==='meet'?'xMidYMid meet':'xMidYMid slice')+'" aria-hidden="true"></svg>';
 }
 /* ================= ENCHANTED CASTLE INTERIOR SCENE =================
    The drawn ballroom inside the cheer game stage: the INSIDE of
@@ -5000,7 +4971,18 @@ function paintWorldScene(){
      tint as the other photo backgrounds. Background only: it never
      paints inside a game. */
   var dancePhoto=(!enchanted && sid==='dance');
-  if(bd){ bd.innerHTML=(enchanted? '<img class="hero-castle-bg" src="assets/enchanted-rose.webp" alt="" aria-hidden="true"/>' : pomPhoto? '<img class="hero-castle-bg" src="assets/pom-pom-bg.webp" alt="" aria-hidden="true"/>' : dancePhoto? '<img class="hero-castle-bg" src="assets/ballerina-bg.webp" alt="" aria-hidden="true"/>' : worldSceneSVG(sid,c,'p'))+'<div class="ws-wash"></div>'; bd.classList.add('on'); }
+  /* The Jump Rope (Jumping Girls) template is glossy 3D artwork too:
+     whenever the jump rope template is the applied background, the
+     page backdrop is assets/jumprope-bg.webp itself — five diverse
+     glossy 3D girls mid-jump, in the same manner as the Gymnastics
+     background girls, each turning her own glossy colorful rope
+     over her head and under her feet, on the pale blush-pink studio
+     backdrop — full-bleed (object-fit:cover) in the fixed backdrop
+     layer with the same light ws-wash edge tint as the other
+     artwork backgrounds. Background only: it never paints inside
+     a game. */
+  var jumpPhoto=(!enchanted && sid==='jumprope');
+  if(bd){ bd.innerHTML=(enchanted? '<img class="hero-castle-bg" src="assets/enchanted-rose.webp" alt="" aria-hidden="true"/>' : pomPhoto? '<img class="hero-castle-bg" src="assets/pom-pom-bg.webp" alt="" aria-hidden="true"/>' : dancePhoto? '<img class="hero-castle-bg" src="assets/ballerina-bg.webp" alt="" aria-hidden="true"/>' : jumpPhoto? '<img class="hero-castle-bg" src="assets/jumprope-bg.webp" alt="" aria-hidden="true"/>' : worldSceneSVG(sid,c,'p'))+'<div class="ws-wash"></div>'; bd.classList.add('on'); }
   if(playingSport){
     /* Inside the stage, NO template is painted (Michelle's rule: the
        sport templates from worldSceneSVG are PAGE backgrounds only —
@@ -5519,9 +5501,9 @@ function renderSetupWizard(){
     h+='<div class="setup-kicker">'+kick+' — YOUR FIRST NAME</div><div class="setup-q">What is your first name? 🌹</div>';
     h+='<input class="setup-name-input" id="setupNameInput" type="text" maxlength="20" autocomplete="off" autocapitalize="words" spellcheck="false" placeholder="enter your first name" aria-label="enter your first name" value="'+escAttr(setupDraft.name)+'" oninput="setupNameInput(this.value)"/>';
   } else if(key==='background'){
-    var bmeta=WORLD_SCENE_META[myTheme.sport]||WORLD_SCENE_META.cheer; var enchantedBg=(myTheme.bg==='enchanted' && myTheme.sport===defaultTheme().sport); var ebg=themeById(THEME_BGS,'enchanted'); var pomBg=(!enchantedBg && myTheme.sport==='cheer'); var danceBg=(!enchantedBg && myTheme.sport==='dance');
+    var bmeta=WORLD_SCENE_META[myTheme.sport]||WORLD_SCENE_META.cheer; var enchantedBg=(myTheme.bg==='enchanted' && myTheme.sport===defaultTheme().sport); var ebg=themeById(THEME_BGS,'enchanted'); var pomBg=(!enchantedBg && myTheme.sport==='cheer'); var danceBg=(!enchantedBg && myTheme.sport==='dance'); var jumpBg=(!enchantedBg && myTheme.sport==='jumprope');
     h+='<div class="setup-kicker">'+kick+' — YOUR BACKGROUND</div><div class="setup-q">Your background is built! 🖼️</div>';
-    h+='<div class="scene-preview" style="margin:0 0 12px">'+(enchantedBg? '<img class="scene-photo" src="assets/enchanted-rose.webp" alt="" aria-hidden="true"/>' : pomBg? '<img class="scene-photo" src="assets/pom-pom-bg.webp" alt="" aria-hidden="true"/>' : danceBg? '<img class="scene-photo" src="assets/ballerina-bg.webp" alt="" aria-hidden="true"/>' : worldSceneSVG(myTheme.sport,themePalette(),'w3','meet'))+'<div class="scene-preview-cap">🖼️ Your background: '+(enchantedBg? ebg.name : bmeta.name)+'</div></div>';
+    h+='<div class="scene-preview" style="margin:0 0 12px">'+(enchantedBg? '<img class="scene-photo" src="assets/enchanted-rose.webp" alt="" aria-hidden="true"/>' : pomBg? '<img class="scene-photo" src="assets/pom-pom-bg.webp" alt="" aria-hidden="true"/>' : danceBg? '<img class="scene-photo" src="assets/ballerina-bg.webp" alt="" aria-hidden="true"/>' : jumpBg? '<img class="scene-photo" src="assets/jumprope-bg.webp" alt="" aria-hidden="true"/>' : worldSceneSVG(myTheme.sport,themePalette(),'w3','meet'))+'<div class="scene-preview-cap">🖼️ Your background: '+(enchantedBg? ebg.name : bmeta.name)+'</div></div>';
     h+='<div class="opt-row"><button class="big-chip'+(enchantedBg?' on':'')+'" onclick="setupPickBackgroundTemplate(\'enchanted\')"><span class="bce">'+ebg.emoji+'</span>'+ebg.name+'</button>'+THEME_SPORTS.map(function(x){ var m=WORLD_SCENE_META[x.id]||WORLD_SCENE_META.cheer; return '<button class="big-chip'+(!enchantedBg&&myTheme.sport===x.id?' on':'')+'" onclick="setupPickBackgroundTemplate(\''+x.id+'\')"><span class="bce">'+x.emoji+'</span>'+m.name+'</button>'; }).join('')+'</div>';
   } else if(key==='color'){
     h+='<div class="setup-kicker">'+kick+' — YOUR THREE COLORS</div><div class="setup-q">Pick your three colors! 🎨</div>';
