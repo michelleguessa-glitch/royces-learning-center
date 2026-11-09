@@ -179,14 +179,21 @@ span.royce-crop>img{position:absolute;left:-143%;top:-10.6%;width:408.5%;height:
    sentence at a time as she speaks, and clear when she is done. */
 .bubble{flex:1 1 220px;min-width:0;background:transparent;background-color:transparent;border:none;border-radius:0;box-shadow:none;outline:none;padding:0;font-weight:800;line-height:1.5;font-size:16px;position:relative}
 .bubble:before{content:none;display:none}
-/* CAPTIONS LEAVE NOTHING BEHIND (game view): the instant Belle's
-   caption text is gone — a sentence cleared, the instructions
-   finished, the bubble emptied for the next reading — the caption
-   element itself collapses completely (display:none). No empty
-   card, no blank text box, no empty visible container is ever left
-   where the captions were; it reappears only when the next spoken
-   sentence lands in it. */
-#practiceView .bubble:empty{display:none!important;padding:0!important;margin:0!important;border:none!important;background:transparent!important;box-shadow:none!important}
+/* CAPTIONS NEVER SHIFT THE PAGE (game view — Michelle): the
+   instructions row at the top of the game view holds a space
+   RESERVED for Belle's words at one fixed height (see the
+   #practiceView .belle-compact rule in the game-view fit section).
+   A sentence appearing, changing or clearing therefore moves
+   NOTHING: the scoreboard, the stage and the question card sit
+   exactly where they were, whether the space is full or empty.
+   The captions themselves are still plain text only — no card,
+   no bubble, no background, border or shadow is ever drawn around
+   them, and when she finishes, the text is simply gone; the
+   reserved space itself is invisible (fully transparent, exactly
+   like the page around it), never a box left sitting there. The
+   empty state must NEVER collapse the row: collapsing it was what
+   made the whole page jump, expand and shrink as she spoke. */
+#practiceView .bubble:empty{padding:0!important;margin:0!important;border:none!important;background:transparent!important;box-shadow:none!important}
 .hear-it-btn,.speak-plain{background:transparent;border:none;border-radius:0;box-shadow:none;color:inherit;padding:10px;font-size:26px;line-height:1;display:inline-grid;place-items:center;width:auto;height:auto;flex:0 0 auto;cursor:pointer}
 /* The replay control is Michelle's speaking-head icon — the silhouette
    from HER uploaded picture (head in profile, mouth open speaking,
@@ -349,9 +356,9 @@ span.royce-crop>img{position:absolute;left:-143%;top:-10.6%;width:408.5%;height:
 #practiceView .practice-head{flex:0 0 auto;margin-bottom:6px}
 #practiceView .practice-head .stars-pill{padding:6px 12px;font-size:14px}
 #practiceView .game-close-btn{padding:7px 13px;font-size:13.5px}
-#practiceView .belle-compact{flex:0 1 auto;margin-bottom:6px;padding:0;gap:10px;border-radius:0;background:transparent;background-color:transparent;border:none;box-shadow:none;outline:none}
+#practiceView .belle-compact{flex:0 0 auto;height:64px;margin-bottom:6px;padding:0;gap:10px;flex-wrap:nowrap;align-items:center;border-radius:0;background:transparent;background-color:transparent;border:none;box-shadow:none;outline:none}
 #practiceView .belle-face{width:48px;height:48px;flex-basis:48px}
-#practiceView .bubble{padding:0;font-size:14.5px;line-height:1.35;border-radius:0;background:transparent;background-color:transparent;border:none;box-shadow:none;outline:none}
+#practiceView .bubble{padding:0;font-size:14.5px;line-height:1.35;height:100%;overflow-y:auto;overflow-x:hidden;border-radius:0;background:transparent;background-color:transparent;border:none;box-shadow:none;outline:none}
 #practiceView .bubble:before{content:none;display:none}
 #practiceView .scoreboard{flex:0 0 auto;margin-bottom:6px}
 #practiceView .sb-top{margin-bottom:6px;gap:8px}
@@ -380,6 +387,7 @@ span.royce-crop>img{position:absolute;left:-143%;top:-10.6%;width:408.5%;height:
 #practiceView .squad-member{bottom:13.5%;height:46.7%;width:auto;aspect-ratio:94/154}
 #practiceView #squadM3{bottom:13.5%}
 #practiceView .swim-water{height:35.8%}
+#practiceView .stage.swimming-active .swim-water{bottom:5%;height:53%}
 #practiceView .dance-barre{height:69.7%}
 #practiceView .barre-bar.barre-top{bottom:72%}
 #practiceView .barre-bar.barre-low{bottom:66%}
@@ -434,6 +442,11 @@ span.royce-crop>img{position:absolute;left:-143%;top:-10.6%;width:408.5%;height:
 @media (max-width:640px){
  #practiceView[style*="block"]{height:calc(100vh - 132px);height:calc(100dvh - 132px)}
  #practiceView .stage{min-height:80px}
+ /* Phones give the reserved caption space more lines: the bubble is
+    narrower there, so the same sentence wraps longer — the reserved
+    height grows to fit it instead of letting the text push the page. */
+ #practiceView .belle-compact{height:92px}
+ #practiceView .belle-face{width:48px;height:48px;flex-basis:48px}
 }
 /* fitGameView() steps — sizing ONLY, layout untouched. When a tall
    state (a long word problem, the full wrong-answer feedback, the open
@@ -766,7 +779,14 @@ html.is-custom .music-note-btn{background:linear-gradient(180deg,#fff,color-mix(
    its own solid primary color. It is
    painted ONLY from her home (wizard) sport, so switching the games to
    another sport never repaints it. On a classic link it never renders. */
-#worldBackdrop{position:fixed;inset:0;top:0!important;left:0;right:0;bottom:0;z-index:0;pointer-events:none;overflow:hidden;opacity:0}
+/* The height is pinned to the LARGE viewport (100lvh — the screen
+   with the phone's browser bars hidden), never to inset/bottom: a
+   fixed layer sized by inset tracks the bars as they show and hide
+   while scrolling, and the background picture shrank and expanded
+   with them. 100lvh is one fixed full-screen size at every scroll
+   position; lockBackdropHeight() also pins it in pixels per width
+   for webviews that still track the dynamic viewport. */
+#worldBackdrop{position:fixed;top:0!important;left:0;right:0;height:100vh;height:100lvh;z-index:0;pointer-events:none;overflow:hidden;opacity:0}
 #worldBackdrop.on{opacity:1}
 #worldBackdrop svg{position:absolute;inset:0;width:100%;height:100%;display:block}
 #worldBackdrop .hero-castle-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block}
@@ -1107,6 +1127,17 @@ footer{max-width:1080px;margin:0 auto;padding:0 16px 210px;color:var(--muted);fo
    as IN the pool, and while a problem waits she tread-waters — body bobbing,
    feet flutter-kicking under the surface */
 .swim-water{position:absolute;left:0;right:0;bottom:0;height:118px;z-index:5;pointer-events:none;overflow:hidden}
+/* SWIMMING'S MOVING WATER (Michelle's exception: this is the ONE
+   game venue whose water MOVES): in the swimming game the animated
+   swim-water layer rides over the BUILT 3D pool's water (the built
+   pool fills the stage's lower half), so its two sliding wave
+   sheets flow continuously across the water — while she waits and
+   while she swims — with her body in the water under the
+   translucent waves, as she was built. Every other sport's venue
+   stays still; the swimming background TEMPLATE (page background)
+   stays the still straight-down artwork too — the motion lives
+   only inside this game. */
+.stage.swimming-active .swim-water{bottom:5%;height:53%}
 .swim-water svg{position:absolute;left:0;bottom:0;width:100%;height:100%}
 .swim-water .sw-wave{will-change:transform}
 .sw-wave-back{animation:swimWaveSlide 5s linear infinite}
@@ -2447,7 +2478,7 @@ var GEAR_DEFS=[
  {id:'rose-bow',icon:'🌹',name:'Enchanted Rose Bow',how:'Win a Championship competition!'},
  {id:'tiara',icon:'👸',name:'Princess Tiara',how:'Win 3 competitions!'}
 ];
-function defaultDesign(){ return {skin:2,hair:'ponytail',hairColor:'#3B2310',top:'#E84393',topSpecial:'',skirt:'#7C3AED',bow:'#E4B33C',bowSpecial:'',pomA:'#E84393',pomB:'#7C3AED',pomSpecial:'',shoes:'#FFFFFF',wristbands:true,ribbons:false}; }
+function defaultDesign(){ return {skin:2,hair:'ponytail',hairColor:'#3B2310',top:'#E84393',topSpecial:'',skirt:'#7C3AED',bow:'#E4B33C',bowSpecial:'',pomA:'#E84393',pomB:'#7C3AED',pomSpecial:'',shoes:'#FFFFFF',wristbands:true,ribbons:false,outfits:{}}; }
 function loadDesign(){ try{ var d=JSON.parse(localStorage.getItem(CHEER_KEY)); if(d&&typeof d==='object'){ var base=defaultDesign(); for(var k in base){ if(d[k]!==undefined) base[k]=d[k]; } return base; } }catch(e){} return defaultDesign(); }
 var cheerDesign=loadDesign();
 function saveDesign(){ try{ localStorage.setItem(CHEER_KEY,JSON.stringify(cheerDesign)); }catch(e){} }
@@ -2458,6 +2489,56 @@ function saveDesign(){ try{ localStorage.setItem(CHEER_KEY,JSON.stringify(cheerD
    so the saved design is still there, untouched, when the custom link
    opens. */
 function effectiveDesign(){ return window.isCustomEdition() ? cheerDesign : defaultDesign(); }
+/* ===== PER-SPORT OUTFITS (Michelle): her clothes change to match the
+   sport she is playing — a swimsuit in the pool, a leotard in
+   gymnastics and dance, her cheer uniform in cheer, the sport's own
+   kit everywhere else. This is AUTOMATIC on both editions: the same
+   girl (her skin, face, hair and bow always come from her design)
+   dressed right for the game. On a CUSTOM link the Cheerleader Studio
+   also lets her pick each sport's outfit colors; each pick saves with
+   that sport (cheerDesign.outfits) and comes back up when she switches
+   to that game. The classic edition only ever uses these defaults. */
+var SPORT_OUTFITS={
+  basketball:{kind:'kit',top:'#E4572E',bottom:'#23395B',shoes:'#FFFFFF'},
+  soccer:{kind:'kit',top:'#2F9E44',bottom:'#FFFFFF',shoes:'#22252B'},
+  tennis:{kind:'tennis',top:'#FFFFFF',bottom:'#2B6CB0',shoes:'#FFFFFF'},
+  swimming:{kind:'swimsuit',top:'#0EA5E9'},
+  hockey:{kind:'hockey',top:'#2563EB',bottom:'#1F2937',shoes:'#374151'},
+  running:{kind:'kit',top:'#DC2626',bottom:'#1D2A4A',shoes:'#FFFFFF'},
+  gymnastics:{kind:'leotard',top:'#9333EA'},
+  dance:{kind:'tutu',top:'#EC4899',bottom:'#F9A8D4',shoes:'#FBCFE8'},
+  jumprope:{kind:'kit',top:'#F59E0B',bottom:'#2563EB',shoes:'#FFFFFF'}
+};
+function sportOutfitDesign(sid){
+  var base=effectiveDesign();
+  var d={}; for(var k in base) d[k]=base[k];
+  var spec=SPORT_OUTFITS[sid];
+  if(!spec){ d.outfit='cheer'; return d; } /* cheer (and anywhere else): her own uniform from the design */
+  var saved={};
+  if(window.isCustomEdition()&&cheerDesign.outfits&&cheerDesign.outfits[sid]) saved=cheerDesign.outfits[sid];
+  d.outfit=spec.kind;
+  d.top=saved.top||spec.top;
+  d.skirt=saved.bottom||spec.bottom||spec.top;
+  d.shoes=saved.shoes||spec.shoes||'#FFFFFF';
+  d.topSpecial='';
+  return d;
+}
+/* The design the on-stage player wears right now: her outfit for the
+   sport being played. Used by every stage repaint. */
+function stageDesign(){ try{ return sportOutfitDesign(sportWorldId()); }catch(e){ return effectiveDesign(); } }
+/* ----- custom-edition studio: per-sport outfit picking ----- */
+var studioOutfitSport='basketball';
+var OUTFIT_SPORT_LIST=[['basketball','🏀 Basketball'],['soccer','⚽ Soccer'],['tennis','🎾 Tennis'],['swimming','🏊 Swimming'],['hockey','🏒 Hockey'],['running','🏃 Running'],['gymnastics','🤸 Gymnastics'],['dance','💃 Dance'],['jumprope','🪢 Jump Rope']];
+function setOutfitSport(sid){ if(!window.isCustomEdition()) return; studioOutfitSport=sid; renderStudio(); }
+function setOutfitColor(sid,key,hex){ if(!window.isCustomEdition()) return; if(typeof designLocked==='function'&&designLocked()) return; if(!cheerDesign.outfits) cheerDesign.outfits={}; if(!cheerDesign.outfits[sid]) cheerDesign.outfits[sid]={}; cheerDesign.outfits[sid][key]=hex; saveDesign(); renderStudio(); renderAllCheerleaders(); }
+function outfitSwatchRow(sid,key,colors,current){
+  return '<div class="opt-row">'+colors.map(function(c){ var hex=c[0]; return '<button class="swatch'+(current===hex?' on':'')+'" style="background:'+hex+'" onclick="setOutfitColor(\''+sid+'\',\''+key+'\',\''+hex+'\')" aria-label="'+c[1]+'" title="'+c[1]+'"></button>'; }).join('')+'</div>';
+}
+function outfitPreviewOpts(sid){ return {racket: sid==='tennis', hockey: sid==='hockey', rope: sid==='jumprope', bare: ['basketball','soccer','swimming','running','gymnastics','dance'].indexOf(sid)>-1, bareDown: sid==='basketball'}; }
+function studioFigureHTML(){
+  if(window.isCustomEdition()){ var sid=studioOutfitSport||'cheer'; return cheerSVG(sportOutfitDesign(sid),'stand',outfitPreviewOpts(sid)); }
+  return cheerSVG(effectiveDesign(),'stand');
+}
 function loadColl(){ try{ var c=JSON.parse(localStorage.getItem(COLL_KEY)); if(c&&typeof c==='object') return {trophies:c.trophies||[],gear:c.gear||[],wins:c.wins||0,champWins:c.champWins||0,bestStreak:c.bestStreak||0,bonusStars:c.bonusStars||0}; }catch(e){} return {trophies:[],gear:[],wins:0,champWins:0,bestStreak:0,bonusStars:0}; }
 var collection=loadColl();
 function saveColl(){ try{ localStorage.setItem(COLL_KEY,JSON.stringify(collection)); }catch(e){} }
@@ -2542,6 +2623,15 @@ function cheerSVG(d,pose,opts){
      right arm down so her palm is over the dribbling ball. */
   var wantBare= !!(opts&&opts.bare);
   var wantBareDown= !!(opts&&opts.bareDown);
+  /* PER-SPORT OUTFIT: d.outfit says what she is wearing for the game
+     being played ('cheer' = her cheer uniform, the default everywhere
+     else). The outfit changes only her CLOTHES — legs, feet, skirt /
+     shorts / pants / brief, and the top's trim. Her face, skin, hair
+     and bow are drawn exactly the same in every outfit. */
+  var outfit=d.outfit||'cheer';
+  var legStroke= outfit==='hockey' ? d.skirt : skin;
+  var legWidth= outfit==='hockey' ? 15 : 13;
+  var footFill= (outfit==='swimsuit'||outfit==='leotard') ? skin : d.shoes;
   if(pose==='split'){
     var s2='<svg viewBox="0 0 260 170" role="img" aria-label="Your cheerleader landing in a split">';
     s2+='<g class="cheer-body">';
@@ -2559,15 +2649,43 @@ function cheerSVG(d,pose,opts){
   var s='<svg viewBox="0 0 200 250" preserveAspectRatio="xMidYMax meet" role="img" aria-label="Your cheerleader">';
   s+='<g class="cheer-body">';
   /* legs + shoes */
-  s+='<g class="leg-l"><line x1="88" y1="196" x2="84" y2="238" stroke="'+skin+'" stroke-width="13" stroke-linecap="round"/><rect x="70" y="236" width="24" height="12" rx="5" fill="'+d.shoes+'" stroke="rgba(0,0,0,.13)"/>'+(d.ribbons?'<path d="M78 232 l10 -8 M88 232 l-10 -8" stroke="'+d.bow+'" stroke-width="2.6"/>':'')+'</g>';
-  s+='<g class="leg-r"><line x1="112" y1="196" x2="116" y2="238" stroke="'+skin+'" stroke-width="13" stroke-linecap="round"/><rect x="106" y="236" width="24" height="12" rx="5" fill="'+d.shoes+'" stroke="rgba(0,0,0,.13)"/>'+(d.ribbons?'<path d="M114 232 l10 -8 M124 232 l-10 -8" stroke="'+d.bow+'" stroke-width="2.6"/>':'')+'</g>';
-  /* skirt */
-  s+='<g class="skirt-g"><path d="M74 148 L126 148 L140 200 L60 200 Z" fill="'+d.skirt+'"/><path d="M60 200 L140 200 L136 210 L64 210 Z" fill="#fff" opacity=".55"/>'+[72,88,104,120].map(function(x){ return '<line x1="'+(x-6)+'" y1="152" x2="'+(x-10)+'" y2="198" stroke="rgba(0,0,0,.13)" stroke-width="2.4"/>'; }).join('')+'</g>';
+  s+='<g class="leg-l"><line x1="88" y1="196" x2="84" y2="238" stroke="'+legStroke+'" stroke-width="'+legWidth+'" stroke-linecap="round"/><rect x="70" y="236" width="24" height="12" rx="5" fill="'+footFill+'" stroke="rgba(0,0,0,.13)"/>'+(d.ribbons?'<path d="M78 232 l10 -8 M88 232 l-10 -8" stroke="'+d.bow+'" stroke-width="2.6"/>':'')+'</g>';
+  s+='<g class="leg-r"><line x1="112" y1="196" x2="116" y2="238" stroke="'+legStroke+'" stroke-width="'+legWidth+'" stroke-linecap="round"/><rect x="106" y="236" width="24" height="12" rx="5" fill="'+footFill+'" stroke="rgba(0,0,0,.13)"/>'+(d.ribbons?'<path d="M114 232 l10 -8 M124 232 l-10 -8" stroke="'+d.bow+'" stroke-width="2.6"/>':'')+'</g>';
+  /* bottom half, by outfit: cheer skirt / tennis skirt, kit shorts,
+     hockey pants, swimsuit brief, leotard brief, dance tutu */
+  if(outfit==='swimsuit'){
+    s+='<g class="skirt-g"><path d="M74 146 L126 146 L121 192 L79 192 Z" fill="'+top+'"/><path d="M80 185 L120 185 L119 192 L81 192 Z" fill="#fff" opacity=".5"/></g>';
+  } else if(outfit==='leotard'){
+    s+='<g class="skirt-g"><path d="M74 146 L126 146 L121 192 L79 192 Z" fill="'+top+'"/><path d="M80 180 L120 180 L119 189 L81 189 Z" fill="#fff" opacity=".75"/></g>';
+  } else if(outfit==='tutu'){
+    s+='<g class="skirt-g"><path d="M74 148 L126 148 L148 188 L52 188 Z" fill="'+d.skirt+'"/><path d="M74 154 L126 154 L142 186 L58 186 Z" fill="#fff" opacity=".35"/><path d="M52 188 L148 188 L144 196 L56 196 Z" fill="#fff" opacity=".5"/></g>';
+  } else if(outfit==='kit'){
+    s+='<g class="skirt-g"><path d="M74 148 L126 148 L132 184 L103 184 L100 170 L97 184 L68 184 Z" fill="'+d.skirt+'"/><line x1="70" y1="179" x2="95" y2="179" stroke="#fff" stroke-width="3" opacity=".5"/><line x1="105" y1="179" x2="130" y2="179" stroke="#fff" stroke-width="3" opacity=".5"/></g>';
+  } else if(outfit==='hockey'){
+    s+='<g class="skirt-g"><path d="M72 146 L128 146 L131 202 L69 202 Z" fill="'+d.skirt+'"/><line x1="77" y1="150" x2="74" y2="198" stroke="rgba(255,255,255,.35)" stroke-width="3"/><line x1="123" y1="150" x2="126" y2="198" stroke="rgba(255,255,255,.35)" stroke-width="3"/></g>';
+  } else {
+    s+='<g class="skirt-g"><path d="M74 148 L126 148 L140 200 L60 200 Z" fill="'+d.skirt+'"/><path d="M60 200 L140 200 L136 210 L64 210 Z" fill="#fff" opacity=".55"/>'+[72,88,104,120].map(function(x){ return '<line x1="'+(x-6)+'" y1="152" x2="'+(x-10)+'" y2="198" stroke="rgba(0,0,0,.13)" stroke-width="2.4"/>'; }).join('')+'</g>';
+  }
   /* neck: a real skin neck fills the space between her chin and her
      uniform — her head sits ON her body, never floating above it */
   s+='<rect x="91" y="76" width="18" height="22" rx="7" fill="'+skin+'"/>';
-  /* torso / uniform top */
-  s+='<path d="M76 92 L124 92 L128 152 L72 152 Z" fill="'+top+'"/><path d="M80 92 L100 122 L120 92 L110 92 L100 106 L90 92 Z" fill="#fff" opacity=".85"/><text x="100" y="142" text-anchor="middle" font-size="16" fill="#E4B33C">★</text>';
+  /* torso, by outfit: each top keeps its own real trim — cheer V +
+     star, jersey collar + side stripes, hockey chest band, swimsuit
+     neckline band, leotard / tennis neckline V */
+  s+='<path d="M76 92 L124 92 L128 152 L72 152 Z" fill="'+top+'"/>';
+  if(outfit==='kit'){
+    s+='<path d="M84 92 L116 92 L116 100 L84 100 Z" fill="#fff" opacity=".85"/><line x1="83" y1="103" x2="80" y2="148" stroke="#fff" stroke-width="3" opacity=".5"/><line x1="117" y1="103" x2="120" y2="148" stroke="#fff" stroke-width="3" opacity=".5"/>';
+  } else if(outfit==='hockey'){
+    s+='<path d="M74 114 L126 114 L127 127 L73 127 Z" fill="#fff" opacity=".92"/><path d="M84 92 L116 92 L116 99 L84 99 Z" fill="#fff" opacity=".85"/>';
+  } else if(outfit==='swimsuit'){
+    s+='<path d="M82 92 L118 92 L118 101 L82 101 Z" fill="#fff" opacity=".85"/>';
+  } else if(outfit==='leotard'||outfit==='tutu'){
+    s+='<path d="M84 92 L100 116 L116 92 L109 92 L100 103 L91 92 Z" fill="#fff" opacity=".8"/>';
+  } else if(outfit==='tennis'){
+    s+='<path d="M80 92 L100 122 L120 92 L110 92 L100 106 L90 92 Z" fill="#fff" opacity=".85"/>';
+  } else {
+    s+='<path d="M80 92 L100 122 L120 92 L110 92 L100 106 L90 92 Z" fill="#fff" opacity=".85"/><text x="100" y="142" text-anchor="middle" font-size="16" fill="#E4B33C">★</text>';
+  }
   /* arms out in a T, holding pom poms */
   if(wantRope){
     /* jump rope: the rope itself is part of her figure — a full loop
@@ -2654,10 +2772,10 @@ function resetSquad(instant){
 function renderAllCheerleaders(){
   document.querySelectorAll('.cheer-slot').forEach(function(el){
     var isStage= el.id==='stageCheer';
-    if(isStage){ if(el.dataset.pose!=='split') el.innerHTML=cheerSVG(effectiveDesign(),'stand',stageCheerOpts()); }
+    if(isStage){ if(el.dataset.pose!=='split') el.innerHTML=cheerSVG(stageDesign(),'stand',stageCheerOpts()); }
     else el.innerHTML=cheerSVG(effectiveDesign(),'stand');
   });
-  var sp=document.getElementById('studioPreview'); if(sp) sp.innerHTML=cheerSVG(effectiveDesign(),'stand');
+  var sp=document.getElementById('studioPreview'); if(sp) sp.innerHTML=studioFigureHTML();
   renderSquad();
 }
 /* ----- studio ----- */
@@ -2697,8 +2815,39 @@ function renderStudio(){
     +'<button class="opt-chip'+(d.wristbands?' on':'')+'" onclick="toggleDesign(\'wristbands\')">Wristbands</button>'
     +'<button class="opt-chip'+(d.ribbons?' on':'')+'" onclick="toggleDesign(\'ribbons\')">Ankle Ribbons</button>'
     +'</div></div>';
+  /* Per-sport outfits: pick a sport, then its colors. Each sport's
+     pick saves with that sport and comes back up when she plays that
+     game. Her cheer uniform is dressed with the colors above — this
+     section covers her other sports, right here in the same step. */
+  var osid=studioOutfitSport||'basketball';
+  var od=sportOutfitDesign(osid), okind=od.outfit;
+  h+='<div class="opt-group"><h4>👗 Outfits for Every Sport</h4>'
+    +'<p style="font-weight:700;line-height:1.45;margin:0 0 8px">She always dresses right for the game she is playing. Pick a sport, then pick its outfit colors — each sport keeps its own.</p>'
+    +'<div class="opt-row">'+OUTFIT_SPORT_LIST.map(function(it){ return '<button class="opt-chip'+(osid===it[0]?' on':'')+'" onclick="setOutfitSport(\''+it[0]+'\')">'+it[1]+'</button>'; }).join('')+'</div>';
+  if(okind==='kit'){
+    h+='<h4 style="margin-top:10px">👕 Jersey</h4>'+outfitSwatchRow(osid,'top',TOP_COLORS,od.top);
+    h+='<h4 style="margin-top:10px">🩳 Shorts</h4>'+outfitSwatchRow(osid,'bottom',SKIRT_COLORS,od.skirt);
+    h+='<h4 style="margin-top:10px">👟 Shoes</h4>'+outfitSwatchRow(osid,'shoes',SHOE_COLORS,od.shoes);
+  } else if(okind==='tennis'){
+    h+='<h4 style="margin-top:10px">👚 Top</h4>'+outfitSwatchRow(osid,'top',TOP_COLORS,od.top);
+    h+='<h4 style="margin-top:10px">🎾 Skirt</h4>'+outfitSwatchRow(osid,'bottom',SKIRT_COLORS,od.skirt);
+    h+='<h4 style="margin-top:10px">👟 Shoes</h4>'+outfitSwatchRow(osid,'shoes',SHOE_COLORS,od.shoes);
+  } else if(okind==='hockey'){
+    h+='<h4 style="margin-top:10px">👕 Jersey</h4>'+outfitSwatchRow(osid,'top',TOP_COLORS,od.top);
+    h+='<h4 style="margin-top:10px">👖 Pants</h4>'+outfitSwatchRow(osid,'bottom',SKIRT_COLORS,od.skirt);
+    h+='<h4 style="margin-top:10px">⛸️ Skates</h4>'+outfitSwatchRow(osid,'shoes',SHOE_COLORS,od.shoes);
+  } else if(okind==='swimsuit'){
+    h+='<h4 style="margin-top:10px">🩱 Swimsuit</h4>'+outfitSwatchRow(osid,'top',TOP_COLORS,od.top);
+  } else if(okind==='leotard'){
+    h+='<h4 style="margin-top:10px">🤸 Leotard</h4>'+outfitSwatchRow(osid,'top',TOP_COLORS,od.top);
+  } else if(okind==='tutu'){
+    h+='<h4 style="margin-top:10px">🩰 Leotard</h4>'+outfitSwatchRow(osid,'top',TOP_COLORS,od.top);
+    h+='<h4 style="margin-top:10px">🎀 Tutu</h4>'+outfitSwatchRow(osid,'bottom',SKIRT_COLORS,od.skirt);
+    h+='<h4 style="margin-top:10px">🩰 Ballet Shoes</h4>'+outfitSwatchRow(osid,'shoes',SHOE_COLORS,od.shoes);
+  }
+  h+='</div>';
   o.innerHTML=h;
-  var sp=document.getElementById('studioPreview'); if(sp) sp.innerHTML=cheerSVG(d,'stand');
+  var sp=document.getElementById('studioPreview'); if(sp) sp.innerHTML=studioFigureHTML();
   var sn=document.getElementById('studioName'); if(sn) sn.textContent='Your Cheerleader ⭐';
 }
 /* ----- trophy case ----- */
@@ -2769,8 +2918,8 @@ function belleSay(html){ document.getElementById('belleBubble').innerHTML=html; 
    the screen entirely, so the game sits fully in view at the top — the
    same layout as Karter's game view — and it returns on the way home. */
 function setHeroVisible(v){ var h=document.getElementById('heroSection'); if(h) h.style.display= v? '' : 'none'; }
-function startTopic(id){ if(gradeLockedTopic(topicById(id))){ lockedGradeTap(id); return; } /* GRADE GATE: refuses below 3rd grade no matter which UI path calls it */ currentTopic=TOPICS.find(function(t){return t.id===id}); if(typeof closeHintPanel==='function') closeHintPanel(); if(typeof toggleWorkPanel==='function') toggleWorkPanel(false); document.getElementById('homeView').style.display='none'; document.getElementById('practiceView').style.display='block'; setHeroVisible(false); if(typeof renderSportSwitcher==='function'){ try{ renderSportSwitcher(); }catch(e){} } /* the home sport switcher refreshes; no sport-picker card lives inside the game view */ window.scrollTo({top:0}); clearInterval(timerInt); timerInt=setInterval(function(){ topicProg(id).sec+=5; if(topicProg(id).sec%30===0) saveP(progress); },5000); initGameSession(id); renderAllCheerleaders(); resetCheerToStart(true); nextPrompt(true); }
-function goHome(){ stopBelleSpeech(); stopRoutine(); if(typeof closeHintPanel==='function') closeHintPanel(); if(typeof toggleWorkPanel==='function') toggleWorkPanel(false); clearInterval(timerInt); saveP(progress); document.getElementById('practiceView').style.display='none'; document.getElementById('homeView').style.display='block'; if(typeof renderSportSwitcher==='function'){ try{ renderSportSwitcher(); }catch(e){} } /* the home switcher shows again on return */ setHeroVisible(true); renderGrid(); updateTotals(); renderAllCheerleaders(); window.scrollTo({top:0}); }
+function startTopic(id){ if(gradeLockedTopic(topicById(id))){ lockedGradeTap(id); return; } /* GRADE GATE: refuses below 3rd grade no matter which UI path calls it */ currentTopic=TOPICS.find(function(t){return t.id===id}); fitLockH=window.innerHeight; fitLastW=window.innerWidth; /* the game opens at its true size — locked for the whole play session, scrolling never resizes it */ if(typeof closeHintPanel==='function') closeHintPanel(); if(typeof toggleWorkPanel==='function') toggleWorkPanel(false); document.getElementById('homeView').style.display='none'; document.getElementById('practiceView').style.display='block'; setHeroVisible(false); if(typeof renderSportSwitcher==='function'){ try{ renderSportSwitcher(); }catch(e){} } /* the home sport switcher refreshes; no sport-picker card lives inside the game view */ window.scrollTo({top:0}); clearInterval(timerInt); timerInt=setInterval(function(){ topicProg(id).sec+=5; if(topicProg(id).sec%30===0) saveP(progress); },5000); initGameSession(id); renderAllCheerleaders(); resetCheerToStart(true); nextPrompt(true); }
+function goHome(){ stopBelleSpeech(); stopRoutine(); if(typeof closeHintPanel==='function') closeHintPanel(); if(typeof toggleWorkPanel==='function') toggleWorkPanel(false); clearInterval(timerInt); fitLockH=0; /* session over — the next game locks its own true size at open */ saveP(progress); document.getElementById('practiceView').style.display='none'; document.getElementById('homeView').style.display='block'; if(typeof renderSportSwitcher==='function'){ try{ renderSportSwitcher(); }catch(e){} } /* the home switcher shows again on return */ setHeroVisible(true); renderGrid(); updateTotals(); renderAllCheerleaders(); window.scrollTo({top:0}); }
 function goHomeFromOverlay(){
   stopWizAuto(); stopBelleSpeech(); stopFt();
   ['wizardModal','themeModal','trophyModal','bonusModal','winModal','lockedModal'].forEach(function(mid){ var m=document.getElementById(mid); if(m) m.classList.remove('open'); });
@@ -2815,9 +2964,23 @@ function navGoHome(){
    answer box, Check It, the dashed line and the Helper Tools button
    all on the one screen, no scrolling — at open and again after
    answering, with the feedback showing. */
+/* SCROLL LOCK (Michelle): while a game is open, the game view holds
+   ONE fixed size — the true size measured when the game opened. On a
+   phone, scrolling shows and hides the browser's top and bottom bars,
+   which changes window.innerHeight and fires resize; refitting on
+   that made the game jump, shrink and expand as she scrolled.
+   fitLockH pins the height every fit measures against for the whole
+   play session, and the resize handler below ignores the bar
+   show/hide changes entirely — no refit ever happens because of
+   scrolling. A genuine change (rotation, a new width) re-locks at the
+   new true size and refits once, exactly as a fresh open would. */
+var fitLockH=0;
+var fitLastW=(typeof window!=='undefined'&&window.innerWidth)||0;
+function fitViewportH(){ return fitLockH>0? fitLockH : window.innerHeight; }
 function fitGameView(){
   var pv=document.getElementById('practiceView');
   if(!pv||pv.style.display==='none') return;
+  if(fitLockH<=0) fitLockH=window.innerHeight; /* first fit of a play session locks its true size */
   var vis=document.getElementById('qVisual');
   var inner=vis?vis.firstElementChild:null;
   pv.classList.remove('fit-tight'); pv.classList.remove('fit-tighter'); pv.classList.remove('fit-max'); pv.classList.remove('fit-menu'); pv.classList.remove('fit-menu2');
@@ -2841,7 +3004,7 @@ function fitGameView(){
        the old pass mark — is exactly what read as tucked / cut off
        on a real phone, so the fit steps keep working until the
        opened menu lands clear of the edge. */
-    return Math.max(0, Math.round(el.getBoundingClientRect().bottom - window.innerHeight + (menuOpen? 10 : 6)));
+    return Math.max(0, Math.round(el.getBoundingClientRect().bottom - fitViewportH() + (menuOpen? 10 : 6)));
   }
   function visScale(){
     if(!inner||natH<=0||ov<=0) return;
@@ -2867,7 +3030,18 @@ function fitGameView(){
      pixels — the opened menu always ends fully in view. */
   if(ov>0){ var tm3=document.getElementById('toolsMenu'); if(tm3&&tm3.style.display!=='none'){ pv.classList.add('fit-menu2'); ov=over(); } }
 }
-window.addEventListener('resize',function(){ fitGameView(); });
+window.addEventListener('resize',function(){
+  var w=window.innerWidth, h=window.innerHeight;
+  var pv=document.getElementById('practiceView');
+  var inGame= !!(pv&&pv.style.display!=='none');
+  /* Height-only, same width, small delta while a game is open = the
+     phone's browser bars showing/hiding as she scrolls. NOT a real
+     resize: keep the locked size and do not refit. */
+  if(inGame&&w===fitLastW&&fitLockH>0&&Math.abs(h-fitLockH)<=120) return;
+  fitLastW=w;
+  if(inGame) fitLockH=h; /* genuine change — re-lock at the new true size, then refit once */
+  fitGameView();
+});
 function nextPrompt(first){
   if(currentTopic&&gradeLockedTopic(currentTopic)){ var lid=currentTopic.id; goHome(); lockedGradeTap(lid); return; } /* GRADE GATE: never serve a prompt for a locked topic (covers competition restarts too) */
   stopBelleSpeech();
@@ -3070,7 +3244,7 @@ function resetCheerToStart(instant){
   resetSquad(instant);
   el.classList.remove('walking','wobbling','split-land','split-mode');
   el.dataset.pose='stand';
-  el.innerHTML=cheerSVG(effectiveDesign(),'stand',stageCheerOpts());
+  el.innerHTML=cheerSVG(stageDesign(),'stand',stageCheerOpts());
   var squadMode= !(typeof isSportWorld==='function'&&isSportWorld());
   var startPct= squadMode? 13 : 5;
   if(instant||REDUCED){
@@ -4001,11 +4175,10 @@ function coachFaceHTML(){
   return coachClassicFaceHTML(coachDisplayName(),'width:100%;height:100%;object-fit:cover;object-position:50% 10%');
 }
 function coachSummaryHTML(){
-  var sE='📣', aE='🦋', sN='Cheer', aN='Butterfly';
-  try{ var sp=themeSport(), an=themeAnimal(); sE=sp.emoji; sN=sp.name; aE=an.emoji; aN=an.name; }catch(e){}
-  return '<span class="coach-chip">🏆 '+(typeof coachSportIntro==='function'? coachSportIntro() : coachDisplayName())+'</span>'
-    +'<span class="coach-chip">'+sE+' '+sN+' prop</span>'
-    +'<span class="coach-chip">'+aE+' '+aN+' friend</span>';
+  /* Only the coach intro chip lives here — the "prop" / "friend"
+     favorites chips were removed everywhere on Michelle's order
+     (the same removal as the wizard Step 4 summary block). */
+  return '<span class="coach-chip">🏆 '+(typeof coachSportIntro==='function'? coachSportIntro() : coachDisplayName())+'</span>';
 }
 function applyCoach(){
   var custom=window.isCustomEdition();
@@ -4345,7 +4518,7 @@ function applySportWorld(){
      jump rope she holds her rope handles with the rope under her feet;
      in every other world she holds her pom poms. The equipment is part
      of her figure — only the ball / puck prop ever travels. */
-  var scEl=document.getElementById('stageCheer'); if(scEl&&scEl.dataset.pose!=='split'){ try{ scEl.innerHTML=cheerSVG(effectiveDesign(),'stand',stageCheerOpts()); }catch(e){} }
+  var scEl=document.getElementById('stageCheer'); if(scEl&&scEl.dataset.pose!=='split'){ try{ scEl.innerHTML=cheerSVG(stageDesign(),'stand',stageCheerOpts()); }catch(e){} }
   if(headline){ headline.textContent=''; headline.classList.remove('on'); }
   /* The hero greeting is the FIXED script (see paintHeroGreeting above):
      the same words on every sport and every game — it is never painted
@@ -4366,15 +4539,236 @@ function applySportWorld(){
      personalized world (her default theme), so applyTheme() owns it and
      it never changes when the games switch sport. */
 }
+/* ================= BUILT 3D GAME VENUES =================
+   EVERY sport's game venue is a TRUE 3D BUILD made in this
+   page (Michelle's superseding order) — NOT the angled sample
+   pictures dropped in. Each venue is constructed in the stage's
+   own 800x330 geometry, in the glossy 3D quality of the
+   approved samples (perspective surfaces, gradient gloss, depth
+   panels, soft shadows, pale studio backdrops), intentionally
+   designed for its game: her player stands on the surface
+   correctly, and every target — the Basketball hoop, the Soccer
+   goal and its goalie, the Tennis net, the Hockey net and
+   crease, the Swimming pool with its starting block and end-wall
+   touchpad, the Running finish line, the Dance studio's mirrors
+   and spotlight pool, the Gymnastics gym's mats, vault and
+   rings, the Jump Rope playground's ground — sits at the exact
+   spot the game's already-built make / miss logic aims at, so a
+   make looks like a make and a miss looks like a miss with no
+   game logic, motion or scoring changed. Two fits were checked
+   against that logic by the numbers: the Tennis net sits SQUARE
+   across the middle of the court — level white tape, post to
+   post across the full court — where a missed serve strikes it
+   (the ball reaches it at left 45% / bottom 61% and drops at its
+   base on her side) and a made serve sails over it and lands on
+   the far side; and the Hockey net stands far enough left that a
+   WIDE miss (puck out to left 93%) passes clearly outside its
+   far post while a made shot (left 83%) still lands inside it.
+   The venues are STILL — no motion — except Swimming, whose
+   water moves via the animated swim-water layer over this built
+   pool (see the .swim-water rules), her body in the water as
+   built. These builds are game venues ONLY; the straight-down
+   artwork background templates (SPORT_BG_ART) are a separate
+   thing and never enter a game. */
+function sportVenue3D(w){
+  function svg(inner){ return '<svg viewBox="0 0 800 330" preserveAspectRatio="xMidYMid slice" aria-hidden="true">'+inner+'</svg>'; }
+  if(w===SPORT_WORLDS.basketball) return svg(
+    '<defs>'
+    +'<linearGradient id="v3bbWall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F7E9CF"/><stop offset="1" stop-color="#EFD9B4"/></linearGradient>'
+    +'<linearGradient id="v3bbWood" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F0B269"/><stop offset=".55" stop-color="#E3963F"/><stop offset="1" stop-color="#CD7D2B"/></linearGradient>'
+    +'<linearGradient id="v3bbGlass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#EAF7FB"/><stop offset="1" stop-color="#BCDFF0"/></linearGradient>'
+    +'</defs>'
+    +'<rect width="800" height="330" fill="url(#v3bbWall)"/>'
+    +'<g stroke="rgba(166,124,62,.28)" stroke-width="3"><line x1="120" y1="14" x2="120" y2="148"/><line x1="240" y1="14" x2="240" y2="148"/><line x1="360" y1="14" x2="360" y2="148"/><line x1="480" y1="14" x2="480" y2="148"/><line x1="600" y1="14" x2="600" y2="148"/><line x1="720" y1="14" x2="720" y2="148"/></g>'
+    +'<polygon points="40,150 760,150 800,330 0,330" fill="url(#v3bbWood)"/>'
+    +'<polygon points="40,150 760,150 774,198 26,198" fill="#FFFFFF" opacity=".10"/>'
+    +'<g stroke="rgba(124,45,18,.22)" stroke-width="3"><line x1="160" y1="150" x2="118" y2="330"/><line x1="280" y1="150" x2="256" y2="330"/><line x1="400" y1="150" x2="400" y2="330"/><line x1="520" y1="150" x2="544" y2="330"/><line x1="640" y1="150" x2="682" y2="330"/></g>'
+    +'<line x1="0" y1="320" x2="800" y2="320" stroke="#B96A28" stroke-width="3" opacity=".55"/>'
+    +'<line x1="400" y1="150" x2="400" y2="330" stroke="#FFFFFF" stroke-width="5" opacity=".8"/>'
+    +'<ellipse cx="400" cy="270" rx="118" ry="24" fill="none" stroke="#FFFFFF" stroke-width="5" opacity=".8"/>'
+    +'<polygon points="600,196 738,196 766,330 566,330" fill="#DC2626" opacity=".30"/><polygon points="600,196 738,196 766,330 566,330" fill="none" stroke="#FFFFFF" stroke-width="5" opacity=".85"/>'
+    +'<ellipse cx="668" cy="302" rx="84" ry="17" fill="none" stroke="#FFFFFF" stroke-width="4" opacity=".7"/>'
+    +'<ellipse cx="692" cy="308" rx="54" ry="9" fill="#7C2D12" opacity=".16"/>'
+    +'<rect x="714" y="50" width="13" height="50" fill="#5B6B7A"/><rect x="694" y="94" width="36" height="11" fill="#5B6B7A"/>'
+    +'<rect x="648" y="96" width="74" height="54" fill="url(#v3bbGlass)" stroke="#26313B" stroke-width="5"/><rect x="669" y="111" width="32" height="25" fill="none" stroke="#E85D0C" stroke-width="4"/><polygon points="655,100 683,100 665,146 653,146" fill="#FFFFFF" opacity=".35"/>'
+    +'<rect x="680" y="148" width="10" height="13" fill="#E85D0C"/>'
+    +'<ellipse cx="685" cy="168" rx="19" ry="7" fill="none" stroke="#E85D0C" stroke-width="5"/>'
+    +'<path d="M668 174 L674 206 M677 176 L680 208 M685 177 L685 209 M693 176 L690 208 M702 174 L696 206 M674 190 L696 190 M678 203 L692 203" stroke="#FFFFFF" stroke-width="3" fill="none" opacity=".95"/>');
+  if(w===SPORT_WORLDS.soccer) return svg(
+    '<defs>'
+    +'<linearGradient id="v3scSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#EAF6FF"/><stop offset="1" stop-color="#D6ECFF"/></linearGradient>'
+    +'<linearGradient id="v3scGrass" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#66C657"/><stop offset="1" stop-color="#3F9E41"/></linearGradient>'
+    +'<linearGradient id="v3scGrassD" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#57B84C"/><stop offset="1" stop-color="#37953A"/></linearGradient>'
+    +'<linearGradient id="v3scKit" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8B5CF6"/><stop offset="1" stop-color="#6D28D9"/></linearGradient>'
+    +'</defs>'
+    +'<rect width="800" height="330" fill="url(#v3scSky)"/>'
+    +'<polygon points="30,120 770,120 830,330 -30,330" fill="url(#v3scGrass)"/>'
+    +'<polygon points="153,120 277,120 257,330 113,330" fill="url(#v3scGrassD)" opacity=".55"/><polygon points="400,120 523,120 543,330 400,330" fill="url(#v3scGrassD)" opacity=".55"/><polygon points="647,120 770,120 830,330 687,330" fill="url(#v3scGrassD)" opacity=".55"/>'
+    +'<polygon points="30,120 770,120 786,168 -14,168" fill="#FFFFFF" opacity=".08"/>'
+    +'<line x1="400" y1="120" x2="400" y2="330" stroke="#FFFFFF" stroke-width="5" opacity=".85"/>'
+    +'<ellipse cx="400" cy="252" rx="82" ry="26" fill="none" stroke="#FFFFFF" stroke-width="5" opacity=".8"/>'
+    +'<polygon points="586,176 750,176 750,330 586,330" fill="none" stroke="#FFFFFF" stroke-width="5" opacity=".85"/>'
+    +'<polygon points="636,222 718,222 718,330 636,330" fill="none" stroke="#FFFFFF" stroke-width="4" opacity=".7"/>'
+    +'<polygon points="640,150 622,166 622,282 640,296" fill="#FFFFFF" opacity=".30"/><polygon points="640,150 622,166 746,166 764,150" fill="#FFFFFF" opacity=".38"/>'
+    +'<g stroke="#FFFFFF" stroke-width="1.6" opacity=".55"><line x1="668" y1="158" x2="668" y2="296"/><line x1="702" y1="158" x2="702" y2="296"/><line x1="736" y1="158" x2="736" y2="296"/><line x1="640" y1="192" x2="764" y2="192"/><line x1="640" y1="228" x2="764" y2="228"/><line x1="640" y1="264" x2="764" y2="264"/><line x1="640" y1="158" x2="764" y2="296"/><line x1="764" y1="158" x2="640" y2="296"/></g>'
+    +'<path d="M640 150 L764 150 L764 296 L640 296 Z" fill="none" stroke="#FFFFFF" stroke-width="7"/>'
+    +'<ellipse cx="702" cy="292" rx="30" ry="6" fill="#14532D" opacity=".25"/>'
+    +'<g><path d="M702 248 L688 282 M702 248 L716 282" stroke="#1F2937" stroke-width="8" stroke-linecap="round"/><path d="M702 209 L702 248" stroke="url(#v3scKit)" stroke-width="12" stroke-linecap="round"/><path d="M702 218 L668 204 M702 218 L736 204" stroke="#7C3AED" stroke-width="8" stroke-linecap="round"/><circle cx="664" cy="202" r="7" fill="#FDE68A" stroke="#92400E" stroke-width="2"/><circle cx="740" cy="202" r="7" fill="#FDE68A" stroke="#92400E" stroke-width="2"/><circle cx="702" cy="196" r="13" fill="#FCD7B0" stroke="#92400E" stroke-width="2"/></g>');
+  if(w===SPORT_WORLDS.tennis) return svg(
+    '<defs>'
+    +'<linearGradient id="v3tnSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FDEEF4"/><stop offset="1" stop-color="#F8DCE9"/></linearGradient>'
+    +'<linearGradient id="v3tnGreen" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#55B873"/><stop offset="1" stop-color="#2F9E63"/></linearGradient>'
+    +'<linearGradient id="v3tnBlue" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4A90D9"/><stop offset="1" stop-color="#2563EB"/></linearGradient>'
+    +'</defs>'
+    +'<rect width="800" height="330" fill="url(#v3tnSky)"/>'
+    +'<polygon points="20,120 780,120 820,330 -20,330" fill="url(#v3tnGreen)"/>'
+    +'<polygon points="90,140 710,140 770,330 30,330" fill="url(#v3tnBlue)"/>'
+    +'<polygon points="90,140 710,140 726,192 74,192" fill="#FFFFFF" opacity=".10"/>'
+    +'<polygon points="90,140 710,140 770,330 30,330" fill="none" stroke="#FFFFFF" stroke-width="5" opacity=".9"/>'
+    +'<line x1="104" y1="196" x2="696" y2="196" stroke="#FFFFFF" stroke-width="4" opacity=".8"/>'
+    +'<line x1="58" y1="262" x2="742" y2="262" stroke="#FFFFFF" stroke-width="6" opacity=".85"/>'
+    +'<line x1="150" y1="150" x2="136" y2="268" stroke="#FFFFFF" stroke-width="3" opacity=".5"/><line x1="650" y1="150" x2="664" y2="268" stroke="#FFFFFF" stroke-width="3" opacity=".5"/>'
+    +'<line x1="400" y1="196" x2="400" y2="262" stroke="#FFFFFF" stroke-width="3" opacity=".5"/>'
+    +'<polygon points="66,132 734,132 728,172 72,172" fill="#FFFFFF" opacity=".14"/>'
+    +'<g stroke="#111827" stroke-width="1.3" opacity=".30"><line x1="150" y1="133" x2="148" y2="171"/><line x1="240" y1="133" x2="239" y2="171"/><line x1="330" y1="133" x2="329" y2="171"/><line x1="420" y1="133" x2="420" y2="171"/><line x1="510" y1="133" x2="511" y2="171"/><line x1="600" y1="133" x2="601" y2="171"/><line x1="690" y1="133" x2="691" y2="171"/><line x1="68" y1="145" x2="732" y2="145"/><line x1="70" y1="158" x2="730" y2="158"/></g>'
+    +'<rect x="60" y="120" width="680" height="12" rx="3" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5"/>'
+    +'<line x1="400" y1="132" x2="400" y2="172" stroke="#F8FAFC" stroke-width="4" opacity=".9"/><rect x="394" y="170" width="12" height="7" fill="#64748B"/>'
+    +'<rect x="52" y="110" width="13" height="72" rx="5" fill="#374151"/><rect x="735" y="110" width="13" height="72" rx="5" fill="#374151"/><rect x="48" y="102" width="21" height="10" rx="5" fill="#F8FAFC" stroke="#1F2937" stroke-width="2"/><rect x="731" y="102" width="21" height="10" rx="5" fill="#F8FAFC" stroke="#1F2937" stroke-width="2"/>');
+  if(w===SPORT_WORLDS.swimming) return svg(
+    '<defs>'
+    +'<linearGradient id="v3swDeck" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F4EEE3"/><stop offset="1" stop-color="#E8DCC6"/></linearGradient>'
+    +'<linearGradient id="v3swDeckTop" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#EFE6D2"/><stop offset="1" stop-color="#E3D3B4"/></linearGradient>'
+    +'<linearGradient id="v3swWater" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#53C6EC"/><stop offset="1" stop-color="#0284C7"/></linearGradient>'
+    +'<linearGradient id="v3swWall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#CDEFFB"/><stop offset="1" stop-color="#8ED4F2"/></linearGradient>'
+    +'<linearGradient id="v3swFloor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#38BDF8"/><stop offset="1" stop-color="#0369A1"/></linearGradient>'
+    +'<linearGradient id="v3swEnd" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#A8DFF5"/><stop offset="1" stop-color="#7CC8EC"/></linearGradient>'
+    +'</defs>'
+    +'<rect width="800" height="330" fill="url(#v3swDeck)"/>'
+    +'<g stroke="rgba(160,140,100,.22)" stroke-width="3"><line x1="100" y1="0" x2="100" y2="96"/><line x1="200" y1="0" x2="200" y2="96"/><line x1="300" y1="0" x2="300" y2="96"/><line x1="400" y1="0" x2="400" y2="96"/><line x1="500" y1="0" x2="500" y2="96"/><line x1="600" y1="0" x2="600" y2="96"/><line x1="700" y1="0" x2="700" y2="96"/><line x1="0" y1="48" x2="800" y2="48"/></g>'
+    +'<polygon points="0,96 800,96 800,150 0,150" fill="url(#v3swDeckTop)"/>'
+    +'<g stroke="rgba(160,140,100,.30)" stroke-width="3"><line x1="120" y1="96" x2="104" y2="150"/><line x1="280" y1="96" x2="272" y2="150"/><line x1="440" y1="96" x2="440" y2="150"/><line x1="600" y1="96" x2="608" y2="150"/><line x1="740" y1="96" x2="756" y2="150"/></g>'
+    +'<polygon points="24,150 94,150 86,116 32,116" fill="#E2E8F0" stroke="#94A3B8" stroke-width="3"/><polygon points="32,116 86,116 96,104 42,104" fill="#F8FAFC" stroke="#94A3B8" stroke-width="3"/>'
+    +'<rect x="4" y="140" width="792" height="12" rx="6" fill="#FFFFFF" opacity=".7"/>'
+    +'<rect x="0" y="150" width="800" height="180" fill="url(#v3swWater)"/>'
+    +'<rect x="0" y="150" width="800" height="13" fill="url(#v3swWall)" opacity=".85"/>'
+    +'<polygon points="652,150 800,142 800,330 652,330" fill="url(#v3swEnd)" opacity=".55"/>'
+    +'<g stroke="rgba(255,255,255,.22)" stroke-width="3"><line x1="652" y1="206" x2="800" y2="198"/><line x1="652" y1="262" x2="800" y2="254"/><line x1="700" y1="147" x2="700" y2="330"/><line x1="752" y1="145" x2="752" y2="330"/></g>'
+    +'<polygon points="0,258 800,250 800,330 0,330" fill="url(#v3swFloor)" opacity=".55"/>'
+    +'<g stroke="rgba(224,242,254,.35)" stroke-width="5"><line x1="130" y1="260" x2="104" y2="330"/><line x1="290" y1="259" x2="278" y2="330"/><line x1="450" y1="257" x2="452" y2="330"/><line x1="610" y1="255" x2="626" y2="330"/></g>'
+    +'<path d="M0 226 Q100 210 200 226 T400 226 T600 226 T800 226" fill="none" stroke="#BAE6FD" stroke-width="5" opacity=".8"/><path d="M0 292 Q100 278 200 292 T400 292 T600 292 T800 292" fill="none" stroke="#BAE6FD" stroke-width="4" opacity=".45"/>'
+    +'<line x1="0" y1="196" x2="800" y2="196" stroke="#FFFFFF" stroke-width="7" stroke-dasharray="16 10" opacity=".95"/><line x1="0" y1="196" x2="800" y2="196" stroke="#E11D48" stroke-width="7" stroke-dasharray="16 10" stroke-dashoffset="13" opacity=".95"/>'
+    +'<line x1="0" y1="252" x2="800" y2="252" stroke="#E11D48" stroke-width="7" stroke-dasharray="16 10" opacity=".95"/><line x1="0" y1="252" x2="800" y2="252" stroke="#FFFFFF" stroke-width="7" stroke-dasharray="16 10" stroke-dashoffset="13" opacity=".95"/>'
+    +'<rect x="618" y="222" width="36" height="68" rx="6" fill="#FDE68A" stroke="#334155" stroke-width="4"/>'
+    +'<g stroke="#FFFFFF" stroke-width="3" opacity=".85"><line x1="180" y1="118" x2="180" y2="150"/><line x1="320" y1="118" x2="320" y2="150"/><line x1="460" y1="118" x2="460" y2="150"/><line x1="600" y1="118" x2="600" y2="150"/></g>'
+    +'<line x1="150" y1="120" x2="650" y2="120" stroke="#DC2626" stroke-width="3" opacity=".85"/>');
+  if(w===SPORT_WORLDS.hockey) return svg(
+    '<defs>'
+    +'<linearGradient id="v3hkWall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E9EFF5"/><stop offset="1" stop-color="#D8E3EE"/></linearGradient>'
+    +'<linearGradient id="v3hkIce" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#DCEEFF"/></linearGradient>'
+    +'</defs>'
+    +'<rect width="800" height="330" fill="url(#v3hkWall)"/>'
+    +'<rect x="0" y="58" width="800" height="44" fill="#DFF3F7" opacity=".55"/>'
+    +'<g stroke="#B9CFDD" stroke-width="3" opacity=".7"><line x1="100" y1="58" x2="100" y2="102"/><line x1="200" y1="58" x2="200" y2="102"/><line x1="300" y1="58" x2="300" y2="102"/><line x1="400" y1="58" x2="400" y2="102"/><line x1="500" y1="58" x2="500" y2="102"/><line x1="600" y1="58" x2="600" y2="102"/><line x1="700" y1="58" x2="700" y2="102"/></g>'
+    +'<rect x="0" y="102" width="800" height="26" fill="#FFFFFF"/><rect x="0" y="102" width="800" height="7" fill="#E5484D" opacity=".85"/>'
+    +'<polygon points="70,128 730,128 800,212 800,330 0,330 0,212" fill="url(#v3hkIce)"/>'
+    +'<polygon points="120,128 300,128 180,330 40,330" fill="#FFFFFF" opacity=".35"/><polygon points="560,128 660,128 760,330 660,330" fill="#FFFFFF" opacity=".25"/>'
+    +'<line x1="400" y1="128" x2="400" y2="330" stroke="#DC2626" stroke-width="7" opacity=".85"/>'
+    +'<line x1="212" y1="128" x2="212" y2="330" stroke="#2563EB" stroke-width="10" opacity=".8"/><line x1="588" y1="128" x2="588" y2="330" stroke="#2563EB" stroke-width="10" opacity=".8"/>'
+    +'<g fill="none" stroke="#DC2626" stroke-width="4" opacity=".65"><circle cx="150" cy="180" r="26"/><circle cx="150" cy="282" r="26"/><circle cx="650" cy="180" r="26"/><circle cx="650" cy="282" r="26"/></g>'
+    +'<g fill="#DC2626" opacity=".65"><circle cx="150" cy="180" r="4"/><circle cx="150" cy="282" r="4"/><circle cx="650" cy="180" r="4"/><circle cx="650" cy="282" r="4"/></g>'
+    +'<path d="M600 214 A66 52 0 0 1 732 214 L732 266 A66 40 0 0 1 600 266 Z" fill="#BAE6FD" opacity=".9" stroke="#2563EB" stroke-width="3"/>'
+    +'<polygon points="624,168 608,180 608,256 624,268" fill="#FFFFFF" opacity=".30"/><polygon points="624,168 608,180 712,180 728,168" fill="#FFFFFF" opacity=".38"/>'
+    +'<g stroke="#F8FAFC" stroke-width="1.6" opacity=".65"><line x1="640" y1="176" x2="640" y2="268"/><line x1="672" y1="176" x2="672" y2="268"/><line x1="704" y1="176" x2="704" y2="268"/><line x1="624" y1="200" x2="728" y2="200"/><line x1="624" y1="228" x2="728" y2="228"/><line x1="624" y1="252" x2="728" y2="252"/></g>'
+    +'<path d="M624 168 L728 168 L728 268 L624 268 Z" fill="none" stroke="#DC2626" stroke-width="7"/>');
+  if(w===SPORT_WORLDS.running) return svg(
+    '<defs>'
+    +'<linearGradient id="v3rnSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#EDF8EC"/><stop offset="1" stop-color="#DDF1DE"/></linearGradient>'
+    +'<linearGradient id="v3rnGrass" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#63C455"/><stop offset="1" stop-color="#3E9B3C"/></linearGradient>'
+    +'<linearGradient id="v3rnClay" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D06C46"/><stop offset="1" stop-color="#B4552D"/></linearGradient>'
+    +'</defs>'
+    +'<rect width="800" height="330" fill="url(#v3rnSky)"/>'
+    +'<rect x="0" y="98" width="800" height="60" fill="url(#v3rnGrass)"/>'
+    +'<g stroke="rgba(21,101,52,.25)" stroke-width="3"><line x1="140" y1="98" x2="140" y2="158"/><line x1="330" y1="98" x2="330" y2="158"/><line x1="520" y1="98" x2="520" y2="158"/><line x1="690" y1="98" x2="690" y2="158"/></g>'
+    +'<polygon points="36,158 764,158 836,330 -36,330" fill="url(#v3rnClay)"/>'
+    +'<polygon points="36,158 764,158 790,198 -10,198" fill="#FFFFFF" opacity=".08"/>'
+    +'<g stroke="rgba(124,45,18,.20)" stroke-width="4"><line x1="212" y1="158" x2="164" y2="330"/><line x1="400" y1="158" x2="400" y2="330"/><line x1="588" y1="158" x2="636" y2="330"/></g>'
+    +'<g stroke="#FFFFFF" stroke-width="5" opacity=".85"><line x1="18" y1="204" x2="782" y2="204"/><line x1="6" y1="254" x2="794" y2="254"/><line x1="-6" y1="304" x2="806" y2="304"/></g>'
+    +'<g fill="#374151"><polygon points="46,302 78,302 70,282 54,282"/><polygon points="90,302 122,302 114,282 98,282"/></g>'
+    +'<polygon points="544,158 560,158 568,330 536,330" fill="#FFFFFF" opacity=".92"/>'
+    +'<g fill="#111827"><rect x="546" y="180" width="12" height="12"/><rect x="545" y="214" width="13" height="13"/><rect x="544" y="250" width="14" height="14"/><rect x="543" y="288" width="15" height="15"/></g>'
+    +'<rect x="554" y="84" width="5" height="76" fill="#111827"/><g><rect x="559" y="84" width="24" height="18" fill="#FFFFFF" stroke="#111827" stroke-width="1.5"/><rect x="559" y="84" width="6" height="6" fill="#111827"/><rect x="571" y="84" width="6" height="6" fill="#111827"/><rect x="565" y="90" width="6" height="6" fill="#111827"/><rect x="577" y="90" width="6" height="6" fill="#111827"/><rect x="559" y="96" width="6" height="6" fill="#111827"/><rect x="571" y="96" width="6" height="6" fill="#111827"/></g>');
+  if(w===SPORT_WORLDS.dance) return svg(
+    '<defs>'
+    +'<linearGradient id="v3daWall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5B21B6"/><stop offset="1" stop-color="#7C3AED"/></linearGradient>'
+    +'<linearGradient id="v3daMirror" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F0F9FF"/><stop offset="1" stop-color="#A5D8F5"/></linearGradient>'
+    +'<linearGradient id="v3daWood" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D9A05B"/><stop offset="1" stop-color="#A9713A"/></linearGradient>'
+    +'</defs>'
+    +'<rect width="800" height="330" fill="url(#v3daWall)"/>'
+    +'<polygon points="60,26 268,26 260,170 68,170" fill="url(#v3daMirror)"/><polygon points="292,26 508,26 508,170 292,170" fill="url(#v3daMirror)"/><polygon points="532,26 740,26 732,170 540,170" fill="url(#v3daMirror)"/>'
+    +'<polygon points="96,160 190,36 226,36 132,160" fill="#FFFFFF" opacity=".28"/><polygon points="330,160 424,36 460,36 366,160" fill="#FFFFFF" opacity=".28"/><polygon points="566,160 660,36 696,36 602,160" fill="#FFFFFF" opacity=".28"/>'
+    +'<g fill="none" stroke="#F8FAFC" stroke-width="6" opacity=".9"><polygon points="60,26 268,26 260,170 68,170"/><polygon points="292,26 508,26 508,170 292,170"/><polygon points="532,26 740,26 732,170 540,170"/></g>'
+    +'<rect x="0" y="186" width="800" height="10" fill="#3B0764" opacity=".55"/>'
+    +'<polygon points="0,196 800,196 800,330 0,330" fill="url(#v3daWood)"/>'
+    +'<polygon points="0,196 800,196 800,226 0,226" fill="#FFFFFF" opacity=".10"/>'
+    +'<g stroke="rgba(101,54,16,.35)" stroke-width="3"><line x1="150" y1="196" x2="108" y2="330"/><line x1="325" y1="196" x2="292" y2="330"/><line x1="475" y1="196" x2="508" y2="330"/><line x1="650" y1="196" x2="692" y2="330"/><line x1="0" y1="238" x2="800" y2="238"/><line x1="0" y1="282" x2="800" y2="282"/></g>'
+    +'<ellipse cx="520" cy="294" rx="122" ry="22" fill="#FDE68A" opacity=".32"/><ellipse cx="520" cy="294" rx="70" ry="12" fill="#FEF3C7" opacity=".35"/>');
+  if(w===SPORT_WORLDS.gymnastics) return svg(
+    '<defs>'
+    +'<linearGradient id="v3gyWall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF7DB"/><stop offset="1" stop-color="#FDE9B8"/></linearGradient>'
+    +'<linearGradient id="v3gyFloor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7FB3FA"/><stop offset="1" stop-color="#3B82F6"/></linearGradient>'
+    +'<linearGradient id="v3gyVault" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FCD34D"/><stop offset="1" stop-color="#F59E0B"/></linearGradient>'
+    +'</defs>'
+    +'<rect width="800" height="330" fill="url(#v3gyWall)"/>'
+    +'<g stroke="rgba(180,140,60,.20)" stroke-width="3"><line x1="160" y1="0" x2="160" y2="150"/><line x1="320" y1="0" x2="320" y2="150"/><line x1="480" y1="0" x2="480" y2="150"/><line x1="640" y1="0" x2="640" y2="150"/></g>'
+    +'<g stroke="#92400E" stroke-width="4"><line x1="250" y1="0" x2="250" y2="112"/><line x1="420" y1="0" x2="420" y2="112"/></g><circle cx="250" cy="126" r="13" fill="none" stroke="#92400E" stroke-width="5"/><circle cx="420" cy="126" r="13" fill="none" stroke="#92400E" stroke-width="5"/>'
+    +'<rect x="0" y="150" width="800" height="66" fill="#93C5FD" opacity=".55"/><line x1="0" y1="150" x2="800" y2="150" stroke="#60A5FA" stroke-width="4" opacity=".6"/><g stroke="rgba(37,99,235,.25)" stroke-width="3"><line x1="200" y1="150" x2="200" y2="216"/><line x1="400" y1="150" x2="400" y2="216"/><line x1="600" y1="150" x2="600" y2="216"/></g>'
+    +'<polygon points="0,216 800,216 800,330 0,330" fill="url(#v3gyFloor)"/>'
+    +'<polygon points="0,216 800,216 800,240 0,240" fill="#FFFFFF" opacity=".12"/>'
+    +'<g stroke="rgba(255,255,255,.28)" stroke-width="3"><line x1="200" y1="216" x2="168" y2="330"/><line x1="400" y1="216" x2="400" y2="330"/><line x1="600" y1="216" x2="632" y2="330"/><line x1="0" y1="272" x2="800" y2="272"/></g>'
+    +'<polygon points="646,238 750,238 758,254 638,254" fill="#FDE68A"/><polygon points="638,254 758,254 758,294 638,294" fill="url(#v3gyVault)"/><polygon points="638,254 758,254 758,266 638,266" fill="#FFFFFF" opacity=".25"/>'
+    +'<polygon points="90,258 162,258 170,272 82,272" fill="#E0F2FE" stroke="#7DD3FC" stroke-width="3"/>'
+    +'<polygon points="56,272 744,272 770,314 30,314" fill="#F472B6"/><polygon points="56,272 744,272 754,288 46,288" fill="#FFFFFF" opacity=".20"/><polygon points="56,272 744,272 770,314 30,314" fill="none" stroke="#FFFFFF" stroke-width="3" opacity=".55"/>');
+  if(w===SPORT_WORLDS.jumprope) return svg(
+    '<defs>'
+    +'<linearGradient id="v3jrGround" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FBCFE8"/><stop offset="1" stop-color="#F472B6"/></linearGradient>'
+    +'</defs>'
+    +'<polygon points="0,290 800,290 800,330 0,330" fill="url(#v3jrGround)"/>'
+    +'<polygon points="0,290 800,290 800,299 0,299" fill="#FFFFFF" opacity=".20"/>'
+    +'<g stroke="rgba(255,255,255,.16)" stroke-width="3"><line x1="252" y1="302" x2="218" y2="330"/><line x1="548" y1="302" x2="582" y2="330"/></g>'
+    +'<rect x="0" y="294" width="800" height="4" fill="#FFFFFF" opacity=".55"/>');
+  return '';
+}
 function sportVenueSVG(w){
-  /* Every sport gets its OWN real venue, drawn for that sport — never a
-     shared backdrop: tennis has its net and court lines, soccer is grass
-     with a netted goal and a goalie in front of it, hockey is ice with
-     red/blue lines, a crease and a red-framed net, dance is a mirrored
-     studio wall over a wooden floor (its ONE barre is the real barre
-     element standing at her waiting spot — no second barre is drawn
-     into the venue, and nothing else floats in the studio), gymnastics has the balance
-     beam, mats and vault, and jump rope is the sunny playground. */
+  /* EVERY sport plays on its TRUE 3D VENUE BUILT in this page
+     (sportVenue3D above) — the court / field / rink / pool /
+     track / studio / gym / playground constructed in the stage's
+     own geometry, in the glossy 3D quality of the approved
+     samples, matching his. The venue itself never moves:
+     her player and the game's moving prop stay exactly as built
+     and move on top of it (the venue layer sits under them), and
+     nothing else is overlaid on the stage. ONE exception
+     (Michelle's order): the Swimming game's water MOVES — the
+     animated swim-water layer flows over the built pool while
+     she waits and swims, her body in the water as built. These
+     built venues are GAME venues only — different from the
+     straight-down BACKGROUND TEMPLATE pictures of the same
+     sports (SPORT_BG_ART), and the two never mix. Dance's ONE
+     barre is the real barre element standing at her waiting
+     spot — no second barre is drawn into the built studio —
+     and gymnastics' balance beam is the stage's own beam
+     element; the built gym venue carries the mats, vault and
+     rings around it, never a second beam. */
+  /* The built venues (sportVenue3D above) are constructed in
+     this stage's own geometry, with every target — hoop, goal,
+     net, crease, touchpad, finish line, spotlight — at the
+     exact spot the game's already-built make / miss logic aims
+     at, so makes look like makes and misses look like misses.
+     The game's logic, motions and scoring are NOT changed to
+     fit the venue — the venue is built to fit them. No picture
+     is dropped in. The flat line drawings below are a fallback
+     that no sport reaches anymore. */
+  var built=sportVenue3D(w);
+  if(built) return built;
   var lines='';
   if(w===SPORT_WORLDS.tennis){ lines='<rect x="40" y="262" width="720" height="10" fill="#fff" opacity=".85"/><line x1="90" y1="196" x2="710" y2="196" stroke="#fff" stroke-width="4" opacity=".75"/><line x1="150" y1="150" x2="150" y2="272" stroke="#fff" stroke-width="3" opacity=".5"/><line x1="650" y1="150" x2="650" y2="272" stroke="#fff" stroke-width="3" opacity=".5"/><g stroke="#111827" stroke-width="1.6" opacity=".55"><line x1="388" y1="168" x2="412" y2="168"/><line x1="388" y1="186" x2="412" y2="186"/><line x1="388" y1="204" x2="412" y2="204"/><line x1="388" y1="222" x2="412" y2="222"/><line x1="388" y1="240" x2="412" y2="240"/><line x1="394" y1="150" x2="394" y2="258"/><line x1="400" y1="150" x2="400" y2="258"/><line x1="406" y1="150" x2="406" y2="258"/></g><rect x="386" y="146" width="28" height="116" fill="none" stroke="#1F2937" stroke-width="3" opacity=".9"/><rect x="380" y="140" width="40" height="10" rx="4" fill="#F8FAFC" stroke="#1F2937" stroke-width="2"/><rect x="396" y="258" width="8" height="18" fill="#1F2937"/>'; }
   else if(w===SPORT_WORLDS.basketball){ lines='<rect x="586" y="196" width="164" height="100" fill="#DC2626" opacity=".28"/><rect x="586" y="196" width="164" height="100" fill="none" stroke="#fff" stroke-width="4" opacity=".8"/><ellipse cx="400" cy="300" rx="120" ry="26" fill="none" stroke="#fff" stroke-width="4" opacity=".75"/><line x1="400" y1="132" x2="400" y2="330" stroke="#fff" stroke-width="4" opacity=".55"/><rect x="648" y="96" width="74" height="54" fill="#F8FAFC" stroke="#DC2626" stroke-width="5"/><circle cx="685" cy="168" r="17" fill="none" stroke="#DC2626" stroke-width="6"/><path d="M672 182 L678 210 M698 182 L692 210 M678 210 L692 210" stroke="#F8FAFC" stroke-width="3" fill="none" opacity=".9"/>'; }
@@ -4445,16 +4839,25 @@ function effectiveTheme(){ return window.isCustomEdition()? myTheme : defaultThe
 var WORLD_SCENE_META={
  cheer:{name:'Castle Ballroom of Pom Poms',desc:'Beautiful pom poms in YOUR theme colors fill your castle ballroom!'},
  dance:{name:'Repeating Ballerina Pattern',desc:'Ballerinas in tutus repeat all across your background — arms out on pointe, legs up and arms raised — with little hearts and stars scattered in!'},
- gymnastics:{name:'Gymnasts in Motion',desc:'Girl gymnasts fill your gym — still-rings holds, a cartwheel over the beam, a floor split, a straddle jump and a handstand — girls of every skin tone with different hair, in leotards in YOUR theme colors!'},
- hockey:{name:'Ice Rink',desc:'A full arena rink fills your background — a goal net, a stick and puck at center ice, face-off circles, boards, arena seats and two big floodlights shining down!'},
- basketball:{name:'Basketball Court',desc:'A real basketball gym fills your background — cream paneled walls, a gold chevron band, the glass hoop up high and the polished wood court!'},
- soccer:{name:'Soccer Field',desc:'A green soccer field fills your background — white lines, corner flags and soccer balls!'},
- tennis:{name:'Tennis Court',desc:'A tennis court fills your background — white lines, the net and tennis balls!'},
- swimming:{name:'Swimming Pool',desc:'A sparkling pool fills your background — lane ropes, splashes and a swimmer in the water!'},
- running:{name:'Running Track',desc:'A running track fills your background — numbered lanes, a checkered finish line and running shoes!'},
- jumprope:{name:'Jumping Girls',desc:'Glossy 3D girls mid-jump fill your background — different skin tones, hair and outfit colors, each one turning her own glossy colorful rope over her head and under her feet, in the same style as your gymnasts!'}
+ gymnastics:{name:'Gymnastics',desc:'Glossy 3D girl gymnasts fill your background — different skin tones, hair types and outfit colors, scattered in different motions: handstands, a cartwheel, a split jump, a standing split, a backbend and a floor split!'},
+ hockey:{name:'Ice Rink',desc:'A glossy ice rink seen straight down from above fills your background — icy white ice, red and blue lines and face-off circles!'},
+ basketball:{name:'Basketball Court',desc:'A glossy basketball court seen straight down from above fills your background — polished wood, white lines, the center circle and the hoop!'},
+ soccer:{name:'Soccer Field',desc:'A glossy soccer field seen straight down from above fills your background — green grass, white lines, the center circle and a goal at each end!'},
+ tennis:{name:'Tennis Court',desc:'A glossy tennis court seen straight down from above fills your background — a blue court with white lines and the net across the middle!'},
+ swimming:{name:'Swimming Pool',desc:'A glossy swimming pool seen straight down from above fills your background — sparkling blue water and red-and-white lane ropes!'},
+ running:{name:'Running Track',desc:'A glossy running track seen straight down from above fills your background — the clay-red oval loop, white lane lines, green grass in the middle and the checkered finish line!'},
+ jumprope:{name:'Jump Rope',desc:'Glossy 3D girls mid-jump fill your background — different skin tones, hair and outfit colors, each one turning her own glossy colorful rope over her head and under her feet, in the same style as your gymnasts!'}
 };
-function worldSceneTools(id){ var m={cheer:['🎀','🌹'],dance:['🩰','🎵'],gymnastics:['🤸','🏅'],hockey:['🏒','⚫'],basketball:['🏀','🏆'],soccer:['⚽','🥅'],tennis:['🎾','🏆'],swimming:['💦','🏁'],running:['👟','🏁'],jumprope:['🪢','☀️']}; return m[id]||['⭐','🎀']; }
+/* The six sports Royce shares with Karter (Basketball, Soccer,
+   Tennis, Swimming, Hockey, Running) use Michelle's approved glossy
+   artwork as their BACKGROUND TEMPLATES: the STRAIGHT-DOWN (front)
+   view of each court / field / rink / pool / track, matching his
+   exactly. These are page-background pictures ONLY — the separate
+   built 3D venues of the same sports live inside the games (see
+   sportVenueSVG) and the two never mix. Her own templates (Cheer,
+   Dance, Jump Rope, Gymnastics) keep their own artwork below. */
+var SPORT_BG_ART={basketball:'assets/basketball-bg.webp',soccer:'assets/soccer-bg.webp',tennis:'assets/tennis-bg.webp',swimming:'assets/swimming-bg.webp',hockey:'assets/hockey-bg.webp',running:'assets/running-bg.webp'};
+function worldSceneTools(id){ var m={cheer:['🎀','🌹'],dance:['🩰','🎵'],gymnastics:['🤸','🏅'],hockey:['🏒','⚫'],basketball:['🏀','🏆'],soccer:['⚽','🥅'],tennis:['🎾','🏆'],swimming:['🏁'],running:['🏁'],jumprope:['🪢','☀️']}; return m[id]||['⭐','🎀']; }
 function wsSparkles(n){ var pts=[[60,60],[180,34],[330,70],[505,40],[655,66],[752,36],[120,150],[705,150],[262,120],[548,128]]; var s=''; for(var i=0;i<n&&i<pts.length;i++){ s+='<circle class="ws-twinkle" style="animation-delay:'+(i*0.55)+'s" cx="'+pts[i][0]+'" cy="'+pts[i][1]+'" r="'+(2.2+(i%3))+'" fill="#FFFFFF"/>'; } return s; }
 function wsHeart(x,y,s,col){ return '<g transform="translate('+x+','+y+') scale('+s+')"><path d="M0 11 C-15 -3 -7 -17 0 -9 C7 -17 15 -3 0 11 Z" fill="'+col+'"/></g>'; }
 function wsStar(x,y,s,col){ return '<g transform="translate('+x+','+y+') scale('+s+')"><polygon points="0,-11 3,-3.5 11,-3.5 4.5,1.5 7,9.5 0,4.8 -7,9.5 -4.5,1.5 -11,-3.5 -3,-3.5" fill="'+col+'"/></g>'; }
@@ -4464,21 +4867,31 @@ function wsStar(x,y,s,col){ return '<g transform="translate('+x+','+y+') scale('
 function wsRose(x,y,r){ return '<g><circle cx="'+(x-r*0.62).toFixed(1)+'" cy="'+(y+r*0.22).toFixed(1)+'" r="'+(r*0.62).toFixed(1)+'" fill="#E2543E"/><circle cx="'+(x+r*0.62).toFixed(1)+'" cy="'+(y+r*0.22).toFixed(1)+'" r="'+(r*0.62).toFixed(1)+'" fill="#E2543E"/><circle cx="'+(x-r*0.3).toFixed(1)+'" cy="'+(y-r*0.5).toFixed(1)+'" r="'+(r*0.6).toFixed(1)+'" fill="#D63A2A"/><circle cx="'+(x+r*0.3).toFixed(1)+'" cy="'+(y-r*0.5).toFixed(1)+'" r="'+(r*0.6).toFixed(1)+'" fill="#D63A2A"/><circle cx="'+x+'" cy="'+(y+r*0.08).toFixed(1)+'" r="'+(r*0.58).toFixed(1)+'" fill="#C22F22"/><path d="M'+(x-r*0.34).toFixed(1)+' '+y+' A'+(r*0.36).toFixed(1)+' '+(r*0.36).toFixed(1)+' 0 1 1 '+x+' '+(y-r*0.36).toFixed(1)+' A'+(r*0.2).toFixed(1)+' '+(r*0.2).toFixed(1)+' 0 1 0 '+(x+r*0.15).toFixed(1)+' '+y+'" fill="none" stroke="#8E1F16" stroke-width="'+(r*0.15).toFixed(1)+'" stroke-linecap="round"/></g>'; }
 /* ================= SHARED SPORT TEMPLATES — KARTER PARITY =================
    Michelle's parity rule: for every sport Royce shares with Karter
-   (Basketball, Soccer, Tennis, Gymnastics, Swimming, Hockey and
+   (Basketball, Soccer, Tennis, Swimming, Hockey and
    Running), her BACKGROUND TEMPLATE is his background template —
    the same scene, the same elements, the same composition and
    design, drawn in the same 1440x900 template canvas his
    worldBackdropSVG uses — with the ONLY difference being the
-   figures: her girl gymnasts in place of his boy gymnasts, and a
-   woman swimmer in place of his swimmer. The designed parts take
+   figures: a woman swimmer in place of his swimmer. GYMNASTICS IS
+   THE EXCEPTION (Michelle's order): her Gymnastics template is
+   HER glossy 3D girl-gymnasts artwork (assets/gymnastics-bg.png),
+   restored in worldSceneSVG below — hers is the reference now,
+   and his gymnasts follow hers, not the other way around. The designed parts take
    ONLY her three picked colors in the same roles his trio fills
    (P / PD = her primary and its dark, PL = her primary light,
    A / AL = her secondary and its light, T / TD / TL = her tertiary
    and its dark / light shades); real things keep their real colors
    exactly as in his design — grass green, ice icy white, pool
    water blue, wood brown, hockey's red / blue lines, the black
-   puck. Her own templates (Cheer, Dance, Jump Rope) are NOT here:
-   they keep her own designs in worldSceneSVG below. */
+   puck. Her own templates (Cheer, Dance, Jump Rope, Gymnastics) are NOT here:
+   they keep her own designs in worldSceneSVG below.
+   RETIRED (Michelle's glossy-template order): these drawn ports no
+   longer paint anywhere — the six shared sports' BACKGROUND
+   TEMPLATES are now the glossy STRAIGHT-DOWN artwork (SPORT_BG_ART
+   above, served by worldSceneSVG, paintWorldScene and the wizard
+   preview exactly like the Gymnastics artwork), matching his.
+   This function stays only as the record of the old drawn designs;
+   nothing calls it. */
 function sharedBackdropSVG(id,c){
   var P=c.primary, PD=c.dark, PL=c.light, A=c.accent, AL=c.accentLight, T=c.tertiary, TD=c.tertiaryDark, TL=c.tertiaryLight, W='rgba(255,255,255,.92)';
   var B2=A, SS=AL, T3=T, T3D=TD, T3S=TL, D=PD, S=PL;
@@ -4544,88 +4957,31 @@ function sharedBackdropSVG(id,c){
     +[270,470,670].map(function(y){ return '<line x1="0" y1="'+y+'" x2="1440" y2="'+y+'" stroke="#fff" stroke-width="12" stroke-dasharray="26 20"/><line x1="0" y1="'+y+'" x2="1440" y2="'+y+'" stroke="'+P+'" stroke-width="12" stroke-dasharray="26 20" stroke-dashoffset="23"/><line x1="0" y1="'+y+'" x2="1440" y2="'+y+'" stroke="'+T3+'" stroke-width="12" stroke-dasharray="6 40" stroke-dashoffset="10"/>'; }).join('')
     +'<rect width="480" height="14" fill="'+P+'"/><rect x="480" width="480" height="14" fill="'+B2+'"/><rect x="960" width="480" height="14" fill="'+T3+'"/>'
     +'<path d="M0 210 Q80 196 160 210 T320 210 T480 210 T640 210 T800 210 T960 210 T1120 210 T1280 210 T1440 210" stroke="rgba(255,255,255,.35)" stroke-width="7" fill="none"/><path d="M0 830 Q80 816 160 830 T320 830 T480 830 T640 830 T800 830 T960 830 T1120 830 T1280 830 T1440 830" stroke="rgba(255,255,255,.28)" stroke-width="7" fill="none"/>'
-    +'<text x="220" y="420" font-size="72">🏊‍♀️</text><text x="1080" y="620" font-size="60">💦</text><text x="620" y="240" font-size="48">💦</text>');
-  if(id==='running') return wrap(
-    '<rect width="1440" height="900" fill="#B4552D"/><rect width="1440" height="110" fill="#57B24A"/><rect y="110" width="480" height="12" fill="'+P+'"/><rect x="480" y="110" width="480" height="12" fill="'+B2+'"/><rect x="960" y="110" width="480" height="12" fill="'+T3+'"/>'
-    +[290,470,650].map(function(y){ return '<line x1="0" y1="'+y+'" x2="1440" y2="'+y+'" stroke="'+W+'" stroke-width="7"/>'; }).join('')
-    +[['1',215],['2',395],['3',575],['4',755]].map(function(n){ return '<text x="34" y="'+n[1]+'" font-family="Fredoka" font-size="52" font-weight="700" fill="rgba(255,255,255,.85)">'+n[0]+'</text>'; }).join('')
-    +[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19].map(function(i){ return '<rect x="1240" y="'+(110+i*40)+'" width="40" height="40" fill="'+(i%2?'#2B1608':'#fff')+'"/><rect x="1280" y="'+(110+i*40)+'" width="40" height="40" fill="'+(i%2?'#fff':'#2B1608')+'"/>'; }).join('')
-    +'<text x="240" y="700" font-size="64">👟</text><text x="1020" y="330" font-size="54">👟</text>');
-  /* Girl gymnast — the same flat-style gymnast as Karter's boy,
-     in the same named poses at the same coordinates: a leotard in
-     the tank color with a waistband in the pants color, bare legs,
-     and girl hair (bun, ponytail, two puffs or curls, picked per
-     girl). Skin and hair stay natural; only the leotard and its
-     band take trio colors. */
-  var gymGirl=function(pose,x,y,s,leo,band,skin,hair,style){
-    var L=function(x1,y1,x2,y2,c,w){ return '<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="'+c+'" stroke-width="'+(w||11)+'" stroke-linecap="round"/>'; };
-    var HD=function(cx,cy,r){
-      var h='<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="'+skin+'"/>';
-      h+='<path d="M'+(cx-r)+' '+cy+' A'+r+' '+r+' 0 0 1 '+(cx+r)+' '+cy+' Z" fill="'+hair+'"/>';
-      if(style==='bun') h+='<circle cx="'+cx+'" cy="'+(cy-r-2)+'" r="'+(r*.48)+'" fill="'+hair+'"/><circle cx="'+cx+'" cy="'+(cy-r*.55)+'" r="'+(r*.2)+'" fill="'+band+'"/>';
-      else if(style==='ponytail') h+='<path d="M'+(cx+r*.72)+' '+(cy-r*.35)+' Q'+(cx+r*1.55)+' '+(cy+r*.3)+' '+(cx+r*1.05)+' '+(cy+r*1.7)+'" stroke="'+hair+'" stroke-width="'+(r*.58)+'" fill="none" stroke-linecap="round"/><circle cx="'+(cx+r*.72)+'" cy="'+(cy-r*.35)+'" r="'+(r*.24)+'" fill="'+band+'"/>';
-      else if(style==='puffs') h+='<circle cx="'+(cx-r*.66)+'" cy="'+(cy-r*.72)+'" r="'+(r*.44)+'" fill="'+hair+'"/><circle cx="'+(cx+r*.66)+'" cy="'+(cy-r*.72)+'" r="'+(r*.44)+'" fill="'+hair+'"/><circle cx="'+(cx-r*.66)+'" cy="'+(cy-r*.3)+'" r="'+(r*.17)+'" fill="'+band+'"/><circle cx="'+(cx+r*.66)+'" cy="'+(cy-r*.3)+'" r="'+(r*.17)+'" fill="'+band+'"/>';
-      else if(style==='curls') h+='<circle cx="'+(cx-r*.6)+'" cy="'+(cy-r*.8)+'" r="'+(r*.36)+'" fill="'+hair+'"/><circle cx="'+(cx-r*.16)+'" cy="'+(cy-r*.98)+'" r="'+(r*.38)+'" fill="'+hair+'"/><circle cx="'+(cx+r*.3)+'" cy="'+(cy-r*.92)+'" r="'+(r*.35)+'" fill="'+hair+'"/><circle cx="'+(cx+r*.68)+'" cy="'+(cy-r*.6)+'" r="'+(r*.3)+'" fill="'+hair+'"/><path d="M'+(cx+r*.95)+' '+(cy-r*.2)+' Q'+(cx+r*1.2)+' '+(cy+r*.6)+' '+(cx+r*.9)+' '+(cy+r*1.1)+'" stroke="'+hair+'" stroke-width="'+(r*.4)+'" fill="none" stroke-linecap="round"/>';
-      return h;
-    };
-    var torso=function(cx,cy,rot){ return '<g transform="translate('+cx+' '+cy+') rotate('+(rot||0)+')"><path d="M-14.5 0 Q0 -7.5 14.5 0 L10.5 50 Q0 56.5 -10.5 50 Z" fill="'+leo+'"/><path d="M-12.9 31 Q0 37.5 12.9 31 L11.4 43 Q0 48.5 -11.4 43 Z" fill="'+band+'" opacity=".92"/></g>'; };
-    var foot=function(cx,cy){ return '<circle cx="'+cx+'" cy="'+cy+'" r="5.5" fill="'+skin+'"/>'; };
-    var ring=function(cx,cy){ return '<line x1="'+cx+'" y1="-74" x2="'+cx+'" y2="'+(cy-13)+'" stroke="#8A97A5" stroke-width="5"/><circle cx="'+cx+'" cy="'+cy+'" r="11.5" fill="none" stroke="#4B5563" stroke-width="5"/>'; };
-    var inner='';
-    if(pose==='ringsHang'){
-      inner=ring(-56,40)+ring(56,40)
-      +L(-2,32,-52,38,skin,10.5)+L(2,32,52,38,skin,10.5)
-      +torso(0,24,0)+HD(0,10,13)
-      +L(-4,76,-6,162,skin,13)+L(4,76,7,162,skin,13)+foot(-6,168)+foot(7,168);
-    } else if(pose==='ringsLift'){
-      inner=ring(-58,34)+ring(58,34)
-      +L(-2,32,-54,32,skin,10.5)+L(2,32,54,32,skin,10.5)
-      +torso(0,24,0)+HD(0,10,13)
-      +L(0,78,50,30,skin,15)+foot(56,26);
-    } else if(pose==='cartwheel'){
-      inner=L(-22,90,-36,143,skin,10.5)+L(-2,86,14,142,skin,10.5)
-      +'<path d="M-24 92 Q0 60 32 72" stroke="'+leo+'" stroke-width="17.5" fill="none" stroke-linecap="round"/>'
-      +HD(-37,79,12.5)
-      +L(32,72,76,22,skin,13)+L(32,72,88,84,skin,13)+foot(80,18)+foot(92,87);
-    } else if(pose==='split'){
-      inner=L(-3,82,-64,95,skin,14)+L(3,82,64,95,skin,14)+foot(-70,96)+foot(70,96)
-      +torso(0,28,0)+HD(0,14,13)
-      +L(-2,36,-42,2,skin,10.5)+L(2,36,44,22,skin,10.5);
-    } else if(pose==='handstand'){
-      inner=L(-5,92,-11,160,skin,10.5)+L(5,92,11,160,skin,10.5)
-      +torso(0,92,180)+'<g transform="rotate(180 0 105)">'+HD(0,105,12.5)+'</g>'
-      +L(-3,44,-7,-26,skin,13)+L(3,44,7,-26,skin,13)+foot(-7,-31)+foot(7,-31);
-    } else if(pose==='jump'){
-      inner=L(-3,78,-54,114,skin,13)+L(3,78,54,114,skin,13)+foot(-59,117)+foot(59,117)
-      +torso(0,24,0)+HD(0,10,13)
-      +L(-2,32,-48,-10,skin,10.5)+L(2,32,48,-10,skin,10.5);
-    } else {
-      inner=L(-4,78,-7,162,skin,13)+L(4,78,8,162,skin,13)+foot(-7,168)+foot(8,168)
-      +torso(0,24,0)+HD(0,10,13)
-      +L(-2,32,-44,14,skin,10.5)+L(2,32,42,-18,skin,10.5);
-    }
-    return '<g transform="translate('+x+','+y+') scale('+s+')">'+inner+'</g>';
-  };
-  if(id==='gymnastics') return wrap(
-    /* Michelle's boys' gymnastics scene, page-wide, clean flat
-       style: smooth flat GIRL gymnasts scattered through the gym —
-       still-rings holds across the top, a cartwheel over the
-       balance beam at center (her reference pose), and a floor
-       split, stuck-landing salute, straddle jump and handstand
-       along the floor. Skin tones are a real mix, hair differs
-       boy to boy, outfits take the world's trio. Boys only. */
-    '<rect width="1440" height="900" fill="#FDE8C8"/><rect width="1440" height="300" fill="'+T3S+'"/><rect y="300" width="1440" height="12" fill="'+B2+'"/><rect y="312" width="1440" height="6" fill="'+T3+'"/>'
-    +'<rect y="700" width="1440" height="200" fill="#C98B4B"/>'
-    +[760,830].map(function(y){ return '<line x1="0" y1="'+y+'" x2="1440" y2="'+y+'" stroke="rgba(255,255,255,.4)" stroke-width="5"/>'; }).join('')
-    +'<rect x="556" y="664" width="328" height="28" rx="11" fill="'+B2+'" stroke="#2B1608" stroke-width="4"/>'
-    +gymGirl('ringsLift',255,205,1.45,B2,P,'#C68863','#17110B','curls')
-    +gymGirl('ringsHang',480,192,1.3,P,T3,'#F6C79A','#4A2F1D','ponytail')
-    +gymGirl('ringsHang',1185,195,1.35,B2,P,'#8D5A3B','#17110B','bun')
-    +gymGirl('cartwheel',720,383,1.9,P,B2,'#E8B088','#7A4A21','puffs')
-    +gymGirl('split',250,552,1.5,P,B2,'#F6C79A','#7A4A21','bun')
-    +gymGirl('salute',520,498,1.45,P,B2,'#6B4226','#17110B','curls')
-    +gymGirl('jump',1010,520,1.4,B2,T3,'#F6C79A','#17110B','bun')
-    +gymGirl('handstand',1235,462,1.5,P,T3,'#C68863','#4A2F1D','ponytail'));
+    +'<text x="220" y="420" font-size="72">🏊‍♀️</text>');
+  if(id==='running'){ var stad=function(x,y,w,h,r){ return 'M'+(x+r)+' '+y+' H'+(x+w-r)+' A'+r+' '+r+' 0 0 1 '+(x+w)+' '+(y+r)+' V'+(y+h-r)+' A'+r+' '+r+' 0 0 1 '+(x+w-r)+' '+(y+h)+' H'+(x+r)+' A'+r+' '+r+' 0 0 1 '+x+' '+(y+h-r)+' V'+(y+r)+' A'+r+' '+r+' 0 0 1 '+(x+r)+' '+y+' Z'; };
+  return wrap(
+    /* A REAL oval running track, seen from above like a real
+       stadium track: a clay-red LOOP with curved ends around a
+       grass infield, white lane lines that follow the oval all
+       the way around, lane numbers on the home straight and a
+       checkered FINISH line across the track. The old flat
+       straight track and its floating pair of shoes are gone —
+       no shoes with no person, ever. The three pennant flags on
+       the infield dress in her trio, as the old banner band did. */
+    [0,1,2,3,4,5,6,7,8,9,10,11].map(function(i){ return '<rect x="'+(i*120)+'" width="120" height="900" fill="'+(i%2?'#4DA843':'#57B24A')+'"/>'; }).join('')
+    +'<path d="'+stad(100,120,1240,660,330)+' '+stad(276,296,888,308,154)+'" fill-rule="evenodd" fill="#B4552D"/>'
+    +'<path d="'+stad(100,120,1240,660,330)+'" fill="none" stroke="'+W+'" stroke-width="7"/>'
+    +'<path d="'+stad(144,164,1152,572,286)+'" fill="none" stroke="'+W+'" stroke-width="6"/>'
+    +'<path d="'+stad(188,208,1064,484,242)+'" fill="none" stroke="'+W+'" stroke-width="6"/>'
+    +'<path d="'+stad(232,252,976,396,198)+'" fill="none" stroke="'+W+'" stroke-width="6"/>'
+    +'<path d="'+stad(276,296,888,308,154)+'" fill="none" stroke="'+W+'" stroke-width="7"/>'
+    /* the checkered finish line, straight across the track on the home (bottom) straight */
+    +[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15].map(function(i){ var fc=i%2, fr=Math.floor(i/2); return '<rect x="'+(952+fc*22)+'" y="'+(604+fr*22)+'" width="22" height="22" fill="'+((fc+fr)%2?'#2B1608':'#fff')+'"/>'; }).join('')
+    /* lane numbers in their lanes on the home straight, just behind the finish line */
+    +[['1',773],['2',729],['3',685],['4',641]].map(function(n){ return '<text x="884" y="'+n[1]+'" font-family="Fredoka" font-size="38" font-weight="700" text-anchor="middle" fill="rgba(255,255,255,.9)">'+n[0]+'</text>'; }).join('')
+    /* three pennant flags in her trio colors standing on the infield */
+    +[[600,P],[720,B2],[840,T3]].map(function(f){ return '<line x1="'+f[0]+'" y1="478" x2="'+f[0]+'" y2="392" stroke="#2B1608" stroke-width="5"/><path d="M'+f[0]+' 392 L'+(f[0]+54)+' 404 L'+f[0]+' 416 Z" fill="'+f[1]+'"/>'; }).join(''));
+  }
   /* BASKETBALL — Coach Leo's own gym, the court from his hero
      picture, as the whole page's background: the dark arena band
      with its row of round lights on top, cream paneled walls, the
@@ -4687,12 +5043,34 @@ function worldSceneSVG(sportId,c,uid,fit){
      white / gray / black neutrals for lines, nets and metal. */
   uid=uid||'v'; var P=c.primary,PD=c.dark,PX=c.deep,PL=c.light,A=c.accent,AD=c.accentDark,AL=c.accentLight,T=c.tertiary||'#E4B33C',TD=c.tertiaryDark||'#B98A1F',TL=c.tertiaryLight||'#FFF3C7',L=PL,D=PX;
   /* SHARED SPORTS (Karter parity): Basketball, Soccer, Tennis,
-     Gymnastics, Swimming, Hockey and Running use HIS background
-     template design exactly (sharedBackdropSVG above) — the same
-     fixed scene, her three picked colors in the same roles, her
-     girl figures in place of his boy figures. Only her own sports
-     (Dance, Jump Rope, Cheer) are designed below. */
-  if(sportId==='basketball'||sportId==='soccer'||sportId==='tennis'||sportId==='gymnastics'||sportId==='swimming'||sportId==='hockey'||sportId==='running'){ return sharedBackdropSVG(sportId,c); }
+     Swimming, Hockey and Running use HIS background template
+     exactly — and his is now Michelle's approved glossy artwork:
+     the STRAIGHT-DOWN (front) view of the court / field / rink /
+     pool / track (SPORT_BG_ART above), presented full-bleed the
+     same way the Gymnastics artwork below is. The drawn ports in
+     sharedBackdropSVG are retired and paint nowhere. Only her own
+     sports (Dance, Jump Rope, Cheer, Gymnastics) are designed
+     below. GYMNASTICS IS THE EXCEPTION to the parity rule
+     (Michelle's order): her Gymnastics template is her own glossy
+     3D girl-gymnasts artwork — hers is the reference now. These
+     straight-down pictures are background templates ONLY — the
+     games use their own built 3D venues (see sportVenueSVG),
+     never this one. */
+  if(SPORT_BG_ART[sportId]){ return '<svg viewBox="0 0 800 330" preserveAspectRatio="'+(fit==='meet'?'xMidYMid meet':'xMidYMid slice')+'" aria-hidden="true"><image href="'+SPORT_BG_ART[sportId]+'" x="0" y="0" width="800" height="330" preserveAspectRatio="xMidYMid slice"/></svg>'; }
+  /* GYMNASTICS — the Gymnastics template is HER glossy 3D
+     artwork (assets/gymnastics-bg.png), RESTORED exactly as it was
+     before the template-parity pass replaced it with a port of
+     Karter's scene: glossy 3D girl gymnasts of different skin
+     tones, hair types and outfit colors, scattered in different
+     motions — handstands, a cartwheel, a split jump, a standing
+     split, a backbend and a floor split — on the pale blush-pink
+     studio backdrop. The ported Karter-scene gymnastics template
+     is out entirely. paintWorldScene() and the wizard's Background
+     step present the same artwork full-bleed as an <img>, like the
+     other artwork backgrounds; this SVG form covers the remaining
+     template swatches. It is a background template only — never
+     inside a game. */
+  if(sportId==='gymnastics'){ return '<svg viewBox="0 0 800 330" preserveAspectRatio="'+(fit==='meet'?'xMidYMid meet':'xMidYMid slice')+'" aria-hidden="true"><image href="assets/gymnastics-bg.png" x="0" y="0" width="800" height="330" preserveAspectRatio="xMidYMid slice"/></svg>'; }
   /* CHEER — the Pom Pom template is Michelle's own photo, never a
      drawing: colorful pom poms on white (assets/pom-pom-bg.webp),
      the gray camera-icon badge from its bottom-left corner cropped
@@ -4716,7 +5094,7 @@ function worldSceneSVG(sportId,c,uid,fit){
      SVG form covers the remaining template swatches. It is a
      background template only — never inside a game. */
   if(sportId==='dance'){ return '<svg viewBox="0 0 800 330" preserveAspectRatio="'+(fit==='meet'?'xMidYMid meet':'xMidYMid slice')+'" aria-hidden="true"><image href="assets/ballerina-bg.webp" x="0" y="0" width="800" height="330" preserveAspectRatio="xMidYMid slice"/></svg>'; }
-  /* JUMP ROPE — the Jumping Girls template is glossy 3D artwork
+  /* JUMP ROPE — the Jump Rope template is glossy 3D artwork
      (assets/jumprope-bg.webp), in the SAME manner as the girls in the
      Gymnastics background artwork (assets/gymnastics-bg.png): five
      diverse girls — different skin tones, a blonde bun, Afro puffs,
@@ -4971,7 +5349,7 @@ function paintWorldScene(){
      tint as the other photo backgrounds. Background only: it never
      paints inside a game. */
   var dancePhoto=(!enchanted && sid==='dance');
-  /* The Jump Rope (Jumping Girls) template is glossy 3D artwork too:
+  /* The Jump Rope template is glossy 3D artwork too:
      whenever the jump rope template is the applied background, the
      page backdrop is assets/jumprope-bg.webp itself — five diverse
      glossy 3D girls mid-jump, in the same manner as the Gymnastics
@@ -4982,7 +5360,29 @@ function paintWorldScene(){
      artwork backgrounds. Background only: it never paints inside
      a game. */
   var jumpPhoto=(!enchanted && sid==='jumprope');
-  if(bd){ bd.innerHTML=(enchanted? '<img class="hero-castle-bg" src="assets/enchanted-rose.webp" alt="" aria-hidden="true"/>' : pomPhoto? '<img class="hero-castle-bg" src="assets/pom-pom-bg.webp" alt="" aria-hidden="true"/>' : dancePhoto? '<img class="hero-castle-bg" src="assets/ballerina-bg.webp" alt="" aria-hidden="true"/>' : jumpPhoto? '<img class="hero-castle-bg" src="assets/jumprope-bg.webp" alt="" aria-hidden="true"/>' : worldSceneSVG(sid,c,'p'))+'<div class="ws-wash"></div>'; bd.classList.add('on'); }
+  /* The Gymnastics template is HER glossy 3D
+     artwork, restored: whenever the gymnastics template is the
+     applied background, the page backdrop is
+     assets/gymnastics-bg.png itself — her glossy 3D girl gymnasts,
+     different skin tones, hair types and outfit colors, scattered
+     in different motions on the pale blush-pink studio backdrop —
+     full-bleed (object-fit:cover) in the fixed backdrop layer with
+     the same light ws-wash edge tint as the other artwork
+     backgrounds. Gymnastics is the exception to the match-his
+     template rule — hers is the reference now. Background only:
+     it never paints inside a game. */
+  var gymPhoto=(!enchanted && sid==='gymnastics');
+  /* The six shared sports' templates are glossy artwork too:
+     whenever one of them is the applied background, the page
+     backdrop is its STRAIGHT-DOWN glossy picture itself
+     (SPORT_BG_ART) — the court / field / rink / pool / track seen
+     straight down from above, full-bleed (object-fit:cover) in the
+     fixed backdrop layer with the same light ws-wash edge tint as
+     the Gymnastics artwork, matching his exactly. Background
+     only: it never paints inside a game — the games use the
+     built 3D venue of the same sport. */
+  var sportArt=(!enchanted && SPORT_BG_ART[sid])? SPORT_BG_ART[sid] : '';
+  if(bd){ bd.innerHTML=(enchanted? '<img class="hero-castle-bg" src="assets/enchanted-rose.webp" alt="" aria-hidden="true"/>' : pomPhoto? '<img class="hero-castle-bg" src="assets/pom-pom-bg.webp" alt="" aria-hidden="true"/>' : dancePhoto? '<img class="hero-castle-bg" src="assets/ballerina-bg.webp" alt="" aria-hidden="true"/>' : jumpPhoto? '<img class="hero-castle-bg" src="assets/jumprope-bg.webp" alt="" aria-hidden="true"/>' : gymPhoto? '<img class="hero-castle-bg" src="assets/gymnastics-bg.png" alt="" aria-hidden="true"/>' : sportArt? '<img class="hero-castle-bg" src="'+sportArt+'" alt="" aria-hidden="true"/>' : worldSceneSVG(sid,c,'p'))+'<div class="ws-wash"></div>'; bd.classList.add('on'); }
   if(playingSport){
     /* Inside the stage, NO template is painted (Michelle's rule: the
        sport templates from worldSceneSVG are PAGE backgrounds only —
@@ -5025,10 +5425,33 @@ function keepBackdropBelowHero(){
   var bd=document.getElementById('worldBackdrop'); if(!bd) return;
   /* Steady and fixed: clear any legacy inline top and leave the
      layer pinned to the full viewport by its CSS (top:0 !important).
-     No scroll, resize or load listener is bound — scrolling must
-     never move, resize or re-scale this layer. */
+     Scrolling must never move, resize or re-scale this layer. */
   if(bd.style.top){ bd.style.top='0px'; }
+  lockBackdropHeight();
 }
+/* SCROLL LOCK for the page background (Michelle): the backdrop holds
+   ONE fixed size while she scrolls. Its height is locked in pixels
+   to the LARGE viewport height (browser bars hidden — the true full
+   screen), measured through a 100lvh probe so the value is the same
+   whether the bars are showing or not. The lock is taken once per
+   screen WIDTH: height-only resizes (the bars showing/hiding as she
+   scrolls) never touch it, and a genuine width change (rotation)
+   re-locks at the new full size. Immersive stays — only the moving
+   size is gone. */
+var bgPxW=0;
+function lockBackdropHeight(){
+  var bd=document.getElementById('worldBackdrop'); if(!bd) return;
+  var w=window.innerWidth;
+  if(bgPxW===w&&bd.style.height) return; /* already locked at this width — scrolling changes nothing */
+  bgPxW=w;
+  var probe=document.createElement('div');
+  probe.style.cssText='position:fixed;left:0;top:0;width:1px;height:100vh;height:100lvh;visibility:hidden;pointer-events:none';
+  document.body.appendChild(probe);
+  var h=probe.getBoundingClientRect().height||window.innerHeight;
+  document.body.removeChild(probe);
+  bd.style.height=Math.round(h)+'px';
+}
+window.addEventListener('resize',function(){ lockBackdropHeight(); });
 function applyTheme(){
   var et=effectiveTheme();
   var c1=themeById(THEME_COLORS,et.color),c2o=themeById(THEME_COLORS,et.color2),c3o=themeById(THEME_COLORS,et.color3);
@@ -5501,9 +5924,9 @@ function renderSetupWizard(){
     h+='<div class="setup-kicker">'+kick+' — YOUR FIRST NAME</div><div class="setup-q">What is your first name? 🌹</div>';
     h+='<input class="setup-name-input" id="setupNameInput" type="text" maxlength="20" autocomplete="off" autocapitalize="words" spellcheck="false" placeholder="enter your first name" aria-label="enter your first name" value="'+escAttr(setupDraft.name)+'" oninput="setupNameInput(this.value)"/>';
   } else if(key==='background'){
-    var bmeta=WORLD_SCENE_META[myTheme.sport]||WORLD_SCENE_META.cheer; var enchantedBg=(myTheme.bg==='enchanted' && myTheme.sport===defaultTheme().sport); var ebg=themeById(THEME_BGS,'enchanted'); var pomBg=(!enchantedBg && myTheme.sport==='cheer'); var danceBg=(!enchantedBg && myTheme.sport==='dance'); var jumpBg=(!enchantedBg && myTheme.sport==='jumprope');
+    var bmeta=WORLD_SCENE_META[myTheme.sport]||WORLD_SCENE_META.cheer; var enchantedBg=(myTheme.bg==='enchanted' && myTheme.sport===defaultTheme().sport); var ebg=themeById(THEME_BGS,'enchanted'); var pomBg=(!enchantedBg && myTheme.sport==='cheer'); var danceBg=(!enchantedBg && myTheme.sport==='dance'); var jumpBg=(!enchantedBg && myTheme.sport==='jumprope'); var gymBg=(!enchantedBg && myTheme.sport==='gymnastics'); var sportBgArt=(!enchantedBg && SPORT_BG_ART[myTheme.sport])? SPORT_BG_ART[myTheme.sport] : '';
     h+='<div class="setup-kicker">'+kick+' — YOUR BACKGROUND</div><div class="setup-q">Choose Your Background</div>';
-    h+='<div class="scene-preview" style="margin:0 0 12px">'+(enchantedBg? '<img class="scene-photo" src="assets/enchanted-rose.webp" alt="" aria-hidden="true"/>' : pomBg? '<img class="scene-photo" src="assets/pom-pom-bg.webp" alt="" aria-hidden="true"/>' : danceBg? '<img class="scene-photo" src="assets/ballerina-bg.webp" alt="" aria-hidden="true"/>' : jumpBg? '<img class="scene-photo" src="assets/jumprope-bg.webp" alt="" aria-hidden="true"/>' : worldSceneSVG(myTheme.sport,themePalette(),'w3','meet'))+'<div class="scene-preview-cap">🖼️ Your background: '+(enchantedBg? ebg.name : bmeta.name)+'</div></div>';
+    h+='<div class="scene-preview" style="margin:0 0 12px">'+(enchantedBg? '<img class="scene-photo" src="assets/enchanted-rose.webp" alt="" aria-hidden="true"/>' : pomBg? '<img class="scene-photo" src="assets/pom-pom-bg.webp" alt="" aria-hidden="true"/>' : danceBg? '<img class="scene-photo" src="assets/ballerina-bg.webp" alt="" aria-hidden="true"/>' : jumpBg? '<img class="scene-photo" src="assets/jumprope-bg.webp" alt="" aria-hidden="true"/>' : gymBg? '<img class="scene-photo" src="assets/gymnastics-bg.png" alt="" aria-hidden="true"/>' : sportBgArt? '<img class="scene-photo" src="'+sportBgArt+'" alt="" aria-hidden="true"/>' : worldSceneSVG(myTheme.sport,themePalette(),'w3','meet'))+'<div class="scene-preview-cap">🖼️ Your background: '+(enchantedBg? ebg.name : bmeta.name)+'</div></div>';
     h+='<div class="opt-row"><button class="big-chip'+(enchantedBg?' on':'')+'" onclick="setupPickBackgroundTemplate(\'enchanted\')"><span class="bce">'+ebg.emoji+'</span>'+ebg.name+'</button>'+THEME_SPORTS.map(function(x){ var m=WORLD_SCENE_META[x.id]||WORLD_SCENE_META.cheer; return '<button class="big-chip'+(!enchantedBg&&myTheme.sport===x.id?' on':'')+'" onclick="setupPickBackgroundTemplate(\''+x.id+'\')"><span class="bce">'+x.emoji+'</span>'+m.name+'</button>'; }).join('')+'</div>';
   } else if(key==='color'){
     h+='<div class="setup-kicker">'+kick+' — YOUR THREE COLORS</div><div class="setup-q">Pick your three colors! 🎨</div>';
@@ -5521,8 +5944,6 @@ function renderSetupWizard(){
     h+='<div class="opt-row">'+THEME_ANIMALS.map(function(x){ return '<button class="big-chip'+(myTheme.animal===x.id?' on':'')+'" onclick="setupPickTheme(\'animal\',\''+x.id+'\')"><span class="bce">'+x.emoji+'</span>'+x.name+'</button>'; }).join('')+'</div>';
   } else if(key==='coach'){
     var cd=setupCoachDraft||{name:'',identity:'girl',jacket:'#E4B33C',jacketStyle:'classic',hair:'ponytail',hairColor:'#3B2310',skin:2};
-    var csE='📣', caE='🦋', csN='Cheer', caN='Butterfly';
-    try{ var csp=themeSport(), can=themeAnimal(); csE=csp.emoji; csN=csp.name; caE=can.emoji; caN=can.name; }catch(e){}
     h+='<div class="setup-kicker">'+kick+' — YOUR COACH</div><div class="setup-q">Make your coach yours! 🏆</div>';
     h+='<div class="opt-group"><h4>✏️ Coach\u2019s Name</h4><input class="coach-name-input" id="setupCoachNameInput" type="text" maxlength="20" autocomplete="off" autocapitalize="words" spellcheck="false" placeholder="Belle" aria-label="Coach\u2019s name" value="'+escAttr(cd.name)+'" oninput="setupCoachNameInput(this.value)"/></div>';
     h+='<div class="opt-group"><h4>🖐️ Skin Tone</h4><div class="opt-row">'+SKINS.map(function(_,i){ return '<button class="swatch'+(cd.skin===i?' on':'')+'" style="background:'+SKINS[i]+'" onclick="setupCoachPick(\'skin\','+i+')" aria-label="Skin tone '+(i+1)+'" title="Skin tone '+(i+1)+'"></button>'; }).join('')+'</div></div>';
@@ -5530,23 +5951,13 @@ function renderSetupWizard(){
     h+='<div class="opt-group"><h4>🎨 Hair Color</h4><div class="opt-row">'+HAIR_COLORS.map(function(c){ return '<button class="swatch'+(cd.hairColor===c[0]?' on':'')+'" style="background:'+c[0]+'" onclick="setupCoachPick(\'hairColor\',\''+c[0]+'\')" aria-label="'+c[1]+'" title="'+c[1]+'"></button>'; }).join('')+'</div></div>';
     h+='<div class="opt-group"><h4>🧥 Jacket Color — Girls\u2019 Pinks, Purples &amp; Gold</h4><div class="opt-row">'+COACH_JACKET_COLORS.map(function(c){ return '<button class="swatch'+(cd.jacket===c[0]?' on':'')+'" style="background:'+c[0]+'" onclick="setupCoachPick(\'jacket\',\''+c[0]+'\')" aria-label="'+c[1]+'" title="'+c[1]+'"></button>'; }).join('')+'</div></div>';
     h+='<div class="opt-group"><h4>👕 Jacket Style — How She\u2019s Dressed</h4><div class="opt-row">'+COACH_JACKETS.map(function(x){ return '<button class="big-chip'+(cd.jacketStyle===x.id?' on':'')+'" onclick="setupCoachPick(\'jacketStyle\',\''+x.id+'\')"><span class="bce">'+x.emoji+'</span>'+x.name+'</button>'; }).join('')+'</div></div>';
-    /* The outfit/identity RECAP lives ONLY here, inside the wizard —
-       Michelle's rule: these summary lines summarize the learner's own
-       picks in the place she makes them, and never render anywhere
-       outside the wizard (not in the hero, not on the home page, not in
-       the Coach Studio or Theme Studio). Built from the wizard DRAFT
-       (cd), so it updates live with every pick on this step. */
-    var wcid=(typeof coachById==='function')? coachById(COACH_IDENTITIES,cd.identity) : COACH_IDENTITIES[0];
-    var wcjk=(typeof coachById==='function')? coachById(COACH_JACKETS,cd.jacketStyle) : COACH_JACKETS[0];
-    h+='<div class="opt-group"><h4>✨ Your Coach So Far</h4><div class="opt-row"><span class="coach-chip">'+wcjk.emoji+' Dressed in: '+wcjk.name+'</span></div></div>';
-    h+='<div class="opt-group"><h4>🏆 From Your Favorites</h4><div class="opt-row"><span class="coach-chip">'+csE+' '+csN+' prop</span><span class="coach-chip">'+caE+' '+caN+' friend</span></div></div>';
   } else if(key==='cheerleader'){
     /* STEP 5 — the Cheerleader Design Studio lives HERE, inside the
        wizard: the very same studio controls (renderStudio / setDesign,
        same preview) that used to sit in a homepage card + modal. The
        containers keep their studio ids, so every studio pick works
        exactly as it did — only where the studio lives has changed. */
-    h+='<div class="setup-kicker">'+kick+' — MY CHEERLEADER STUDIO</div><div class="setup-q">Design Your Cheerleader! 🎀</div>';
+    h+='<div class="setup-kicker">'+kick+' — MY PLAYER STUDIO</div><div class="setup-q">Design Your Player! 🎀</div>';
     h+='<div class="studio-grid"><div class="studio-preview"><div class="pv" id="studioPreview"></div><div class="pname" id="studioName">Your Cheerleader ⭐</div></div><div id="studioOptions"></div></div>';
   }
   /* No grade step here on purpose: grade was already picked in the
