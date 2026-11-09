@@ -349,6 +349,21 @@ span.royce-crop>img{position:absolute;left:-143%;top:-10.6%;width:408.5%;height:
 .tools-arrow{font-size:13px;color:#fff}
 .tools-menu{display:grid;grid-template-columns:1fr;gap:10px;margin-top:12px}
 .tools-menu .goldbtn,.tools-menu .ghost{width:100%;padding:14px 16px;font-size:15px}
+/* HELPER TOOLS MENU — NEVER TUCKED (Michelle, Nov 9, reported again):
+   the menu sits at the very bottom of a fixed-height, no-scroll game
+   view, so as an in-flow box it kept ending up clipped by the view's
+   locked height no matter how the fit steps shrank the rest. While
+   open it therefore leaves the game card entirely and lives at body
+   level as a floating sheet pinned just ABOVE the Helper Tools
+   button (toggleToolsMenu moves it out; closeToolsMenu docks it back
+   in its exact original spot) — the same body-level treatment the
+   hint panel and Work It Out already use, so no container, locked
+   window size, sticky bar or overflow boundary can ever cover or
+   cut off any of its three options, at phone size or desktop. The
+   button itself stays visible and tappable below the sheet, so the
+   open / close workflow is unchanged. */
+#toolsMenu.tools-menu-floating{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));width:min(560px,calc(100vw - 24px));max-height:calc(100dvh - 24px);overflow-y:auto;z-index:76;margin:0;background:#fff;border:3px solid var(--line);border-radius:20px;padding:14px;box-shadow:0 18px 44px rgba(58,20,48,.35)}
+#toolsMenu.tools-menu-floating .goldbtn,#toolsMenu.tools-menu-floating .ghost{width:100%;padding:14px 16px;font-size:15px}
 /* ===== GAME VIEW FIT — sizing and spacing ONLY, layout untouched =====
    Michelle: "Don't change the layout, just the fit." The approved order
    stays exactly as built — level + ✕ Close, Belle's instructions, the
@@ -2481,8 +2496,18 @@ function stackHTML(rows,op,showPlaces){
 function numsFromQ(){ var m=String(current.q).match(/\d+/g); return m?m.map(function(x){return parseInt(x,10)}):[]; }
 var fracDen=0;
 function toggleFrac(btn){ btn.classList.toggle('on'); var bar=document.getElementById('fracBar'); if(!bar) return; var on=bar.querySelectorAll('.frac-cell.on').length; var c=document.getElementById('fracCount'); if(c) c.textContent='Tap the parts to shade them. Shaded: '+on+' of '+fracDen; }
-function toggleToolsMenu(){ var m=document.getElementById('toolsMenu'), b=document.getElementById('toolsToggleBtn'); if(!m) return; var open=m.style.display==='none'; m.style.display= open? 'grid':'none'; if(b) b.setAttribute('aria-expanded', open? 'true':'false'); document.body.classList.toggle('tools-menu-open', open); if(typeof sfx==='function') sfx('pop'); if(typeof fitGameView==='function') fitGameView(); }
-function closeToolsMenu(){ var m=document.getElementById('toolsMenu'), b=document.getElementById('toolsToggleBtn'); if(m) m.style.display='none'; if(b) b.setAttribute('aria-expanded','false'); document.body.classList.remove('tools-menu-open'); if(typeof fitGameView==='function') fitGameView(); }
+/* Helper Tools menu float / dock: while open the menu lives at body
+   level as a fixed sheet pinned just above its own button (see the
+   .tools-menu-floating rules), so Work It Out / Show Me an Example /
+   Get a Hint are always completely in view and tappable — never
+   clipped by the game view's locked height or any overflow edge.
+   Closing docks it back into its exact original spot in the card. */
+var toolsMenuHome=null;
+function floatToolsMenu(m){ if(!m) return; if(!toolsMenuHome) toolsMenuHome={parent:m.parentNode,next:m.nextSibling}; if(m.parentNode!==document.body) document.body.appendChild(m); m.classList.add('tools-menu-floating'); positionToolsMenu(); }
+function positionToolsMenu(){ var m=document.getElementById('toolsMenu'); if(!m||!m.classList.contains('tools-menu-floating')) return; var b=document.getElementById('toolsToggleBtn'); if(!b) return; var r=b.getBoundingClientRect(); if(r.height>0) m.style.bottom=Math.max(12, Math.round(window.innerHeight - r.top + 8))+'px'; }
+function dockToolsMenu(m){ if(!m) return; m.classList.remove('tools-menu-floating'); m.style.bottom=''; if(toolsMenuHome&&toolsMenuHome.parent&&m.parentNode===document.body){ if(toolsMenuHome.next&&toolsMenuHome.next.parentNode===toolsMenuHome.parent) toolsMenuHome.parent.insertBefore(m,toolsMenuHome.next); else toolsMenuHome.parent.appendChild(m); } }
+function toggleToolsMenu(){ var m=document.getElementById('toolsMenu'), b=document.getElementById('toolsToggleBtn'); if(!m) return; var open=m.style.display==='none'; if(open){ floatToolsMenu(m); m.style.display='grid'; positionToolsMenu(); } else { m.style.display='none'; dockToolsMenu(m); } if(b) b.setAttribute('aria-expanded', open? 'true':'false'); document.body.classList.toggle('tools-menu-open', open); if(typeof sfx==='function') sfx('pop'); if(typeof fitGameView==='function') fitGameView(); }
+function closeToolsMenu(){ var m=document.getElementById('toolsMenu'), b=document.getElementById('toolsToggleBtn'); if(m){ m.style.display='none'; dockToolsMenu(m); } if(b) b.setAttribute('aria-expanded','false'); document.body.classList.remove('tools-menu-open'); if(typeof fitGameView==='function') fitGameView(); }
 function toggleWorkPanel(force){
   var panel=document.getElementById('workPanel'), layout=document.getElementById('playLayout'), btn=document.getElementById('workToggleBtn');
   if(!panel) return;
@@ -6204,7 +6229,7 @@ function belleSay(html){ document.getElementById('belleBubble').innerHTML=html; 
    same layout as Karter's game view — and it returns on the way home. */
 function setHeroVisible(v){ var h=document.getElementById('heroSection'); if(h) h.style.display= v? '' : 'none'; }
 function startTopic(id){ if(gradeLockedTopic(topicById(id))){ lockedGradeTap(id); return; } /* GRADE GATE: refuses below 3rd grade no matter which UI path calls it */ currentTopic=TOPICS.find(function(t){return t.id===id}); fitLockH=window.innerHeight; fitLastW=window.innerWidth; /* the game opens at its true size — locked for the whole play session, scrolling never resizes it */ if(typeof closeHintPanel==='function') closeHintPanel(); if(typeof toggleWorkPanel==='function') toggleWorkPanel(false); document.getElementById('homeView').style.display='none'; document.getElementById('practiceView').style.display='block'; setHeroVisible(false); if(typeof renderSportSwitcher==='function'){ try{ renderSportSwitcher(); }catch(e){} } /* the home sport switcher refreshes; no sport-picker card lives inside the game view */ window.scrollTo({top:0}); clearInterval(timerInt); timerInt=setInterval(function(){ topicProg(id).sec+=5; if(topicProg(id).sec%30===0) saveP(progress); },5000); initGameSession(id); renderAllCheerleaders(); resetCheerToStart(true); if(typeof bellePreloadText==='function'){ try{ bellePreloadText(buildTaskSpeech()); }catch(e){} } nextPrompt(true); }
-function goHome(){ stopBelleSpeech(); stopRoutine(); if(typeof closeHintPanel==='function') closeHintPanel(); if(typeof toggleWorkPanel==='function') toggleWorkPanel(false); clearInterval(timerInt); fitLockH=0; /* session over — the next game locks its own true size at open */ saveP(progress); document.getElementById('practiceView').style.display='none'; document.getElementById('homeView').style.display='block'; if(typeof renderSportSwitcher==='function'){ try{ renderSportSwitcher(); }catch(e){} } /* the home switcher shows again on return */ setHeroVisible(true); renderGrid(); updateTotals(); renderAllCheerleaders(); window.scrollTo({top:0}); }
+function goHome(){ stopBelleSpeech(); stopRoutine(); if(typeof closeHintPanel==='function') closeHintPanel(); if(typeof closeToolsMenu==='function') closeToolsMenu(); /* the floating Helper Tools sheet docks back into the card before the view hides, so it can never linger over the home screen */ if(typeof toggleWorkPanel==='function') toggleWorkPanel(false); clearInterval(timerInt); fitLockH=0; /* session over — the next game locks its own true size at open */ saveP(progress); document.getElementById('practiceView').style.display='none'; document.getElementById('homeView').style.display='block'; if(typeof renderSportSwitcher==='function'){ try{ renderSportSwitcher(); }catch(e){} } /* the home switcher shows again on return */ setHeroVisible(true); renderGrid(); updateTotals(); renderAllCheerleaders(); window.scrollTo({top:0}); }
 function goHomeFromOverlay(){
   stopWizAuto(); stopBelleSpeech(); stopFt();
   ['wizardModal','themeModal','trophyModal','bonusModal','winModal','lockedModal'].forEach(function(mid){ var m=document.getElementById(mid); if(m) m.classList.remove('open'); });
@@ -6265,6 +6290,7 @@ function fitViewportH(){ return fitLockH>0? fitLockH : window.innerHeight; }
 function fitGameView(){
   var pv=document.getElementById('practiceView');
   if(!pv||pv.style.display==='none') return;
+  if(typeof positionToolsMenu==='function') positionToolsMenu(); /* the open Helper Tools sheet stays pinned fully in view above its button on every refit */
   if(fitLockH<=0) fitLockH=window.innerHeight; /* first fit of a play session locks its true size */
   var vis=document.getElementById('qVisual');
   var inner=vis?vis.firstElementChild:null;
