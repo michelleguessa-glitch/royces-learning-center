@@ -1251,9 +1251,10 @@ html.is-standard .hub-row{grid-template-columns:repeat(2,1fr)}
          view's own ✕ Close — no game title in here; she already picked
          the game), then Coach Belle's INSTRUCTIONS space at the very
          top — no static card: Belle reads the instructions aloud on
-         game open and her words appear there as captions, sentence by
-         sentence, then stay in full for glance-back (💬 replays both),
-         then
+         game open and her words appear there as video-style captions —
+         only the sentence she is saying, clearing as she moves on and
+         gone when she finishes, never a full paragraph left sitting
+         there (💬 replays both, the same way), then
          the SCOREBOARD block (First to 20 Wins, the scorecards under
          it, and the 🔥 streak), then the visual game feature (stage),
          then the question card with the answer box + Check It, the
@@ -2194,13 +2195,16 @@ function chunkSpeech(t){ var parts=[]; var s=String(t); while(s.length>170){ var
 var belleSpeakTimer=null;
 /* ----- Reading captions (game view): when Belle reads the instructions
    aloud, her words appear as CAPTIONS in the instructions bubble at the
-   top of the game view — sentence by sentence as she says them, each one
-   a proper sentence (capital letter to start, proper ending
-   punctuation). The sentences build up in the bubble, so when she
-   finishes, the full instruction text stays sitting there for the
-   learner to glance back at. The 💬 replays the voice and the captions
-   together. A generation counter plus timers keep a stopped or replaced
-   reading from ever writing into the bubble again. ----- */
+   top of the game view — true video-caption logic. The bubble shows
+   ONLY the sentence she is saying right now, each one a proper sentence
+   (capital letter to start, proper ending punctuation). When a sentence
+   is done it clears and the next sentence takes its place — the
+   sentences never build up, and when she finishes speaking the
+   captions are done: the bubble clears and no paragraph is left
+   sitting in it. The 💬 replays the voice and the captions together,
+   the same one-sentence-at-a-time way. A generation counter plus
+   timers keep a stopped or replaced reading from ever writing into
+   the bubble again. ----- */
 var belleCaptionGen=0, belleCaptionTimers=[];
 function clearCaptionTimers(){ for(var ci=0;ci<belleCaptionTimers.length;ci++) clearTimeout(belleCaptionTimers[ci]); belleCaptionTimers=[]; }
 function captionSentences(plain){
@@ -2209,7 +2213,14 @@ function captionSentences(plain){
   raw.forEach(function(s){
     s=String(s).replace(/\s+/g,' ').trim();
     if(!s) return;
-    s=s.charAt(0).toUpperCase()+s.slice(1);
+    /* Proper sentence format, every caption, every game (Michelle): a
+       fragment with no letters or numbers in it at all — the trailing
+       🎀 after the last sentence, say — is decoration, not a sentence,
+       so it never becomes a caption of its own. Every real caption
+       starts with a capital letter and ends with proper ending
+       punctuation. */
+    if(!/[A-Za-z0-9]/.test(s)) return;
+    s=s.replace(/[A-Za-z]/,function(c){ return c.toUpperCase(); });
     if(!/[.!?]["'”]?$/.test(s)) s+='.';
     out.push(s);
   });
@@ -2228,14 +2239,28 @@ function speakBelle(text,force,rate,captionEl){
     var sentences=captionSentences(plain);
     if(sentences.length){
       captionEl.textContent='';
-      var shown=0;
-      var reveal=function(n){ if(gen!==belleCaptionGen) return; if(n>shown){ shown=n; captionEl.textContent=sentences.slice(0,shown).join(' '); if(typeof fitGameView==='function') fitGameView(); } };
+      var shownIdx=-1, lastShownIdx=-1;
+      /* Video-caption logic: the bubble holds ONLY the sentence she is
+         saying right now. A finished sentence clears as the next one
+         takes its place — nothing ever builds up — and when she
+         finishes speaking, the captions are done and the bubble
+         clears, leaving no text sitting in it. */
+      var showSentence=function(i){ if(gen!==belleCaptionGen) return; if(i<lastShownIdx||i===shownIdx) return; shownIdx=i; lastShownIdx=i; captionEl.textContent=sentences[i]; if(typeof fitGameView==='function') fitGameView(); };
+      var clearSentence=function(i){ if(gen!==belleCaptionGen) return; if(shownIdx!==i) return; shownIdx=-1; captionEl.textContent=''; if(typeof fitGameView==='function') fitGameView(); };
+      var finishCaptions=function(){ if(gen!==belleCaptionGen) return; shownIdx=-1; captionEl.textContent=''; if(typeof fitGameView==='function') fitGameView(); };
       /* Fallback timing: if the voice reports no start events, each
          sentence still appears about when she would reach it. */
       var starts=[], acc=0;
       sentences.forEach(function(s){ starts.push(acc); var wds=s.split(/\s+/).length; acc+=Math.max(650,(wds*360)/r); });
-      sentences.forEach(function(s,i){ belleCaptionTimers.push(setTimeout(function(){ reveal(i+1); }, starts[i]+900)); });
-      belleCaptionTimers.push(setTimeout(function(){ reveal(sentences.length); }, acc+900));
+      sentences.forEach(function(s,i){ belleCaptionTimers.push(setTimeout(function(){ showSentence(i); }, starts[i]+900)); });
+      /* The finish line: when she is done, the captions are done. With
+         a real voice, the last sentence's own end event clears the
+         bubble; this timer is only the backstop for voices that report
+         no end events — it waits until the voice has actually stopped
+         (checking a few times, never forever) before clearing, and
+         with no voice at all it clears on the same estimated timing
+         the sentences appeared on. */
+      var scheduleDone=function(delay,tries){ belleCaptionTimers.push(setTimeout(function(){ if(gen!==belleCaptionGen) return; if(hasTTS&&(tries||0)<20){ try{ if(window.speechSynthesis.speaking||window.speechSynthesis.pending){ scheduleDone(450,(tries||0)+1); return; } }catch(e){} } finishCaptions(); }, delay)); };
       if(hasTTS){
         try{
           var v=pickBelleVoice();
@@ -2243,11 +2268,15 @@ function speakBelle(text,force,rate,captionEl){
             var u=new SpeechSynthesisUtterance(s);
             if(v) u.voice=v;
             u.rate=r; u.pitch=pitch;
-            u.onstart=function(){ reveal(i+1); };
-            u.onend=function(){ if(i===sentences.length-1) reveal(sentences.length); };
+            u.onstart=function(){ showSentence(i); };
+            u.onend=function(){ if(i===sentences.length-1) finishCaptions(); else clearSentence(i); };
+            u.onerror=function(){ if(i===sentences.length-1) finishCaptions(); else clearSentence(i); };
             window.speechSynthesis.speak(u);
           });
         }catch(e){}
+        scheduleDone(acc+1500,0);
+      } else {
+        scheduleDone(acc+900,0);
       }
       return;
     }
@@ -2269,8 +2298,10 @@ function stopBelleSpeech(){ belleCaptionGen++; clearCaptionTimers(); if(belleSpe
    problem itself lives in its own card under the game, once — it is
    never read into the bubble, and there is no "Here is your problem."
    opener. On game open Belle reads these instructions aloud and they
-   roll in as captions in the bubble; the 💬 replay beside the bubble
-   replays the same instructions, voice and captions together. */
+   appear in the bubble as video-style captions — only the sentence she
+   is saying, clearing as she moves on, gone when she finishes; the 💬
+   replay beside the bubble replays the same instructions, voice and
+   captions together, the same one-sentence-at-a-time way. */
 function buildTaskSpeech(){
   if(!currentTopic) return '';
   var wn=(typeof effectiveWorldName==='function')? effectiveWorldName() : "Royce's Royal Roses";
@@ -2738,9 +2769,11 @@ function nextPrompt(first){
        INSTRUCTIONS for the game aloud — never the problem, which lives
        only in its own card under the game — and as she reads, her words
        appear as CAPTIONS in the instructions bubble at the top, sentence
-       by sentence in proper sentence structure. When she finishes, the
-       full instruction text stays in the bubble to glance back at, and
-       the 💬 replays the voice and the captions together. An example
+       by sentence in proper sentence structure — video-caption logic:
+       only the sentence she is saying shows, it clears as the next one
+       starts, and when she finishes the captions are done and nothing
+       is left sitting in the bubble. The 💬 replays the voice and the
+       captions together, the same way. An example
        never opens or gets read here; it is read only when the learner
        picks it. */
     var wb=document.getElementById('belleBubble'); if(wb) wb.textContent='';
