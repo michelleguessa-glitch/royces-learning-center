@@ -2672,6 +2672,55 @@ function captionSentences(plain){
    plays as Belle's recordings, with "ate" hear-the-word playback the
    single device-reader exception, as before. */
 var BELLE_BUNDLES=["assets/voice/belle-01.mp3","assets/voice/belle-02.mp3","assets/voice/belle-03.mp3","assets/voice/belle-04.mp3","assets/voice/belle-05.mp3","assets/voice/belle-06.mp3","assets/voice/belle-07.mp3","assets/voice/belle-08.mp3","assets/voice/belle-09.mp3","assets/voice/belle-10.mp3","assets/voice/belle-11.mp3","assets/voice/belle-12.mp3"];
+/* FAST INSTRUCTIONS (first-entry delay fix): the game-open instructions
+   are the same few recorded sentences every time — the welcome line, one
+   "Let's play …!" line per game, the watch-my-example line and the
+   you've-got-this line. Seeking them inside a ~5.6 MB bundle made the
+   FIRST entry into any game wait ~25 s on the bundle download, even
+   with bundle preloading. Those exact recordings now ALSO live as tiny
+   individual clips (14–30 KB each, frame-exact copies of the same
+   bundle segments — same voice, same words, same durations) under
+   assets/voice/instr/. A line whose every sentence has a clip here
+   plays from the clips and starts at once; every other line — every
+   problem's own numbered hint, example and check segments included —
+   plays from the bundles exactly as before. The clips are warmed into
+   the browser cache shortly after the page opens, so a first game
+   entry never waits on them either. */
+var BELLE_FAST={
+"welcome to royce s royal roses":"assets/voice/instr/welcome.mp3",
+"let s play addition all stars":"assets/voice/instr/play-addition.mp3",
+"let s play subtraction superstars":"assets/voice/instr/play-subtraction.mp3",
+"let s play skip count bows":"assets/voice/instr/play-skip-count-bows.mp3",
+"let s play place value power":"assets/voice/instr/play-place-value-power.mp3",
+"let s play money castle":"assets/voice/instr/play-money-castle.mp3",
+"let s play castle clock time":"assets/voice/instr/play-castle-clock-time.mp3",
+"let s play fraction cupcakes":"assets/voice/instr/play-fraction-cupcakes.mp3",
+"let s play sharing cupcakes":"assets/voice/instr/play-sharing-cupcakes.mp3",
+"let s play multiplication mania":"assets/voice/instr/play-multiplication-mania.mp3",
+"let s play division dream team":"assets/voice/instr/play-division-dream-team.mp3",
+"let s play story problem showcase":"assets/voice/instr/play-story-problem-showcase.mp3",
+"let s play sight word sprint":"assets/voice/instr/play-sight-word-sprint.mp3",
+"let s play first words sprint":"assets/voice/instr/play-first-words-sprint.mp3",
+"let s play vowel sound squad":"assets/voice/instr/play-vowel-sound-squad.mp3",
+"let s play letter sound squad":"assets/voice/instr/play-letter-sound-squad.mp3",
+"let s play plurals parade":"assets/voice/instr/play-plurals-parade.mp3",
+"let s play compound word combo":"assets/voice/instr/play-compound-word-combo.mp3",
+"let s play homophone hoops":"assets/voice/instr/play-homophone-hoops.mp3",
+"watch my example with the button if you need it then try this one":"assets/voice/instr/watch-example.mp3",
+"you ve got this superstar":"assets/voice/instr/got-this.mp3"
+};
+var belleFastWarmed=false;
+function belleWarmFast(){
+  if(belleFastWarmed) return; belleFastWarmed=true;
+  try{
+    var files=[]; for(var k in BELLE_FAST){ if(Object.prototype.hasOwnProperty.call(BELLE_FAST,k)) files.push(BELLE_FAST[k]); }
+    files.forEach(function(f,i){
+      setTimeout(function(){ try{ var pr=fetch(f); if(pr&&pr.then) pr.then(function(r){ if(r&&r.arrayBuffer) return r.arrayBuffer(); }).catch(function(){}); }catch(e){} }, 400+i*70);
+    });
+  }catch(e){}
+}
+try{ window.addEventListener('load',function(){ belleWarmFast(); }); }catch(e){}
+try{ document.addEventListener('pointerdown',function(){ belleWarmFast(); },true); }catch(e){}
 var BELLE_AUDIO={
 "welcome to royce s royal roses": "0,0,2.616",
 "let s play addition all stars": "0,2.616,2.28",
@@ -5392,6 +5441,68 @@ function bellePreloadProblem(pr){
     if(pr.exSteps) pr.exSteps.forEach(function(st){ bellePreloadText(st.h+'. '+st.b); });
   }catch(e){}
 }
+/* FAST-CLIP PLAYBACK: resolve a line to its tiny instruction clips, or
+   null when any sentence lacks one. Durations come from the sentence's
+   own BELLE_AUDIO segment, so captions step sentence by sentence and
+   playback still stops dead at each line's end — the same stop-at-end
+   and caption behavior as bundle playback, never rolling on. */
+function belleFastFiles(sentences){
+  var out=[];
+  for(var i=0;i<sentences.length;i++){
+    var key=belleAudioKey(sentences[i]);
+    /* The welcome line's apostrophe reaches this lookup in its straight
+       form ("royce's") while its recording is filed under the curly
+       form ("royce s") — try both spellings of the SAME sentence's key
+       so the line still resolves to its own recording. */
+    var f=BELLE_FAST[key], v=BELLE_AUDIO[key];
+    if(!f||!v){ var alt=key.replace(/'/g,' '); f=f||BELLE_FAST[alt]; v=v||BELLE_AUDIO[alt]; }
+    if(!f||!v) return null;
+    var d=parseFloat(String(v).split(',')[2]); if(!(d>0)) return null;
+    out.push({f:f,d:d});
+  }
+  return out.length? out : null;
+}
+function playBelleFast(fast,sentences,text,rate,captionEl,gen){
+  var el=new Audio(); belleAudioEl=el; el.preload='auto';
+  var idx=0;
+  var showCap=function(i){ if(gen!==belleCaptionGen) return; if(captionEl){ captionEl.textContent=sentences[i]; if(typeof fitGameView==='function') fitGameView(); } };
+  var clearSeg=function(){ if(belleSegTimer){ clearInterval(belleSegTimer); belleSegTimer=null; } };
+  var finishCap=function(){ if(gen!==belleCaptionGen) return; clearSeg(); try{ el.pause(); }catch(e){} if(belleAudioEl===el) belleAudioEl=null; if(captionEl){ captionEl.textContent=''; if(typeof fitGameView==='function') fitGameView(); } };
+  var deviceFallback=function(){ if(gen!==belleCaptionGen) return; clearSeg(); try{ el.pause(); }catch(e){} if(belleAudioEl===el) belleAudioEl=null; if(captionEl) captionEl.textContent=''; speakBelleDevice(text,rate,captionEl,gen); };
+  var playClip=function(i){
+    if(gen!==belleCaptionGen||belleAudioEl!==el) return;
+    var clip=fast[i], advanced=false;
+    var next=function(){
+      if(advanced||gen!==belleCaptionGen) return; advanced=true; clearSeg();
+      idx++;
+      if(idx>=fast.length){ finishCap(); return; }
+      playClip(idx);
+    };
+    el.onended=function(){ next(); };
+    el.onerror=function(){ if(!advanced) deviceFallback(); };
+    showCap(i);
+    try{ el.src=clip.f; }catch(e){ deviceFallback(); return; }
+    if(rate){ try{ el.playbackRate=rate; }catch(e){} }
+    var pr=el.play(); if(pr&&pr.catch) pr.catch(function(){ if(!advanced) deviceFallback(); });
+    clearSeg();
+    belleSegTimer=setInterval(function(){
+      if(gen!==belleCaptionGen){ clearSeg(); return; }
+      if(el.ended||el.currentTime>=(clip.d/(rate||1))-0.02){ next(); }
+    },40);
+    /* Promptness backstop for the FIRST clip only: if the clip has not
+       started within about 2 seconds (a stalled network on a cold
+       cache), the device voice reads the line rather than leaving the
+       learner in silence — the clips are cache-warmed at page open, so
+       this should never fire. */
+    if(i===0){
+      var heard=false;
+      var onPlaying=function(){ heard=true; el.removeEventListener('playing',onPlaying); };
+      el.addEventListener('playing',onPlaying);
+      setTimeout(function(){ el.removeEventListener('playing',onPlaying); if(!heard&&!advanced&&gen===belleCaptionGen&&belleAudioEl===el) deviceFallback(); },2000);
+    }
+  };
+  playClip(0);
+}
 function speakBelle(text,force,rate,captionEl,preset){
   var plain=plainSpeechText(text);
   if(!plain&&!preset) return;
@@ -5407,6 +5518,12 @@ function speakBelle(text,force,rate,captionEl,preset){
      time), play THOSE segments — never a fresh lookup that could drift
      to another problem's lines. */
   if(preset&&preset.segs&&preset.segs.length){ files=preset.segs; if(preset.sentences&&preset.sentences.length===preset.segs.length) sentences=preset.sentences; }
+  /* FAST INSTRUCTIONS: a line made only of instruction sentences (the
+     game-open reading) plays from its tiny clips and starts at once,
+     even on the very first entry of a session. Number-keyed preset
+     lines (a problem's own hint / example / check) never take this
+     path — they keep their bundle segments exactly as before. */
+  if(!preset){ var fast=belleFastFiles(sentences); if(fast){ playBelleFast(fast,sentences,text,rate,captionEl,gen); return; } }
   if(files){
     var el=new Audio(); belleAudioEl=el; el.preload='auto';
     var idx=0, curBundle=-1;
