@@ -1191,6 +1191,12 @@ footer{max-width:1080px;margin:0 auto;padding:0 16px 210px;color:var(--muted);fo
 .stage .sport-venue svg{position:absolute;inset:0;width:100%;height:100%}
 .sport-target{position:absolute;right:4%;bottom:96px;z-index:3;font-size:52px;line-height:1;pointer-events:none;filter:drop-shadow(0 5px 7px rgba(58,20,48,.3))}
 .sport-prop{position:absolute;z-index:4;font-size:34px;line-height:1;pointer-events:none;left:calc(5% + 96px);bottom:104px;filter:drop-shadow(0 4px 5px rgba(58,20,48,.3));will-change:left,bottom,transform;transition:left .45s ease,bottom .45s ease,transform .45s ease}
+/* SOCCER WAITING: while the ball rests under her foot (idle-soccer)
+   it paints BEHIND her figure (z 3 under her z 4), so her shoe
+   visibly sits ON TOP of the ball as it rocks — never the ball
+   pasted over her feet. The moment she kicks, the class comes off
+   and the ball flies in front as before. */
+.sport-prop.idle-soccer{z-index:3}
 .stage.sport-active .beam,.stage.sport-active .mat{display:none}
 /* gymnastics exception: the game IS the balance beam — the stage's own
    beam stays in the gymnastics venue, and her feet rest exactly on its
@@ -1337,8 +1343,16 @@ footer{max-width:1080px;margin:0 auto;padding:0 16px 210px;color:var(--muted);fo
    Outbound she faces the far wall; on the trip back between
    problems (resetCheerToStart adds .swim-back for that trip only)
    she faces the start wall, so she never swims backwards. */
-.stage.swimming-active .stage-cheer svg{transform:rotate(88deg);transform-origin:50% 50%;transition:transform .35s ease}
-.stage.swimming-active .stage-cheer.swim-back svg{transform:rotate(-88deg)}
+/* SWIMMING POSE — SHE TREADS UPRIGHT (Michelle's correction, Nov 9
+   live check): the flat rotation is GONE. Turned 88 degrees she
+   read as a flat back-float while waiting, which is exactly what
+   the live check failed. She now stays UPRIGHT in the water the
+   whole game: waiting, she TREADS at the surface — face and arms
+   above the waterline (her stage spot straddles it), arms sculling
+   and feet flutter-kicking, all written frame by frame by the JS
+   pose driver; on a correct answer the same upright figure strokes
+   and kicks across the pool and touches the far wall. No rotation
+   is applied to her figure in the pool in any state. */
 /* jump rope: the stage scene carries its own ground (the wizard
    preview's ground band), so the cheer stage's tan floor band steps
    aside — it was cutting the scene's jumping girls off at the waist. */
@@ -1453,9 +1467,20 @@ footer{max-width:1080px;margin:0 auto;padding:0 16px 210px;color:var(--muted);fo
 @keyframes stickHandleSway{from{transform:rotate(-4deg)}to{transform:rotate(4deg)}}
 .stick-swing .hockey-stick-g{animation:stickSwing .5s ease-in-out 1;transform-box:fill-box;transform-origin:10% 7%}
 @keyframes stickSwing{0%{transform:rotate(0deg)}35%{transform:rotate(-18deg)}62%{transform:rotate(20deg)}100%{transform:rotate(0deg)}}
+/* NO REDUCED-MOTION STAND-DOWN FOR GAME MOTION (Michelle — the
+   Nov 9 live-check root cause): this block used to switch off
+   EVERY keyframed game animation (animation:none!important on
+   the routine, walking, running, skating, hockey, swimming,
+   dance, jump-rope, gymnastics, racket and stick classes, the
+   sport prop and the mascot) whenever the viewer's system asked
+   for reduced motion — which is exactly the setting the live
+   checker views the page with, so on the live page every limb
+   stood still while transitions carried figures across the
+   floor. The games' motions are the feedback Michelle specified
+   (waiting moves, strides, strokes, the fall), so no motion
+   query ever switches them off. Only the page scroll loses its
+   smoothing under the setting, which harms nothing in a game. */
 @media (prefers-reduced-motion: reduce){
- .routine .cheer-body,.routine .arm-l,.routine .arm-r,.routine .skirt-g,.walking .leg-l,.walking .leg-r,.walking .cheer-body,.leaping,.leaping .leg-l,.leaping .leg-r,.leaping .arm-l,.leaping .arm-r,.running .leg-l,.running .leg-r,.running .cheer-body,.running .arm-l,.running .arm-r,.skating .leg-l,.skating .leg-r,.skating .cheer-body,.hockey-idle .leg-l,.hockey-idle .leg-r,.hockey-idle .cheer-body,.swim-idle .arm-l,.swim-idle .arm-r,.wobbling .cheer-body,.split-land .cheer-body,.streak-pill.hot,.gamecard.bounce,.sb-team.pop,.sb-score.bump,.belle-compact.party .belle-face,.stage-mascot,.sport-prop,.sport-player-bob,.dance-idle,.dance-idle .leg-l,.dance-idle .leg-r,.dance-idle .arm-l,.dance-idle .arm-r,.dance-idle .cheer-body,.dance-step .leg-l,.dance-step .leg-r,.dance-step .arm-l,.dance-step .arm-r,.dance-step .cheer-body,.jumprope-jumping,.swim-idle .cheer-body,.swim-idle .leg-l,.swim-idle .leg-r,.swim-water .sw-wave,.gym-idle .cheer-body,.gym-idle .arm-l,.gym-idle .arm-r,.racket-swing .tennis-racket-g,.soccer-idle .leg-r,.hockey-idle .hockey-stick-g,.stick-swing .hockey-stick-g{animation:none!important}
- .cheer-shadow{transition:none}
  html{scroll-behavior:auto}
 }
 /* ===== Hub row (both links) =====
@@ -5943,7 +5968,7 @@ function setOutfitColor(sid,key,hex){ if(!window.isCustomEdition()) return; if(t
 function outfitSwatchRow(sid,key,colors,current){
   return '<div class="opt-row">'+colors.map(function(c){ var hex=c[0]; return '<button class="swatch'+(current===hex?' on':'')+'" style="background:'+hex+'" onclick="setOutfitColor(\''+sid+'\',\''+key+'\',\''+hex+'\')" aria-label="'+c[1]+'" title="'+c[1]+'"></button>'; }).join('')+'</div>';
 }
-function outfitPreviewOpts(sid){ return {racket: sid==='tennis', hockey: sid==='hockey', rope: sid==='jumprope', bare: ['basketball','soccer','swimming','running','gymnastics','dance'].indexOf(sid)>-1, bareDown: sid==='basketball'}; }
+function outfitPreviewOpts(sid){ return {racket: sid==='tennis', hockey: sid==='hockey', rope: sid==='jumprope', bare: ['basketball','soccer','swimming','running','gymnastics','dance','hockey'].indexOf(sid)>-1, bareDown: sid==='basketball'}; }
 function studioFigureHTML(){
   if(window.isCustomEdition()){ var sid=studioOutfitSport||'cheer'; return cheerSVG(sportOutfitDesign(sid),'stand',outfitPreviewOpts(sid)); }
   return cheerSVG(effectiveDesign(),'stand');
@@ -6026,7 +6051,7 @@ function headSVG(d,cx,cy,scale){
    tennis world is active. The racket is part of her SVG — gripped where
    her hand is — so it moves with her body and can never leave her hand.
    Only the separate ball prop ever travels across the court. */
-function stageCheerOpts(){ try{ var sw=(typeof isSportWorld==='function'&&isSportWorld())? sportWorldId() : ''; return {racket: sw==='tennis', hockey: sw==='hockey', rope: sw==='jumprope', bare: ['basketball','soccer','swimming','running','gymnastics','dance'].indexOf(sw)>-1, bareDown: sw==='basketball'}; }catch(e){ return {}; } }
+function stageCheerOpts(){ try{ var sw=(typeof isSportWorld==='function'&&isSportWorld())? sportWorldId() : ''; return {racket: sw==='tennis', hockey: sw==='hockey', rope: sw==='jumprope', bare: ['basketball','soccer','swimming','running','gymnastics','dance','hockey'].indexOf(sw)>-1, bareDown: sw==='basketball'}; }catch(e){ return {}; } } /* hockey is in the bare list so her LEFT hand is empty too: the stick branch draws her right hand on the stick, and without 'hockey' here the left arm fell through to the pom-pom drawing — a pom pom in the hockey game (live-check fix) */
 /* Where the sport prop (the ball / puck) rests while a problem waits:
    the soccer ball sits ON THE GROUND under her right foot, the hockey
    puck sits on the ice right in front of her stick blade, and every
@@ -6673,7 +6698,17 @@ function closeWin(newGame){ document.getElementById('winModal').classList.remove
 
 /* ================= BEAM STAGE: routine, walk + split, fall ================= */
 var beamBusy=false, REDUCED=false;
-try{ REDUCED= window.matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(e){}
+/* MOTION IS THE GAME (Michelle — the Nov 9 live-check root cause):
+   REDUCED stays permanently FALSE and is never read from the
+   viewer's prefers-reduced-motion setting again. Every score and
+   miss branch in the sport games keyed off this flag: with the
+   setting on (which is how the live checker views the page) each
+   one took its instant-teleport shortcut — balls snapped to their
+   targets in 80ms, the gymnast never leapt or fell, the swimmer
+   never sank, kicks and swings were skipped whole. The game's
+   motions ARE its feedback, exactly as Michelle specified them,
+   so they run in full for every viewer. The flag itself stays as
+   a variable (dozens of call sites read it) but nothing sets it. */
 function stageCheerEl(){ return document.getElementById('stageCheer'); }
 function setStageMsg(t){ var m=document.getElementById('stageMsg'); if(m) m.textContent=t; }
 function startRoutine(){
@@ -6824,6 +6859,18 @@ function tennisBallDuty(done){
   }
   var gen=++tennisDutyGen;
   var alive=function(){ return gen===tennisDutyGen && typeof sportWorldId==='function' && sportWorldId()==='tennis' && document.getElementById('practiceView') && document.getElementById('practiceView').style.display!=='none'; };
+  /* FAILSAFE (live-check fix): the duty is a chain of animation
+     frames and timers; if any leg of it is ever interrupted (a
+     frame dropped while the stage repaints, the view navigating
+     mid-duty), the chain used to die silently with beamBusy stuck
+     on and the ball stranded wherever it lay. Now any interruption
+     bails cleanly — ball home on her racket, mascot repainted in
+     its corner, play resumed — and a hard 7-second backstop does
+     the same if the whole duty ever overruns (its full run is
+     ~4.5s at the longest). The duty can never soft-lock a game. */
+  var bailed=false;
+  var bail=function(){ if(bailed) return; bailed=true; try{ m.classList.remove('mascot-walking'); var phB=sportPropHome(); prop.style.transition=''; prop.style.left=phB.left; prop.style.bottom=phB.bottom; prop.style.transform=''; paintStageMascot(); }catch(e){} finish(); };
+  setTimeout(function(){ if(gen===tennisDutyGen&&beamBusy&&!bailed) bail(); },7000);
   var sr=stage.getBoundingClientRect();
   function centerOf(el){ var r=el.getBoundingClientRect(); return { cx:((r.left+r.width/2-sr.left)/sr.width)*100, b:((sr.bottom-r.bottom)/sr.height)*100, w:(r.width/sr.width)*100, h:(r.height/sr.height)*100 }; }
   function place(el,cx,b,wPct){ el.style.left=(cx-wPct/2)+'%'; el.style.right='auto'; el.style.bottom=b+'%'; }
@@ -6840,7 +6887,7 @@ function tennisBallDuty(done){
     var from={cx:mPos.cx,b:mPos.b}, t0=null;
     m.classList.add('mascot-walking');
     function frame(ts){
-      if(!alive()){ m.classList.remove('mascot-walking'); return; }
+      if(!alive()){ m.classList.remove('mascot-walking'); bail(); return; }
       if(!t0) t0=ts;
       var t=Math.min(1,(ts-t0)/dur);
       mPos.cx=from.cx+(target.cx-from.cx)*t;
@@ -6858,13 +6905,13 @@ function tennisBallDuty(done){
     prop.style.transition='left .18s ease-out, bottom .18s ease-out';
     place(prop,hand.cx,hand.b,bW);
     setTimeout(function(){
-      if(!alive()) return;
+      if(!alive()){ bail(); return; }
       /* 3 — the toss: one visible arc from the mascot's hands to her
          racket strings, the ball on screen for the whole flight */
       prop.style.transition='';
       var from={cx:hand.cx,b:hand.b}, t0=null;
       function tossFrame(ts){
-        if(!alive()) return;
+        if(!alive()){ bail(); return; }
         if(!t0) t0=ts;
         var t=Math.min(1,(ts-t0)/720);
         place(prop, from.cx+(homePos.cx-from.cx)*t, from.b+(homePos.b-from.b)*t + Math.sin(t*Math.PI)*24, bW);
@@ -6876,11 +6923,11 @@ function tennisBallDuty(done){
           prop.style.transition='bottom .13s ease-out';
           prop.style.bottom=(homePos.b+2.4)+'%';
           setTimeout(function(){
-            if(!alive()) return;
+            if(!alive()){ bail(); return; }
             prop.style.transition='bottom .14s ease-in, transform .14s ease';
             prop.style.bottom=homePos.b+'%'; prop.style.transform='';
             setTimeout(function(){
-              if(!alive()) return;
+              if(!alive()){ bail(); return; }
               prop.style.transition=''; prop.style.left=ph.left; prop.style.bottom=ph.bottom; prop.style.transform='';
               /* 4 — the mascot walks back to its right-back corner */
               var spot=MASCOT_SPOT_DEFAULT||{right:'2%',bottom:'56%'};
@@ -7487,7 +7534,7 @@ function jrRopeFrame(ts){
   if(!stage||!el||!stage.classList.contains('jumprope-active')||!stage.clientHeight){ jrLastTs=0; return; }
   var rope=el.querySelector('.jr-rope');
   if(!rope){ jrLastTs=0; return; }
-  if(REDUCED){ rope.setAttribute('d','M47 145 Q 100 -129 153 145'); return; }
+  /* the rope turns for every viewer — no motion-setting stand-down (see REDUCED note at beamBusy) */
   var dt= jrLastTs? Math.min(64, ts-jrLastTs) : 16; jrLastTs=ts;
   if(el.classList.contains('rope-dropped')){
     /* THE DROP (live-check fix): the slump used to ease so gently
@@ -7563,11 +7610,11 @@ function bballDribbleFrame(ts){
   var prop=document.getElementById('sportProp');
   var el=stageCheerEl();
   if(!stage||!prop||!el||!prop.classList.contains('idle-basketball')||!stage.clientHeight){ stopBballVisual(); return; }
-  if(!bballGeom){
+  if(!bballGeom||bballGeom.sh!==stage.clientHeight){
     var sr0=stage.getBoundingClientRect(), pr0=prop.getBoundingClientRect(), fr0=el.getBoundingClientRect();
     var palm=sr0.bottom-pr0.bottom, floor=(sr0.bottom-fr0.bottom)-28; /* the court floor at her feet: a ball resting there sits 28px below her figure's base line — the soccer ball's own ground spot (bottom: calc(33.5% - 28px)) */
-    if(palm-floor>10) bballGeom={palm:palm,floor:floor};
-    else { bballRAF=requestAnimationFrame(bballDribbleFrame); return; }
+    if(palm-floor>10) bballGeom={palm:palm,floor:floor,sh:stage.clientHeight};
+    else { bballGeom=null; bballRAF=requestAnimationFrame(bballDribbleFrame); return; }
   }
   var p=(ts%900)/900, frac, squash=1;
   if(p<0.42){ var u1=p/0.42; frac=1-u1*u1; } /* she pushes it down: slow off the palm, faster as it falls */
@@ -7860,6 +7907,41 @@ function poseDriverFrame(ts){
 }
 function ensurePoseDriver(){ if(!poseRAF) poseRAF=requestAnimationFrame(poseDriverFrame); }
 function stopPoseDriver(){ if(poseRAF){ cancelAnimationFrame(poseRAF); poseRAF=null; } poseReleaseAll(); }
+/* ----- WAITING-MOTION WATCHDOG (live-check root-cause fix) -----
+   The pose driver and the dedicated waiting loops RETIRE whenever
+   a frame finds nothing to write, and they were only ever re-armed
+   at discrete call sites (startRoutine, nextPrompt, the sport
+   switch). If any single frame in the live flow landed while the
+   stage was mid-repaint — figure re-rendered by applySportWorld,
+   a class still settling — the loop died at that frame and nothing
+   on the path the live flow actually takes ever armed it again:
+   the waiting poses then stood perfectly still for the whole
+   problem, which is what the live check kept seeing even though
+   every individual driver was correct. This watchdog closes that
+   hole on the live path itself: while a problem is visibly waiting
+   in a sport world (practice view open, no score/miss animation
+   running, her waiting class on), it re-arms whichever waiting
+   loops belong to the sport. Each loop's own first frame re-checks
+   its guard and retires harmlessly if its pose is not really up,
+   so the watchdog can never start a motion that should not run,
+   and it never fires during a score, a miss or the tennis ball
+   duty (beamBusy covers all three). */
+setInterval(function(){
+  try{
+    if(typeof beamBusy!=='undefined'&&beamBusy) return;
+    var pv=document.getElementById('practiceView'); if(!pv||pv.style.display==='none') return;
+    var st=document.getElementById('beamStage'); if(!st||!st.clientHeight) return;
+    if(typeof isSportWorld!=='function'||!isSportWorld()) return;
+    var el=stageCheerEl(); if(!el) return;
+    var waiting= el.classList.contains('soccer-idle')||el.classList.contains('hockey-idle')||el.classList.contains('swim-idle')||el.classList.contains('dance-idle')||el.classList.contains('sport-player-bob')||el.classList.contains('jumprope-jumping');
+    if(!waiting) return;
+    ensurePoseDriver();
+    var sid=sportWorldId();
+    if(sid==='soccer'&&typeof ensureSoccerRoll==='function') ensureSoccerRoll();
+    if(sid==='basketball'&&typeof ensureBasketballDribble==='function') ensureBasketballDribble();
+    if(sid==='jumprope'&&typeof ensureJrRopeLoop==='function') ensureJrRopeLoop();
+  }catch(e){}
+},700);
 /* ----- Cheer SQUAD logic (the classic cheer scene) -----
    Waiting: the squad of four readies at the base, pom poms in hand.
    Correct: the bases and back spot build the pyramid, the flyer climbs
