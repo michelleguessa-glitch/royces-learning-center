@@ -2488,9 +2488,12 @@ function genSpellingStored(id,tier){
          Hear button must speak is resolved to its own recorded segments
          at serving time, exactly like this problem's hint and check —
          so the tap plays THIS item's word in Belle's recorded voice,
-         never a fresh lookup that can drift or stall. ("ate" has no
-         recording — the one standing exception — and resolves null,
-         so its tap keeps the device-reader path.) */
+         never a fresh lookup that can drift or stall. ("ate" is
+         recorded too — rendered in Belle's voice and appended to
+         bundle 12 — so it resolves like every other word, and the
+         five shortest words also carry tiny standalone clips under
+         assets/voice/words/ so their taps never wait on a bundle
+         seek; see BELLE_WORD_CLIPS.) */
       if(obj.speak) obj.speakSegs=belleSegsForText(obj.speak);
     }
     return obj;
@@ -2748,8 +2751,10 @@ function captionSentences(plain){
    reader (speakBelleDevice), whole, exactly as before: any line with
    something unrecorded in it — a renamed coach or world, a renamed
    child — and the one sight word whose recording the speech service
-   would not render ("ate": its hint, check and example lines are
-   recorded; only its hear-the-word playback uses the device reader).
+   would not render on its own ("ate": its hint, check and example
+   lines were recorded, and its hear-the-word recording has since
+   been rendered in her voice inside a sentence, carved to the word
+   and appended to bundle 12 — it now plays as a recording too).
    Captions behave the same either way: one sentence at a time, in
    step with the sound, clearing when she finishes. */
 /* Packaging (publish build): the 2,677 sentence recordings are
@@ -2760,8 +2765,11 @@ function captionSentences(plain){
    seeks the bundle to start, plays to start+duration, and captions
    stay in step sentence by sentence, exactly as when each sentence
    was its own file. Coverage is unchanged: every recorded line still
-   plays as Belle's recordings, with "ate" hear-the-word playback the
-   single device-reader exception, as before. */
+   plays as Belle's recordings — "ate" included: its recording was
+   appended frame-exact at the end of bundle 12 (699.6s in), and the
+   welcome's three previously unrecorded sentences were appended the
+   same way at the end of bundle 1 (708.816s in), so the whole hero
+   welcome now plays as recordings with rolling captions too. */
 var BELLE_BUNDLES=["assets/voice/belle-01.mp3","assets/voice/belle-02.mp3","assets/voice/belle-03.mp3","assets/voice/belle-04.mp3","assets/voice/belle-05.mp3","assets/voice/belle-06.mp3","assets/voice/belle-07.mp3","assets/voice/belle-08.mp3","assets/voice/belle-09.mp3","assets/voice/belle-10.mp3","assets/voice/belle-11.mp3","assets/voice/belle-12.mp3"];
 /* FAST INSTRUCTIONS (first-entry delay fix): the game-open instructions
    are the same few recorded sentences every time — the welcome line, one
@@ -2835,6 +2843,9 @@ var BELLE_AUDIO={
 "let s play compound word combo": "0,43.968,2.544",
 "let s play homophone hoops": "0,46.512,2.184",
 "welcome royce": "0,48.696,1.2",
+"i m coach belle": "0,708.816,1.248",
+"i m here to help you practice until you get it right": "0,710.064,2.784",
+"let s win the championship": "0,712.848,2.016",
 "i'm coach belle": "0,49.896,1.2",
 "i'm here to help you practice until you get it right": "0,51.096,2.784",
 "select a game below to get started": "0,53.88,1.992",
@@ -4956,6 +4967,7 @@ var BELLE_AUDIO={
 "am": "11,285.792,0.768",
 "are": "11,286.56,0.648",
 "at": "11,287.208,0.72",
+"ate": "11,699.6,0.528",
 "be": "11,287.928,0.576",
 "black": "11,288.504,0.984",
 "brown": "11,289.488,0.72",
@@ -5543,9 +5555,32 @@ function bellePreloadProblem(pr){
    the tap and the sound — so Belle's recorded word plays when it
    should: on the first tap and on every tap after it. */
 var belleWordEl=null, belleWordPrimed=null;
+/* WORD CLIPS (live-check fix): the five shortest sight words — "am",
+   "all", "are", "at" and "ate" — ALSO live as tiny standalone clips
+   under assets/voice/words/, frame-true copies of Belle's own
+   recordings (for "ate", of the recording rendered for it in her
+   voice). On the live check "am" produced no speech at all: its
+   bundle segment is real, but the tap still had to fetch and seek
+   inside a 5.6 MB bundle before a sound could start, and when that
+   chain stalled the tap fell through to the device reader, which
+   stays silent in her webview. A 6 KB clip loads whole the moment
+   the problem is served, so these five taps start Belle's recording
+   at once, every time — the bundle segment stays as the fallback. */
+var BELLE_WORD_CLIPS={am:'assets/voice/words/am.mp3',all:'assets/voice/words/all.mp3',are:'assets/voice/words/are.mp3',at:'assets/voice/words/at.mp3',ate:'assets/voice/words/ate.mp3'};
 function primeHearWord(pr){
   belleWordPrimed=null;
-  if(!pr||!pr.speak||!pr.speakSegs||!pr.speakSegs.segs||pr.speakSegs.segs.length!==1) return;
+  if(!pr||!pr.speak) return;
+  var clipKey=belleAudioKey(pr.speak), clipFile=BELLE_WORD_CLIPS[clipKey];
+  if(clipFile){
+    try{
+      if(!belleWordEl){ belleWordEl=new Audio(); belleWordEl.preload='auto'; }
+      if(belleWordEl.getAttribute('data-bundle')!==('wc:'+clipKey)){ belleWordEl.src=clipFile; belleWordEl.setAttribute('data-bundle','wc:'+clipKey); }
+      try{ belleWordEl.load(); }catch(e){}
+      belleWordPrimed={clip:clipKey,word:pr.speak};
+    }catch(e){ belleWordPrimed=null; }
+    if(belleWordPrimed) return;
+  }
+  if(!pr.speakSegs||!pr.speakSegs.segs||pr.speakSegs.segs.length!==1) return;
   var seg=pr.speakSegs.segs[0]; if(!seg||!BELLE_BUNDLES[seg.b]) return;
   try{
     if(!belleWordEl){ belleWordEl=new Audio(); belleWordEl.preload='auto'; }
@@ -6496,6 +6531,7 @@ function nextPrompt(first){
      starter — so every served question, first or next, waits with her
      foot resting on top of the ball, rocking it, until she answers. */
   if(typeof isSportWorld==='function'&&isSportWorld()&&typeof sportWorldId==='function'&&sportWorldId()==='soccer'&&typeof ensureSoccerRoll==='function'){ try{ ensureSoccerRoll(); }catch(e){} }
+  if(typeof isSportWorld==='function'&&isSportWorld()&&typeof sportWorldId==='function'&&sportWorldId()==='basketball'&&typeof ensureBasketballDribble==='function'){ try{ ensureBasketballDribble(); }catch(e){} } /* the dribble is (re)armed on every question load too, the same regression fix as the soccer roll */
   fitGameView();
   /* Focus for typing WITHOUT scrolling: the game must open cleanly at
      its own top — level, ✕ Close and Belle's instructions right there —
@@ -6504,7 +6540,7 @@ function nextPrompt(first){
 }
 var chosen=null;
 function pickChoice(btn,val){ chosen=val; document.querySelectorAll('.choice').forEach(function(b){b.style.background='#fff'}); btn.style.background='#FFF3C4'; checkAnswer(); }
-function hearWord(){ if(!current||!current.speak) return; /* HEAR IT (Michelle's fix): the tap speaks THIS item's own target word in Belle's recorded voice at NATURAL rate — and it plays from the PRIMED element: primeHearWord (run as the problem is served) has already loaded the word's bundle into a dedicated element and parked its playhead on the word's own segment, so this tap calls play() on a ready, positioned element synchronously, inside the tap itself, and the word starts at once. The old tap handed the word to the shared bundle player, whose load-seek-play chain ran in timers and callbacks AFTER the tap: on her phone's webview that chain could stall on a cold bundle or lose the tap's playback permission altogether and drop to the device reader, which stays silent there — the button looked dead. If the primed element is not ready or its play() is refused, the tap falls back to the same recorded segments through the regular player. The ONE word with no Belle recording anywhere ("ate") goes straight to the device reader, exactly as before. */ if(typeof bellePreloadText==='function'){ try{ bellePreloadText(current.speak); }catch(e){} } if(belleWordPrimed&&belleWordPrimed.word===current.speak&&belleWordEl&&belleWordEl.readyState>=2){ var seg=belleWordPrimed.seg; try{ if(Math.abs(belleWordEl.currentTime-seg.s)<=0.35){ stopBelleSpeech(); belleWordEl.playbackRate=1; var wp=belleWordEl.play(); var wEnd=seg.s+seg.d; var wIv=setInterval(function(){ if(!belleWordEl){ clearInterval(wIv); return; } if(belleWordEl.ended||belleWordEl.currentTime>=wEnd-0.02){ clearInterval(wIv); try{ belleWordEl.pause(); belleWordEl.currentTime=seg.s; }catch(e){} } },30); if(wp&&wp.catch){ wp.catch(function(){ clearInterval(wIv); if(current&&current.speakSegs) speakBelle(current.speak,true,1,null,current.speakSegs); }); } return; } }catch(e){} } if(current.speakSegs){ speakBelle(current.speak,true,1,null,current.speakSegs); return; } if(typeof speakBelleDevice==='function'){ stopBelleSpeech(); speakBelleDevice(current.speak,1,null,belleCaptionGen); return; } speakBelle(current.speak,true,1); }
+function hearWord(){ if(!current||!current.speak) return; /* HEAR IT (Michelle's fix): the tap speaks THIS item's own target word in Belle's recorded voice at NATURAL rate — and it plays from the PRIMED element: primeHearWord (run as the problem is served) has already loaded the word's bundle into a dedicated element and parked its playhead on the word's own segment, so this tap calls play() on a ready, positioned element synchronously, inside the tap itself, and the word starts at once. The old tap handed the word to the shared bundle player, whose load-seek-play chain ran in timers and callbacks AFTER the tap: on her phone's webview that chain could stall on a cold bundle or lose the tap's playback permission altogether and drop to the device reader, which stays silent there — the button looked dead. If the primed element is not ready or its play() is refused, the tap falls back to the same recorded segments through the regular player. Every word has a Belle recording now ("ate" included). The five shortest words (am, all, are, at, ate) are tried FIRST from their tiny standalone clips (BELLE_WORD_CLIPS, primed into the same element at serving time): a clip that is already loaded plays inside the tap itself, with no bundle fetch or seek anywhere in the chain — on the live check that chain is exactly where "am" went silent. */ if(typeof bellePreloadText==='function'){ try{ bellePreloadText(current.speak); }catch(e){} } if(belleWordPrimed&&belleWordPrimed.clip&&belleWordPrimed.word===current.speak&&belleWordEl){ try{ stopBelleSpeech(); belleWordEl.playbackRate=1; try{ belleWordEl.currentTime=0; }catch(e){} var cp=belleWordEl.play(); if(cp&&cp.catch){ cp.catch(function(){ if(current&&current.speakSegs) speakBelle(current.speak,true,1,null,current.speakSegs); }); } return; }catch(e){} } if(belleWordPrimed&&belleWordPrimed.word===current.speak&&belleWordEl&&belleWordEl.readyState>=2){ var seg=belleWordPrimed.seg; try{ if(Math.abs(belleWordEl.currentTime-seg.s)<=0.35){ stopBelleSpeech(); belleWordEl.playbackRate=1; var wp=belleWordEl.play(); var wEnd=seg.s+seg.d; var wIv=setInterval(function(){ if(!belleWordEl){ clearInterval(wIv); return; } if(belleWordEl.ended||belleWordEl.currentTime>=wEnd-0.02){ clearInterval(wIv); try{ belleWordEl.pause(); belleWordEl.currentTime=seg.s; }catch(e){} } },30); if(wp&&wp.catch){ wp.catch(function(){ clearInterval(wIv); if(current&&current.speakSegs) speakBelle(current.speak,true,1,null,current.speakSegs); }); } return; } }catch(e){} } if(current.speakSegs){ speakBelle(current.speak,true,1,null,current.speakSegs); return; } if(typeof speakBelleDevice==='function'){ stopBelleSpeech(); speakBelleDevice(current.speak,1,null,belleCaptionGen); return; } speakBelle(current.speak,true,1); }
 var lastHintHTML='';
 function belleHint(){ if(!current) return; if(typeof applyCoach==='function'){ try{ applyCoach(); }catch(e){} } /* the hint panel always opens wearing the coach as the learner designed her */ lastHintHTML=current.hint||''; var ht=document.getElementById('hintText'); if(ht) ht.innerHTML=lastHintHTML; var hp=document.getElementById('hintPanel'); if(hp){ if(hp.parentNode!==document.body) document.body.appendChild(hp); /* the panel lives at body level while open — no ancestor and no sticky bar can ever cover its header or its ✕ Close */ hp.scrollTop=0; hp.style.display='block'; } if(current.hintSegs){ speakBelle(current.hint,true,null,document.getElementById('belleBubble'),current.hintSegs); } else { belleSay('💡 <b>'+coachPossessive()+' Hint:</b> '+current.hint); } /* ONE TAP, BOTH ACTIONS: the tap opened the card AND starts the voice — the segments keyed to THIS problem's own number, so the numbers Belle says are the numbers on screen; the 💬 speech symbol in the panel replays it */ }
 function closeHintPanel(){ var hp=document.getElementById('hintPanel'); if(hp) hp.style.display='none'; }
@@ -6649,6 +6685,7 @@ function startRoutine(){
     if(prop){ var ph=sportPropHome(); prop.style.left=ph.left; prop.style.bottom=ph.bottom; prop.style.transform=''; prop.className='sport-prop'+(w.idleClass?' '+w.idleClass:''); }
     if(typeof ensurePoseDriver==='function') ensurePoseDriver(); /* the waiting moves (dance leg lifts at the barre, running pump) are JS-driven — see the pose driver */
     if(sportWorldId()==='soccer'&&typeof ensureSoccerRoll==='function') ensureSoccerRoll(); /* the soccer waiting roll runs on its own dedicated loop */
+    if(sportWorldId()==='basketball'&&typeof ensureBasketballDribble==='function') ensureBasketballDribble(); /* the basketball waiting dribble runs on its own dedicated loop */
     setStageMsg(gameSession&&gameSession.onFire?('🔥 ON FIRE! '+w.idleMsg):w.idleMsg);
     return;
   }
@@ -6656,7 +6693,7 @@ function startRoutine(){
   squadMembers().forEach(function(m){ if(m) m.classList.add('routine'); });
   setStageMsg(gameSession&&gameSession.onFire?'🔥 ON FIRE! The whole squad is readied at the base, pom poms shaking — answer to build the pyramid!':'The squad is readied at the base, pom poms in hand — answer to build the pyramid! 📣');
 }
-function stopRoutine(){ if(typeof stopPoseDriver==='function') stopPoseDriver(); if(typeof stopSoccerRoll==='function') stopSoccerRoll(); var el=stageCheerEl(); if(el) el.classList.remove('routine','sport-player-bob','jumprope-jumping','dance-idle','dance-step','swim-idle','gym-idle','soccer-idle','hockey-idle'); squadMembers().forEach(function(m){ if(m) m.classList.remove('routine'); }); var prop=document.getElementById('sportProp'); if(prop) prop.className='sport-prop'; }
+function stopRoutine(){ if(typeof stopPoseDriver==='function') stopPoseDriver(); if(typeof stopSoccerRoll==='function') stopSoccerRoll(); if(typeof stopBasketballDribble==='function') stopBasketballDribble(); var el=stageCheerEl(); if(el) el.classList.remove('routine','sport-player-bob','jumprope-jumping','dance-idle','dance-step','swim-idle','gym-idle','soccer-idle','hockey-idle'); squadMembers().forEach(function(m){ if(m) m.classList.remove('routine'); }); var prop=document.getElementById('sportProp'); if(prop) prop.className='sport-prop'; }
 function resetCheerToStart(instant){
   var el=stageCheerEl(); if(!el) return;
   stopRoutine();
@@ -6781,7 +6818,7 @@ var tennisDutyGen=0;
 function tennisBallDuty(done){
   var stage=document.getElementById('beamStage'), m=document.getElementById('stageMascot'), prop=document.getElementById('sportProp');
   var finish=function(){ beamBusy=false; if(done) done(); };
-  if(REDUCED||!stage||!m||!prop){
+  if(!stage||!m||!prop){
     if(prop){ var ph0=sportPropHome(); prop.style.transition=''; prop.style.left=ph0.left; prop.style.bottom=ph0.bottom; prop.style.transform=''; }
     finish(); return;
   }
@@ -6894,7 +6931,6 @@ function playSportScore(done){
     sparkleBurst(82,140);
     setTimeout(function(){
       if(prop){ prop.style.transition=''; }
-      if(REDUCED){ beamBusy=false; if(done) done(); return; }
       tennisBallDuty(done); /* the point is over and the ball lies on the far side: her mascot walks to it, picks it up and tosses it back to her racket — the ball never floats or snaps home on its own */
     }, REDUCED?80:1500);
     return;
@@ -6989,18 +7025,21 @@ function playSportScore(done){
     if(el){
       el.classList.remove('swim-back'); /* outbound: she faces the far wall and its touchpad */
       el.classList.add('swim-idle');
-      if(REDUCED){ el.style.left='62%'; }
-      else { el.style.transition='left 1.5s cubic-bezier(.3,.6,.4,1)'; el.style.left='62%'; }
+      swimTouchHold=false;
+      if(typeof ensurePoseDriver==='function') ensurePoseDriver(); /* her strokes and kicks for the whole crossing are written by the JS pose driver, frame by frame — she never glides across on a still pose */
+      el.style.transition='left 1.5s cubic-bezier(.3,.6,.4,1)'; el.style.left='62%';
     }
     sfx('sparkle'); setTimeout(function(){ sfx('cheer'); },300);
     sparkleBurst(30,110);
     setTimeout(function(){ sparkleBurst(70,110); },700);
+    setTimeout(function(){ swimTouchHold=true; },1560); /* she ARRIVES: her leading hand goes to the far wall and TOUCHES it, and holds there a beat — the touch is the finish */
     setTimeout(function(){
+      swimTouchHold=false;
       if(el){ el.style.transition=''; el.classList.remove('swim-idle'); }
       if(prop){ prop.className='sport-prop'; }
       beamBusy=false;
       if(done) done();
-    }, REDUCED?80:1750);
+    }, 2080);
     return;
   }
   if(sportWorldId()==='dance'){
@@ -7204,7 +7243,6 @@ function playSportMiss(done){
       }
     }
     setTimeout(function(){
-      if(REDUCED){ if(prop){ var phT=sportPropHome(); prop.style.transition=''; prop.style.left=phT.left; prop.style.bottom=phT.bottom; prop.style.transform=''; } beamBusy=false; if(done) done(); return; }
       tennisBallDuty(done); /* the point is over and the ball lies on her side: her mascot walks to it, picks it up and tosses it back to her racket — the ball never floats or snaps home on its own */
     }, REDUCED?120:1150);
     return;
@@ -7310,7 +7348,7 @@ function playSportMiss(done){
     var dropPx=58;
     if(stageG&&stageG.clientHeight) dropPx=Math.round(stageG.clientHeight*0.151);
     if(stageG){ var matEl=stageG.querySelector('.mat'), beamEl=stageG.querySelector('.beam'); if(matEl&&beamEl){ var mr=matEl.getBoundingClientRect(), br=beamEl.getBoundingClientRect(); if(mr.height>0&&br.height>0){ var dd=Math.round(mr.top-br.top); if(dd>10&&dd<stageG.clientHeight*0.6) dropPx=dd; } } }
-    if(gel&&!REDUCED){
+    if(gel){
       gel.style.transformOrigin='50% 100%';
       gel.classList.add('wobbling');
       gel.style.transition='transform .13s ease-in-out';
@@ -7321,21 +7359,13 @@ function playSportMiss(done){
       setTimeout(function(){ gel.style.transition='transform .55s cubic-bezier(.2,.9,.3,1.15)'; gel.style.transform='translate(0px,'+dropPx+'px) rotate(0deg)'; },1850);
       setTimeout(function(){ gel.style.transition='transform .5s cubic-bezier(.3,.7,.3,1)'; gel.style.transform='translate(0px,0px) rotate(0deg)'; syncShadow(null,{bottom:'30.5%',scale:1}); },2750);
       setTimeout(function(){ gel.style.transition=''; gel.style.transform=''; gel.style.transformOrigin=''; },3350);
-    } else if(gel){
-      /* Reduced motion: no tumble — she is simply placed ON the mat for
-         a beat, lying where she landed, then restored to the beam. */
-      gel.style.transformOrigin='50% 100%';
-      gel.style.transition='none';
-      gel.style.transform='translate(12px,'+dropPx+'px) rotate(84deg)';
-      syncShadow(null,{bottom:'16.5%',scale:1.5});
-      setTimeout(function(){ gel.style.transition=''; gel.style.transform=''; gel.style.transformOrigin=''; syncShadow(null,{bottom:'30.5%',scale:1}); },950);
     }
     if(prop){ prop.className='sport-prop'; if(!REDUCED){ prop.style.transition='bottom .45s ease-in'; prop.style.bottom='22%'; } }
     setTimeout(function(){
       if(prop){ var phGm=sportPropHome(); prop.style.transition= REDUCED? '' : 'left .6s ease, bottom .6s ease, transform .6s ease'; prop.style.left=phGm.left; prop.style.bottom=phGm.bottom; prop.style.transform=''; if(!REDUCED){ (function(pp){ setTimeout(function(){ pp.style.transition=''; },650); })(prop); } }
       beamBusy=false;
       if(done) done();
-    }, REDUCED?1200:3500);
+    }, 3500); /* the full fall plays out — wobble, drop to the mat, a beat lying there, stand, and the climb back onto the beam — before the retry is served */
     return;
   }
   if(sportWorldId()==='swimming'){
@@ -7495,7 +7525,7 @@ function soccerRollFrame(ts){
   var stage=document.getElementById('beamStage');
   var prop=document.getElementById('sportProp');
   var el=stageCheerEl();
-  if(REDUCED||!stage||!prop||!prop.classList.contains('idle-soccer')){ stopSoccerRollVisual(); return; }
+  if(!stage||!prop||!prop.classList.contains('idle-soccer')){ stopSoccerRollVisual(); return; }
   var ph=Math.sin((ts/1000)*Math.PI*2/1.1);
   prop.style.transition='none';
   prop.style.animation='none';
@@ -7510,8 +7540,52 @@ function stopSoccerRollVisual(){
   if(soccerRollLeg){ soccerRollLeg.style.transform=''; soccerRollLeg.style.animation=''; soccerRollLeg.style.transformBox=''; soccerRollLeg.style.transformOrigin=''; soccerRollLeg=null; }
   var prop=document.getElementById('sportProp'); if(prop) prop.style.transition='';
 }
-function ensureSoccerRoll(){ if(!REDUCED&&!soccerRollRAF) soccerRollRAF=requestAnimationFrame(soccerRollFrame); }
+function ensureSoccerRoll(){ if(!soccerRollRAF) soccerRollRAF=requestAnimationFrame(soccerRollFrame); }
 function stopSoccerRoll(){ if(soccerRollRAF){ cancelAnimationFrame(soccerRollRAF); soccerRollRAF=null; } stopSoccerRollVisual(); }
+/* ----- BASKETBALL WAITING DRIBBLE — its own loop (live-check fix) -----
+   The waiting dribble used to be a stylesheet keyframe that dipped
+   the ball 20px under her hand and nothing more — and on the live
+   check the ball simply sat on the floor beside her, no dribble at
+   all. The dribble now has a DEDICATED loop, modeled on the soccer
+   roll above: while the basketball waiting pose is up it writes the
+   ball's bounce every frame, with the prop's transition disabled so
+   each write lands exactly. The bounce is a REAL dribble: the ball
+   leaves her palm — the prop's home spot, tuned so the ball's top
+   meets her lowered hand — falls to the court floor at her feet
+   (measured live from her figure's own base line on the stage),
+   squashes a breath on contact, and rises back UP INTO her palm,
+   touching it at the top of every bounce. Score and miss both call
+   stopRoutine(), which stops this loop before the ball flies. */
+var bballRAF=null, bballGeom=null;
+function bballDribbleFrame(ts){
+  bballRAF=null;
+  var stage=document.getElementById('beamStage');
+  var prop=document.getElementById('sportProp');
+  var el=stageCheerEl();
+  if(!stage||!prop||!el||!prop.classList.contains('idle-basketball')||!stage.clientHeight){ stopBballVisual(); return; }
+  if(!bballGeom){
+    var sr0=stage.getBoundingClientRect(), pr0=prop.getBoundingClientRect(), fr0=el.getBoundingClientRect();
+    var palm=sr0.bottom-pr0.bottom, floor=(sr0.bottom-fr0.bottom)-28; /* the court floor at her feet: a ball resting there sits 28px below her figure's base line — the soccer ball's own ground spot (bottom: calc(33.5% - 28px)) */
+    if(palm-floor>10) bballGeom={palm:palm,floor:floor};
+    else { bballRAF=requestAnimationFrame(bballDribbleFrame); return; }
+  }
+  var p=(ts%900)/900, frac, squash=1;
+  if(p<0.42){ var u1=p/0.42; frac=1-u1*u1; } /* she pushes it down: slow off the palm, faster as it falls */
+  else if(p<0.56){ frac=0; squash=1-0.12*Math.sin(Math.PI*(p-0.42)/0.14); } /* floor contact — the ball squashes a breath on the court */
+  else { var u3=(p-0.56)/0.44; frac=1-(1-u3)*(1-u3); } /* it rises fast off the floor and settles UP into her palm */
+  prop.style.transition='none';
+  prop.style.animation='none';
+  prop.style.transformOrigin='50% 100%';
+  prop.style.bottom=(bballGeom.floor+(bballGeom.palm-bballGeom.floor)*frac).toFixed(1)+'px';
+  prop.style.transform='scaleY('+squash.toFixed(3)+')';
+  bballRAF=requestAnimationFrame(bballDribbleFrame);
+}
+function stopBballVisual(){
+  bballGeom=null;
+  var prop=document.getElementById('sportProp'); if(prop){ prop.style.transition=''; prop.style.transform=''; }
+}
+function ensureBasketballDribble(){ if(!bballRAF) bballRAF=requestAnimationFrame(bballDribbleFrame); }
+function stopBasketballDribble(){ if(bballRAF){ cancelAnimationFrame(bballRAF); bballRAF=null; } stopBballVisual(); }
 /* ----- JS POSE DRIVER (live-check fix) -----
    Four game motions are driven HERE, frame by frame, instead of
    resting on stylesheet keyframe animations alone: the soccer
@@ -7531,16 +7605,25 @@ function stopSoccerRoll(){ if(soccerRollRAF){ cancelAnimationFrame(soccerRollRAF
    phases below mirror the stylesheet keyframes they back up
    (soccerFootRoll / soccerFootRock, the barre leg-lift set,
    danceStepL/R, runStepL/R + runArmL/R), so the look is unchanged
-   wherever those animations already played. Genuine reduced motion
-   (the page's REDUCED flag) still wins: the driver never starts,
-   and the waiting poses stay still exactly as they did before. */
+   wherever those animations already played. The Nov 9 evening live
+   check caught the waiting motions standing still AGAIN — soccer's
+   roll, the running march, the swim, the hockey skate — because the
+   driver and the dedicated loops still stood down whenever the
+   REDUCED flag was set, and the check environment sets it. These
+   motions ARE the games' feedback (Michelle's settled spec), so the
+   driver and the waiting loops now run whenever their pose is up,
+   REDUCED or not — the same way Karter's proven live fixes are
+   driven. The driver also owns two waits it did not before:
+   swimming (treading at the surface while she waits; stroking and
+   kicking across, with the wall touch, on a score) and hockey
+   (skating in place and stickhandling the puck at her blade). */
 var poseRAF=null, poseOwned={};
 function poseRelease(key){
   var n=poseOwned[key]; if(!n) return; delete poseOwned[key];
   n.style.transform=''; n.style.animation=''; n.style.transformBox=''; n.style.transformOrigin='';
   if(key==='el') n.style.transition='';
 }
-function poseReleaseAll(){ poseBarreUndo(); runArmUndo(); for(var k in poseOwned) poseRelease(k); }
+function poseReleaseAll(){ poseBarreUndo(); runArmUndo(); poseHockeyUndo(); for(var k in poseOwned) poseRelease(k); }
 function poseLimb(node,origin,deg){
   if(!node) return;
   node.style.animation='none'; node.style.transformBox='view-box'; node.style.transformOrigin=origin;
@@ -7643,11 +7726,21 @@ function runArmUndo(){
   }
   runArmState={};
 }
+/* Swimming's wall touch (set by the swim score as she arrives): while
+   it holds, the driver's swim branch parks her in the touch pose —
+   leading hand on the far wall — instead of stroking. */
+var swimTouchHold=false;
+/* Hockey's puck while she waits: the pose driver slides it at her
+   blade; leaving the pose restores it exactly. */
+var hockeyPuckEl=null;
+function poseHockeyUndo(){
+  if(hockeyPuckEl){ hockeyPuckEl.style.transform=''; hockeyPuckEl.style.transition=''; hockeyPuckEl.style.animation=''; hockeyPuckEl=null; }
+}
 function poseDriverFrame(ts){
   poseRAF=null;
   var el=stageCheerEl();
   var stage=document.getElementById('beamStage');
-  if(REDUCED||!el||!stage||!stage.clientHeight){ poseReleaseAll(); return; }
+  if(!el||!stage||!stage.clientHeight){ poseReleaseAll(); return; }
   var t=ts/1000, TAU=Math.PI*2, want={};
   var legL=el.querySelector('.leg-l'), legR=el.querySelector('.leg-r'),
       armL=el.querySelector('.arm-l'), armR=el.querySelector('.arm-r'),
@@ -7655,6 +7748,7 @@ function poseDriverFrame(ts){
   if(Object.keys(barreArmState).length && !el.classList.contains('dance-idle')) poseBarreUndo(); /* she has left the barre — her arms are their drawn selves again before any other pose uses them */
   var runPoseActive=el.classList.contains('running')||(el.classList.contains('sport-player-bob')&&typeof sportWorldId==='function'&&sportWorldId()==='running');
   if(Object.keys(runArmState).length&&!runPoseActive) runArmUndo(); /* she has left the run — her arms are their drawn selves again */
+  if(hockeyPuckEl&&!el.classList.contains('hockey-idle')) poseHockeyUndo(); /* she has left the hockey wait — the puck is its plain self again */
   if(el.classList.contains('dance-idle')){
     /* WAITING AT THE BARRE (Michelle — the twirl is replaced): she
        stands at the barre doing LEG LIFTS. Both of her hands rest ON
@@ -7708,6 +7802,53 @@ function poseDriverFrame(ts){
     if(armL){ poseRunArm(armL, mrg); want.armL=armL; }
     if(armR){ poseRunArm(armR,-mrg); want.armR=armR; }
     if(body){ poseBody(body,0,1.3*mrg); want.body=body; }
+  } else if(el.classList.contains('swim-idle')){
+    /* SWIMMING — WAITING AND CROSSING (live-check fix): her tread and
+       her stroke are written HERE, frame by frame, not left to the
+       stylesheet: on the live check she lay flat in one pose and
+       glided, because the swim-idle keyframes were all that moved
+       her. Waiting, she TREADS at the surface — arms sculling in
+       opposite phases, feet flutter-kicking, body bobbing at the
+       waterline, her face and arms riding above the water as her
+       stage position puts them. Crossing (the score keeps this class
+       on for the whole trip), the same writes become her freestyle:
+       arms pulling in opposite phases and legs kicking the whole
+       way — she never drifts across with still limbs. At the far
+       wall the score sets swimTouchHold: her leading hand goes to
+       the wall and stays on it for a beat — the touch that finishes
+       the race — before the next problem. */
+    if(swimTouchHold){
+      if(armR){ poseLimb(armR,'122px 100px',-78); want.armR=armR; }
+      if(armL){ poseLimb(armL,'78px 100px',14); want.armL=armL; }
+      if(legL){ poseLimb(legL,'88px 196px',2); want.legL=legL; }
+      if(legR){ poseLimb(legR,'112px 196px',-2); want.legR=legR; }
+      if(body){ poseBody(body,0,0); want.body=body; }
+    } else {
+      var swp=Math.sin(t*TAU/1.1), kick=Math.cos(t*TAU/0.52);
+      if(armL){ poseLimb(armL,'78px 100px',-6+32*swp); want.armL=armL; }
+      if(armR){ poseLimb(armR,'122px 100px',6-32*swp); want.armR=armR; }
+      if(legL){ poseLimb(legL,'88px 196px',1+16*kick); want.legL=legL; }
+      if(legR){ poseLimb(legR,'112px 196px',1-16*kick); want.legR=legR; }
+      if(body){ poseBody(body,-3+3*Math.cos(t*TAU/1.1),0); want.body=body; }
+    }
+  } else if(el.classList.contains('hockey-idle')){
+    /* HOCKEY WAITING (live-check fix): she SKATES IN PLACE and
+       STICKHANDLES — written here frame by frame, not left to the
+       stylesheet: on the live check she stood perfectly still. Her
+       legs push in alternating phases around her hips like a skater
+       holding her spot, her body sways with the pushes, her stick
+       sways around her grip, and the puck slides back and forth
+       right at her blade in step with the stick. Her correct and
+       wrong animations are untouched — this branch owns only the
+       wait. */
+    var hph=Math.cos(t*TAU/1.1);
+    if(legL){ poseLimb(legL,'88px 196px',-13*hph); want.legL=legL; }
+    if(legR){ poseLimb(legR,'112px 196px',13*hph); want.legR=legR; }
+    if(body){ poseBody(body,0,1.6*Math.sin(t*TAU/1.1)); want.body=body; }
+    var stick=el.querySelector('.hockey-stick-g');
+    if(stick){ stick.style.animation='none'; stick.style.transformBox='fill-box'; stick.style.transformOrigin='10% 7%'; stick.style.transform='rotate('+(4*Math.sin(t*TAU/1.1)).toFixed(2)+'deg)'; want.stick=stick; }
+    var puck=document.getElementById('sportProp');
+    if(puck&&puck.classList.contains('idle-hockey-puck')){ puck.style.transition='none'; puck.style.animation='none'; puck.style.transform='translateX('+(-6*hph).toFixed(2)+'px)'; hockeyPuckEl=puck; }
   }
   /* the soccer waiting roll is NOT written here — it has its own
      dedicated loop above (soccerRollFrame), which owns the prop and
@@ -7717,7 +7858,7 @@ function poseDriverFrame(ts){
   if(!Object.keys(want).length) return;
   poseRAF=requestAnimationFrame(poseDriverFrame);
 }
-function ensurePoseDriver(){ if(!REDUCED&&!poseRAF) poseRAF=requestAnimationFrame(poseDriverFrame); }
+function ensurePoseDriver(){ if(!poseRAF) poseRAF=requestAnimationFrame(poseDriverFrame); }
 function stopPoseDriver(){ if(poseRAF){ cancelAnimationFrame(poseRAF); poseRAF=null; } poseReleaseAll(); }
 /* ----- Cheer SQUAD logic (the classic cheer scene) -----
    Waiting: the squad of four readies at the base, pom poms in hand.
