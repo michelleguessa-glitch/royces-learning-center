@@ -335,6 +335,17 @@ span.royce-crop>img{position:absolute;left:-143%;top:-10.6%;width:408.5%;height:
 .visual{display:flex;justify-content:center;padding:14px 0 10px}
 .question{font-family:'Fredoka';font-weight:600;font-size:clamp(26px,4.5vw,36px);line-height:1.25;margin:6px 0 4px}
 .clue{background:var(--purple-l);border-radius:14px;padding:12px 14px;font-weight:800;line-height:1.5;margin:8px 0}
+/* The sight-word SENTENCE is the heart of its question card (Michelle):
+   it stands out from the clue box's small instruction line — bigger,
+   in the display face — so the sentence with its ___ blank is the
+   first thing she reads, never buried or missing. */
+.sight-sent{font-family:'Fredoka';font-weight:600;font-size:1.32em;line-height:1.3}
+/* The sentence gets its OWN box on the card (Michelle's report: the
+   sentence was missing from the card): nextPrompt renders the
+   sight-word item's stored sentence into #qSentence directly from
+   the item itself — it never rides inside the clue's instruction
+   line, so no clue wording can ever crowd it out or drop it. */
+.sight-sent-box{text-align:center}
 .answer-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
 .answer-input{flex:1;min-width:150px;font-family:'Fredoka';font-size:26px;font-weight:600;padding:12px 16px;border:3px solid var(--line);border-radius:16px;color:var(--ink);background:#FFFDFE}
 .answer-input:focus{outline:none;border-color:var(--pink)}
@@ -416,7 +427,17 @@ span.royce-crop>img{position:absolute;left:-143%;top:-10.6%;width:408.5%;height:
    above her figure box's bottom edge, so bottom:33.6% plants her feet
    flush on the beam, never sunk below its top edge. */
 #practiceView .stage.sport-active.gym-beam-on .stage-cheer{bottom:33.6%}
-#practiceView .stage.swimming-active .stage-cheer{bottom:4.8%}
+#practiceView .stage.swimming-active .stage-cheer{bottom:calc(31% + 2px)} /* same surface-float as the base swimming rule: face and arms above the waterline while she lies ready to tread */
+/* Tennis: her feet are PLANTED on the court surface — she stands on
+   her own side between the service line and the near baseline, soles
+   on the blue court with her shadow directly under them, in every
+   state; the waiting bob that used to lift her feet off the ground
+   is off for tennis. */
+#practiceView .stage.tennis-active .stage-cheer{bottom:13.6%}
+#practiceView .stage.tennis-active .cheer-shadow{bottom:13.2%}
+.stage.tennis-active .stage-cheer{bottom:13.6%}
+.stage.tennis-active .stage-cheer.sport-player-bob{animation:none}
+.stage.running-active .stage-cheer.sport-player-bob{animation:none} /* RUNNING WAITING (Michelle): no floating up and down — the pose driver marches her in place (alternating knee lifts, feet leaving the track one at a time, planted foot down, body grounded), so the whole-figure bob float is OFF in the track game */
 #practiceView .stage.dance-active .stage-cheer{bottom:15.8%}
 #practiceView .stage.jumprope-active .stage-cheer{bottom:10.3%}
 #practiceView .cheer-shadow{bottom:30.5%;height:5%;min-height:8px}
@@ -880,14 +901,20 @@ main.wrap,body>footer{position:relative;z-index:1}
 /* TEAM MASCOT (Michelle's order): the picked animal — the unicorn by
    default on her page — stands INSIDE every game as a FULL-BODY,
    upright, dressed-up mascot character (painted by paintStageMascot
-   in the games layer), at ONE standard sideline spot per venue: off
-   to the side where a mascot logically belongs, visible the whole
+   in the games layer), at ONE standard spot in every venue: the
+   BACK-RIGHT corner of the venue — back, right, visible the whole
    time, out of the way of the play. Its left/bottom are set inline
    per venue by paintStageMascot(); it sits at z-index 3, BEHIND her
    player (z-index 4), so it can never cover her, the ball or a
    target — she passes in front of it, like a real sideline. */
-.stage-mascot{position:absolute;z-index:3;width:58px;height:84px;left:23%;bottom:2%;pointer-events:none;filter:drop-shadow(0 4px 6px rgba(58,20,48,.3))}
+.stage-mascot{position:absolute;z-index:3;width:58px;height:84px;right:2%;left:auto;bottom:56%;pointer-events:none;filter:drop-shadow(0 4px 6px rgba(58,20,48,.3))}
 .stage-mascot svg{width:100%;height:100%;display:block;overflow:visible}
+/* MASCOT WALKING (tennis ball duty): while the mascot walks to the
+   ball and back, its whole figure STEPS — a two-beat rock from foot
+   to foot with a lift on every step — so it truly walks the court
+   and never glides or slides across with a still body. */
+.stage-mascot.mascot-walking img{animation:mascotStep .34s ease-in-out infinite}
+@keyframes mascotStep{0%{transform:translateY(0) rotate(-3.6deg)}25%{transform:translateY(-6px) rotate(0deg)}50%{transform:translateY(0) rotate(3.6deg)}75%{transform:translateY(-6px) rotate(0deg)}100%{transform:translateY(0) rotate(-3.6deg)}}
 .preset-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:10px}
 .preset-card{background:#fff;border:3px solid var(--line);border-radius:16px;padding:10px;text-align:left;width:100%}
 .preset-card.on{border-color:var(--pink);box-shadow:0 6px 16px rgba(157,20,80,.22)}
@@ -1194,7 +1221,7 @@ footer{max-width:1080px;margin:0 auto;padding:0 16px 210px;color:var(--muted);fo
 @keyframes propDribble{from{transform:translateY(0) scaleY(1)}to{transform:translateY(20px) scaleY(.88)}}
 @keyframes soccerFootRoll{0%,100%{transform:translateX(-9px) rotate(-38deg)}50%{transform:translateX(9px) rotate(38deg)}}
 @keyframes propBob{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-12px) rotate(4deg)}}
-@keyframes puckHandle{0%,100%{transform:translateX(-10px)}50%{transform:translateX(10px)}}
+@keyframes puckHandle{0%,100%{transform:translateX(-6px)}50%{transform:translateX(6px)}}
 @keyframes propToss{0%,100%{transform:translateY(0)}45%{transform:translateY(-38px) rotate(160deg)}55%{transform:translateY(-38px) rotate(200deg)}}
 @keyframes propTwirl{0%{transform:rotate(0) translateY(0)}50%{transform:rotate(180deg) translateY(-10px)}100%{transform:rotate(360deg) translateY(0)}}
 /* swimming: a real water layer sits IN FRONT of her lower body so she reads
@@ -1288,11 +1315,15 @@ footer{max-width:1080px;margin:0 auto;padding:0 16px 210px;color:var(--muted);fo
    The scene carries nothing else: no sun, no cloud, no spare rope
    arches, no medal — just her, her rope, and the plain ground. */
 .stage.jumprope-active .stage-cheer{bottom:34px}
-/* swimming: she plays IN the water, not on the deck — her figure sits
-   low in the stage so the swim-water layer (z-index 5, in front of her)
-   covers her lower body while she waits kicking, swims across on a
-   right answer, and sinks a little on a miss. */
-.stage.swimming-active .stage-cheer{bottom:16px}
+/* swimming: she plays IN the water, not on the deck — and she floats
+   AT the surface the way a real swimmer lies ready to tread: her flat
+   body's band straddles the waterline (the swim-water layer's top edge
+   sits at 58% of the stage), so her FACE and her stroking ARMS ride
+   ABOVE the water's surface while her body stays in the water — never
+   a figure sunk under the waterline. She waits kicking in that ready
+   position, swims across on a right answer, and sinks a little on a
+   miss (the miss adds its own dip on top of this base). */
+.stage.swimming-active .stage-cheer{bottom:calc(31% + 2px)}
 /* SWIMMING POSE — SHE SWIMS FLAT IN THE WATER (live-check fix): her
    figure used to stay UPRIGHT in the pool — standing, head up — with
    only her arms and legs moving, which read as treading water, never
@@ -1340,41 +1371,31 @@ footer{max-width:1080px;margin:0 auto;padding:0 16px 210px;color:var(--muted);fo
 .gym-idle .arm-l{animation:pomShakeL .5s ease-in-out infinite alternate;transform-box:view-box;transform-origin:78px 100px}
 .gym-idle .arm-r{animation:pomShakeR .5s ease-in-out infinite alternate;transform-box:view-box;transform-origin:122px 100px}
 .sport-player-bob{animation:playerBob 1.5s ease-in-out infinite}
-/* dance waiting: she TWIRLS at the barre — a full pirouette spin in
-   place at her barre spot while the learner thinks */
-.dance-idle{animation:danceTwirl 1.9s ease-in-out infinite;transform-origin:50% 100%}
-@keyframes danceTwirl{0%{transform:rotateY(0deg)}100%{transform:rotateY(360deg)}}
-/* TRUE BALLERINA TWIRL (Michelle): she does not spin as a flat figure
-   with both legs hanging straight. Through the whole turn she holds
-   the ballerina twirl pose — one leg UP in passé, its foot drawn
-   across to the standing leg's knee, pumping gently as she turns;
-   the standing leg stays tall with only a small balance sway; her
-   arms hold a rounded ballerina frame that breathes as she turns;
-   and her body bobs lightly on the supporting foot. The limbs are
-   articulated the whole way — actual motion, never a cardboard cutout
-   merely rotating. */
-.dance-idle .leg-r{animation:passePump .38s ease-in-out infinite alternate;transform-box:view-box;transform-origin:112px 196px}
-@keyframes passePump{from{transform:rotate(71deg)}to{transform:rotate(79deg)}}
-.dance-idle .leg-l{animation:passeStand .75s ease-in-out infinite alternate;transform-box:view-box;transform-origin:88px 196px}
-@keyframes passeStand{from{transform:rotate(0deg)}to{transform:rotate(3deg)}}
-.dance-idle .arm-l{animation:twirlArmL .75s ease-in-out infinite alternate;transform-box:view-box;transform-origin:78px 100px}
-@keyframes twirlArmL{from{transform:rotate(38deg)}to{transform:rotate(52deg)}}
-.dance-idle .arm-r{animation:twirlArmR .75s ease-in-out infinite alternate;transform-box:view-box;transform-origin:122px 100px}
-@keyframes twirlArmR{from{transform:rotate(-38deg)}to{transform:rotate(-52deg)}}
-.dance-idle .cheer-body{animation:twirlBob .38s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:50% 100%}
-@keyframes twirlBob{from{transform:translateY(0)}to{transform:translateY(-4px)}}
-/* DANCE ROUTINE TRAVEL (Michelle): when the routine carries her
-   across the studio she travels on REAL dance steps — legs stepping
-   in opposite phases the whole way, arms in the ballerina frame,
-   body bobbing with each step — the same stepping machinery as her
-   walk, never a slide, skate or glide with still legs, and never
-   the twirl spin used as travel. */
+/* dance waiting (Michelle, REPLACED — the twirl is GONE): she does
+   LEG LIFTS standing at the barre — both hands ON the barre, actually
+   touching it with NO GAPS, while one leg lifts out and lowers, then
+   the other. There is no stylesheet pose for this: the JS pose driver
+   draws it every frame — it measures the real barre on stage, draws
+   both of her arms shoulder-to-hand so her hands land exactly on the
+   top bar, and swings the working leg up and down around its hip
+   while the standing leg stays planted. The old pirouette spin and
+   the passé hold are removed entirely: no .dance-idle animation of
+   any kind remains here, so nothing can ever spin her again. */
+/* DANCE TRAVEL (Michelle): the only travel left in dance is her trip
+   BACK to the barre between problems, and she covers it on REAL
+   dance steps — legs stepping in opposite phases the whole way,
+   arms swinging gently, body bobbing with each step — the same
+   stepping machinery as her walk, never a slide, skate or glide
+   with still legs. (Her correct-answer routine no longer travels
+   at all: battement, relevé and plié happen at the barre.) */
 .dance-step .leg-l{animation:danceStepL .32s ease-in-out infinite alternate;transform-box:view-box;transform-origin:88px 196px}
 .dance-step .leg-r{animation:danceStepR .32s ease-in-out infinite alternate;transform-box:view-box;transform-origin:112px 196px}
 @keyframes danceStepL{from{transform:rotate(27deg)}to{transform:rotate(-25deg)}}
 @keyframes danceStepR{from{transform:rotate(-25deg)}to{transform:rotate(27deg)}}
-.dance-step .arm-l{animation:twirlArmL .6s ease-in-out infinite alternate;transform-box:view-box;transform-origin:78px 100px}
-.dance-step .arm-r{animation:twirlArmR .6s ease-in-out infinite alternate;transform-box:view-box;transform-origin:122px 100px}
+.dance-step .arm-l{animation:danceArmL .6s ease-in-out infinite alternate;transform-box:view-box;transform-origin:78px 100px}
+.dance-step .arm-r{animation:danceArmR .6s ease-in-out infinite alternate;transform-box:view-box;transform-origin:122px 100px}
+@keyframes danceArmL{from{transform:rotate(-8deg)}to{transform:rotate(10deg)}}
+@keyframes danceArmR{from{transform:rotate(8deg)}to{transform:rotate(-10deg)}}
 .dance-step .cheer-body{animation:walkBob .3s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:50% 100%}
 .jumprope-jumping{animation:jumpRopeHop .54s ease-in-out infinite}
 /* jump rope MISS — she DROPS the rope and picks it back up: the rope
@@ -1416,7 +1437,7 @@ footer{max-width:1080px;margin:0 auto;padding:0 16px 210px;color:var(--muted);fo
    foot never lifts off the ball. Only when she answers does the ball
    leave her foot — kicked toward the goal. */
 .soccer-idle .leg-r{animation:soccerFootRock .55s ease-in-out infinite alternate;transform-box:view-box;transform-origin:112px 196px}
-@keyframes soccerFootRock{from{transform:rotate(-6deg)}to{transform:rotate(6deg)}}
+@keyframes soccerFootRock{from{transform:translateX(-9px) rotate(-5deg)}to{transform:translateX(9px) rotate(5deg)}}
 /* hockey: the stick lives IN her hands — drawn inside her figure,
    gripped at the hand, blade down at the puck. It never translates,
    never flies, and is never the thing that crosses the rink: only the
@@ -1424,12 +1445,16 @@ footer{max-width:1080px;margin:0 auto;padding:0 16px 210px;color:var(--muted);fo
    travels. While she waits, the stick sways gently around her grip as
    she stick-handles, and the puck slides a few pixels back and forth
    right in front of the blade. */
+.hockey-idle .leg-l{animation:hkSkatePush 1.1s ease-in-out infinite;transform-box:view-box;transform-origin:88px 196px}
+.hockey-idle .leg-r{animation:hkSkatePush 1.1s ease-in-out -.55s infinite;transform-box:view-box;transform-origin:112px 196px}
+@keyframes hkSkatePush{0%,100%{transform:rotate(-13deg)}50%{transform:rotate(13deg)}}
+.hockey-idle .cheer-body{animation:skateSway .55s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:50% 100%}
 .hockey-idle .hockey-stick-g{animation:stickHandleSway .55s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:10% 7%}
 @keyframes stickHandleSway{from{transform:rotate(-4deg)}to{transform:rotate(4deg)}}
 .stick-swing .hockey-stick-g{animation:stickSwing .5s ease-in-out 1;transform-box:fill-box;transform-origin:10% 7%}
 @keyframes stickSwing{0%{transform:rotate(0deg)}35%{transform:rotate(-18deg)}62%{transform:rotate(20deg)}100%{transform:rotate(0deg)}}
 @media (prefers-reduced-motion: reduce){
- .routine .cheer-body,.routine .arm-l,.routine .arm-r,.routine .skirt-g,.walking .leg-l,.walking .leg-r,.walking .cheer-body,.leaping,.leaping .leg-l,.leaping .leg-r,.leaping .arm-l,.leaping .arm-r,.running .leg-l,.running .leg-r,.running .cheer-body,.running .arm-l,.running .arm-r,.skating .leg-l,.skating .leg-r,.skating .cheer-body,.swim-idle .arm-l,.swim-idle .arm-r,.wobbling .cheer-body,.split-land .cheer-body,.streak-pill.hot,.gamecard.bounce,.sb-team.pop,.sb-score.bump,.belle-compact.party .belle-face,.stage-mascot,.sport-prop,.sport-player-bob,.dance-idle,.dance-idle .leg-l,.dance-idle .leg-r,.dance-idle .arm-l,.dance-idle .arm-r,.dance-idle .cheer-body,.dance-step .leg-l,.dance-step .leg-r,.dance-step .arm-l,.dance-step .arm-r,.dance-step .cheer-body,.jumprope-jumping,.swim-idle .cheer-body,.swim-idle .leg-l,.swim-idle .leg-r,.swim-water .sw-wave,.gym-idle .cheer-body,.gym-idle .arm-l,.gym-idle .arm-r,.racket-swing .tennis-racket-g,.soccer-idle .leg-r,.hockey-idle .hockey-stick-g,.stick-swing .hockey-stick-g{animation:none!important}
+ .routine .cheer-body,.routine .arm-l,.routine .arm-r,.routine .skirt-g,.walking .leg-l,.walking .leg-r,.walking .cheer-body,.leaping,.leaping .leg-l,.leaping .leg-r,.leaping .arm-l,.leaping .arm-r,.running .leg-l,.running .leg-r,.running .cheer-body,.running .arm-l,.running .arm-r,.skating .leg-l,.skating .leg-r,.skating .cheer-body,.hockey-idle .leg-l,.hockey-idle .leg-r,.hockey-idle .cheer-body,.swim-idle .arm-l,.swim-idle .arm-r,.wobbling .cheer-body,.split-land .cheer-body,.streak-pill.hot,.gamecard.bounce,.sb-team.pop,.sb-score.bump,.belle-compact.party .belle-face,.stage-mascot,.sport-prop,.sport-player-bob,.dance-idle,.dance-idle .leg-l,.dance-idle .leg-r,.dance-idle .arm-l,.dance-idle .arm-r,.dance-idle .cheer-body,.dance-step .leg-l,.dance-step .leg-r,.dance-step .arm-l,.dance-step .arm-r,.dance-step .cheer-body,.jumprope-jumping,.swim-idle .cheer-body,.swim-idle .leg-l,.swim-idle .leg-r,.swim-water .sw-wave,.gym-idle .cheer-body,.gym-idle .arm-l,.gym-idle .arm-r,.racket-swing .tennis-racket-g,.soccer-idle .leg-r,.hockey-idle .hockey-stick-g,.stick-swing .hockey-stick-g{animation:none!important}
  .cheer-shadow{transition:none}
  html{scroll-behavior:auto}
 }
@@ -1648,6 +1673,7 @@ footer{max-width:1080px;margin:0 auto;padding:0 16px 210px;color:var(--muted);fo
           <div class="qlabel" id="qLabel">Your turn — you can do it!</div>
           <div class="visual" id="qVisual"></div>
           <div class="question" id="qText"></div>
+          <div class="clue sight-sent-box" id="qSentence" style="display:none"></div>
           <div class="clue" id="qClue" style="display:none"></div>
           <div id="choiceArea"></div>
           <div class="answer-row" id="inputRow">
@@ -2189,7 +2215,7 @@ function buildWorkedExampleRandom(id){
     {h:'Step 2 — Set it up and solve',b:'The story becomes: <b>'+setupStr+'</b>. Always say what your number means!'},
     finCustom('<div class="example-big">Answer: '+ex.ans+'</div>For YOUR story: find what you know, find what is asked, then pick '+(gradeIdx>=3?'add, subtract or multiply.':'add, subtract or skip-count.'))] }
   else if(id==='sightwords'){ var w=ex.ans;
-    steps=[{h:'Watch this word: “'+w+'”',b:'A <b>different</b> sight word, learned the same way. Look at it in a sentence:'+'<br><br>'+(ex.clue||'')},
+    steps=[{h:'Watch this word: “'+w+'”',b:'A <b>different</b> sight word, learned the same way. Look at it in a sentence:'+'<br><br>'+(ex.sentence? '<span class="sight-sent">'+ex.sentence+'</span>' : (ex.clue||''))},
     {h:'Step 1 — Look, say, spell it',b:'Say it slowly, letter by letter:'+'<div class="letter-boxes">'+w.split('').map(function(l){return '<span class="letter-box">'+l+'</span>'}).join('')+'</div>That spells <b>'+w.split('').join('-')+'</b> — '+w.length+' letters.'},
     {h:'Step 2 — Cover, picture it, write it',b:'Cover the word, picture it in your mind like a photo 📸, then write it from your picture.'},
     finCustom('<div class="example-big">'+w+'</div>Now do the same with YOUR word: picture it, then type it letter by letter.')] }
@@ -2229,6 +2255,17 @@ var DOLCH3=['about','better','bring','carry','clean','cut','done','draw','drink'
 var FRY4=['example','important','children','side','feet','car','mile','night','walk','white','sea','began','grow','took','river','four','carry','state','once','book','hear','stop','without','second','later','idea','enough','eat','face','watch','far','really','almost','let','above','girl','sometimes','cut','young','talk','soon','list','song','leave','family','body','music','color','stand','sun','questions','fish','area','mark','dog','horse','birds','problem','complete','room','knew','since','ever','piece','told','usually','friends','easy','heard','order','red','door','sure','become','top','ship','across','today','during','short','better','best'];
 var FRY5=['however','low','hours','black','class','happens','whole','remember','early','waves','reached','listen','wind','rock','space','covered','fast','several','hold','toward','five','step','morning','passed','vowel','true','hundred','against','pattern','numeral','table','north','slowly','money','map','busy','pulled','draw','voice','seen','cold','brought','understand','warm','common','strong','special','heart','produce','fact','street','inch','multiply','nothing','course','stay','wheel','full','force','blue','object','decide','surface','deep','moon','island','foot','system','busy','test','record','boat','common','gold','possible','plane','dry','wonder','laugh','thousand','ago','ran','check','game','shape','equate','hot','miss','brought','heat','snow','tire','bring','yes','distant','fill','east','paint','language','among','grand','ball','yet','wave','drop','heart','present','heavy','dance','engine','position','arm','wide','sail','material','size','vary','settle','speak','weight','general','ice','matter','circle','pair','include','divide','syllable','felt','perhaps','pick','sudden','count','square','reason','length','represent','art','region','energy','hunt','probable','bed','brother','egg','ride','cell','believe','fraction','forest','sit','race','window','store','summer','train','sleep','prove','lone','leg','exercise','wall','catch','mount','wish','sky','board','joy','winter','sat','written','wild','instrument','kept','glass','grass','cow','job','edge','sign','visit','past','soft','fun','bright','gas','weather','month','million','bear','finish','happy','hope','clothe','strange','gone','jump','baby','village','meet','root','buy','raise','solve','metal','whether','push','seven','paragraph','third','shall','held','hair','describe','cook','floor','either','result','burn','hill','safe','cat','century','consider','type','law','bit','coast','copy','phrase','silent','tall','sand','soil','roll','temperature','finger','industry','value','fight','lie','beat','excite','natural','view','sense','capital','chair','danger','fruit','rich','thick','soldier','process','operate','practice','separate','difficult','doctor','please','protect','noon','locate','ring','character','insect','caught','period','indicate','radio','spoke','atom','human','history','effect','electric','expect','crop','modern','element','hit','student','corner','party','supply','bone','rail','imagine','provide','agree','thus','capital','won\'t','chair','danger','fruit','rich','thick','soldier','process','operate','practice','separate','difficult','doctor','please','protect','noon','whose','locate','ring','character','insect','caught','period','indicate','radio','spoke','atom','human','history','effect','electric','expect','crop','modern','element','hit','student','corner','party','supply','bone','rail','imagine','provide','agree','thus','won\'t','chair'];
 var SENT_MAP={"the": "___ cat wears a pink bow.", "of": "A bouquet ___ roses for Belle!", "and": "Royce ___ Belle practice together.", "a": "She wore ___ sparkly bow.", "to": "We walked ___ the castle gym.", "in": "The rose is ___ the glass dome.", "is": "Cheer practice ___ so much fun!", "you": "___ can do it, Royce!", "that": "___ beam is pink and shiny.", "it": "She stuck the split and loved ___!", "he": "___ is the castle clock keeper.", "was": "The show ___ wonderful!", "for": "This trophy is ___ you!", "on": "Her bow sits ___ her head.", "are": "The pom poms ___ pink and purple.", "as": "Twirl ___ fast as you can!", "with": "Practice ___ Coach Belle today.", "his": "___ whistle hangs on a pink ribbon.", "they": "___ cheer for Royce together.", "i": "___ love to cheer and dance!", "at": "Look ___ the sparkling chandelier!", "be": "___ kind and brave like Belle.", "this": "___ is my favorite bow.", "have": "I ___ two pink pom poms.", "from": "A gift ___ the whole squad.", "or": "Pink ___ purple — which bow today?", "one": "___ rose grows in the glass dome.", "had": "She ___ a big smile after practice.", "by": "Sit ___ me at the show.", "words": "Spell the ___ out loud with Belle.", "but": "She wobbled ___ did not fall!", "not": "Do ___ give up — try again!", "what": "___ time does practice start?", "all": "___ the roses are blooming.", "were": "The Belles ___ cheering loudly.", "we": "___ are the Royal Roses!", "when": "___ does the competition begin?", "your": "___ cheerleader is ready to shine!", "can": "You ___ walk the whole beam!", "said": "“Great job!” ___ Coach Belle.", "there": "Put the pom poms over ___.", "use": "___ your strong arms for balance.", "each": "___ cheerleader gets a bow.", "which": "___ uniform will you wear today?", "she": "___ landed the split perfectly!", "do": "___ your best and have fun!", "how": "___ did you learn that jump?", "their": "The Belles put on ___ pink uniforms.", "will": "She ___ try the beam again.", "other": "Pick the ___ pom pom color.", "about": "This book is ___ a brave cheerleader.", "out": "The squad ran ___ onto the floor.", "many": "So ___ roses grow in the garden!", "then": "First stretch, ___ practice.", "them": "Belle cheers for all of ___.", "these": "___ bows are pink and sparkly.", "so": "She practiced ___ she could shine.", "some": "___ cupcakes are for the bake sale.", "her": "___ bow is bright pink.", "would": "___ you like to cheer with us?", "make": "Let's ___ a new cheer together!", "like": "I ___ your sparkly pom poms!", "him": "Give the trophy to ___.", "into": "She leaped ___ a perfect split.", "time": "What ___ is the big show?", "has": "The castle ___ a tall clock tower.", "look": "___ at her walk the beam!", "two": "She has ___ purple pom poms.", "more": "One ___ bow for the show!", "write": "___ your name on the trophy list.", "go": "___ Roses, go!", "number": "What ___ is on the clock?", "no": "___ giving up on this squad!", "way": "This ___ to the ballroom, please.", "could": "She ___ hear the crowd cheering.", "people": "Many ___ came to watch the show.", "my": "___ cheerleader wears a gold bow.", "than": "She jumped higher ___ ever before!", "first": "___ place goes to the Royal Roses!", "water": "Drink some ___ after practice.", "been": "The squad has ___ practicing all week.", "called": "Belle ___ the squad together.", "who": "___ is ready to shine today?", "oil": "The squeaky beam hinge needs a drop of ___.", "its": "The castle shows ___ sparkling lights.", "now": "___ it is your turn on the beam!", "find": "Can you ___ the missing bow?", "long": "Her ribbons are ___ and pink.", "down": "She slid ___ into a split.", "day": "Practice day is a happy ___.", "did": "She ___ it — she stuck the split!", "get": "___ ready, squad — show time!", "come": "___ and cheer with us!", "made": "Belle ___ a new cheer for the squad.", "may": "___ I try the beam again?", "part": "Every ___ of the routine matters.", "always": "We ___ stretch before practice.", "because": "I wore a coat ___ it was cold.", "before": "Wash your hands ___ snack time.", "together": "Let's cheer ___ at the show!", "never": "Belle ___ gives up on her squad."};
+/* SENTENCE FOR EVERY SIGHT WORD (Michelle's fix): SENT_MAP above only
+   carried sentences for about a fifth of the words in the sight-word
+   banks, so most items served the generic listen-and-type clue with NO
+   sentence on the card at all - the missing sentence she reported.
+   Every bank word now has its own sentence, the word blanked out with
+   ___, in Royce's castle-and-cheer world, merged into SENT_MAP below
+   (an original SENT_MAP sentence always wins). The sight-word item is
+   therefore ALWAYS its sentence - on the question card, in the wizard
+   example, everywhere the item's clue is shown. */
+var SENT_MORE={"away": "The balloons floated ___ after the show.", "big": "Royce wore a ___ pink bow today.", "blue": "Her favorite bow is ___ and sparkly.", "funny": "Belle told a ___ joke at practice.", "help": "Please ___ me tie my shoes.", "here": "Put your pom poms right ___.", "jump": "Watch Royce ___ high into the air!", "little": "The ___ rose bud is just opening.", "me": "Belle picked ___ for the top spot!", "play": "Let's ___ together after practice.", "red": "The enchanted rose is ___.", "run": "We ___ to the castle gym together.", "see": "I can ___ the whole castle from here!", "three": "She has ___ sparkly bows.", "up": "Look ___ at the castle tower!", "where": "___ did my bow go?", "yellow": "Belle's gown is a pretty ___.", "am": "I ___ so proud of my squad.", "ate": "Royce ___ a cupcake after the show.", "black": "Her hair puffs are soft and ___.", "brown": "The little puppy is ___ and fluffy.", "came": "The whole squad ___ to the castle.", "eat": "Let's ___ cupcakes after practice!", "four": "There are ___ roses in the vase.", "good": "That was a ___ split, Royce!", "must": "We ___ practice every day.", "new": "She got a ___ bow for the show.", "our": "___ squad cheers the loudest!", "please": "Say the magic word: ___!", "pretty": "What a ___ rose garden!", "ran": "She ___ all the way to the gym.", "ride": "Let's ___ the castle train today!", "saw": "I ___ a rainbow over the castle.", "say": "___ it loud and proud!", "soon": "The show will start ___.", "too": "I want to cheer ___!", "under": "The kitten sleeps ___ the bench.", "want": "I ___ a pink bow for the show.", "well": "You did that split really ___!", "went": "We ___ to the castle ballroom.", "white": "The swan has soft ___ feathers.", "yes": "___! I stuck the landing!", "after": "We eat cupcakes ___ practice.", "again": "Let's sing that song ___!", "an": "She ate ___ apple before the show.", "any": "Do you have ___ bows I can borrow?", "ask": "If you need help, just ___ Belle.", "every": "___ rose in the garden is pink.", "fly": "The butterfly can ___ over the roses.", "give": "Please ___ me a high five!", "going": "We are ___ to the castle today.", "just": "She ___ loves to dance and twirl.", "know": "I ___ every word of our chant.", "let": "___ me help you with that bow.", "live": "The king and queen ___ in the castle.", "old": "The ___ castle has tall towers.", "once": "___ upon a time, in a castle...", "open": "Please ___ the big castle door.", "over": "She jumped ___ the puddle with a leap.", "put": "___ your pom poms on the bench.", "round": "The rose window is big and ___.", "stop": "___! Listen to Belle first.", "take": "___ a deep breath and smile.", "thank": "Say ___ you when someone helps you.", "think": "I ___ I can stick this landing!", "walk": "Let's ___ to the garden together.", "around": "We ran ___ the castle garden.", "best": "That was your ___ jump ever!", "both": "___ girls wore pink bows.", "buy": "Let's ___ a rose at the shop.", "call": "___ your team over for practice!", "cold": "The ice rink feels ___ today.", "does": "___ Belle have a new chant?", "don't": "___ give up - try again!", "fast": "She can run really ___!", "five": "Count the roses: one, two, three, four, ___!", "found": "I ___ my lost bow under the bench!", "gave": "She ___ me a big smile.", "goes": "The train ___ around the castle.", "green": "The garden leaves are ___.", "off": "She took her bow ___ before bed.", "pull": "___ the rope to ring the bell!", "read": "Let's ___ a story about a castle.", "right": "Turn ___ at the rose garden gate.", "sing": "___ along with Belle's song!", "sit": "Please ___ on the bench and rest.", "sleep": "The princess likes to ___ in the tower.", "tell": "___ me about your day at practice.", "those": "___ roses over there are pink.", "upon": "Once ___ a time, a princess twirled.", "us": "Belle is so proud of ___!", "very": "That tower is ___ tall!", "wash": "___ your hands before snack time.", "why": "___ is the sky blue?", "wish": "Make a ___ on the enchanted rose!", "work": "Great ___ on that pyramid, squad!", "better": "You get ___ with every practice!", "bring": "Please ___ your pom poms to class.", "carry": "Help me ___ this basket of roses.", "clean": "Let's ___ up the ballroom together.", "cut": "Use scissors to ___ the ribbon.", "done": "Practice is ___ - great job!", "draw": "___ a picture of the castle.", "drink": "Have a ___ of water after practice.", "eight": "There are ___ roses in the bouquet.", "fall": "Watch your step so you don't ___!", "far": "The castle is not very ___ away.", "full": "The basket is ___ of roses.", "got": "She ___ a gold trophy at the show!", "grow": "The roses ___ in the garden.", "hold": "___ my hand on the castle stairs.", "hot": "The soup is too ___ to eat.", "hurt": "Be careful - don't get ___ on the beam.", "if": "___ you practice, you will shine.", "keep": "___ trying until you get it right!", "kind": "Be ___ to everyone on your squad.", "laugh": "Her jokes always make me ___.", "light": "Turn on the ___ so we can see.", "much": "Thank you so ___ for helping!", "myself": "I can tie my bow all by ___!", "only": "She is the ___ one in a pink skirt.", "own": "Royce has her very ___ castle room.", "pick": "___ a rose from the garden.", "seven": "Count the bows: I see ___ of them.", "shall": "___ we dance in the ballroom?", "show": "The big ___ starts at noon!", "six": "There are ___ cupcakes on the tray.", "small": "A ___ mouse lives under the stairs.", "start": "Let's ___ the music and dance!", "ten": "I can count to ___ all by myself.", "today": "We have a big show ___!", "try": "___ again - you can do it!", "warm": "The sun feels ___ on my face.", "example": "Belle gave an ___ of a perfect split.", "important": "It is ___ to practice every day.", "children": "The ___ cheered for Royce.", "side": "Stand on this ___ of the beam.", "feet": "She landed on her ___ with a smile.", "car": "The little red ___ drove past the castle.", "mile": "They walked a whole ___ to the castle.", "night": "The stars come out at ___.", "sea": "The ship sails across the ___.", "began": "The show ___ with a big song.", "took": "She ___ a deep breath and jumped.", "river": "The ___ flows under the castle bridge.", "state": "Name the ___ where you live.", "book": "Read this ___ with me, please.", "hear": "I can ___ the music from here.", "without": "She did the split ___ any help!", "second": "Wait just one ___ - I'm coming!", "later": "We will practice again ___ today.", "idea": "What a great ___ for the show!", "enough": "We have ___ roses for everyone.", "face": "She has a big smile on her ___.", "watch": "___ me do a cartwheel!", "really": "That was ___ a great show!", "almost": "We are ___ at the castle!", "above": "The banner hangs ___ the door.", "girl": "The ___ twirled in her pink skirt.", "sometimes": "___ we practice in the garden.", "young": "The ___ prince waved from the tower.", "talk": "Let's ___ about the show tonight.", "list": "Write your name on the ___.", "song": "Sing a happy ___ with Belle!", "leave": "Don't ___ your bow at the gym.", "family": "My ___ cheers for me at every show.", "body": "Move your whole ___ when you dance!", "music": "The ___ made everyone want to dance.", "color": "Pink is my favorite ___.", "stand": "___ tall and smile, superstar!", "sun": "The ___ shines over the castle.", "questions": "Belle answers all my ___.", "fish": "The little ___ swims in the pond.", "area": "The practice ___ has soft mats.", "mark": "Make a ___ on the floor for your spot.", "dog": "The happy ___ wagged its tail.", "horse": "The white ___ runs in the field.", "birds": "The ___ sing in the garden trees.", "problem": "This math ___ is tricky - keep trying!", "complete": "___ the puzzle to see the castle!", "room": "Her castle ___ has a rose window.", "knew": "She ___ every word of the song.", "since": "We have cheered ___ we were little.", "ever": "Have you ___ seen a real castle?", "piece": "Have a ___ of cupcake, please.", "told": "Belle ___ us a castle story.", "usually": "We ___ practice after lunch.", "friends": "My ___ cheer with me every day.", "easy": "That jump was ___ for Royce!", "heard": "I ___ Belle call my name.", "order": "Put the bows in ___ by size.", "door": "Knock on the big castle ___.", "sure": "I am ___ you can do it!", "become": "Practice helps you ___ a star.", "top": "She climbed to the ___ of the pyramid!", "ship": "The big ___ sails to the castle island.", "across": "We walked ___ the bridge to the castle.", "during": "Stay quiet ___ the story, please.", "short": "The ribbon is too ___ - pick a longer one.", "however": "She was tired, ___ she kept practicing and shined.", "low": "The music was soft and ___.", "hours": "We practiced for two ___ today.", "class": "Our whole ___ cheered at the show.", "happens": "Watch what ___ when she jumps!", "whole": "She ate the ___ cupcake!", "remember": "___ to bring your bow tomorrow!", "early": "We woke up ___ for the big show.", "waves": "The ocean ___ splashed on the sand.", "reached": "She ___ the top of the pyramid!", "listen": "___ to Belle and follow along.", "wind": "The ___ blew through the garden.", "rock": "She sat on a big ___ by the river.", "space": "Rockets fly up into ___.", "covered": "Snow ___ the castle garden.", "several": "___ roses grow by the gate.", "toward": "Run ___ the finish line, superstar!", "step": "Take one more ___ onto the mat.", "morning": "We practice every ___ at the castle.", "passed": "She ___ the ball to her friend.", "vowel": "The letter A is a ___.", "true": "Is that story really ___?", "hundred": "One ___ roses filled the garden!", "against": "Lean the ladder ___ the wall.", "pattern": "The bows follow a pink, purple, pink ___.", "numeral": "Point to the ___ that means five.", "table": "Put the cupcakes on the ___.", "north": "On the map, ___ is up.", "slowly": "Walk ___ on the balance beam.", "money": "She saved her ___ for a new bow.", "map": "The treasure ___ shows the castle.", "busy": "Belle is ___ planning the big show.", "pulled": "He ___ the rope and rang the bell.", "voice": "Her singing ___ filled the ballroom.", "seen": "Have you ___ the enchanted rose?", "brought": "She ___ roses for the whole squad.", "understand": "I ___ the steps now - thank you!", "common": "Pink bows are ___ at cheer practice.", "strong": "Her arms are ___ from practice.", "special": "Today is a ___ day at the castle.", "heart": "Belle has a kind, loving ___.", "produce": "The garden can ___ sweet roses every spring.", "fact": "Here is a fun ___ about castles.", "street": "Our castle is at the end of the ___.", "inch": "The ribbon is one ___ too short.", "multiply": "___ the groups to count them all!", "nothing": "There is ___ in the box - it's empty!", "course": "Of ___ you can join the squad!", "stay": "Please ___ right here with Belle.", "wheel": "The cart has a big wooden ___.", "force": "A gentle ___ pushed the door open.", "object": "What is that shiny ___ on the tray?", "decide": "You ___ - pink bow or purple bow?", "surface": "The ___ of the pond is smooth and shiny.", "deep": "The well in the garden is very ___.", "moon": "The ___ glows over the castle at night.", "island": "The castle sits on a little ___.", "foot": "She hurt her ___ and sat down to rest.", "system": "The solar ___ has eight planets.", "test": "Study hard for your spelling ___!", "record": "She set a new ___ for the highest jump!", "boat": "The little ___ floats on the pond.", "gold": "Her trophy is shiny ___.", "possible": "With practice, anything is ___!", "plane": "The ___ flew over the castle.", "dry": "Use a towel to keep the mat ___.", "wonder": "I ___ what is inside the tower.", "thousand": "A ___ stars sparkled in the sky!", "ago": "The show was two days ___.", "check": "___ your work before you finish.", "game": "Let's play a fun spelling ___!", "shape": "The window has a round ___.", "equate": "We ___ the two groups to make them equal.", "miss": "I ___ my friends when I'm away.", "heat": "The ___ of the sun warmed the garden.", "snow": "Soft ___ covered the castle roof.", "tire": "The wagon's ___ is round and black.", "distant": "We saw a ___ castle on the hill.", "fill": "___ the vase with roses, please.", "east": "The sun rises in the ___.", "paint": "Let's ___ a picture of the castle.", "language": "English is the ___ we speak.", "among": "She stood ___ her best friends.", "grand": "The castle has a ___ ballroom.", "ball": "Kick the ___ into the goal!", "yet": "Are we at the castle ___?", "wave": "___ to Belle from the stage!", "drop": "Don't ___ the trophy - hold on tight!", "present": "She got a ___ on her birthday.", "heavy": "The trophy is too ___ to lift alone.", "dance": "Let's ___ in the castle ballroom!", "engine": "The train's ___ goes chug, chug, chug.", "position": "Hold your ___ at the top of the pyramid!", "arm": "Raise one ___ up high like Belle!", "wide": "The castle doors are big and ___.", "sail": "Watch the boats ___ across the sea.", "material": "This dress is made of soft ___.", "size": "What ___ shoes do you wear?", "vary": "The roses ___ in color - pink, red and white.", "settle": "Let's ___ into our spots before the show.", "speak": "Please ___ up so everyone can hear you.", "weight": "The ___ of the trophy surprised her.", "general": "In ___, practice makes you better.", "ice": "The pond turned to ___ in winter.", "matter": "What is the ___? You look sad.", "circle": "Sit in a ___ for story time.", "pair": "I need a ___ of pom poms!", "include": "Please ___ everyone in the game.", "divide": "Let's ___ the cupcakes so everyone gets some.", "syllable": "Clap each ___ in the word castle.", "felt": "She ___ so happy at the show!", "perhaps": "___ we will practice in the garden today.", "sudden": "A ___ cheer filled the ballroom!", "count": "___ the roses with me: one, two, three!", "square": "The mat is a big blue ___.", "reason": "Tell me the ___ you picked pink.", "length": "Measure the ___ of the ribbon.", "represent": "Her drawing will ___ our squad at the fair.", "art": "We made castle ___ in class today.", "region": "This ___ of the garden grows roses.", "energy": "She has so much ___ at practice!", "hunt": "Let's ___ for hidden roses in the garden.", "probable": "It is ___ that the show will be fun.", "bed": "Time to rest - climb into ___.", "brother": "Her ___ cheered from the front row.", "egg": "The bird laid an ___ in the nest.", "cell": "The honeybee stores honey in a ___.", "believe": "I ___ you can stick the landing!", "fraction": "One half is a ___ we learn in math.", "forest": "Tall trees fill the castle ___.", "race": "Let's ___ to the garden gate!", "window": "Open the ___ and wave to Belle!", "store": "Buy a new bow at the castle ___.", "summer": "We swim and play all ___ long.", "train": "The ___ chugs past the castle.", "prove": "She worked hard to ___ she could do it.", "lone": "A ___ rose grew by the old gate.", "leg": "She lifts one ___ in her arabesque.", "exercise": "Morning ___ keeps the squad strong.", "wall": "A picture hangs on the castle ___.", "catch": "___ the ball with both hands!", "mount": "She will ___ the stage steps proudly.", "sky": "The ___ is full of stars tonight.", "board": "Write the word on the ___.", "joy": "Her heart filled with ___ at the show.", "winter": "Snow falls on the castle in ___.", "sat": "She ___ on the bench to rest.", "written": "The story was ___ in a big gold book.", "wild": "The ___ roses grew all over the fence.", "instrument": "The trumpet is a loud ___.", "kept": "She ___ her bow in a safe place.", "glass": "The rose sits under a dome of ___.", "grass": "The garden ___ is soft and green.", "cow": "The ___ munches grass by the fence.", "job": "Great ___ on that pyramid, squad!", "edge": "Stand back from the ___ of the stage.", "sign": "The ___ says Castle Ballroom.", "visit": "Let's ___ the rose garden today!", "past": "The parade marched ___ the castle.", "soft": "The kitten's fur is ___.", "fun": "Cheer practice is so much ___!", "bright": "The ballroom lights are ___.", "gas": "The balloon is filled with ___.", "weather": "The ___ is sunny for our show today.", "month": "May is my favorite ___ of the year.", "million": "A ___ stars shine over the castle.", "bear": "A big brown ___ lives in the forest.", "finish": "Cheer loud when we ___ the routine!", "happy": "She feels ___ when she dances.", "hope": "I ___ we win the big trophy!", "clothe": "They ___ the baby in a soft pink blanket.", "strange": "A ___ sound came from the tower.", "gone": "My bow is ___ - where did it go?", "baby": "The ___ giggles at the pom poms.", "village": "A tiny ___ sits below the castle.", "meet": "Let's ___ at the castle gate at noon.", "root": "The rose's ___ drinks water underground.", "raise": "___ your pom poms up high!", "solve": "Let's ___ this puzzle together.", "metal": "The trophy is made of shiny ___.", "whether": "I don't know ___ it will rain today.", "push": "___ the door open, please.", "paragraph": "Read the first ___ of the story.", "third": "She finished in ___ place at the show.", "held": "She ___ the trophy up high!", "hair": "Her ___ is in two curly puffs.", "describe": "___ your castle in three words.", "cook": "Let's ___ soup for the whole squad.", "floor": "The ballroom ___ shines like a mirror.", "either": "Pick ___ the pink bow or the purple one.", "result": "The ___ of all that practice was a trophy!", "burn": "Careful - the soup can ___ your tongue.", "hill": "The castle sits on a green ___.", "safe": "The beam spotters keep Royce ___.", "cat": "The little ___ naps in the sun.", "century": "The castle is a ___ old - one hundred years!", "consider": "___ Belle's tip before you jump.", "type": "What ___ of bow do you like best?", "law": "Following the ___ keeps everyone safe.", "bit": "She ate a little ___ of cupcake.", "coast": "Waves roll onto the sandy ___.", "copy": "___ Belle's moves to learn the dance.", "phrase": "Say the magic ___: please and thank you.", "silent": "The library is quiet and ___.", "tall": "The castle tower is very ___.", "sand": "We built a castle in the ___.", "soil": "Plant the rose in soft ___.", "roll": "Watch the ball ___ down the hill!", "temperature": "The ___ outside is just right for practice.", "finger": "Point one ___ at the star.", "industry": "The toy ___ makes dolls and games for kids.", "value": "A quarter has a ___ of twenty-five cents.", "fight": "Don't ___ - use kind words instead.", "lie": "Don't tell a ___ - always be honest.", "beat": "Clap to the ___ of the music!", "excite": "Big shows always ___ the crowd.", "natural": "Roses have a ___ sweet smell.", "view": "The tower has a great ___ of the garden.", "sense": "It makes ___ to practice a little each day.", "capital": "Name the ___ city of our state.", "chair": "Sit on the ___ by the window.", "danger": "Spotters keep her safe from ___ on the beam.", "fruit": "Apples are my favorite ___ to eat.", "rich": "The cake tastes ___ and sweet.", "thick": "The castle walls are strong and ___.", "soldier": "A brave ___ guards the castle gate.", "process": "Learning is a step-by-step ___.", "operate": "Doctors ___ to help hurt people get better.", "practice": "___ makes perfect, superstar!", "separate": "Keep the pink bows ___ from the purple ones.", "difficult": "That flip is ___ but you can learn it.", "doctor": "The ___ helps people feel better.", "protect": "Spotters ___ Royce on the beam.", "noon": "The show starts at ___ today.", "locate": "Can you ___ the castle on the map?", "ring": "___ the bell when you arrive!", "character": "The princess is my favorite ___ in the story.", "insect": "A tiny ___ crawled on the rose.", "caught": "She ___ the ball with one hand!", "period": "End the sentence with a ___.", "indicate": "The arrow will ___ which way to go.", "radio": "We danced to songs on the ___.", "spoke": "Belle ___ kindly to the whole squad.", "atom": "One tiny ___ helps build everything around us.", "human": "Every ___ needs food, water and rest.", "history": "We learned castle ___ in class today.", "effect": "Practice has a great ___ on your skills.", "electric": "The castle lights are ___ and bright.", "expect": "I ___ the show will be amazing!", "crop": "The ___ grew tall in the summer sun.", "modern": "The new gym has ___ mats and mirrors.", "element": "Gold is a shiny ___.", "hit": "___ the ball with the bat!", "student": "Every ___ in class raised a hand.", "corner": "The bow box sits in the ___ of the room.", "party": "We're having a cupcake ___ after the show!", "supply": "Belle will ___ the ribbons for the show.", "bone": "The dog buried its ___ in the garden.", "rail": "Hold the ___ on the castle stairs.", "imagine": "___ a castle made of candy!", "provide": "Belle will ___ snacks for the squad.", "agree": "I ___ - pink is the best color!", "thus": "She practiced daily and ___ won the trophy.", "won't": "I ___ give up - I'll try again!", "whose": "___ bow is this on the bench?"};
+for(var _sk in SENT_MORE){ if(!SENT_MAP[_sk]) SENT_MAP[_sk]=SENT_MORE[_sk]; }
 /* Phonics progression: short-vowel CVC (K) -> magic e & first vowel teams (1st) -> vowel teams (2nd) -> r-controlled & diphthongs (3rd) -> aw/au/ew/ui patterns (4th) -> advanced ie/ei/eigh (5th) */
 var CVC_WORDS=[{w:'cat',m:'a',s:'short A'},{w:'map',m:'a',s:'short A'},{w:'bed',m:'e',s:'short E'},{w:'hen',m:'e',s:'short E'},{w:'pig',m:'i',s:'short I'},{w:'six',m:'i',s:'short I'},{w:'dog',m:'o',s:'short O'},{w:'top',m:'o',s:'short O'},{w:'sun',m:'u',s:'short U'},{w:'cup',m:'u',s:'short U'}];
 var MAGIC_E=[{w:'cake',team:'a_e',sound:'long A'},{w:'bike',team:'i_e',sound:'long I'},{w:'home',team:'o_e',sound:'long O'},{w:'nose',team:'o_e',sound:'long O'},{w:'cube',team:'u_e',sound:'long U'},{w:'kite',team:'i_e',sound:'long I'}];
@@ -2440,11 +2477,19 @@ function genSpellingStored(id,tier){
       if(obj.hint) obj.hintSegs=belleSegsForText(obj.hint);
       if(it) obj.checkSegs=belleSegsForText(it.check);
       if(obj.exSteps) obj.exSegs=obj.exSteps.map(function(st){ return belleSegsForText(st.h+'. '+st.b); });
+      /* HEAR THE WORD, KEYED TO THIS ITEM (Michelle's fix): the word the
+         Hear button must speak is resolved to its own recorded segments
+         at serving time, exactly like this problem's hint and check —
+         so the tap plays THIS item's word in Belle's recorded voice,
+         never a fresh lookup that can drift or stall. ("ate" has no
+         recording — the one standing exception — and resolves null,
+         so its tap keeps the device-reader path.) */
+      if(obj.speak) obj.speakSegs=belleSegsForText(obj.speak);
     }
     return obj;
   }
   function nextIn(bank){ var key='s:'+id+':'+G; if(setPos[key]===undefined) setPos[key]=0; lastServedNum=(setPos[key]%bank.length)+1; return setEntry(key,bank); }
-  if(id==='sightwords'){ var bank= G===0?DOLCH_PRE.concat(DOLCH_PRIMER) : G===1?DOLCH_PRIMER.concat(DOLCH1) : G===2?DOLCH2 : G===3?DOLCH3.concat(DOLCH2) : G===4?FRY4 : FRY5; var w=nextIn(bank); var sent=SENT_MAP[w.toLowerCase()]; var clue= sent? sent+'<br><small>Tap 💬, then type the whole word.</small>' : 'Belle will say the word out loud. Listen carefully, picture it, then type the whole word.<br><small>Tap 💬 as many times as you like!</small>'; return fin({q:'Spell the missing sight word',clue:clue,ans:w,display:'text',speak:w},w); }
+  if(id==='sightwords'){ var bank= G===0?DOLCH_PRE.concat(DOLCH_PRIMER) : G===1?DOLCH_PRIMER.concat(DOLCH1) : G===2?DOLCH2 : G===3?DOLCH3.concat(DOLCH2) : G===4?FRY4 : FRY5; var w=nextIn(bank); var sent=SENT_MAP[w.toLowerCase()]; var clue= sent? '<small>Tap 💬, then type the whole word.</small>' : 'Belle will say the word out loud. Listen carefully, picture it, then type the whole word.<br><small>Tap 💬 as many times as you like!</small>'; return fin({q:'Spell the missing sight word',clue:clue,sentence:sent||'',ans:w,display:'text',speak:w},w); }
   if(id==='vowels'){
     if(G===0){ var cv=nextIn(CVC_WORDS); var blankedC=cv.w.replace(cv.m,'_'); return fin({q:'Fill in the missing vowel letter to spell the word',clue:'Word: <span style="font-family:Fredoka;font-size:30px">'+blankedC+'</span><br>The missing letter makes the <b>'+cv.s+' sound</b>. Type the <b>whole word</b>.',ans:cv.w,display:'text',speak:cv.w},cv.w); }
     var bankV= G===1? MAGIC_E.concat(VOWEL_WORDS.filter(function(x){return ['ai','ay','ee','ea','oa'].indexOf(x.team)>-1;})) : G===2? VOWEL_WORDS : G===3? R_WORDS : G===4? DIP_WORDS : ADV_WORDS;
@@ -2458,7 +2503,7 @@ function genSpellingStored(id,tier){
 }
 function genSpellingRandom(id,tier){
   var G=gradeIdx;
-  if(id==='sightwords'){ var bank= G===0?DOLCH_PRE.concat(DOLCH_PRIMER) : G===1?DOLCH_PRIMER.concat(DOLCH1) : G===2?DOLCH2 : G===3?DOLCH3.concat(DOLCH2) : G===4?FRY4 : FRY5; var w=pick(bank); var sent=SENT_MAP[w.toLowerCase()]; var clue= sent? sent+'<br><small>Tap 💬, then type the whole word.</small>' : 'Belle will say the word out loud. Listen carefully, picture it, then type the whole word.<br><small>Tap 💬 as many times as you like!</small>'; return {q:'Spell the missing sight word',clue:clue,ans:w,display:'text',speak:w,hint:'Picture the word in your mind. Say it slowly, letter by letter: it has <b>'+w.length+' letters</b> and starts with “<b>'+w[0]+'</b>”.',check:function(g){ if(g.length<w.length) return 'You\'re missing a letter — the word has <b>'+w.length+' letters</b>. Try again and count them!'; if(g.length>w.length) return 'One letter too many — the word has exactly <b>'+w.length+' letters</b>.'; return 'Check the <b>middle letters</b> carefully. It starts with “'+w[0]+'” and ends with “'+w[w.length-1]+'”. Sound it out slowly.'; }}; }
+  if(id==='sightwords'){ var bank= G===0?DOLCH_PRE.concat(DOLCH_PRIMER) : G===1?DOLCH_PRIMER.concat(DOLCH1) : G===2?DOLCH2 : G===3?DOLCH3.concat(DOLCH2) : G===4?FRY4 : FRY5; var w=pick(bank); var sent=SENT_MAP[w.toLowerCase()]; var clue= sent? '<small>Tap 💬, then type the whole word.</small>' : 'Belle will say the word out loud. Listen carefully, picture it, then type the whole word.<br><small>Tap 💬 as many times as you like!</small>'; return {q:'Spell the missing sight word',clue:clue,sentence:sent||'',ans:w,display:'text',speak:w,hint:'Picture the word in your mind. Say it slowly, letter by letter: it has <b>'+w.length+' letters</b> and starts with “<b>'+w[0]+'</b>”.',check:function(g){ if(g.length<w.length) return 'You\'re missing a letter — the word has <b>'+w.length+' letters</b>. Try again and count them!'; if(g.length>w.length) return 'One letter too many — the word has exactly <b>'+w.length+' letters</b>.'; return 'Check the <b>middle letters</b> carefully. It starts with “'+w[0]+'” and ends with “'+w[w.length-1]+'”. Sound it out slowly.'; }}; }
   if(id==='vowels'){
     if(G===0){ var cv=pick(CVC_WORDS); var blankedC=cv.w.replace(cv.m,'_'); return {q:'Fill in the missing vowel letter to spell the word',clue:'Word: <span style="font-family:Fredoka;font-size:30px">'+blankedC+'</span><br>The missing letter makes the <b>'+cv.s+' sound</b>. Type the <b>whole word</b>.',ans:cv.w,display:'text',speak:cv.w,hint:'This is a short-vowel word. The middle letter is the vowel that says the <b>'+cv.s+' sound</b>: “'+cv.m+'”.',check:function(g){ return 'Say the word slowly and listen to the middle sound — the '+cv.s+' sound. Which vowel letter makes that sound?'; }}; }
     var bankV= G===1? MAGIC_E.concat(VOWEL_WORDS.filter(function(x){return ['ai','ay','ee','ea','oa'].indexOf(x.team)>-1;})) : G===2? VOWEL_WORDS : G===3? R_WORDS : G===4? DIP_WORDS : ADV_WORDS;
@@ -2522,7 +2567,21 @@ function setupWork(){
   var area=document.getElementById('columnArea'); if(!area) return;
   var btn=document.getElementById('workToggleBtn');
   var isMath= currentTopic && currentTopic.cat==='math';
-  if(btn) btn.style.display= isMath? 'inline-block':'none';
+  var isSpelling= currentTopic && currentTopic.cat==='spelling';
+  /* HELPER TOOLS IN SPELLING GAMES TOO (Michelle): the floated Helper
+     Tools menu carries all THREE options in a spelling game exactly as
+     in a math game — Work It Out included. Work It Out for spelling is
+     a writing work space: one empty box per letter of the word she is
+     spelling, plus the scratch pad to write it on first. */
+  if(btn) btn.style.display= (isMath||isSpelling)? 'inline-block':'none';
+  if(isSpelling){
+    document.getElementById('workHelp').textContent='Work the word here first — then type your final answer and tap Check It!';
+    var ansLen=String(current.ans||'').length, boxes='';
+    for(var bi=0;bi<ansLen;bi++) boxes+='<span class="letter-box"></span>';
+    area.innerHTML='<div class="work-sec-title">✍️ Writing Work Space</div><div class="frac-count" style="text-align:center">Hear the word, say it slowly, then write it on the pad below — one letter at a time. The word has <b>'+ansLen+' letters</b>:</div><div class="letter-boxes" style="justify-content:center;margin-top:8px">'+boxes+'</div>';
+    fitPad(true);
+    return;
+  }
   if(!isMath){ area.innerHTML=''; return; }
   var id=currentTopic.id, html='';
   document.getElementById('workHelp').textContent='Work the problem here first — then type your final answer and tap Check It!';
@@ -5462,9 +5521,33 @@ function bellePreloadProblem(pr){
   if(!pr) return;
   try{
     if(pr.hint) bellePreloadText(pr.hint);
+    if(pr.speak) bellePreloadText(pr.speak); /* the Hear the Word word's own bundle warms with its problem, so the first tap plays Belle's recording at once — never a cold-bundle wait in silence */
+    try{ primeHearWord(pr); }catch(e){} /* and the word's own segment is loaded into the dedicated Hear element with the playhead parked on it, so the tap itself starts the recording (see primeHearWord) */
     if(typeof pr.check==='function'){ var ct=''; try{ ct=pr.check('0'); }catch(e){} if(ct) bellePreloadText(ct); }
     if(pr.exSteps) pr.exSteps.forEach(function(st){ bellePreloadText(st.h+'. '+st.b); });
   }catch(e){}
+}
+/* HEAR THE WORD — PRIMED PLAYBACK (Michelle's fix): as each problem
+   is served, the word its Hear button must speak is loaded into a
+   dedicated audio element and the playhead is parked exactly on the
+   word's own recorded segment. The tap (hearWord) then only calls
+   play() on an element that is already loaded and positioned — no
+   cold 5.6 MB bundle download and no seek chain standing between
+   the tap and the sound — so Belle's recorded word plays when it
+   should: on the first tap and on every tap after it. */
+var belleWordEl=null, belleWordPrimed=null;
+function primeHearWord(pr){
+  belleWordPrimed=null;
+  if(!pr||!pr.speak||!pr.speakSegs||!pr.speakSegs.segs||pr.speakSegs.segs.length!==1) return;
+  var seg=pr.speakSegs.segs[0]; if(!seg||!BELLE_BUNDLES[seg.b]) return;
+  try{
+    if(!belleWordEl){ belleWordEl=new Audio(); belleWordEl.preload='auto'; }
+    if(belleWordEl.getAttribute('data-bundle')!==String(seg.b)){ belleWordEl.src=BELLE_BUNDLES[seg.b]; belleWordEl.setAttribute('data-bundle',String(seg.b)); }
+    belleWordPrimed={seg:seg,word:pr.speak};
+    var seekIt=function(){ try{ belleWordEl.currentTime=seg.s; }catch(e){} };
+    if(belleWordEl.readyState>=1) seekIt();
+    else belleWordEl.addEventListener('loadedmetadata',function h(){ belleWordEl.removeEventListener('loadedmetadata',h); seekIt(); });
+  }catch(e){ belleWordPrimed=null; }
 }
 /* FAST-CLIP PLAYBACK: resolve a line to its tiny instruction clips, or
    null when any sentence lacks one. Durations come from the sentence's
@@ -5608,6 +5691,13 @@ function speakBelle(text,force,rate,captionEl,preset){
         el.src=BELLE_BUNDLES[seg.b];
         if(el.readyState>=1) onMeta();
         setTimeout(function(){ if(!started&&gen===belleCaptionGen&&el.readyState>=1) seekPlay(); },1200);
+        /* METADATA STALL BACKSTOP: if the bundle's metadata never lands
+           (a stalled cold download), the line still gets read — by the
+           device voice — instead of a tap landing in silence while the
+           bundle crawls. Served lines are preloaded, so on a warm cache
+           this never fires; it exists so Hear the Word (and every other
+           line) can never play nothing at all. */
+        setTimeout(function(){ if(!started&&gen===belleCaptionGen&&belleAudioEl===el) deviceFallback(); },6000);
       } else {
         seekPlay();
       }
@@ -5911,8 +6001,9 @@ function sportPropHome(){ var id=''; try{ id=sportWorldId(); }catch(e){}
   function L(px){ return 'calc(5% + '+Math.round(px*f)+'px)'; }
   function B(px){ return Math.round(px*f)+'px'; }
   if(id==='soccer') return {left:L(33),bottom:'calc(33.5% - 28px)'};
-  if(id==='hockey') return {left:L(96),bottom:B(100)};
-  if(id==='tennis') return {left:L(76),bottom:B(104)};
+  if(id==='basketball') return {left:L(48),bottom:'calc(50.9% - 34px)'}; /* the dribble home: directly UNDER her lowered hand — the ball's top edge meets her palm (her hand bottom sits at 50.9% of the stage height: her figure's base at 33.5% plus her hand's height inside the figure), so the dribble bounces up INTO her hand with contact, no gap, at phone and desktop sizes alike */
+  if(id==='hockey') return {left:L(74),bottom:B(93)}; /* the puck sits ON THE ICE at her stick blade, exactly Karter's spot logic: its center on the blade (figure x ~191 of 200) and its flat bottom on the ice at her skate line — never floating up the stick or past the blade tip */
+  if(id==='tennis') return {left:L(76),bottom:B(123)}; /* the ball rests on her racket strings: her planted stance (feet at 13.6%) puts the racket head at B(123)'s height — the ball sits IN the strings, smaller than the racket head, never floating beside it */
   return {left:L(96),bottom:B(104)};
 }
 function cheerSVG(d,pose,opts){
@@ -6365,6 +6456,7 @@ function nextPrompt(first){
   document.getElementById('qText').textContent=current.q;
   document.getElementById('qVisual').innerHTML=current.visual||'';
   var clue=document.getElementById('qClue'); if(current.clue){clue.style.display='block'; clue.innerHTML=current.clue;} else clue.style.display='none';
+  var qs=document.getElementById('qSentence'); if(qs){ if(current.sentence){ qs.style.display='block'; qs.innerHTML='<span class="sight-sent">'+current.sentence+'</span>'; } else { qs.style.display='none'; qs.innerHTML=''; } }
   var inp=document.getElementById('answerInput'); inp.value=''; inp.placeholder=current.placeholder||'Type here'; inp.type= current.display==='number'?'number':'text'; inp.inputMode= current.display==='number'?'numeric':'text';
   document.getElementById('hearBtn').style.display= current.speak?'inline-grid':'none';
   var ch=document.getElementById('choiceArea');
@@ -6391,6 +6483,12 @@ function nextPrompt(first){
     belleSay(pick((typeof isSportWorld==='function'&&isSportWorld())? ['New one! Read it carefully, then answer to play! '+sportWorld().emoji,'Here we go — I know you can get this one!','Ready? Here\'s your next one at the '+sportWorld().venue+'!'] : ['New one! Read it carefully, then answer to build the pyramid! 📣','Here we go — I know you can get this one!','Pom poms up… here\'s your next one!']));
   }
   startRoutine();
+  /* SOCCER ROLL, DRIVEN FROM THE QUESTION LOAD (regression fix): the
+     foot-on-ball rocking is (re)armed HERE, on every question load,
+     the path the working version used — not only inside the routine
+     starter — so every served question, first or next, waits with her
+     foot resting on top of the ball, rocking it, until she answers. */
+  if(typeof isSportWorld==='function'&&isSportWorld()&&typeof sportWorldId==='function'&&sportWorldId()==='soccer'&&typeof ensureSoccerRoll==='function'){ try{ ensureSoccerRoll(); }catch(e){} }
   fitGameView();
   /* Focus for typing WITHOUT scrolling: the game must open cleanly at
      its own top — level, ✕ Close and Belle's instructions right there —
@@ -6399,7 +6497,7 @@ function nextPrompt(first){
 }
 var chosen=null;
 function pickChoice(btn,val){ chosen=val; document.querySelectorAll('.choice').forEach(function(b){b.style.background='#fff'}); btn.style.background='#FFF3C4'; checkAnswer(); }
-function hearWord(){ if(!current||!current.speak) return; speakBelle(current.speak,true,0.8); }
+function hearWord(){ if(!current||!current.speak) return; /* HEAR IT (Michelle's fix): the tap speaks THIS item's own target word in Belle's recorded voice at NATURAL rate — and it plays from the PRIMED element: primeHearWord (run as the problem is served) has already loaded the word's bundle into a dedicated element and parked its playhead on the word's own segment, so this tap calls play() on a ready, positioned element synchronously, inside the tap itself, and the word starts at once. The old tap handed the word to the shared bundle player, whose load-seek-play chain ran in timers and callbacks AFTER the tap: on her phone's webview that chain could stall on a cold bundle or lose the tap's playback permission altogether and drop to the device reader, which stays silent there — the button looked dead. If the primed element is not ready or its play() is refused, the tap falls back to the same recorded segments through the regular player. The ONE word with no Belle recording anywhere ("ate") goes straight to the device reader, exactly as before. */ if(typeof bellePreloadText==='function'){ try{ bellePreloadText(current.speak); }catch(e){} } if(belleWordPrimed&&belleWordPrimed.word===current.speak&&belleWordEl&&belleWordEl.readyState>=2){ var seg=belleWordPrimed.seg; try{ if(Math.abs(belleWordEl.currentTime-seg.s)<=0.35){ stopBelleSpeech(); belleWordEl.playbackRate=1; var wp=belleWordEl.play(); var wEnd=seg.s+seg.d; var wIv=setInterval(function(){ if(!belleWordEl){ clearInterval(wIv); return; } if(belleWordEl.ended||belleWordEl.currentTime>=wEnd-0.02){ clearInterval(wIv); try{ belleWordEl.pause(); belleWordEl.currentTime=seg.s; }catch(e){} } },30); if(wp&&wp.catch){ wp.catch(function(){ clearInterval(wIv); if(current&&current.speakSegs) speakBelle(current.speak,true,1,null,current.speakSegs); }); } return; } }catch(e){} } if(current.speakSegs){ speakBelle(current.speak,true,1,null,current.speakSegs); return; } if(typeof speakBelleDevice==='function'){ stopBelleSpeech(); speakBelleDevice(current.speak,1,null,belleCaptionGen); return; } speakBelle(current.speak,true,1); }
 var lastHintHTML='';
 function belleHint(){ if(!current) return; if(typeof applyCoach==='function'){ try{ applyCoach(); }catch(e){} } /* the hint panel always opens wearing the coach as the learner designed her */ lastHintHTML=current.hint||''; var ht=document.getElementById('hintText'); if(ht) ht.innerHTML=lastHintHTML; var hp=document.getElementById('hintPanel'); if(hp){ if(hp.parentNode!==document.body) document.body.appendChild(hp); /* the panel lives at body level while open — no ancestor and no sticky bar can ever cover its header or its ✕ Close */ hp.scrollTop=0; hp.style.display='block'; } if(current.hintSegs){ speakBelle(current.hint,true,null,document.getElementById('belleBubble'),current.hintSegs); } else { belleSay('💡 <b>'+coachPossessive()+' Hint:</b> '+current.hint); } /* ONE TAP, BOTH ACTIONS: the tap opened the card AND starts the voice — the segments keyed to THIS problem's own number, so the numbers Belle says are the numbers on screen; the 💬 speech symbol in the panel replays it */ }
 function closeHintPanel(){ var hp=document.getElementById('hintPanel'); if(hp) hp.style.display='none'; }
@@ -6542,7 +6640,7 @@ function startRoutine(){
     el.classList.add(sportWorldId()==='jumprope'?'jumprope-jumping':(sportWorldId()==='dance'?'dance-idle':(sportWorldId()==='swimming'?'swim-idle':(sportWorldId()==='gymnastics'?'gym-idle':(sportWorldId()==='soccer'?'soccer-idle':(sportWorldId()==='hockey'?'hockey-idle':'sport-player-bob'))))));
     var prop=document.getElementById('sportProp'); if(sportWorldId()==='jumprope'&&typeof ensureJrRopeLoop==='function') ensureJrRopeLoop();
     if(prop){ var ph=sportPropHome(); prop.style.left=ph.left; prop.style.bottom=ph.bottom; prop.style.transform=''; prop.className='sport-prop'+(w.idleClass?' '+w.idleClass:''); }
-    if(typeof ensurePoseDriver==='function') ensurePoseDriver(); /* the waiting moves (dance twirl, running pump) are JS-driven — see the pose driver */
+    if(typeof ensurePoseDriver==='function') ensurePoseDriver(); /* the waiting moves (dance leg lifts at the barre, running pump) are JS-driven — see the pose driver */
     if(sportWorldId()==='soccer'&&typeof ensureSoccerRoll==='function') ensureSoccerRoll(); /* the soccer waiting roll runs on its own dedicated loop */
     setStageMsg(gameSession&&gameSession.onFire?('🔥 ON FIRE! '+w.idleMsg):w.idleMsg);
     return;
@@ -6586,7 +6684,7 @@ function resetCheerToStart(instant){
        cross (she stayed at the far pool wall after a swim, at the
        finish line after a run), she covers it with that sport's
        locomotion for the whole trip: swimming strokes + kicks,
-       twirling for dance, jumping for jump rope, walking the beam for
+       dance steps for dance, jumping for jump rope, walking the beam for
        gymnastics, running strides for running, skating pushes for
        hockey, walking steps for the court/field games. If she never
        left her spot (only her ball or puck travelled), there is no
@@ -6659,6 +6757,102 @@ function stageConfetti(){
      changes are all untouched. */
   return;
 }
+/* ----- TENNIS BALL DUTY — HER MASCOT FETCHES THE BALL (Michelle) -----
+   After a tennis point ends — the serve landed IN for a correct
+   answer, or it hit the net / dropped on her side for a wrong one —
+   the ball does NOT float, slide or snap back to her racket. Her
+   mascot leaves its right-back-corner home and WALKS to the ball
+   where it lies (stepping the whole way, its body rocking foot to
+   foot — never a glide), picks the ball up into its hands, TOSSES
+   it back to her in one visible arc — the ball on screen for the
+   whole flight — and she ends with the ball resting on her racket
+   strings again, ready for the next answer; then the mascot walks
+   back to its corner. The same mascot ball duty Karter's mascot
+   does in his tennis: a shared sport keeps the shared motion
+   logic, mascot jobs included. */
+var tennisDutyGen=0;
+function tennisBallDuty(done){
+  var stage=document.getElementById('beamStage'), m=document.getElementById('stageMascot'), prop=document.getElementById('sportProp');
+  var finish=function(){ beamBusy=false; if(done) done(); };
+  if(REDUCED||!stage||!m||!prop){
+    if(prop){ var ph0=sportPropHome(); prop.style.transition=''; prop.style.left=ph0.left; prop.style.bottom=ph0.bottom; prop.style.transform=''; }
+    finish(); return;
+  }
+  var gen=++tennisDutyGen;
+  var alive=function(){ return gen===tennisDutyGen && typeof sportWorldId==='function' && sportWorldId()==='tennis' && document.getElementById('practiceView') && document.getElementById('practiceView').style.display!=='none'; };
+  var sr=stage.getBoundingClientRect();
+  function centerOf(el){ var r=el.getBoundingClientRect(); return { cx:((r.left+r.width/2-sr.left)/sr.width)*100, b:((sr.bottom-r.bottom)/sr.height)*100, w:(r.width/sr.width)*100, h:(r.height/sr.height)*100 }; }
+  function place(el,cx,b,wPct){ el.style.left=(cx-wPct/2)+'%'; el.style.right='auto'; el.style.bottom=b+'%'; }
+  var mPos=centerOf(m), bPos=centerOf(prop), mW=mPos.w, bW=bPos.w;
+  /* Where her racket strings wait: measure the prop's own home spot
+     with a ghost twin, so the toss lands the ball EXACTLY home. */
+  var ph=sportPropHome();
+  var ghost=document.createElement('div');
+  ghost.style.cssText='position:absolute;visibility:hidden;pointer-events:none;width:'+prop.offsetWidth+'px;height:'+prop.offsetHeight+'px;left:'+ph.left+';bottom:'+ph.bottom+';';
+  stage.appendChild(ghost); var homePos=centerOf(ghost); stage.removeChild(ghost);
+  prop.style.transition='';
+  function walkDur(a,b){ var dx=a.cx-b.cx, dy=(a.b-b.b)*1.7; var d=Math.sqrt(dx*dx+dy*dy); return Math.max(420,Math.min(1500,d*16)); }
+  function walkTo(target,dur,then){
+    var from={cx:mPos.cx,b:mPos.b}, t0=null;
+    m.classList.add('mascot-walking');
+    function frame(ts){
+      if(!alive()){ m.classList.remove('mascot-walking'); return; }
+      if(!t0) t0=ts;
+      var t=Math.min(1,(ts-t0)/dur);
+      mPos.cx=from.cx+(target.cx-from.cx)*t;
+      mPos.b=from.b+(target.b-from.b)*t;
+      place(m,mPos.cx,mPos.b,mW);
+      if(t<1) requestAnimationFrame(frame);
+      else { m.classList.remove('mascot-walking'); if(then) then(); }
+    }
+    requestAnimationFrame(frame);
+  }
+  /* 1 — the mascot walks from its corner to the ball where it lies */
+  walkTo({cx:bPos.cx,b:bPos.b}, walkDur(mPos,bPos), function(){
+    /* 2 — it picks the ball up into its hands */
+    var hand={cx:mPos.cx, b:mPos.b+mPos.h*0.66};
+    prop.style.transition='left .18s ease-out, bottom .18s ease-out';
+    place(prop,hand.cx,hand.b,bW);
+    setTimeout(function(){
+      if(!alive()) return;
+      /* 3 — the toss: one visible arc from the mascot's hands to her
+         racket strings, the ball on screen for the whole flight */
+      prop.style.transition='';
+      var from={cx:hand.cx,b:hand.b}, t0=null;
+      function tossFrame(ts){
+        if(!alive()) return;
+        if(!t0) t0=ts;
+        var t=Math.min(1,(ts-t0)/720);
+        place(prop, from.cx+(homePos.cx-from.cx)*t, from.b+(homePos.b-from.b)*t + Math.sin(t*Math.PI)*24, bW);
+        prop.style.transform='rotate('+(t*300)+'deg)';
+        if(t<1) requestAnimationFrame(tossFrame);
+        else {
+          /* she has it: one small bounce on the strings, then the
+             ball rests at its exact home spot on her racket */
+          prop.style.transition='bottom .13s ease-out';
+          prop.style.bottom=(homePos.b+2.4)+'%';
+          setTimeout(function(){
+            if(!alive()) return;
+            prop.style.transition='bottom .14s ease-in, transform .14s ease';
+            prop.style.bottom=homePos.b+'%'; prop.style.transform='';
+            setTimeout(function(){
+              if(!alive()) return;
+              prop.style.transition=''; prop.style.left=ph.left; prop.style.bottom=ph.bottom; prop.style.transform='';
+              /* 4 — the mascot walks back to its right-back corner */
+              var spot=MASCOT_SPOT_DEFAULT||{right:'2%',bottom:'56%'};
+              var homeM={cx:100-parseFloat(spot.right)-mW/2, b:parseFloat(spot.bottom)};
+              walkTo(homeM, walkDur(mPos,homeM), function(){
+                paintStageMascot(); /* restored to its exact painted home */
+                finish();
+              });
+            },160);
+          },150);
+        }
+      }
+      requestAnimationFrame(tossFrame);
+    },300);
+  });
+}
 /* ----- Sport-world scoring: the prop plays the sport's real logic -----
    Correct: the ball / puck / swimmer travels to the far-side target and
    SCORES (over the net, through the hoop, into the goal, touching the wall).
@@ -6693,8 +6887,8 @@ function playSportScore(done){
     sparkleBurst(82,140);
     setTimeout(function(){
       if(prop){ prop.style.transition=''; }
-      beamBusy=false;
-      if(done) done();
+      if(REDUCED){ beamBusy=false; if(done) done(); return; }
+      tennisBallDuty(done); /* the point is over and the ball lies on the far side: her mascot walks to it, picks it up and tosses it back to her racket — the ball never floats or snaps home on its own */
     }, REDUCED?80:1500);
     return;
   }
@@ -6803,32 +6997,67 @@ function playSportScore(done){
     return;
   }
   if(sportWorldId()==='dance'){
-    /* Dance score: SHE travels — on real dance steps the whole way.
-       Her legs and feet step step-by-step across the studio floor to
-       the other side, into the spotlight, and she steps right back
-       to the barre (the .dance-step class: stepping legs, ballerina
-       arms, stepping bob). She never spins-as-travel and never
-       slides or glides across with still legs; the twirl pose is
-       for waiting at the barre only. */
+    /* Dance score (Michelle, REPLACED — the twirl-across is gone):
+       her routine happens AT THE BARRE, in place, as a real
+       three-part sequence. First a BATTEMENT: her right leg extends
+       and kicks outward vigorously, beating out and back, out and
+       back. Then a RELEVÉ: her hands leave the barre, her arms rise
+       into a rounded ballerina frame, and she rises from flat feet
+       up onto the balls of her feet — her whole figure lifts and her
+       shoes turn down to pointe. Then the PLIÉ that ends it: she
+       sinks into a turned-out knee bend, feet flat and opened out,
+       before she settles back tall at the barre. Real leg and foot
+       movement throughout — her leg swings around its hip, her shoes
+       rotate to pointe and back — never a slide or a glide, and she
+       never leaves her spot at the barre. */
     if(prop){ prop.className='sport-prop'; }
-    if(el){
-      el.classList.add('dance-step');
-      if(typeof ensurePoseDriver==='function') ensurePoseDriver(); /* her steps are JS-driven for the whole crossing */
-      if(REDUCED){ el.style.left='5%'; }
-      else {
-        el.style.transition='left 1.05s cubic-bezier(.3,.6,.4,1)';
-        el.style.left='58%';
-        setTimeout(function(){ sparkleBurst(66,150); el.style.transition='left 1.05s cubic-bezier(.3,.6,.4,1)'; el.style.left='5%'; },1150);
-      }
+    if(el&&!REDUCED){
+      var dSvg=el.querySelector('svg');
+      var dLegR=el.querySelector('.leg-r'), dLegL=el.querySelector('.leg-l');
+      var dArmL=el.querySelector('.arm-l'), dArmR=el.querySelector('.arm-r');
+      var dShoeR=dLegR? dLegR.querySelector('rect'):null, dShoeL=dLegL? dLegL.querySelector('rect'):null;
+      function dSet(node,props){ if(!node) return; node.style.animation='none'; node.style.transformBox='view-box'; for(var k in props) node.style[k]=props[k]; }
+      /* she starts from the waiting pose: hands ON the barre */
+      if(dArmL) poseBarreArm(dArmL,el);
+      if(dArmR) poseBarreArm(dArmR,el);
+      /* 1 — BATTEMENT: the working leg beats out and back, vigorously */
+      dSet(dLegR,{transformOrigin:'112px 196px',transition:'transform .19s cubic-bezier(.3,1.4,.5,1)',transform:'rotate(-72deg)'});
+      setTimeout(function(){ dSet(dLegR,{transition:'transform .17s ease-in',transform:'rotate(0deg)'}); },210);
+      setTimeout(function(){ dSet(dLegR,{transition:'transform .19s cubic-bezier(.3,1.4,.5,1)',transform:'rotate(-72deg)'}); },400);
+      setTimeout(function(){ dSet(dLegR,{transition:'transform .17s ease-in',transform:'rotate(0deg)'}); },610);
+      setTimeout(function(){ dSet(dLegR,{transition:'transform .19s cubic-bezier(.3,1.4,.5,1)',transform:'rotate(-72deg)'}); },800);
+      setTimeout(function(){ dSet(dLegR,{transition:'transform .2s ease-in',transform:'rotate(0deg)'}); },1010);
+      /* 2 — RELEVÉ: arms rise to a rounded frame, she rises onto pointe */
+      setTimeout(function(){
+        poseBarreUndo();
+        dSet(dArmL,{transformOrigin:'78px 100px',transition:'transform .45s ease',transform:'rotate(54deg)'});
+        dSet(dArmR,{transformOrigin:'122px 100px',transition:'transform .45s ease',transform:'rotate(-54deg)'});
+        el.style.transition='transform .5s ease'; el.style.transform='translateY(-9px)';
+        if(dShoeR) dShoeR.setAttribute('transform','rotate(36 118 242)');
+        if(dShoeL) dShoeL.setAttribute('transform','rotate(36 82 242)');
+      },1250);
+      /* 3 — PLIÉ: knees bend, feet turned out — the routine ends here */
+      setTimeout(function(){
+        el.style.transition='transform .55s ease'; el.style.transform='translateY(5px)';
+        dSet(dLegL,{transformOrigin:'88px 196px',transition:'transform .55s ease',transform:'rotate(17deg)'});
+        dSet(dLegR,{transformOrigin:'112px 196px',transition:'transform .55s ease',transform:'rotate(-17deg)'});
+        if(dShoeR) dShoeR.removeAttribute('transform');
+        if(dShoeL) dShoeL.removeAttribute('transform');
+      },2150);
+      /* settle: every drawn pose is released, tall at the barre again */
+      setTimeout(function(){
+        [dLegR,dLegL,dArmL,dArmR].forEach(function(n){ if(!n) return; n.style.transition=''; n.style.transform=''; n.style.transformBox=''; n.style.transformOrigin=''; n.style.animation=''; });
+        el.style.transition=''; el.style.transform='';
+      },2950);
     }
     sfx('sparkle'); setTimeout(function(){ sfx('cheer'); },200);
     sparkleBurst(30);
     setTimeout(function(){
-      if(el){ el.style.transition=''; el.classList.remove('dance-step'); el.style.left='5%'; }
+      if(el){ el.style.transition=''; el.style.transform=''; el.style.left='5%'; }
       if(prop){ prop.className='sport-prop'; }
       beamBusy=false;
       if(done) done();
-    }, REDUCED?80:2350);
+    }, REDUCED?80:3450);
     return;
   }
   if(sportWorldId()==='jumprope'){
@@ -6865,7 +7094,7 @@ function playSportScore(done){
     /* Soccer score: the ball finally leaves her foot — she KICKS it low
        and fast, past the goalie and into the net. While she waited it
        only rolled under her foot; the kick is the one time it flies. */
-    if(el&&!REDUCED){ el.style.transition='transform .3s ease'; el.style.transform='translateY(-7px)'; setTimeout(function(){ el.style.transform=''; },340); }
+    if(el&&!REDUCED){ var sLegR=el.querySelector('.leg-r'); if(sLegR){ sLegR.style.animation='none'; sLegR.style.transformBox='view-box'; sLegR.style.transformOrigin='112px 196px'; sLegR.style.transition='transform .13s ease-in'; sLegR.style.transform='rotate(20deg)'; setTimeout(function(){ sLegR.style.transition='transform .16s ease-out'; sLegR.style.transform='rotate(-58deg)'; },140); setTimeout(function(){ sLegR.style.transition='transform .3s ease'; sLegR.style.transform=''; },430); setTimeout(function(){ sLegR.style.transition=''; sLegR.style.transformBox=''; sLegR.style.transformOrigin=''; },780); } el.style.transition='transform .3s ease'; el.style.transform='translateY(-7px)'; setTimeout(function(){ el.style.transform=''; },340); }
     if(prop){
       prop.className='sport-prop';
       if(REDUCED){ prop.style.left='83%'; prop.style.bottom='45%'; }
@@ -6958,20 +7187,19 @@ function playSportMiss(done){
     if(tel&&!REDUCED){ tel.classList.add('racket-swing'); setTimeout(function(){ tel.classList.remove('racket-swing'); },520); }
     if(prop){
       prop.className='sport-prop';
-      if(REDUCED){ prop.style.left='45%'; prop.style.bottom='39%'; }
+      if(REDUCED){ prop.style.left='45%'; prop.style.bottom='15%'; }
       else {
         prop.style.transition='left .3s ease-out, bottom .3s ease-out, transform .3s ease';
-        prop.style.left='45%'; prop.style.bottom='61%'; prop.style.transform='rotate(110deg)';
-        setTimeout(function(){ prop.style.transition='left .34s ease-in, bottom .4s cubic-bezier(.55,0,1,1), transform .4s ease'; prop.style.left='45.5%'; prop.style.bottom='39%'; prop.style.transform='rotate(170deg) scaleY(.9)'; },330);
-        setTimeout(function(){ prop.style.transition='bottom .15s ease-out'; prop.style.bottom='43%'; },760);
-        setTimeout(function(){ prop.style.transition='bottom .16s ease-in, transform .16s ease'; prop.style.bottom='39%'; prop.style.transform='rotate(185deg)'; },930);
+        prop.style.left='45%'; prop.style.bottom='31%'; prop.style.transform='rotate(110deg)';
+        setTimeout(function(){ prop.style.transition='left .34s ease-in, bottom .4s cubic-bezier(.55,0,1,1), transform .4s ease'; prop.style.left='45.5%'; prop.style.bottom='15%'; prop.style.transform='rotate(170deg) scaleY(.9)'; },330);
+        setTimeout(function(){ prop.style.transition='bottom .15s ease-out'; prop.style.bottom='18.5%'; },760);
+        setTimeout(function(){ prop.style.transition='bottom .16s ease-in, transform .16s ease'; prop.style.bottom='15%'; prop.style.transform='rotate(185deg)'; },930);
       }
     }
     setTimeout(function(){
-      if(prop){ var phT=sportPropHome(); prop.style.transition= REDUCED? '' : 'left .6s ease, bottom .6s ease, transform .6s ease'; prop.style.left=phT.left; prop.style.bottom=phT.bottom; prop.style.transform=''; if(!REDUCED){ (function(pp){ setTimeout(function(){ pp.style.transition=''; },650); })(prop); } }
-      beamBusy=false;
-      if(done) done();
-    }, REDUCED?120:1250);
+      if(REDUCED){ if(prop){ var phT=sportPropHome(); prop.style.transition=''; prop.style.left=phT.left; prop.style.bottom=phT.bottom; prop.style.transform=''; } beamBusy=false; if(done) done(); return; }
+      tennisBallDuty(done); /* the point is over and the ball lies on her side: her mascot walks to it, picks it up and tosses it back to her racket — the ball never floats or snaps home on its own */
+    }, REDUCED?120:1150);
     return;
   }
   if(sportWorldId()==='jumprope'){
@@ -7008,7 +7236,7 @@ function playSportMiss(done){
   if(sportWorldId()==='dance'){
     /* Dance miss: she MISSTEPS at the barre and FALLS — tips over onto
        the studio floor — then gets right back up at the barre, and the
-       routine restarts her twirling there for the same problem. She
+       routine restarts her leg lifts there for the same problem. She
        falls INTO the studio (to her right, +74deg): tipping the other
        way rotated her out past the stage's left edge, so the fall
        itself was barely visible — only her feet showed at the barre. */
@@ -7127,17 +7355,20 @@ function playSportMiss(done){
     return;
   }
   if(sportWorldId()==='soccer'){
-    /* Soccer miss (the SHARED soccer logic, same as Karter's): she
-       kicks and the ball hits the POST — it clangs off the goal post,
-       bounces back out, drops to the ground and rolls back to her —
-       no goal, and the same problem is served again. */
+    /* Soccer miss (Michelle's chain): she KICKS — the kick always
+       happens — and the ball MISSES THE GOAL COMPLETELY: it flies
+       wide past the far post and high over the bar, drops to the
+       ground outside the goal and rolls back to her — no goal, and
+       the same problem is served again. */
+    var mel=stageCheerEl();
+    if(mel&&!REDUCED){ var mLegR=mel.querySelector('.leg-r'); if(mLegR){ mLegR.style.animation='none'; mLegR.style.transformBox='view-box'; mLegR.style.transformOrigin='112px 196px'; mLegR.style.transition='transform .13s ease-in'; mLegR.style.transform='rotate(20deg)'; setTimeout(function(){ mLegR.style.transition='transform .16s ease-out'; mLegR.style.transform='rotate(-58deg)'; },140); setTimeout(function(){ mLegR.style.transition='transform .3s ease'; mLegR.style.transform=''; },430); setTimeout(function(){ mLegR.style.transition=''; mLegR.style.transformBox=''; mLegR.style.transformOrigin=''; },780); } }
     if(prop){
       prop.className='sport-prop';
-      if(REDUCED){ prop.style.left='79%'; prop.style.bottom='45%'; }
+      if(REDUCED){ prop.style.left='92%'; prop.style.bottom='58%'; }
       else {
         prop.style.transition='left .5s ease-out, bottom .5s cubic-bezier(.3,1.1,.4,1), transform .5s ease';
-        prop.style.left='79%'; prop.style.bottom='47%'; prop.style.transform='rotate(240deg)';
-        setTimeout(function(){ prop.style.transition='left .38s ease-in, bottom .42s cubic-bezier(.55,0,1,1), transform .42s ease'; prop.style.left='68%'; prop.style.bottom='21%'; prop.style.transform='rotate(120deg) scaleY(.9)'; },540);
+        prop.style.left='92%'; prop.style.bottom='58%'; prop.style.transform='rotate(240deg)';
+        setTimeout(function(){ prop.style.transition='left .38s ease-in, bottom .42s cubic-bezier(.55,0,1,1), transform .42s ease'; prop.style.left='88%'; prop.style.bottom='21%'; prop.style.transform='rotate(120deg) scaleY(.9)'; },540);
         setTimeout(function(){ prop.style.transition='bottom .14s ease-out'; prop.style.bottom='24%'; },990);
         setTimeout(function(){ prop.style.transition='bottom .15s ease-in'; prop.style.bottom='21%'; },1140);
       }
@@ -7264,7 +7495,7 @@ function soccerRollFrame(ts){
   prop.style.transform='translateX('+(9*ph).toFixed(2)+'px) rotate('+(38*ph).toFixed(1)+'deg)';
   if(el&&el.classList.contains('soccer-idle')){
     var legR=el.querySelector('.leg-r');
-    if(legR){ legR.style.animation='none'; legR.style.transformBox='view-box'; legR.style.transformOrigin='112px 196px'; legR.style.transform='rotate('+(6*ph).toFixed(2)+'deg)'; soccerRollLeg=legR; }
+    if(legR){ legR.style.animation='none'; legR.style.transformBox='view-box'; legR.style.transformOrigin='112px 196px'; legR.style.transform='translateX('+(9*ph).toFixed(2)+'px) rotate('+(5*ph).toFixed(2)+'deg)'; soccerRollLeg=legR; }
   }
   soccerRollRAF=requestAnimationFrame(soccerRollFrame);
 }
@@ -7278,9 +7509,9 @@ function stopSoccerRoll(){ if(soccerRollRAF){ cancelAnimationFrame(soccerRollRAF
    Four game motions are driven HERE, frame by frame, instead of
    resting on stylesheet keyframe animations alone: the soccer
    waiting roll (the ball rolling back and forth under her sole, her
-   foot rocking with it), the dance waiting twirl (a real pirouette
-   in passé — one leg up, its foot at the opposite knee — held while
-   she turns at the barre), the dance routine's traveling steps, and
+   foot rocking with it), the dance waiting leg lifts at the barre
+   (her hands drawn onto the real bar, her legs alternating lifts),
+   her stepping trip back to the barre, and
    the running strides with their arm pump. Exactly like the
    jump-rope loop above, the driver writes the motion as inline
    styles every animation frame, so it runs the same in every
@@ -7291,7 +7522,7 @@ function stopSoccerRoll(){ if(soccerRollRAF){ cancelAnimationFrame(soccerRollRAF
    still (a feet-together glide for dance and for running, and a
    soccer ball that never rolled across 4+ seconds of frames). The
    phases below mirror the stylesheet keyframes they back up
-   (soccerFootRoll / soccerFootRock, the danceTwirl + passé set,
+   (soccerFootRoll / soccerFootRock, the barre leg-lift set,
    danceStepL/R, runStepL/R + runArmL/R), so the look is unchanged
    wherever those animations already played. Genuine reduced motion
    (the page's REDUCED flag) still wins: the driver never starts,
@@ -7302,7 +7533,7 @@ function poseRelease(key){
   n.style.transform=''; n.style.animation=''; n.style.transformBox=''; n.style.transformOrigin='';
   if(key==='el') n.style.transition='';
 }
-function poseReleaseAll(){ posePasseUndo(); runArmUndo(); for(var k in poseOwned) poseRelease(k); }
+function poseReleaseAll(){ poseBarreUndo(); runArmUndo(); for(var k in poseOwned) poseRelease(k); }
 function poseLimb(node,origin,deg){
   if(!node) return;
   node.style.animation='none'; node.style.transformBox='view-box'; node.style.transformOrigin=origin;
@@ -7313,45 +7544,52 @@ function poseBody(node,ty,deg){
   node.style.animation='none'; node.style.transformBox='fill-box'; node.style.transformOrigin='50% 100%';
   node.style.transform='translateY('+ty+'px) rotate('+deg+'deg)';
 }
-/* ----- THE PASSÉ, DRAWN (waiting-twirl fix) -----
-   A turned STRAIGHT leg never read as passé in still frames: the leg
-   is one straight segment, so rotating it about her hip only swung a
-   straight leg across — in captured frames the raised shoe hovered
-   beside her standing shin and the pose never landed. A real passé
-   has two bones: thigh out to a raised knee, shin folded back in so
-   the TOE rests at the standing leg's knee. The driver now draws
-   exactly that on her right leg while she waits in dance: the leg's
-   line is redrawn as the SHIN — from a raised knee out at (134,203),
-   just under the tutu hem where her thigh comes out of the skirt, in
-   to the toe at (88,214), the standing leg's knee — and her shoe is
-   turned pointe-down against that knee. The toe never leaves the
-   knee; only the raised knee bobs a couple of units as she turns, so
-   the pose is HELD at every moment of the turn, front or back. The
-   moment she leaves the waiting twirl the leg's drawn shape is put
-   back exactly as the figure builder made it, before any other pose
-   (her stepping legs included) touches it. */
-var passeDrawn=null;
-function posePasse(legR,pump){
-  if(!legR) return;
-  var line=legR.querySelector('line'), shoe=legR.querySelector('rect');
-  if(!line||!shoe) return;
-  legR.style.animation='none'; legR.style.transform='none';
-  var ky=Math.round(203+2*pump);
-  line.setAttribute('x1','134'); line.setAttribute('y1',String(ky));
-  line.setAttribute('x2','88'); line.setAttribute('y2','214');
-  shoe.setAttribute('transform','translate(-28,-30) rotate(68 118 242)');
-  var rib=legR.querySelectorAll('path');
-  for(var i=0;i<rib.length;i++) rib[i].setAttribute('display','none'); /* her shoe ribbons belong at her ankle — while the shoe is at her knee they wait out of sight instead of floating at the old ankle spot */
-  passeDrawn=legR;
+/* ----- HANDS ON THE BARRE, DRAWN (dance waiting, Michelle) -----
+   Her waiting pose is LEG LIFTS at the barre, and her hands must be
+   ON the barre — actually touching it, NO GAPS. A fixed arm pose
+   cannot promise that: the barre's height on screen and her figure's
+   size are set by different rules at phone and desktop sizes. So the
+   driver MEASURES both every frame — the top bar's real on-screen
+   position and her figure's real on-screen box — converts the bar's
+   height into her figure's own coordinates, and redraws each arm as
+   shoulder → hand with the hand placed exactly on the bar, out at
+   her sides (figure x 30 and 170). Her hands therefore rest on the
+   bar at every size, at every moment of the leg lifts. Leaving the
+   waiting pose restores both arms exactly as the figure builder
+   made them, before any other pose touches them. */
+var barreArmState={};
+function poseBarreArm(arm,el){
+  if(!arm||!el) return;
+  var line=arm.querySelector('line'), hand=arm.querySelector('circle');
+  if(!line||!hand) return;
+  var key=arm.getAttribute('class')||'';
+  var st=barreArmState[key];
+  if(!st||st.arm!==arm){
+    st={arm:arm,line:line,hand:hand,x2:line.getAttribute('x2'),y2:line.getAttribute('y2'),cx:hand.getAttribute('cx'),cy:hand.getAttribute('cy')};
+    barreArmState[key]=st;
+  }
+  var bar=document.querySelector('#danceBarre .barre-top');
+  var svg=el.querySelector('svg');
+  if(!bar||!svg) return;
+  var br=bar.getBoundingClientRect(), sr=svg.getBoundingClientRect();
+  if(!sr.width||!sr.height) return;
+  var scale=Math.min(sr.width/200,sr.height/250);
+  if(!(scale>0)) return;
+  var renderedH=250*scale, figTop=sr.top+(sr.height-renderedH); /* xMidYMax: the figure is bottom-anchored in its box */
+  var fy=(br.top+br.height/2-figTop)/scale;
+  fy=Math.max(118,Math.min(216,fy));
+  var hx= key.indexOf('arm-l')>-1? 30:170;
+  arm.style.animation='none'; arm.style.transform='none';
+  line.setAttribute('x2',String(hx)); line.setAttribute('y2',String(Math.round(fy)));
+  hand.setAttribute('cx',String(hx)); hand.setAttribute('cy',String(Math.round(fy)));
 }
-function posePasseUndo(){
-  if(!passeDrawn) return;
-  var legR=passeDrawn; passeDrawn=null;
-  var line=legR.querySelector('line'), shoe=legR.querySelector('rect');
-  if(line){ line.setAttribute('x1','112'); line.setAttribute('y1','196'); line.setAttribute('x2','116'); line.setAttribute('y2','238'); }
-  if(shoe){ shoe.removeAttribute('transform'); }
-  var rib=legR.querySelectorAll('path');
-  for(var i=0;i<rib.length;i++) rib[i].removeAttribute('display');
+function poseBarreUndo(){
+  for(var key in barreArmState){
+    var st=barreArmState[key]; if(!st) continue;
+    if(st.line){ st.line.setAttribute('x2',st.x2); st.line.setAttribute('y2',st.y2); }
+    if(st.hand){ st.hand.setAttribute('cx',st.cx); st.hand.setAttribute('cy',st.cy); }
+  }
+  barreArmState={};
 }
 /* ----- THE ARM PUMP, DRAWN BENT (running live-check fix) -----
    Her arms are single straight segments pinned at the shoulder, so
@@ -7359,7 +7597,7 @@ function posePasseUndo(){
    frames they read as a sideways T in every stride. A runner's arm
    is BENT at the elbow and pumps: upper arm hanging down from the
    shoulder, forearm rising in front, the hand driving up and back
-   against the same-side leg. Exactly like the passé, the driver now
+   against the same-side leg. Exactly like the barre hands, the driver now
    DRAWS that shape: the arm's straight lines are hidden and a
    two-segment path (shoulder → elbow → hand) is drawn in their
    place, the hand circle riding its end. Leaving the run restores
@@ -7407,33 +7645,36 @@ function poseDriverFrame(ts){
   var legL=el.querySelector('.leg-l'), legR=el.querySelector('.leg-r'),
       armL=el.querySelector('.arm-l'), armR=el.querySelector('.arm-r'),
       body=el.querySelector('.cheer-body');
-  if(passeDrawn && !el.classList.contains('dance-idle')) posePasseUndo(); /* she has left the waiting twirl — her leg is its drawn self again before any other pose uses it */
+  if(Object.keys(barreArmState).length && !el.classList.contains('dance-idle')) poseBarreUndo(); /* she has left the barre — her arms are their drawn selves again before any other pose uses them */
   var runPoseActive=el.classList.contains('running')||(el.classList.contains('sport-player-bob')&&typeof sportWorldId==='function'&&sportWorldId()==='running');
   if(Object.keys(runArmState).length&&!runPoseActive) runArmUndo(); /* she has left the run — her arms are their drawn selves again */
   if(el.classList.contains('dance-idle')){
-    /* the waiting pirouette at the barre: she TURNS the whole time,
-       holding passé — one leg up, its foot drawn to the standing
-       leg's knee — arms in their rounded frame, body bobbing lightly
-       on the supporting foot. */
-    if(!poseOwned.el) el.style.transition='left .5s ease'; /* a leftover reset transition must never smear the turn */
-    el.style.animation='none'; el.style.transformBox='fill-box'; el.style.transformOrigin='50% 100%';
-    el.style.transform='rotateY('+Math.round((t*360/1.9)%360)+'deg)';
-    want.el=el;
-    var pump=Math.sin(t*TAU/0.76), sway=Math.sin(t*TAU/1.5);
-    if(legR){ posePasse(legR,pump); want.legR=legR; }
-    if(legL){ poseLimb(legL,'88px 196px',1.5+1.5*sway); want.legL=legL; }
-    if(armL){ poseLimb(armL,'78px 100px',45+7*sway); want.armL=armL; }
-    if(armR){ poseLimb(armR,'122px 100px',-45-7*sway); want.armR=armR; }
-    if(body){ poseBody(body,-2+2*pump,0); want.body=body; }
+    /* WAITING AT THE BARRE (Michelle — the twirl is replaced): she
+       stands at the barre doing LEG LIFTS. Both of her hands rest ON
+       the barre the whole time — drawn onto the real bar every frame
+       by poseBarreArm, touching it with no gaps — while her legs
+       alternate: the right leg lifts out to the side and lowers,
+       then the left leg lifts and lowers, each around its own hip,
+       the standing leg planted flat on the studio floor. Her body
+       leans a breath toward the standing leg as the other lifts.
+       She never leaves the barre and never spins. */
+    var cyc=(t%3.4)/3.4, rAmt=0, lAmt=0;
+    if(cyc<0.38) rAmt=Math.sin((cyc/0.38)*Math.PI);
+    else if(cyc>=0.5&&cyc<0.88) lAmt=Math.sin(((cyc-0.5)/0.38)*Math.PI);
+    if(legR){ poseLimb(legR,'112px 196px',-42*rAmt); want.legR=legR; }
+    if(legL){ poseLimb(legL,'88px 196px',42*lAmt); want.legL=legL; }
+    if(armL){ poseBarreArm(armL,el); want.armL=armL; }
+    if(armR){ poseBarreArm(armR,el); want.armR=armR; }
+    if(body){ poseBody(body,0, rAmt? -1.6*rAmt : (lAmt? 1.6*lAmt : 0)); want.body=body; }
   } else if(el.classList.contains('dance-step')){
-    /* the routine crossing: real dance steps — legs stepping in
-       opposite phases, arms in the ballerina frame, body bobbing
-       with each step. Never a feet-together glide. */
+    /* her trip back to the barre: real dance steps — legs stepping
+       in opposite phases, arms swinging gently at her sides, body
+       bobbing with each step. Never a feet-together glide. */
     var stp=Math.sin(t*TAU/0.64), armS=Math.sin(t*TAU/1.2);
     if(legL){ poseLimb(legL,'88px 196px',1+26*stp); want.legL=legL; }
     if(legR){ poseLimb(legR,'112px 196px',1-26*stp); want.legR=legR; }
-    if(armL){ poseLimb(armL,'78px 100px',45+7*armS); want.armL=armL; }
-    if(armR){ poseLimb(armR,'122px 100px',-45-7*armS); want.armR=armR; }
+    if(armL){ poseLimb(armL,'78px 100px',9*armS); want.armL=armL; }
+    if(armR){ poseLimb(armR,'122px 100px',9*armS); want.armR=armR; }
     if(body){ poseBody(body,-2.5+2.5*Math.sin(t*TAU/0.6),1.4*stp); want.body=body; }
   } else if(el.classList.contains('running')){
     /* the race: real strides the whole way across — legs stepping
@@ -7446,14 +7687,20 @@ function poseDriverFrame(ts){
     if(armR){ poseRunArm(armR, run); want.armR=armR; }
     if(body){ poseBody(body,-3.5+3.5*Math.sin(t*TAU/0.23),3.5+run); want.body=body; }
   } else if(el.classList.contains('sport-player-bob')&&typeof sportWorldId==='function'&&sportWorldId()==='running'){
-    /* waiting at the start line: she jogs in place — the same
-       bent-elbow pump and a light stride under her, ready to go. */
-    var jog=Math.sin(t*TAU/0.46);
-    if(legL){ poseLimb(legL,'88px 196px',1.5+20*jog); want.legL=legL; }
-    if(legR){ poseLimb(legR,'112px 196px',1.5-20*jog); want.legR=legR; }
-    if(armL){ poseRunArm(armL,-jog); want.armL=armL; }
-    if(armR){ poseRunArm(armR, jog); want.armR=armR; }
-    if(body){ poseBody(body,-2+2*Math.sin(t*TAU/0.23),0); want.body=body; }
+    /* WAITING AT THE START LINE (Michelle's correction): she MARCHES
+       IN PLACE — she does NOT float up and down. One knee lifts high
+       while the other foot stays planted flat on the track, then they
+       trade, in a steady march rhythm; her arms swing bent at the
+       elbow against the marching legs, and her body stays GROUNDED
+       the whole time (a breath of side sway only — its height never
+       changes, so she never bobs or floats off the track). */
+    var mrg=Math.sin(t*TAU/0.64);
+    var liftL=Math.max(0,mrg), liftR=Math.max(0,-mrg);
+    if(legL){ poseLimb(legL,'88px 196px',36*liftL); want.legL=legL; }
+    if(legR){ poseLimb(legR,'112px 196px',36*liftR); want.legR=legR; }
+    if(armL){ poseRunArm(armL, mrg); want.armL=armL; }
+    if(armR){ poseRunArm(armR,-mrg); want.armR=armR; }
+    if(body){ poseBody(body,0,1.3*mrg); want.body=body; }
   }
   /* the soccer waiting roll is NOT written here — it has its own
      dedicated loop above (soccerRollFrame), which owns the prop and
@@ -8009,7 +8256,7 @@ var THEME_BGS=[
  {id:'snow',name:'Snow Day',emoji:'❄️',page:'#F8FCFF',stage:'linear-gradient(180deg,#E0F2FE 0%,#F0F9FF 55%,#FFFFFF 55.2%,#E2E8F0 100%)'}
 ];
 var THEME_PRESETS=[
- {id:'royal',name:'Cheer',desc:'The classic castle theme',color:'pink',color2:'purple',color3:'gold',sport:'cheer',animal:'butterfly',bg:'enchanted'},
+ {id:'royal',name:'Cheer',desc:'The classic castle theme',color:'pink',color2:'purple',color3:'gold',sport:'cheer',animal:'butterfly',bg:'castle'},
  {id:'ocean',name:'Swimming',desc:'Blue waves & a dolphin friend',color:'violet',color2:'magenta',color3:'pink',sport:'swimming',animal:'dolphin',bg:'beach'},
  {id:'galaxy',name:'Dance',desc:'Purple space & a wise owl',color:'purple',color2:'pink',color3:'gold',sport:'dance',animal:'owl',bg:'space'},
  {id:'garden',name:'Soccer',desc:'Green garden & a bunny pal',color:'rose',color2:'pink',color3:'magenta',sport:'soccer',animal:'bunny',bg:'garden'},
@@ -8040,12 +8287,12 @@ var SPORT_WORLDS={
  cheer:{name:'Cheer',emoji:'📣',venue:'Castle Ballroom',venueShort:'Castle',headline:'CHEER. LEARN & SHINE!',coachRole:'cheer coach',prop:'📣',target:'🎀',idleClass:'',idleMsg:'The squad is readied at the base, pom poms in hand — answer to build the pyramid! 📣',readyMsg:'Your squad is ready at the base, pom poms in hand — answer to build the pyramid! 📣',scoreMsg:'The squad built the pyramid, tossed her high — and she landed it clean',missStageMsg:'As she climbed into the pyramid, the squad tumbled down gently — no pyramid this time! Read the tip and try this same one again! 📣',rival:'Castle Belles',stage:'linear-gradient(180deg,#EBD9F2 0%,#F7E3F3 55%,#F3D9C8 55.2%,#EAC39F 100%)',hero:'Welcome to your cheer castle — an enchanted castle where math and spelling turn into a cheer competition with a whole squad of four! Cheer Coach Belle will show you an example first, help you fix mistakes until you get it right, and help you all the way to the championship.'},
  tennis:{name:'Tennis',emoji:'🎾',venue:'Tennis Court',venueShort:'Court',headline:'SERVE. LEARN & WIN!',coachRole:'tennis coach',prop:'🎾',target:'',idleClass:'idle-tennis-ball',idleMsg:'She\u2019s resting the ball on her racket, waiting for your answer! 🎾',readyMsg:'Your tennis player is ready — answer to serve! 🎾',scoreMsg:'She hit it over the net — the ball landed on the other side. Point for you!',missStageMsg:'Her serve hit the net and the ball dropped on her side — no point. Try this same one again! 🎾',rival:'The Other Side',stage:'linear-gradient(180deg,#7DD3FC 0%,#BAE6FD 46%,#3D9970 46.2%,#2F855A 78%,#276749 100%)',hero:'Welcome to your tennis court — a sunny tennis court where math and spelling turn into a real tennis match! Tennis Coach Belle will show you an example first, help you fix mistakes until you get it right, and help you all the way to the championship.'},
  basketball:{name:'Basketball',emoji:'🏀',venue:'Basketball Court',venueShort:'Court',headline:'SHOOT. LEARN & WIN!',coachRole:'basketball coach',prop:'🏀',target:'',idleClass:'idle-basketball',idleMsg:'She\u2019s dribbling the ball in place, waiting for your answer! 🏀',readyMsg:'Your player is ready, dribbling in place — answer to shoot! 🏀',scoreMsg:'Swish! She shot it and the ball went right through the hoop — basket!',missStageMsg:'The ball bounced UP off the rim, came back down and rolled back to her — no basket! She shoots this same one again until she makes it! 🏀',rival:'Visiting Team',stage:'linear-gradient(180deg,#FDE68A 0%,#FCD34D 40%,#D97706 40.2%,#B45309 78%,#92400E 100%)',hero:'Welcome to your basketball court — a bright basketball court where math and spelling turn into a real game! Basketball Coach Belle will show you an example first, help you fix mistakes until you get it right, and help you all the way to the championship.'},
- soccer:{name:'Soccer',emoji:'⚽',venue:'Soccer Field',venueShort:'Field',headline:'KICK. LEARN & SCORE!',coachRole:'soccer coach',prop:'⚽',target:'',idleClass:'idle-soccer',idleMsg:'Her foot is resting right on top of the ball, rolling it back and forth under her foot while you think! ⚽',readyMsg:'Your soccer star is ready, her foot resting right on top of the ball, rolling it back and forth under her foot — answer to kick! ⚽',scoreMsg:'GOAL! She kicked the ball right past the goalie into the net!',missStageMsg:'Off the post! The kick hit the post and bounced back out — no goal! She kicks this same one again until she scores! ⚽',rival:'Rival Team',stage:'linear-gradient(180deg,#7DD3FC 0%,#BAE6FD 38%,#4ADE80 38.2%,#22C55E 78%,#16A34A 100%)',hero:'Welcome to your soccer field — a green grass soccer field — real goal, net and goalie included — where math and spelling turn into a real match! Soccer Coach Belle will show you an example first, help you fix mistakes until you get it right, and help you all the way to the championship.'},
+ soccer:{name:'Soccer',emoji:'⚽',venue:'Soccer Field',venueShort:'Field',headline:'KICK. LEARN & SCORE!',coachRole:'soccer coach',prop:'⚽',target:'',idleClass:'idle-soccer',idleMsg:'Her foot is resting right on top of the ball, rolling it back and forth under her foot while you think! ⚽',readyMsg:'Your soccer star is ready, her foot resting right on top of the ball, rolling it back and forth under her foot — answer to kick! ⚽',scoreMsg:'GOAL! She kicked the ball right past the goalie into the net!',missStageMsg:'She kicked it WIDE — the ball missed the goal completely! No goal! She kicks this same one again until she scores! ⚽',rival:'Rival Team',stage:'linear-gradient(180deg,#7DD3FC 0%,#BAE6FD 38%,#4ADE80 38.2%,#22C55E 78%,#16A34A 100%)',hero:'Welcome to your soccer field — a green grass soccer field — real goal, net and goalie included — where math and spelling turn into a real match! Soccer Coach Belle will show you an example first, help you fix mistakes until you get it right, and help you all the way to the championship.'},
  swimming:{name:'Swimming',emoji:'🏊',venue:'Castle Pool',venueShort:'Pool',headline:'SWIM. LEARN & SPLASH!',coachRole:'swimming coach',prop:'',target:'',idleClass:'idle-swimming',idleMsg:'She\u2019s in the water kicking her feet, waiting for her turn to race! 🏊',readyMsg:'Your swimmer is in the water, kicking her feet — answer to start her race across the pool! 🏊',scoreMsg:'She swam all the way from one side of the pool to the other and touched the wall!',missStageMsg:'Oh no — she started to sink! She got herself back up, but there\u2019s no crossing this time. She starts over — try this same one again! 🏊',rival:'The Next Lane',stage:'linear-gradient(180deg,#BAE6FD 0%,#7DD3FC 34%,#38BDF8 34.2%,#0284C7 80%,#0369A1 100%)',hero:'Welcome to your swimming pool — a sparkling castle pool — lane ropes, flags and a starting block — where math and spelling turn into a real swim race! Swimming Coach Belle will show you an example first, help you fix mistakes until you get it right, and help you all the way to the championship.'},
  hockey:{name:'Hockey',emoji:'🏒',venue:'Ice Rink',venueShort:'Rink',headline:'SKATE. LEARN & SCORE!',coachRole:'hockey coach',prop:'⚫',target:'',idleClass:'idle-hockey-puck',idleMsg:'She\u2019s stick-handling the puck right in front of her stick, waiting for your answer — her stick never leaves her hands! 🏒',readyMsg:'Your hockey player is ready, stick in her hands and puck at her blade — answer to shoot the puck! 🏒',scoreMsg:'GOAL! The puck slid right into the net!',missStageMsg:'The puck slid wide of the net — no goal! Try this same one again! 🏒',rival:'Rival Team',stage:'linear-gradient(180deg,#E0F2FE 0%,#F0F9FF 40%,#E2E8F0 40.2%,#F8FAFC 78%,#CBD5E1 100%)',hero:'Welcome to your hockey rink — a frosty ice rink where math and spelling turn into a real hockey game! Hockey Coach Belle will show you an example first, help you fix mistakes until you get it right, and help you all the way to the championship.'},
- running:{name:'Running',emoji:'🏃',venue:'Running Track',venueShort:'Track',headline:'RUN. LEARN & WIN!',coachRole:'running coach',prop:'',target:'',idleClass:'idle-running',idleMsg:'She\u2019s jogging in place on the starting line, waiting for your answer! 🏃',readyMsg:'Your runner is on her mark — answer to run! 🏃',scoreMsg:'She sprinted down the track and crossed the finish line first!',missStageMsg:'She stumbled and slowed down — no finish yet. Try this same one again! 🏃',rival:'Rival Runners',stage:'linear-gradient(180deg,#7DD3FC 0%,#BAE6FD 34%,#FDBA74 34.2%,#EA580C 72%,#C2410C 100%)',hero:'Welcome to your running track — a bright running track where math and spelling turn into a real race! Running Coach Belle will show you an example first, help you fix mistakes until you get it right, and help you all the way to the championship.'},
+ running:{name:'Running',emoji:'🏃',venue:'Running Track',venueShort:'Track',headline:'RUN. LEARN & WIN!',coachRole:'running coach',prop:'',target:'',idleClass:'idle-running',idleMsg:'She\u2019s marching in place on the starting line, waiting for your answer! 🏃',readyMsg:'Your runner is on her mark — answer to run! 🏃',scoreMsg:'She sprinted down the track and crossed the finish line first!',missStageMsg:'She stumbled and slowed down — no finish yet. Try this same one again! 🏃',rival:'Rival Runners',stage:'linear-gradient(180deg,#7DD3FC 0%,#BAE6FD 34%,#FDBA74 34.2%,#EA580C 72%,#C2410C 100%)',hero:'Welcome to your running track — a bright running track where math and spelling turn into a real race! Running Coach Belle will show you an example first, help you fix mistakes until you get it right, and help you all the way to the championship.'},
  jumprope:{name:'Jump Rope',emoji:'🪢',venue:'Castle Playground',venueShort:'Playground',headline:'JUMP. LEARN & SHINE!',coachRole:'jump rope coach',prop:'🪢',target:'',idleClass:'idle-jumprope',idleMsg:'She\u2019s jumping the rope in place, waiting for your answer! 🪢',readyMsg:'Your jump roper is ready — she\u2019s jumping in place. Answer to send her traveling! 🪢',scoreMsg:'She jumped the rope traveling all the way across to the other side — and came right back!',missStageMsg:'Oh no — the rope stopped right at her feet and she tripped! No progress. Pick the rope back up and try this same one again! 🪢',rival:'Rival Jumpers',stage:'linear-gradient(180deg,#FDE68A 0%,#FEF3C7 40%,#FBCFE8 40.2%,#F9A8D4 76%,#F472B6 100%)',hero:'Welcome to your jump rope playground — a sunny castle playground where math and spelling turn into jump rope! Jump Rope Coach Belle will show you an example first, help you fix mistakes until you get it right, and help you all the way to the championship.'},
- dance:{name:'Dance',emoji:'💃',venue:'Dance Studio',venueShort:'Studio',headline:'DANCE. LEARN & SHINE!',coachRole:'dance coach',prop:'',target:'',idleClass:'',idleMsg:'She\u2019s twirling at the barre in the dance studio, waiting for your answer! 💃',readyMsg:'Your dancer is twirling at the barre. Answer to send her twirling across the studio floor! 💃',scoreMsg:'She twirled all the way across the studio floor to the other side — and twirled right back to the barre! She nailed it!',missStageMsg:'She misstepped and fell — then got right back up at the barre and started twirling again! Try this same one again! 💃',rival:'Rival Dance Crew',stage:'linear-gradient(180deg,#4C1D95 0%,#7C3AED 44%,#C2185B 44.2%,#9D1450 80%,#70133C 100%)',hero:'Welcome to your dance studio — a real dance studio — mirrors on the wall, a wooden floor, and a dance barre — where math and spelling turn into a real performance! Dance Coach Belle will show you an example first, help you fix mistakes until you get it right, and help you all the way to the championship.'},
+ dance:{name:'Dance',emoji:'💃',venue:'Dance Studio',venueShort:'Studio',headline:'DANCE. LEARN & SHINE!',coachRole:'dance coach',prop:'',target:'',idleClass:'',idleMsg:'She\u2019s doing leg lifts at the barre in the dance studio, hands on the barre, waiting for your answer! 💃',readyMsg:'Your dancer is at the barre doing leg lifts, hands on the barre. Answer to see her battement, relevé and plié! 💃',scoreMsg:'At the barre she kicked a big battement, rose up on relevé, and finished in a plié! She nailed it!',missStageMsg:'She misstepped and fell — then got right back up at the barre and started her leg lifts again! Try this same one again! 💃',rival:'Rival Dance Crew',stage:'linear-gradient(180deg,#4C1D95 0%,#7C3AED 44%,#C2185B 44.2%,#9D1450 80%,#70133C 100%)',hero:'Welcome to your dance studio — a real dance studio — mirrors on the wall, a wooden floor, and a dance barre — where math and spelling turn into a real performance! Dance Coach Belle will show you an example first, help you fix mistakes until you get it right, and help you all the way to the championship.'},
  gymnastics:{name:'Gymnastics',emoji:'🤸',venue:'Gymnastics Gym',venueShort:'Gym',headline:'FLIP. LEARN & STICK IT!',coachRole:'gymnastics coach',prop:'',target:'',idleClass:'',idleMsg:'She\u2019s standing on the balance beam, arms out and balanced, waiting for your answer! 🤸',readyMsg:'Your gymnast is up on the balance beam — answer to send her leaping down the beam! 🤸',scoreMsg:'She LEAPED along the beam in a big split leap, stuck her landing on the other end — and leaped right back!',missStageMsg:'She wobbled and fell off the beam — no score! She gets right back up on the beam and tries this same one again until she nails it! 🤸',rival:'Rival Gym Team',stage:'linear-gradient(180deg,#FDE68A 0%,#FEF3C7 42%,#93C5FD 42.2%,#60A5FA 80%,#3B82F6 100%)',hero:'Welcome to your gymnastics gym — a bright gymnastics gym — mats, balance beam, vault and rings all around her — where math and spelling turn into a real meet! Gymnastics Coach Belle will show you an example first, help you fix mistakes until you get it right, and help you all the way to the championship.'}
 };
 /* ===== CLASSIC TEASER: 3 sports open, the rest locked =====
@@ -8110,12 +8357,14 @@ var TENNIS_BALL_HTML='<svg viewBox="0 0 40 40" style="width:15px;height:15px" ar
    shot's flight, the make and the miss all move this same element),
    exactly like the drawn tennis ball above. Same 34px prop size as
    every other ball: size, venue, shot logic and scoring untouched. */
-/* The hockey puck is a DRAWN disc too (shared-sport parity): a small
-   flat black puck, smaller than her stick, that sits at her blade and
-   slides FLAT on the ice — never the ⚫ text glyph, whose round blob
-   read bigger than the blade and bounced in its line box. Same home
-   spot at the blade, same slide, same shot logic and scoring. */
-var PUCK_HTML='<svg viewBox="0 0 30 30" style="width:24px;height:24px" aria-hidden="true"><ellipse cx="15" cy="19" rx="11" ry="6" fill="#111827"/><ellipse cx="15" cy="15.5" rx="11" ry="6" fill="#1F2937"/><ellipse cx="15" cy="14.5" rx="7" ry="3.4" fill="#374151"/></svg>';
+/* The hockey puck is a DRAWN disc too (shared-sport parity): the
+   SAME puck as Karter's — a small flat black disc, 22x11 on screen,
+   clearly smaller than her stick's blade, that sits ON THE ICE at
+   her blade and slides FLAT on the ice — never the ⚫ text glyph,
+   whose round blob read bigger than the blade and bounced in its
+   line box. Same home spot at the blade, same slide, same shot
+   logic and scoring. */
+var PUCK_HTML='<svg viewBox="0 0 22 11" style="width:22px;height:11px" aria-hidden="true"><ellipse cx="11" cy="7.5" rx="10" ry="3.5" fill="#111827"/><rect x="1" y="3.5" width="20" height="4" fill="#111827"/><ellipse cx="11" cy="3.5" rx="10" ry="3.5" fill="#1F2937"/><ellipse cx="11" cy="3.5" rx="6" ry="2" fill="#374151"/></svg>';
 var BASKETBALL_HTML='<svg viewBox="0 0 40 40" aria-hidden="true"><defs><radialGradient id="bbGrad" cx="0.35" cy="0.3" r="0.95"><stop offset="0" stop-color="#FB923C"/><stop offset="0.55" stop-color="#EA580C"/><stop offset="1" stop-color="#C2410C"/></radialGradient><clipPath id="bbClip"><circle cx="20" cy="20" r="16.5"/></clipPath></defs><circle cx="20" cy="20" r="17" fill="url(#bbGrad)" stroke="#431407" stroke-width="2"/><g clip-path="url(#bbClip)" fill="none" stroke="#431407" stroke-width="1.8"><path d="M2 20 H38"/><path d="M20 2 Q26.5 20 20 38"/><path d="M6.5 5.5 Q16 20 6.5 34.5"/><path d="M33.5 5.5 Q24 20 33.5 34.5"/></g></svg>';
 /* The little sport badge under the stage mascot and the icons in the
    stage's top decor strip use each sport's own emoji exactly as drawn —
@@ -8215,12 +8464,14 @@ function playWelcome(){
    world whose wizard was never finished and whose animal is still
    the untouched default), the games use the unicorn. When the
    learner picks a different animal in the wizard, THAT animal takes
-   the unicorn's spots in the same way. The mascot stands at ONE
-   standard spot per venue — off to the side where a team mascot
-   logically belongs (the foreground sideline of the court / field /
-   rink / track / floor / mat / playground, the poolside deck for
-   swimming) — visible the whole game, in waiting, correct and wrong
-   animations alike, and it never moves. It sits BEHIND her player
+   the unicorn's spots in the same way. The mascot's home is ONE
+   standard spot in every venue — the RIGHT BACK corner (the right
+   back area of a field), off to the side behind the play —
+   visible the whole game, in waiting, correct and wrong
+   animations alike. Its one job away from that corner is tennis
+   ball duty: after a point it walks to the ball, tosses it back
+   to her racket and walks home (see tennisBallDuty). It sits
+   BEHIND her player
    (z-index 3 against her 4), so it can never cover her, the ball,
    the counting picture (which lives in the card below, never on
    the stage) or any target. This ordered mascot is the ONE standing
@@ -8274,21 +8525,25 @@ function mascotSVG_flat(id){
     + a.head
     +'</svg>';
 }
-/* ONE standard mascot spot per venue: the foreground sideline at
-   left-of-center (in front of the near sideline line, behind her
-   player) for every floor / court / field / rink / track venue, the
-   side of the ballroom floor for cheer, the edge of the studio for
-   dance, the side of the mat for gymnastics, the side of the
-   playground for jump rope — and the poolside DECK, up by the far
-   wall where a mascot cheers a swimmer home, for swimming. */
-var MASCOT_SPOTS={ swimming:{left:'63%',bottom:'55%'} };
-var MASCOT_SPOT_DEFAULT={left:'23%',bottom:'2%'};
+/* ONE standard mascot spot (Michelle — this SUPERSEDES the
+   back-left spot set earlier the same night): the BACK-RIGHT
+   corner of the venue in EVERY game, math and spelling alike —
+   back and right, behind the play, never covering her player or
+   the action: the back-right of the floor / court / field / rink /
+   track, the back-right of the ballroom for cheer, the back-right
+   of the studio for dance, the back-right of the mat area for
+   gymnastics, the back-right of the playground for jump rope —
+   and the back-right of the poolside deck, up by the far wall,
+   for swimming. In tennis the mascot leaves this corner only for
+   its ball duty (see tennisBallDuty) and walks back to it after. */
+var MASCOT_SPOTS={ swimming:{right:'2%',bottom:'56%'} };
+var MASCOT_SPOT_DEFAULT={right:'2%',bottom:'56%'};
 function paintStageMascot(){
   var m=document.getElementById('stageMascot'); if(!m) return;
   var sid='cheer'; try{ sid=sportWorldId(); }catch(e){}
   var spot=MASCOT_SPOTS[sid]||MASCOT_SPOT_DEFAULT;
   try{ m.innerHTML=mascotHTML(mascotAnimalId()); }catch(e){ m.innerHTML=mascotHTML('unicorn'); }
-  m.style.display='block'; m.style.left=spot.left; m.style.bottom=spot.bottom; m.style.right='auto'; m.style.top='auto';
+  m.style.display='block'; m.style.right=spot.right; m.style.left='auto'; m.style.bottom=spot.bottom; m.style.top='auto'; m.style.transform='';
 }
 /* Paints every GAME surface from the sport being played: the tabs and
    section heads, the venue drawn INSIDE the stage, the prop / target,
@@ -8316,7 +8571,7 @@ function applySportWorld(){
      rink, track or pool either. A game's stage shows that game's own
      venue, the player, her prop and her target — plus the ONE
      ordered exception: her team MASCOT (see paintStageMascot above),
-     a full-body character standing at its standard sideline spot,
+     a full-body character standing at its right-back-corner home,
      which Michelle ordered onto the field in every game. The decor
      strip is not the mascot: it stays empty. applyTheme() holds the
      same lock. */
@@ -8325,7 +8580,7 @@ function applySportWorld(){
   if(venue){ venue.style.display= sport?'block':'none'; venue.innerHTML= sport? sportVenueSVG(w) : ''; }
   var swimW=document.getElementById('swimWater'); if(swimW){ swimW.style.display= (sport&&sportWorldId()==='swimming')?'block':'none'; }
   var dBarre=document.getElementById('danceBarre'); if(dBarre){ dBarre.style.display= (sport&&sportWorldId()==='dance')?'block':'none'; }
-  var sqEl=document.getElementById('cheerSquad'); if(sqEl){ sqEl.style.display= sport?'none':'block'; } if(stage){ stage.classList.toggle('squad-active',!sport); stage.classList.toggle('swimming-active',!!(sport&&sportWorldId()==='swimming')); stage.classList.toggle('jumprope-active',!!(sport&&sportWorldId()==='jumprope')); stage.classList.toggle('dance-active',!!(sport&&sportWorldId()==='dance')); } if(!sport&&typeof renderSquad==='function'){ renderSquad(); }
+  var sqEl=document.getElementById('cheerSquad'); if(sqEl){ sqEl.style.display= sport?'none':'block'; } if(stage){ stage.classList.toggle('squad-active',!sport); stage.classList.toggle('swimming-active',!!(sport&&sportWorldId()==='swimming')); stage.classList.toggle('jumprope-active',!!(sport&&sportWorldId()==='jumprope')); stage.classList.toggle('dance-active',!!(sport&&sportWorldId()==='dance')); stage.classList.toggle('tennis-active',!!(sport&&sportWorldId()==='tennis')); stage.classList.toggle('hockey-active',!!(sport&&sportWorldId()==='hockey')); stage.classList.toggle('running-active',!!(sport&&sportWorldId()==='running')); } if(!sport&&typeof renderSquad==='function'){ renderSquad(); }
   /* No venue-name pill is painted on the stage — it was removed for
      good (Michelle: no added floating images or text bars on the game). */
   if(prop){ prop.style.display= (sport&&sportWorldId()!=='jumprope')?'block':'none'; /* jump rope carries NO separate prop: her rope is in her hands, drawn into her figure — a second rope floating beside her would be a duplicate */ if(sport&&sportWorldId()==='tennis'){ prop.innerHTML=TENNIS_BALL_HTML; } else if(sport&&sportWorldId()==='basketball'){ prop.innerHTML=BASKETBALL_HTML; } else if(sport&&sportWorldId()==='hockey'){ prop.innerHTML=PUCK_HTML; } else { prop.textContent= sport? w.prop : ''; } prop.className='sport-prop'+(sport&&w.idleClass?' '+w.idleClass:''); var phA=sportPropHome(); prop.style.left=phA.left; prop.style.bottom=phA.bottom; prop.style.transform=''; }
@@ -8448,6 +8703,15 @@ function sportVenue3D(w){
     +'<ellipse cx="702" cy="292" rx="30" ry="6" fill="#14532D" opacity=".25"/>'
     +'<g><path d="M702 248 L688 282 M702 248 L716 282" stroke="#1F2937" stroke-width="8" stroke-linecap="round"/><path d="M702 209 L702 248" stroke="url(#v3scKit)" stroke-width="12" stroke-linecap="round"/><path d="M702 218 L668 204 M702 218 L736 204" stroke="#7C3AED" stroke-width="8" stroke-linecap="round"/><circle cx="664" cy="202" r="7" fill="#FDE68A" stroke="#92400E" stroke-width="2"/><circle cx="740" cy="202" r="7" fill="#FDE68A" stroke="#92400E" stroke-width="2"/><circle cx="702" cy="196" r="13" fill="#FCD7B0" stroke="#92400E" stroke-width="2"/></g>');
   if(w===SPORT_WORLDS.tennis) return svg(
+    /* HER TENNIS COURT MATCHES HIS (shared-sport parity): the same
+       court layout as Karter's in-game tennis court — green surround,
+       blue court in perspective with the FAR baseline at the top and
+       the NEAR baseline at the bottom, service lines on both sides,
+       and the NET ACROSS THE MIDDLE of the court (white tape on top,
+       dark posts just outside the sidelines) — never up at the far
+       edge. Her serve arcs over that middle net and lands in the far
+       service box; her miss hits the net and drops on her own side.
+       Only the player on the court is hers. */
     '<defs>'
     +'<linearGradient id="v3tnSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FDEEF4"/><stop offset="1" stop-color="#F8DCE9"/></linearGradient>'
     +'<linearGradient id="v3tnGreen" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#55B873"/><stop offset="1" stop-color="#2F9E63"/></linearGradient>'
@@ -8455,18 +8719,18 @@ function sportVenue3D(w){
     +'</defs>'
     +'<rect width="800" height="330" fill="url(#v3tnSky)"/>'
     +'<polygon points="20,120 780,120 820,330 -20,330" fill="url(#v3tnGreen)"/>'
-    +'<polygon points="90,140 710,140 770,330 30,330" fill="url(#v3tnBlue)"/>'
-    +'<polygon points="90,140 710,140 726,192 74,192" fill="#FFFFFF" opacity=".10"/>'
-    +'<polygon points="90,140 710,140 770,330 30,330" fill="none" stroke="#FFFFFF" stroke-width="5" opacity=".9"/>'
-    +'<line x1="104" y1="196" x2="696" y2="196" stroke="#FFFFFF" stroke-width="4" opacity=".8"/>'
-    +'<line x1="58" y1="262" x2="742" y2="262" stroke="#FFFFFF" stroke-width="6" opacity=".85"/>'
-    +'<line x1="150" y1="150" x2="136" y2="268" stroke="#FFFFFF" stroke-width="3" opacity=".5"/><line x1="650" y1="150" x2="664" y2="268" stroke="#FFFFFF" stroke-width="3" opacity=".5"/>'
-    +'<line x1="400" y1="196" x2="400" y2="262" stroke="#FFFFFF" stroke-width="3" opacity=".5"/>'
-    +'<polygon points="66,132 734,132 728,172 72,172" fill="#FFFFFF" opacity=".14"/>'
-    +'<g stroke="#111827" stroke-width="1.3" opacity=".30"><line x1="150" y1="133" x2="148" y2="171"/><line x1="240" y1="133" x2="239" y2="171"/><line x1="330" y1="133" x2="329" y2="171"/><line x1="420" y1="133" x2="420" y2="171"/><line x1="510" y1="133" x2="511" y2="171"/><line x1="600" y1="133" x2="601" y2="171"/><line x1="690" y1="133" x2="691" y2="171"/><line x1="68" y1="145" x2="732" y2="145"/><line x1="70" y1="158" x2="730" y2="158"/></g>'
-    +'<rect x="60" y="120" width="680" height="12" rx="3" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5"/>'
-    +'<line x1="400" y1="132" x2="400" y2="172" stroke="#F8FAFC" stroke-width="4" opacity=".9"/><rect x="394" y="170" width="12" height="7" fill="#64748B"/>'
-    +'<rect x="52" y="110" width="13" height="72" rx="5" fill="#374151"/><rect x="735" y="110" width="13" height="72" rx="5" fill="#374151"/><rect x="48" y="102" width="21" height="10" rx="5" fill="#F8FAFC" stroke="#1F2937" stroke-width="2"/><rect x="731" y="102" width="21" height="10" rx="5" fill="#F8FAFC" stroke="#1F2937" stroke-width="2"/>');
+    +'<polygon points="100,150 700,150 760,330 40,330" fill="url(#v3tnBlue)"/>'
+    +'<polygon points="100,150 700,150 715,196 85,196" fill="#FFFFFF" opacity=".10"/>'
+    +'<polygon points="100,150 700,150 760,330 40,330" fill="none" stroke="#FFFFFF" stroke-width="5" opacity=".9"/>'
+    +'<line x1="85" y1="196" x2="715" y2="196" stroke="#FFFFFF" stroke-width="4" opacity=".8"/>'
+    +'<line x1="53" y1="292" x2="747" y2="292" stroke="#FFFFFF" stroke-width="4" opacity=".8"/>'
+    +'<line x1="150" y1="150" x2="104" y2="330" stroke="#FFFFFF" stroke-width="3" opacity=".5"/><line x1="650" y1="150" x2="696" y2="330" stroke="#FFFFFF" stroke-width="3" opacity=".5"/>'
+    +'<line x1="400" y1="196" x2="400" y2="292" stroke="#FFFFFF" stroke-width="3" opacity=".5"/>'
+    +'<polygon points="36,232 764,232 756,266 44,266" fill="#FFFFFF" opacity=".14"/>'
+    +'<g stroke="#111827" stroke-width="1.3" opacity=".30"><line x1="140" y1="233" x2="139" y2="265"/><line x1="240" y1="233" x2="239" y2="265"/><line x1="340" y1="233" x2="340" y2="265"/><line x1="440" y1="233" x2="440" y2="265"/><line x1="540" y1="233" x2="540" y2="265"/><line x1="640" y1="233" x2="641" y2="265"/><line x1="40" y1="245" x2="760" y2="245"/><line x1="42" y1="257" x2="758" y2="257"/></g>'
+    +'<polygon points="36,222 764,222 764,233 36,233" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5"/>'
+    +'<line x1="400" y1="233" x2="400" y2="266" stroke="#F8FAFC" stroke-width="4" opacity=".9"/><rect x="394" y="264" width="12" height="7" fill="#64748B"/>'
+    +'<rect x="28" y="210" width="13" height="72" rx="5" fill="#374151"/><rect x="759" y="210" width="13" height="72" rx="5" fill="#374151"/><rect x="24" y="202" width="21" height="10" rx="5" fill="#F8FAFC" stroke="#1F2937" stroke-width="2"/><rect x="755" y="202" width="21" height="10" rx="5" fill="#F8FAFC" stroke="#1F2937" stroke-width="2"/>');
   if(w===SPORT_WORLDS.swimming) return svg(
     '<defs>'
     +'<linearGradient id="v3swDeck" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F4EEE3"/><stop offset="1" stop-color="#E8DCC6"/></linearGradient>'
@@ -8495,25 +8759,41 @@ function sportVenue3D(w){
     +'<g stroke="#FFFFFF" stroke-width="3" opacity=".85"><line x1="180" y1="118" x2="180" y2="150"/><line x1="320" y1="118" x2="320" y2="150"/><line x1="460" y1="118" x2="460" y2="150"/><line x1="600" y1="118" x2="600" y2="150"/></g>'
     +'<line x1="150" y1="120" x2="650" y2="120" stroke="#DC2626" stroke-width="3" opacity=".85"/>');
   if(w===SPORT_WORLDS.hockey) return svg(
+    /* HER ICE RINK IS KARTER'S RINK (shared-sport parity, Michelle's
+       replica rule): the same built rink as his game — a dark arena
+       band with the crowd over glass panels, white boards with the
+       red stripe on top and the red kick plate at the ice, a glossed
+       ice slab in perspective, ONE blue line between her and the net,
+       ONE face-off circle on her side, the red goal line in front of
+       the net, the light-blue crease, and the net built as a real 3D
+       box (depth roof and side, mesh front, red frame) at the exact
+       spot her shot already aims at (left 83%). Her old rink carried
+       a center red line, a second blue line and three extra face-off
+       circles his rink never had — they are gone. Only the player on
+       the ice is hers. */
     '<defs>'
-    +'<linearGradient id="v3hkWall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E9EFF5"/><stop offset="1" stop-color="#D8E3EE"/></linearGradient>'
     +'<linearGradient id="v3hkIce" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#DCEEFF"/></linearGradient>'
+    +'<linearGradient id="v3hkGlass" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#DFF3F7"/><stop offset="1" stop-color="#B9D9E8"/></linearGradient>'
+    +'<pattern id="v3hkCrowd" width="26" height="18" patternUnits="userSpaceOnUse"><circle cx="6" cy="6" r="3.4" fill="#F2C894"/><circle cx="18" cy="13" r="3.4" fill="#C98BA6"/><circle cx="13" cy="4" r="3" fill="#8FA8C8"/><circle cx="23" cy="5" r="3" fill="#E8E3D8"/></pattern>'
     +'</defs>'
-    +'<rect width="800" height="330" fill="url(#v3hkWall)"/>'
-    +'<rect x="0" y="58" width="800" height="44" fill="#DFF3F7" opacity=".55"/>'
-    +'<g stroke="#B9CFDD" stroke-width="3" opacity=".7"><line x1="100" y1="58" x2="100" y2="102"/><line x1="200" y1="58" x2="200" y2="102"/><line x1="300" y1="58" x2="300" y2="102"/><line x1="400" y1="58" x2="400" y2="102"/><line x1="500" y1="58" x2="500" y2="102"/><line x1="600" y1="58" x2="600" y2="102"/><line x1="700" y1="58" x2="700" y2="102"/></g>'
-    +'<rect x="0" y="102" width="800" height="26" fill="#FFFFFF"/><rect x="0" y="102" width="800" height="7" fill="#E5484D" opacity=".85"/>'
+    +'<rect width="800" height="330" fill="#14273D"/>'
+    +'<rect x="0" y="0" width="800" height="58" fill="#20394F"/>'
+    +'<rect x="0" y="4" width="800" height="50" fill="url(#v3hkCrowd)" opacity=".8"/>'
+    +'<rect x="0" y="58" width="800" height="44" fill="url(#v3hkGlass)" opacity=".85"/>'
+    +'<g stroke="#9DB8CC" stroke-width="3" opacity=".65"><line x1="100" y1="58" x2="100" y2="102"/><line x1="200" y1="58" x2="200" y2="102"/><line x1="300" y1="58" x2="300" y2="102"/><line x1="400" y1="58" x2="400" y2="102"/><line x1="500" y1="58" x2="500" y2="102"/><line x1="600" y1="58" x2="600" y2="102"/><line x1="700" y1="58" x2="700" y2="102"/></g>'
+    +'<line x1="0" y1="58" x2="800" y2="58" stroke="rgba(255,255,255,.65)" stroke-width="3"/><line x1="0" y1="102" x2="800" y2="102" stroke="rgba(255,255,255,.65)" stroke-width="3"/>'
+    +'<rect x="0" y="102" width="800" height="26" fill="#FFFFFF"/><rect x="0" y="102" width="800" height="7" fill="#E5484D" opacity=".85"/><rect x="0" y="121" width="800" height="7" fill="#E5484D"/>'
     +'<polygon points="70,128 730,128 800,212 800,330 0,330 0,212" fill="url(#v3hkIce)"/>'
     +'<polygon points="120,128 300,128 180,330 40,330" fill="#FFFFFF" opacity=".35"/><polygon points="560,128 660,128 760,330 660,330" fill="#FFFFFF" opacity=".25"/>'
-    +'<line x1="400" y1="128" x2="400" y2="330" stroke="#DC2626" stroke-width="7" opacity=".85"/>'
-    +'<line x1="212" y1="128" x2="212" y2="330" stroke="#2563EB" stroke-width="10" opacity=".8"/><line x1="588" y1="128" x2="588" y2="330" stroke="#2563EB" stroke-width="10" opacity=".8"/>'
-    +'<g fill="none" stroke="#DC2626" stroke-width="4" opacity=".65"><circle cx="150" cy="180" r="26"/><circle cx="150" cy="282" r="26"/><circle cx="650" cy="180" r="26"/><circle cx="650" cy="282" r="26"/></g>'
-    +'<g fill="#DC2626" opacity=".65"><circle cx="150" cy="180" r="4"/><circle cx="150" cy="282" r="4"/><circle cx="650" cy="180" r="4"/><circle cx="650" cy="282" r="4"/></g>'
+    +'<g stroke="rgba(120,170,210,.35)" stroke-width="2"><line x1="120" y1="238" x2="220" y2="235"/><line x1="180" y1="292" x2="300" y2="289"/><line x1="330" y1="252" x2="430" y2="249"/></g>'
+    +'<line x1="470" y1="128" x2="470" y2="330" stroke="#2563EB" stroke-width="16" opacity=".8"/>'
+    +'<ellipse cx="272" cy="252" rx="72" ry="20" fill="none" stroke="#E5484D" stroke-width="5" opacity=".55"/><circle cx="272" cy="252" r="5" fill="#E5484D" opacity=".55"/>'
     +'<path d="M600 214 A66 52 0 0 1 732 214 L732 266 A66 40 0 0 1 600 266 Z" fill="#BAE6FD" opacity=".9" stroke="#2563EB" stroke-width="3"/>'
+    +'<line x1="600" y1="128" x2="600" y2="330" stroke="#E5484D" stroke-width="6" opacity=".85"/>'
     +'<polygon points="624,168 608,180 608,256 624,268" fill="#FFFFFF" opacity=".30"/><polygon points="624,168 608,180 712,180 728,168" fill="#FFFFFF" opacity=".38"/>'
     +'<g stroke="#F8FAFC" stroke-width="1.6" opacity=".65"><line x1="640" y1="176" x2="640" y2="268"/><line x1="672" y1="176" x2="672" y2="268"/><line x1="704" y1="176" x2="704" y2="268"/><line x1="624" y1="200" x2="728" y2="200"/><line x1="624" y1="228" x2="728" y2="228"/><line x1="624" y1="252" x2="728" y2="252"/></g>'
     +'<path d="M624 168 L728 168 L728 268 L624 268 Z" fill="none" stroke="#DC2626" stroke-width="7"/>');
-  if(w===SPORT_WORLDS.running) return svg(
+if(w===SPORT_WORLDS.running) return svg(
     '<defs>'
     +'<linearGradient id="v3rnSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#EDF8EC"/><stop offset="1" stop-color="#DDF1DE"/></linearGradient>'
     +'<linearGradient id="v3rnGrass" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#63C455"/><stop offset="1" stop-color="#3E9B3C"/></linearGradient>'
@@ -8646,7 +8926,7 @@ function refreshCatHead(){
   else { t.textContent= cat==='math'?'Math Castle — Pick Your Game!':'Spelling Castle — Pick Your Game!'; if(s) s.innerHTML='Pick a game and play one problem at a time with <span class="coach-short-text">'+short+'</span>. You can stop anytime and come back later — your cheerleader will be right here, practicing her routine!'; }
 }
 function themeById(list,id,fallback){ for(var i=0;i<list.length;i++){ if(list[i].id===id) return list[i]; } return fallback||list[0]; }
-function defaultTheme(){ return {color:'pink',color2:'purple',color3:'gold',sport:'cheer',animal:'butterfly',bg:'enchanted',preset:'royal'}; }
+function defaultTheme(){ return {color:'pink',color2:'purple',color3:'gold',sport:'cheer',animal:'butterfly',bg:'castle',preset:'royal'}; }
 function loadTheme(){ try{ var t=JSON.parse(localStorage.getItem(THEME_KEY)); if(t&&typeof t==='object'){ var base=defaultTheme(); for(var k in base){ if(t[k]!==undefined) base[k]=t[k]; } /* Worlds saved before the THREE-color wizard have only one color: their secondary pick is the accent that color always paired with, and their tertiary pick is Belle Gold — so an old world opens looking just as it did. */ if(t.color2===undefined){ var oc=themeById(THEME_COLORS,base.color); for(var ci=0;ci<THEME_COLORS.length;ci++){ if(THEME_COLORS[ci].primary===oc.accent){ base.color2=THEME_COLORS[ci].id; break; } } } if(t.color3===undefined){ base.color3='gold'; } /* Boys-only sports (football, baseball) are never a girls' theme: a saved pick of one falls back to her classic cheer / castle theme. */ if(typeof BOYS_ONLY_SPORTS!=='undefined'&&BOYS_ONLY_SPORTS.indexOf(base.sport)>-1){ base.sport='cheer'; base.preset='royal'; } return base; } }catch(e){} return defaultTheme(); }
 var myTheme=loadTheme();
 function saveTheme(){ try{ localStorage.setItem(THEME_KEY,JSON.stringify(myTheme)); }catch(e){} }
@@ -9211,8 +9491,10 @@ function paintWorldScene(){
   var bd=document.getElementById('worldBackdrop'), ws=document.getElementById('worldScene');
   var stage=document.getElementById('beamStage');
   var et=effectiveTheme(), c=paletteForTheme(et), sid=et.sport;
-  /* The enchanted castle photo is the scene of the DEFAULT cheer
-     world only. On a personalized link, once her home sport is any
+  /* The enchanted castle photo is the scene of the Enchanted Rose
+     cheer world only — a background she PICKS in the wizard, never
+     the default (the castle is the default — see castleBg below).
+     On a personalized link, once her home sport is any
      other sport — gymnastics included — that sport's own template
      scene IS her applied background, even if an 'enchanted' page
      color pick is still saved: the castle must never cover the
@@ -9220,12 +9502,21 @@ function paintWorldScene(){
      bg 'enchanted' showed the empty castle gym everywhere and the
      gymnastics template showed nowhere outside the games.) */
   var enchanted=(et.bg==='enchanted' && !(window.isCustomEdition() && sid!=='cheer'));
+  /* THE CASTLE IS THE DEFAULT (Michelle's correction): Royce's default
+     page background is the CASTLE — assets/royce-background.webp, the
+     castle interior from her hero picture with the girl and the beam
+     removed, the dimensional version — NOT the Enchanted Rose photo
+     (Belle in the yellow gown with the stained glass and the rose).
+     A fresh open with no saved design lands on the castle on BOTH
+     links. The castle case is the default cheer world itself: the
+     'castle' background pick with her home sport cheer. */
+  var castleBg=(et.bg==='castle' && sid==='cheer');
   /* The sport being PLAYED right now (the games layer), kept separate
      from the home sport above. Guarded: before the sport layer loads,
      the stage simply keeps the home scene. */
   var played=''; try{ played=(typeof currentSportId==='function')? currentSportId() : ''; }catch(e){}
   var playingSport= !!(played && played!=='cheer' && typeof SPORT_WORLDS!=='undefined' && SPORT_WORLDS[played] && typeof worldSceneSVG==='function');
-  if(!window.isCustomEdition() && !enchanted){
+  if(!window.isCustomEdition() && !enchanted && !castleBg){
     if(bd){ bd.innerHTML=''; bd.classList.remove('on'); }
     /* No template inside the game: the in-stage scene layer stays
        empty in every case (templates are page backgrounds only). A
@@ -9243,7 +9534,7 @@ function paintWorldScene(){
      cleaned, every pom pom as photographed — full-bleed
      (object-fit:cover) in the fixed backdrop layer with the same
      light ws-wash edge tint as the Enchanted Rose photo. */
-  var pomPhoto=(!enchanted && sid==='cheer');
+  var pomPhoto=(!enchanted && !castleBg && sid==='cheer');
   /* The Ballerina (Dance) template is glossy 3D animated artwork too:
      whenever the dance template is the applied background, the page
      backdrop is assets/ballerina-bg.webp itself — the SAME diverse
@@ -9297,7 +9588,7 @@ function paintWorldScene(){
      only: it never paints inside a game — the games use the
      built 3D venue of the same sport. */
   var sportArt=(!enchanted && SPORT_BG_ART[sid])? SPORT_BG_ART[sid] : '';
-  if(bd){ bd.innerHTML=(enchanted? '<img class="hero-castle-bg" src="assets/enchanted-rose.webp" alt="" aria-hidden="true"/>' : pomPhoto? '<img class="hero-castle-bg" src="assets/pom-pom-bg.webp" alt="" aria-hidden="true"/>' : dancePhoto? '<img class="hero-castle-bg hero-castle-bg--fullgroup" src="assets/ballerina-bg.webp" alt="" aria-hidden="true"/>' : jumpPhoto? '<img class="hero-castle-bg hero-castle-bg--fullgroup" src="assets/jumprope-bg.webp" alt="" aria-hidden="true"/>' : gymPhoto? '<img class="hero-castle-bg hero-castle-bg--fullgroup" src="assets/gymnastics-bg.png" alt="" aria-hidden="true"/>' : sportArt? '<img class="hero-castle-bg" src="'+sportArt+'" alt="" aria-hidden="true"/>' : worldSceneSVG(sid,c,'p'))+'<div class="ws-wash"></div>'; bd.classList.add('on'); }
+  if(bd){ bd.innerHTML=(castleBg? '<img class="hero-castle-bg" src="assets/royce-background.webp" alt="" aria-hidden="true"/>' : enchanted? '<img class="hero-castle-bg" src="assets/enchanted-rose.webp" alt="" aria-hidden="true"/>' : pomPhoto? '<img class="hero-castle-bg" src="assets/pom-pom-bg.webp" alt="" aria-hidden="true"/>' : dancePhoto? '<img class="hero-castle-bg hero-castle-bg--fullgroup" src="assets/ballerina-bg.webp" alt="" aria-hidden="true"/>' : jumpPhoto? '<img class="hero-castle-bg hero-castle-bg--fullgroup" src="assets/jumprope-bg.webp" alt="" aria-hidden="true"/>' : gymPhoto? '<img class="hero-castle-bg hero-castle-bg--fullgroup" src="assets/gymnastics-bg.png" alt="" aria-hidden="true"/>' : sportArt? '<img class="hero-castle-bg" src="'+sportArt+'" alt="" aria-hidden="true"/>' : worldSceneSVG(sid,c,'p'))+'<div class="ws-wash"></div>'; bd.classList.add('on'); }
   if(playingSport){
     /* Inside the stage, NO template is painted (Michelle's rule: the
        sport templates from worldSceneSVG are PAGE backgrounds only —
@@ -9757,7 +10048,7 @@ var setupStep=0, setupDraft={name:''}, setupGradePending=null, setupAllowClose=f
 /* Royce's theme is the default on a purchased custom build until the user
    changes it. The wizard's default toggle holds that: ON means the world
    keeps Royce's original design (her Royal Roses theme — pink / purple /
-   gold, cheer, butterfly, Enchanted Rose background); turning it OFF is
+   gold, cheer, butterfly, Castle background); turning it OFF is
    the user choosing to change the design. A world saved before this
    toggle existed has no saved answer, so its toggle starts ON only when
    its theme still IS Royce's original design. */
@@ -9840,9 +10131,9 @@ function renderSetupWizard(){
     h+='<div class="setup-kicker">'+kick+' — YOUR FIRST NAME</div><div class="setup-q">What is your first name? 🌹</div>';
     h+='<input class="setup-name-input" id="setupNameInput" type="text" maxlength="20" autocomplete="off" autocapitalize="words" spellcheck="false" placeholder="enter your first name" aria-label="enter your first name" value="'+escAttr(setupDraft.name)+'" oninput="setupNameInput(this.value)"/>';
   } else if(key==='background'){
-    var bmeta=WORLD_SCENE_META[myTheme.sport]||WORLD_SCENE_META.cheer; var enchantedBg=(myTheme.bg==='enchanted' && myTheme.sport===defaultTheme().sport); var ebg=themeById(THEME_BGS,'enchanted'); var pomBg=(!enchantedBg && myTheme.sport==='cheer'); var danceBg=(!enchantedBg && myTheme.sport==='dance'); var jumpBg=(!enchantedBg && myTheme.sport==='jumprope'); var gymBg=(!enchantedBg && myTheme.sport==='gymnastics'); var sportBgArt=(!enchantedBg && SPORT_BG_ART[myTheme.sport])? SPORT_BG_ART[myTheme.sport] : '';
+    var bmeta=WORLD_SCENE_META[myTheme.sport]||WORLD_SCENE_META.cheer; var enchantedBg=(myTheme.bg==='enchanted' && myTheme.sport===defaultTheme().sport); var castleBg=(myTheme.bg==='castle' && myTheme.sport===defaultTheme().sport); var cbg=themeById(THEME_BGS,'castle'); var ebg=themeById(THEME_BGS,'enchanted'); var pomBg=(!enchantedBg && !castleBg && myTheme.sport==='cheer'); var danceBg=(!enchantedBg && myTheme.sport==='dance'); var jumpBg=(!enchantedBg && myTheme.sport==='jumprope'); var gymBg=(!enchantedBg && myTheme.sport==='gymnastics'); var sportBgArt=(!enchantedBg && SPORT_BG_ART[myTheme.sport])? SPORT_BG_ART[myTheme.sport] : '';
     h+='<div class="setup-kicker">'+kick+' — YOUR BACKGROUND</div><div class="setup-q">Choose Your Background</div>';
-    h+='<div class="scene-preview" style="margin:0 0 12px">'+(enchantedBg? '<img class="scene-photo" src="assets/enchanted-rose.webp" alt="" aria-hidden="true"/>' : pomBg? '<img class="scene-photo" src="assets/pom-pom-bg.webp" alt="" aria-hidden="true"/>' : danceBg? '<img class="scene-photo scene-photo--fullgroup" src="assets/ballerina-bg.webp" alt="" aria-hidden="true"/>' : jumpBg? '<img class="scene-photo scene-photo--fullgroup" src="assets/jumprope-bg.webp" alt="" aria-hidden="true"/>' : gymBg? '<img class="scene-photo scene-photo--fullgroup" src="assets/gymnastics-bg.png" alt="" aria-hidden="true"/>' : sportBgArt? '<img class="scene-photo" src="'+sportBgArt+'" alt="" aria-hidden="true"/>' : worldSceneSVG(myTheme.sport,themePalette(),'w3','meet'))+'<div class="scene-preview-cap">🖼️ Your background: '+(enchantedBg? ebg.name : bmeta.name)+'</div></div>';
+    h+='<div class="scene-preview" style="margin:0 0 12px">'+(enchantedBg? '<img class="scene-photo" src="assets/enchanted-rose.webp" alt="" aria-hidden="true"/>' : castleBg? '<img class="scene-photo" src="assets/royce-background.webp" alt="" aria-hidden="true"/>' : pomBg? '<img class="scene-photo" src="assets/pom-pom-bg.webp" alt="" aria-hidden="true"/>' : danceBg? '<img class="scene-photo scene-photo--fullgroup" src="assets/ballerina-bg.webp" alt="" aria-hidden="true"/>' : jumpBg? '<img class="scene-photo scene-photo--fullgroup" src="assets/jumprope-bg.webp" alt="" aria-hidden="true"/>' : gymBg? '<img class="scene-photo scene-photo--fullgroup" src="assets/gymnastics-bg.png" alt="" aria-hidden="true"/>' : sportBgArt? '<img class="scene-photo" src="'+sportBgArt+'" alt="" aria-hidden="true"/>' : worldSceneSVG(myTheme.sport,themePalette(),'w3','meet'))+'<div class="scene-preview-cap">🖼️ Your background: '+(enchantedBg? ebg.name : castleBg? cbg.name : bmeta.name)+'</div></div>';
     h+='<div class="opt-row"><button class="big-chip'+(enchantedBg?' on':'')+'" onclick="setupPickBackgroundTemplate(\'enchanted\')"><span class="bce">'+ebg.emoji+'</span>'+ebg.name+'</button>'+THEME_SPORTS.map(function(x){ var m=WORLD_SCENE_META[x.id]||WORLD_SCENE_META.cheer; return '<button class="big-chip'+(!enchantedBg&&myTheme.sport===x.id?' on':'')+'" onclick="setupPickBackgroundTemplate(\''+x.id+'\')"><span class="bce">'+x.emoji+'</span>'+m.name+'</button>'; }).join('')+'</div>';
   } else if(key==='color'){
     h+='<div class="setup-kicker">'+kick+' — YOUR THREE COLORS</div><div class="setup-q">Pick your three colors! 🎨</div>';
@@ -9906,25 +10197,31 @@ function renderSetupWizard(){
 function setupCoachNameInput(v){ if(setupKeepOriginal) return; /* coach stays as shipped while the page is locked */ if(!setupCoachDraft) setupCoachDraft={name:'',identity:'girl',jacket:'#E4B33C',jacketStyle:'classic',hair:'ponytail',hairColor:'#3B2310',skin:2}; setupCoachDraft.name=v; }
 function setupCoachPick(key,val){ if(!window.isCustomEdition()) return; if(setupKeepOriginal) return; /* coach stays as shipped while the page is locked */ if(!setupCoachDraft) setupCoachDraft={name:'',identity:'girl',jacket:'#E4B33C',jacketStyle:'classic',hair:'ponytail',hairColor:'#3B2310',skin:2}; if(key==='identity'&&typeof coachIdentityAllowed==='function'&&!coachIdentityAllowed(val)) val='girl'; if(key==='jacket'&&typeof coachJacketAllowed==='function'&&!coachJacketAllowed(val)) val='#E4B33C'; if(key==='hair'&&typeof coachHairAllowed==='function'&&!coachHairAllowed(val)) val='ponytail'; if(key==='hairColor'&&typeof coachHairColorAllowed==='function'&&!coachHairColorAllowed(val)) val='#3B2310'; if(key==='skin'&&(typeof val!=='number'||val<0||val>=SKINS.length)) val=2; setupCoachDraft[key]=val; renderSetupWizard(); if(typeof sfx==='function') sfx('pop'); }
 function setupNameInput(v){ setupDraft.name=v; }
-function setupPickTheme(key,val){ if(!window.isCustomEdition()) return; if(setupKeepOriginal){ /* While locked, the one choice that still lands is updating the page background: picking a background other than Royce's Enchanted Rose turns the toggle off and unlocks the page, then the pick is drafted. Every other pick is held. */ if(key==='bg'&&val!==defaultTheme().bg){ setupKeepOriginal=false; try{ setupState.keepOriginal=false; saveSetup(); }catch(e){} } else if(key==='bg'){ myTheme.bg=val; renderSetupWizard(); return; } else { return; } } /* DRAFT only: the pick repaints the wizard's previews (renderSetupWizard reads myTheme) but is NOT saved and NOT applied to the world — finishSetup() commits it, ✕ discards it. A drafted sport pick likewise only syncs the played sport when the wizard finishes. */ myTheme[key]=val; myTheme.preset=''; renderSetupWizard(); if(typeof sfx==='function') sfx('pop'); }
+function setupPickTheme(key,val){ if(!window.isCustomEdition()) return; if(setupKeepOriginal){ /* While locked, the one choice that still lands is updating the page background: picking a background other than Royce's Castle turns the toggle off and unlocks the page, then the pick is drafted. Every other pick is held. */ if(key==='bg'&&val!==defaultTheme().bg){ setupKeepOriginal=false; try{ setupState.keepOriginal=false; saveSetup(); }catch(e){} } else if(key==='bg'){ myTheme.bg=val; renderSetupWizard(); return; } else { return; } } /* DRAFT only: the pick repaints the wizard's previews (renderSetupWizard reads myTheme) but is NOT saved and NOT applied to the world — finishSetup() commits it, ✕ discards it. A drafted sport pick likewise only syncs the played sport when the wizard finishes. */ myTheme[key]=val; myTheme.preset=''; renderSetupWizard(); if(typeof sfx==='function') sfx('pop'); }
 /* The Background step is where her sport is chosen — there is no
    separate favorite-sport step, because each background template IS a
    sport's scene: picking one makes that sport her home sport (her
-   games and their language follow it), and picking Royce's Enchanted
-   Rose default scene keeps her default sport. A sport template
+   games and their language follow it), and picking Royce's Castle
+   default scene keeps her default sport. A sport template
    paints through the 'castle' background pick — any non-enchanted
    pick paints the sport scene — while the Enchanted Rose pick
-   paints the stained glass. While the keep-original toggle is ON
-   this step is still the way out of the lock: a sport template is a
-   new page background, so picking one turns the toggle off and
-   unlocks the page, exactly as the background picks did before. */
+   (still here to choose, just not the default) paints the stained
+   glass. While the keep-original toggle is ON
+   this step is still the way out of the lock: a new background —
+   a different sport template, or the Enchanted Rose — turns the
+   toggle off and unlocks the page, exactly as the background picks
+   did before; re-picking the Castle itself keeps the original. */
 function setupPickBackgroundTemplate(id){
   if(!window.isCustomEdition()) return;
   if(id==='enchanted'){
-    if(setupKeepOriginal){ myTheme.bg='enchanted'; renderSetupWizard(); return; }
+    /* Enchanted Rose is a pick, not the original: choosing it while
+       the keep-original toggle is ON is choosing a NEW page
+       background, so it unlocks the page exactly like a sport
+       template does. */
+    if(setupKeepOriginal){ setupKeepOriginal=false; try{ setupState.keepOriginal=false; saveSetup(); }catch(e){} }
     myTheme.bg='enchanted'; myTheme.sport=defaultTheme().sport;
   } else {
-    if(setupKeepOriginal){ setupKeepOriginal=false; try{ setupState.keepOriginal=false; saveSetup(); }catch(e){} }
+    if(setupKeepOriginal && id!==defaultTheme().sport){ setupKeepOriginal=false; try{ setupState.keepOriginal=false; saveSetup(); }catch(e){} }
     myTheme.sport=id; myTheme.bg='castle';
   }
   /* DRAFT only — saved and applied when the wizard finishes, discarded on ✕. */
@@ -10784,7 +11081,7 @@ function genReadingItem(){
       it={key:'en'+E.right,prompt:'Tap the word that ends with this ending!',display:'<div class="rd-big">'+E.end+'</div><div class="rd-sub">Which word ends with the ending <b>'+E.end+'</b>?</div>',speak:'Which word ends with the ending '+E.end.replace('-','')+'? Look at the end of each word.',choices:rdShuffle([E.right].concat(E.wrong)),answer:E.right,why:'<b>'+E.right+'</b> ends with <b>'+E.end+'</b>. Check the LAST letters of each word.'};
     } else { /* sight words — straight from this grade's own Dolch/Fry bank */
       var bank2=rdSightBank(); var w2=rdPick(bank2);
-      it={key:'sw'+w2,prompt:'Listen to Belle, then tap the sight word she says — read it in a flash!',display:'<div class="rd-emoji">👀</div><div class="rd-sub">Sight words are words you know in a flash! Tap <b>💬</b>, then tap the word.</div>',speak:'The word is '+w2+'. Tap the word '+w2+'.',choices:rdShuffle([w2].concat(rdOthers(bank2,w2,2))),answer:w2,why:'Listen again with 💬 — Belle said <b>'+w2+'</b>. Picture the word, then find its letters.'};
+      it={key:'sw'+w2,prompt:'Listen to Belle, then tap the sight word she says — read it in a flash!',display:'<div class="rd-emoji">👀</div><div class="rd-sub">Sight words are words you know in a flash! Tap <b>💬</b>, then tap the word.</div>',speak:w2 /* HEAR IT FIX: the old line ('The word is X. Tap the word X.') has NO Belle recording for any word, so every tap fell to the device reader and played nothing in her webview. The bare word IS recorded for every bank word, so the tap now plays Belle saying the word itself. */,choices:rdShuffle([w2].concat(rdOthers(bank2,w2,2))),answer:w2,why:'Listen again with 💬 — Belle said <b>'+w2+'</b>. Picture the word, then find its letters.'};
     }
   }while(it && it.key===rdPrevKey && guard<8);
   if(it) rdPrevKey=it.key;
