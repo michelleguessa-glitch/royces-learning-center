@@ -7826,13 +7826,13 @@ function bballDribbleFrame(ts){
   var sr=stage.getBoundingClientRect(), pr=prop.getBoundingClientRect();
   /* Karter-court sync: while his court picture is on her stage it stays fitted, she stays planted on its floor line and the ball's left stays centered under her palm — his measured placement, refreshed here because this loop already runs every waiting frame. */
   var cimg=document.getElementById('courtPhotoRoyce');
-  if(cimg){ var csc=Math.min(sr.width/1760, sr.height/880), cdw=1760*csc, cdh=880*csc, cox=(sr.width-cdw)/2, coy=(sr.height-cdh)/2; cimg.style.left=Math.round(cox)+'px'; cimg.style.top=Math.round(coy)+'px'; cimg.style.width=Math.round(cdw)+'px'; cimg.style.height=Math.round(cdh)+'px'; window.__royceCourtFloorPx=sr.height-(coy+cdh); el.style.left=Math.round(cox+cdw*0.055)+'px'; el.style.bottom=Math.max(0,Math.round(window.__royceCourtFloorPx-2))+'px'; var cpr2=el.getBoundingClientRect(); prop.style.left=Math.round((cpr2.left-sr.left)+cpr2.width*0.707-pr.width/2)+'px'; }
+  if(cimg){ var csc=Math.min(sr.width/1760, sr.height/880), cdw=1760*csc, cdh=880*csc, cox=(sr.width-cdw)/2, coy=(sr.height-cdh)/2; cimg.style.left=Math.round(cox)+'px'; cimg.style.top=Math.round(coy)+'px'; cimg.style.width=Math.round(cdw)+'px'; cimg.style.height=Math.round(cdh)+'px'; window.__royceCourtFloorPx=sr.height-(coy+cdh); el.style.left=Math.round(cox+cdw*0.055)+'px'; el.style.bottom=Math.max(0,Math.round(window.__royceCourtFloorPx-2))+'px'; var cpr2=el.getBoundingClientRect(); prop.style.left=Math.round((cpr2.left-sr.left)+cpr2.width*0.775-pr.width/2)+'px'; } /* 0.775 = her palm center across her figure (her lowered hand is drawn at x155 of the 200-wide figure, the same hand spot as Karter's) — the old 0.707 parked the ball left of her palm, down by her foot */
   var hand=el.querySelector('.arm-r circle');
   var hr=hand? hand.getBoundingClientRect() : null;
   if(!hr||!pr.height){ bballRAF=requestAnimationFrame(bballDribbleFrame); return; }
-  var top=(sr.bottom-hr.bottom)+2-pr.height; /* the ball's bottom at the moment its top touches her palm (a breath of overlap, so contact always reads) */
+  var top=(sr.bottom-hr.top-hr.height/2)-pr.height/2; /* the ball's bottom at the top of the bounce: its CENTER on her palm's center — Karter's rest spot exactly (in his build the ball's center sits on his palm center at every size and the bounce only drops it from there). The old formula hung the ball from her palm's lower edge, a ball-radius too low. */
   var floor=(typeof window.__royceCourtFloorPx==='number')? Math.max(4,Math.round(window.__royceCourtFloorPx)) : Math.max(6, sr.height*0.335-28); /* the court floor at her feet — on Karter's court picture, the fitted picture's own floor line, measured */
-  if(top-floor<10){ bballRAF=requestAnimationFrame(bballDribbleFrame); return; }
+  if(top<floor) floor=top; /* never bail out and leave the ball parked: the old guard (top-floor<10) tripped at every size — her lowered palm hangs only ~26px (phone) / ~45px (desktop) above the floor line, so the palm-to-floor travel read under 10px and the loop rescheduled forever, wrote nothing, and the ball stayed wherever the last fit pass had parked it: on the floor beside her foot, away from her hand. Where the travel is that short the bounce settles at her palm instead — the ball rides IN her hand, the squash still pulsing — until the geometry gives it room to drop. */
   var p=(ts%900)/900, frac, squash=1;
   if(p<0.42){ var u1=p/0.42; frac=1-u1*u1; } /* she pushes it down: slow off the palm, faster as it falls */
   else if(p<0.56){ frac=0; squash=1-0.12*Math.sin(Math.PI*(p-0.42)/0.14); } /* floor contact — the ball squashes a breath on the court */
@@ -9233,7 +9233,7 @@ function layoutRoyceCourt(){
   var prop=document.getElementById('sportProp');
   if(prop&&cp&&!(typeof beamBusy!=='undefined'&&beamBusy)){
     var cpr=cp.getBoundingClientRect(), pr=prop.getBoundingClientRect();
-    if(cpr.width&&pr.height){ prop.style.left=Math.round((cpr.left-sr.left)+cpr.width*0.707-pr.width/2)+'px'; prop.style.bottom=Math.round((sr.bottom-cpr.bottom)+cpr.height*0.296-pr.height/2)+'px'; }
+    if(cpr.width&&pr.height){ prop.style.left=Math.round((cpr.left-sr.left)+cpr.width*0.775-pr.width/2)+'px'; prop.style.bottom=Math.round((sr.bottom-cpr.bottom)+cpr.height*0.316-pr.height/2)+'px'; } /* the ball's rest spot, Karter's placement: its CENTER on her palm center — 0.775 across (her hand at x155 of her 200-wide figure) and 0.316 up (her hand center's height inside her figure, (250-145)/250 of the rendered figure). The old fractions (0.707 / 0.296) parked it left of her palm and down at her feet. */
   }
 }
 function royceRimSpot(){
