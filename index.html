@@ -8767,7 +8767,8 @@ var THEME_ANIMALS=[
  {id:'fox',name:'Fox',emoji:'🦊'}
 ];
 var THEME_BGS=[
- {id:'castle',name:'Castle Ballroom',emoji:'🏰',page:'#FFF8FC',stage:'linear-gradient(180deg,#EBD9F2 0%,#F7E3F3 55%,#F3D9C8 55.2%,#EAC39F 100%)'},
+ {id:'castle',name:'Castle',emoji:'🏰',page:'#FFF8FC',stage:'linear-gradient(180deg,#EBD9F2 0%,#F7E3F3 55%,#F3D9C8 55.2%,#EAC39F 100%)'},
+ {id:'pompom',name:'Ballroom of Pom Poms',emoji:'📣',page:'#FFFBFE',stage:'linear-gradient(180deg,#EBD9F2 0%,#F7E3F3 55%,#F3D9C8 55.2%,#EAC39F 100%)'},
  {id:'enchanted',name:'Enchanted Rose',emoji:'🌹',page:'#FDF2F8',stage:'linear-gradient(180deg,#4C1D95 0%,#7C3AED 42%,#C2185B 80%,#9D1450 100%)'},
  {id:'garden',name:'Rose Garden',emoji:'🌸',page:'#F6FFF7',stage:'linear-gradient(180deg,#BBF7D0 0%,#FEF9C3 55%,#A7F3D0 55.2%,#86EFAC 100%)'},
  {id:'beach',name:'Beach Day',emoji:'🏖️',page:'#F5FBFF',stage:'linear-gradient(180deg,#7DD3FC 0%,#BAE6FD 55%,#FDE68A 55.2%,#FCD34D 100%)'},
@@ -9499,7 +9500,8 @@ function effectiveTheme(){ return window.isCustomEdition()? myTheme : defaultThe
    switch sport. Football and baseball are boys-only and never offered in
    Royce's world, so they have no scene here. */
 var WORLD_SCENE_META={
- cheer:{name:'Castle Ballroom of Pom Poms',desc:'Beautiful pom poms in YOUR theme colors fill your castle ballroom!'},
+ cheer:{name:'Castle',desc:'Your castle — the castle interior background.'},
+ pompom:{name:'Ballroom of Pom Poms',desc:'Beautiful pom poms in YOUR theme colors fill your castle ballroom!'},
  dance:{name:'Repeating Ballerina Pattern',desc:'Ballerinas in tutus scattered all across your background — arms out on pointe, legs up and arms raised!'},
  gymnastics:{name:'Gymnastics',desc:'Glossy 3D girl gymnasts fill your background — different skin tones, hair types and outfit colors, scattered in different motions: handstands, a cartwheel, a split jump, a standing split, a backbend and a floor split!'},
  hockey:{name:'Ice Rink',desc:'A glossy ice rink seen straight down from above fills your background — icy white ice, red and blue lines and face-off circles!'},
@@ -10648,10 +10650,10 @@ function renderSetupWizard(){
     h+='<div class="setup-kicker">'+kick+' — YOUR FIRST NAME</div><div class="setup-q">What is your first name? 🌹</div>';
     h+='<input class="setup-name-input" id="setupNameInput" type="text" maxlength="20" autocomplete="off" autocapitalize="words" spellcheck="false" placeholder="enter your first name" aria-label="enter your first name" value="'+escAttr(setupDraft.name)+'" oninput="setupNameInput(this.value)"/>';
   } else if(key==='background'){
-    var bmeta=WORLD_SCENE_META[myTheme.sport]||WORLD_SCENE_META.cheer; var enchantedBg=(myTheme.bg==='enchanted' && myTheme.sport===defaultTheme().sport); var castleBg=(myTheme.bg==='castle' && myTheme.sport===defaultTheme().sport); var cbg=themeById(THEME_BGS,'castle'); var ebg=themeById(THEME_BGS,'enchanted'); var pomBg=(!enchantedBg && !castleBg && myTheme.sport==='cheer'); var danceBg=(!enchantedBg && myTheme.sport==='dance'); var jumpBg=(!enchantedBg && myTheme.sport==='jumprope'); var gymBg=(!enchantedBg && myTheme.sport==='gymnastics'); var sportBgArt=(!enchantedBg && SPORT_BG_ART[myTheme.sport])? SPORT_BG_ART[myTheme.sport] : '';
+    var bmeta=WORLD_SCENE_META[myTheme.sport]||WORLD_SCENE_META.cheer; var enchantedBg=(myTheme.bg==='enchanted' && myTheme.sport===defaultTheme().sport); var castleBg=(myTheme.bg==='castle' && myTheme.sport===defaultTheme().sport); var cbg=themeById(THEME_BGS,'castle'); var ebg=themeById(THEME_BGS,'enchanted'); var pbg=themeById(THEME_BGS,'pompom'); var pomBg=(myTheme.bg==='pompom' && myTheme.sport===defaultTheme().sport); var danceBg=(!enchantedBg && myTheme.sport==='dance'); var jumpBg=(!enchantedBg && myTheme.sport==='jumprope'); var gymBg=(!enchantedBg && myTheme.sport==='gymnastics'); var sportBgArt=(!enchantedBg && SPORT_BG_ART[myTheme.sport])? SPORT_BG_ART[myTheme.sport] : '';
     h+='<div class="setup-kicker">'+kick+' — YOUR BACKGROUND</div><div class="setup-q">Choose Your Background</div>';
-    h+='<div class="scene-preview" style="margin:0 0 12px">'+(enchantedBg? '<img class="scene-photo" src="assets/enchanted-rose.webp" alt="" aria-hidden="true"/>' : castleBg? '<img class="scene-photo" src="assets/royce-background.webp" alt="" aria-hidden="true"/>' : pomBg? '<img class="scene-photo" src="assets/pom-pom-bg.webp" alt="" aria-hidden="true"/>' : danceBg? '<img class="scene-photo scene-photo--fullgroup" src="assets/ballerina-bg.webp" alt="" aria-hidden="true"/>' : jumpBg? '<img class="scene-photo scene-photo--fullgroup" src="assets/jumprope-bg.webp" alt="" aria-hidden="true"/>' : gymBg? '<img class="scene-photo scene-photo--fullgroup" src="assets/gymnastics-bg.png" alt="" aria-hidden="true"/>' : sportBgArt? '<img class="scene-photo" src="'+sportBgArt+'" alt="" aria-hidden="true"/>' : worldSceneSVG(myTheme.sport,themePalette(),'w3','meet'))+'<div class="scene-preview-cap">🖼️ Your background: '+(enchantedBg? ebg.name : castleBg? cbg.name : bmeta.name)+'</div></div>';
-    h+='<div class="opt-row"><button class="big-chip'+(enchantedBg?' on':'')+'" onclick="setupPickBackgroundTemplate(\'enchanted\')"><span class="bce">'+ebg.emoji+'</span>'+ebg.name+'</button>'+THEME_SPORTS.map(function(x){ var m=WORLD_SCENE_META[x.id]||WORLD_SCENE_META.cheer; return '<button class="big-chip'+(!enchantedBg&&myTheme.sport===x.id?' on':'')+'" onclick="setupPickBackgroundTemplate(\''+x.id+'\')"><span class="bce">'+x.emoji+'</span>'+m.name+'</button>'; }).join('')+'</div>';
+    h+='<div class="scene-preview" style="margin:0 0 12px">'+(enchantedBg? '<img class="scene-photo" src="assets/enchanted-rose.webp" alt="" aria-hidden="true"/>' : castleBg? '<img class="scene-photo" src="assets/royce-background.webp" alt="" aria-hidden="true"/>' : pomBg? '<img class="scene-photo" src="assets/pom-pom-bg.webp" alt="" aria-hidden="true"/>' : danceBg? '<img class="scene-photo scene-photo--fullgroup" src="assets/ballerina-bg.webp" alt="" aria-hidden="true"/>' : jumpBg? '<img class="scene-photo scene-photo--fullgroup" src="assets/jumprope-bg.webp" alt="" aria-hidden="true"/>' : gymBg? '<img class="scene-photo scene-photo--fullgroup" src="assets/gymnastics-bg.png" alt="" aria-hidden="true"/>' : sportBgArt? '<img class="scene-photo" src="'+sportBgArt+'" alt="" aria-hidden="true"/>' : worldSceneSVG(myTheme.sport,themePalette(),'w3','meet'))+'<div class="scene-preview-cap">🖼️ Your background: '+(enchantedBg? ebg.name : castleBg? cbg.name : pomBg? pbg.name : bmeta.name)+'</div></div>';
+    h+='<div class="opt-row"><button class="big-chip'+(enchantedBg?' on':'')+'" onclick="setupPickBackgroundTemplate(\'enchanted\')"><span class="bce">'+ebg.emoji+'</span>'+ebg.name+'</button>'+THEME_SPORTS.map(function(x){ var m=WORLD_SCENE_META[x.id]||WORLD_SCENE_META.cheer; var onBg=(x.id==='cheer')? castleBg : (!enchantedBg&&!pomBg&&myTheme.sport===x.id); var chip='<button class="big-chip'+(onBg?' on':'')+'" onclick="setupPickBackgroundTemplate(\''+x.id+'\')"><span class="bce">'+x.emoji+'</span>'+m.name+'</button>'; if(x.id==='cheer'){ chip+='<button class="big-chip'+(pomBg?' on':'')+'" onclick="setupPickBackgroundTemplate(\'pompom\')"><span class="bce">'+pbg.emoji+'</span>'+pbg.name+'</button>'; } return chip; }).join('')+'</div>';
   } else if(key==='color'){
     h+='<div class="setup-kicker">'+kick+' — YOUR THREE COLORS</div><div class="setup-q">Pick your three colors! 🎨</div>';
     h+='<div class="color-role">1. Primary Color — your main color 🎨</div>';
@@ -10737,6 +10739,15 @@ function setupPickBackgroundTemplate(id){
        template does. */
     if(setupKeepOriginal){ setupKeepOriginal=false; try{ setupState.keepOriginal=false; saveSetup(); }catch(e){} }
     myTheme.bg='enchanted'; myTheme.sport=defaultTheme().sport;
+  } else if(id==='pompom'){
+    /* Ballroom of Pom Poms is its OWN template (Michelle's correction):
+       her pom poms photo (assets/pom-pom-bg.webp) as the page
+       background, with the cheer world — separate from the Castle
+       template, which is just the castle. Picking it while the
+       keep-original toggle is ON is choosing a NEW background, so it
+       unlocks the page exactly like the Enchanted Rose pick does. */
+    if(setupKeepOriginal){ setupKeepOriginal=false; try{ setupState.keepOriginal=false; saveSetup(); }catch(e){} }
+    myTheme.bg='pompom'; myTheme.sport=defaultTheme().sport;
   } else {
     if(setupKeepOriginal && id!==defaultTheme().sport){ setupKeepOriginal=false; try{ setupState.keepOriginal=false; saveSetup(); }catch(e){} }
     myTheme.sport=id; myTheme.bg='castle';
