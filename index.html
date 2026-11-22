@@ -9492,8 +9492,7 @@ function worldSceneSVG(sportId,c,uid,fit){
    on the pink stone floor; two round stone columns framing the
    room; a small round rose window glowing high on the wall; a
    shallow vaulted arch across the ceiling; pink and purple bunting
-   strung across the top of the room; gold trophies standing on a
-   low stone ledge; soft gym mats stacked by the wall, like her
+   strung across the top of the room; soft gym mats stacked by the wall, like her
    castle gym; and pink roses climbing the columns and resting in
    the corners, with sparkles in the air. No people or characters
    in the scene — it is a place, not a portrait.
@@ -9562,17 +9561,6 @@ function enchantedSceneSVG(c,uid,fit,clean){
     +'<path d="M402 26 Q604 80 804 10" fill="none" stroke="'+TD+'" stroke-width="2.6" opacity=".7"/>'
     + flag(38,30,-16,P)+flag(84,44,-9,A)+flag(132,52,-3,P)+flag(182,55,2,A)+flag(232,52,6,P)+flag(280,45,9,A)+flag(326,36,11,P)+flag(368,29,8,T)
     + flag(438,36,4,A)+flag(484,46,-1,P)+flag(532,52,-5,A)+flag(582,52,-7,P)+flag(630,45,-9,A)+flag(678,35,-12,P)+flag(724,24,-14,A)+flag(766,15,-13,P);
-  /* one gold trophy cup standing on the ledge */
-  function trophy(x,y,s){
-    return '<g transform="translate('+x+','+y+') scale('+s+')">'
-      +'<path d="M-16 -34 L16 -34 L13 -12 Q12 -2 0 -2 Q-12 -2 -13 -12 Z" fill="url(#'+uid+'gold)"/>'
-      +'<path d="M-16 -30 Q-27 -28 -24 -18 Q-22 -10 -13 -11" fill="none" stroke="'+TD+'" stroke-width="3.4"/>'
-      +'<path d="M16 -30 Q27 -28 24 -18 Q22 -10 13 -11" fill="none" stroke="'+TD+'" stroke-width="3.4"/>'
-      +'<rect x="-3.4" y="-2" width="6.8" height="7" fill="'+TD+'"/>'
-      +'<rect x="-11" y="5" width="22" height="5" rx="1.6" fill="'+TD+'"/>'
-      +'<polygon points="0,-27 2.6,-21.4 8.6,-21 4.4,-17.4 5.8,-11.6 0,-15 -5.8,-11.6 -4.4,-17.4 -8.6,-21 -2.6,-21.4" fill="#FFFFFF" opacity=".75"/>'
-      +'</g>';
-  }
   /* Roses climbing the columns, roses resting in the corners, and
      the sparkles + stars hanging in the air. These dress the wizard
      preview scene only. Inside a GAME stage (clean=true) they are
@@ -9664,10 +9652,6 @@ function enchantedSceneSVG(c,uid,fit,clean){
     +'<ellipse cx="400" cy="66" rx="56" ry="16" fill="'+TL+'" opacity=".32"/>'
     +'<ellipse cx="400" cy="64" rx="34" ry="8" fill="none" stroke="'+TD+'" stroke-width="4"/>'
     +'<g fill="'+TL+'" stroke="'+TD+'" stroke-width="2"><circle cx="372" cy="68" r="5"/><circle cx="400" cy="72" r="6"/><circle cx="428" cy="68" r="5"/></g>'
-    /* gold trophies on a low stone ledge standing on the floor at
-       the right of the room, the ledge drawn in perspective */
-    +'<polygon points="592,246 726,246 748,264 578,264" fill="'+AL+'" stroke="'+A+'" stroke-opacity=".35" stroke-width="2"/>'
-    + trophy(624,246,0.72) + trophy(662,246,0.92) + trophy(700,246,0.72)
     /* soft pink and purple gym mats stacked on the floor by the
        left wall, drawn in perspective */
     +'<polygon points="46,252 172,252 188,268 32,268" fill="'+A+'" opacity=".55"/>'
